@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding = "UTF-8" standalone="yes"?>
+<answer>
+	{% for path in paths %}
+		<path>
+	    	<id>{{ path.id }}</id>
+	    	<titulua>{{ path.dc_title }}</titulua>
+	    	<deskribapena>{{ path.dc_description }}</deskribapena>
+	    	<irudia>{{ path.paths_thumbnail }}</irudia>
+    	</path>
+    {% endfor %}
+</answer>

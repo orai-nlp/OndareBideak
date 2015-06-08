@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="panel panel-info ibilbide-panela">
+	<div class="panel-heading">
+		<h1 class="panel-title">{{path_titulua}}</h1>
+	</div>
+	<div class="panel-body" >
+    
+   	 	<div class="col-xs-6 col-md-3" align="center">
+   			 <a href="#" class="thumbnail">
+     		
+	 			 <img alt="{{path_irudia}}" src="{{path_irudia}}">
+ 			   </a>
+ 		</div>
+ 		<div class="item_edukia">
+ 			<p><b> deskribapena: </b><a href="">{{path_deskribapena}} </a></p>
+ 			 			
+ 		</div>
+ 		
+ 		
+ 	 </div>
+	
+</div>
+
+<!-- 
+path_box-era elementu bat sartzeko:
+pb_new_element(elementu_id,testua,irudiaren_urla);
+path_box-ean seme bat sartzeko:
+pb_new_son(aitaren_id,elementu_id,testua,irudiaren_urla);
+-->
+<input type="hidden" id="path_id" value="{{path_id}}"/>
+
+<button id="update_path_button" type="button" class="btn btn-default btn-xs" onclick="update_path_on_db({{path_id}})">
+       		<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"> 
+       		</span> 
+       		Eguneratu Ibilbidea		
+       	</button>
+ <div id="path_boxes" ondrop="pb_drop(event);" ondragover="allowDrop(event)"></div>
+<script>set_pb();</script>
+
+
+{% for node in path_nodeak%}
+
+<script type="text/javascript">
+	
+	//var path_node = "{{node}}".split(";"); 
+	
+	var id="{{node.fk_item_id_id}}";//path_node[0];
+	var titulua="{{node.dc_title}}";//path_node[1];
+	var irudia="{{node.paths_thumbnail}}";//path_node[2];
+	var aita_id="{{node.paths_prev}}";//path_node[3];
+	/*console.log("id:"+id);
+	console.log("titulua:"+titulua);
+	console.log("irudia:"+irudia);*/
+	if(aita_id=="")
+	{
+		if (id==15){
+		//console.log("pb_new_element(" + id + "," + titulua + "," + irudia + ")");
+		pb_new_element("pb_"+id,titulua,irudia);
+		}
+	}
+	else
+	{
+		if(id==26 || id==69){
+		//console.log("pb_add_new_son(" + aita_id + "," + id + "," + titulua + "," + irudia + ")");
+		pb_add_new_son("pb_"+aita_id,"pb_"+id,titulua,irudia);
+		}
+		
+	}
+ 	
+	
+</script>
+
+
+{% endfor%}
+
+
+<!--
+{% for erroa in path_erroak%}
+
+<script type="text/javascript">
+	console.log("erroa");
+	var path_erroa = "{{erroa}}".split(";"); 
+	//erroa.id+";"+erroa.dc_title+";"+erroa.paths_thumbnail+";"+erroa.paths_next
+	var id=path_erroa[0];
+	var titulua=path_erroa[1];
+	var irudia=path_erroa[2];
+	console.log("id:"+id);
+	console.log("titulua:"+titulua);
+	console.log("irudia:"+irudia);
+ 	pb_new_element(id,titulua,irudia);
+	
+</script>
+
+{% endfor%}
+-->
+
+<!--
+ 
+ -->
+ <!--
+ {% for semea in path_semeak%}
+
+<script type="text/javascript">
+	console.log("semea");
+	var path_semea = "{{semea}}".split(";"); 
+	//str(semea.fk_item_id)+";"+semea.dc_title+";"+semea.paths_thumbnail+";"+semea.paths_prev+";"+semea.paths_next
+
+	var id=path_semea[0];
+	var titulua=path_semea[1];
+	var irudia=path_semea[2];
+	var aita_id=path_semea[3];
+	console.log("aita:"+aita_id);
+	console.log("id:"+id);
+	console.log("titulua:"+titulua);
+	console.log("irudia:"+irudia);
+	
+ 	pb_add_new_son(aita_id,id,titulua,irudia);
+	
+</script>
+
+{% endfor%}
+ -->
+{% endblock %} 

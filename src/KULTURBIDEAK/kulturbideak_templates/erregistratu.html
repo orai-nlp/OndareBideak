@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="login-erregistratu">
+	
+	<form action="/erregistratu" method="post" class="form">
+		{% csrf_token %}
+		
+      		<div class="input-group">
+  			<span class="input-group-addon" id="sizing-addon2">Izena</span>
+ 			<input type="text" id="erabIzena" class="form-control" placeholder="Erabiltzaile izena" aria-describedby="sizing-addon2">
+			</div>
+			
+			<br/>
+			
+			<div class="input-group">
+  			<span class="input-group-addon" id="sizing-addon2">Posta</span>
+ 			 <input type="text" id="posta" class="form-control" placeholder="Posta elektronikoa" aria-describedby="sizing-addon2">
+			</div>
+			
+			<br />
+			
+			<div class="input-group">
+  			<span class="input-group-addon" id="sizing-addon2">Pasahitza</span>
+ 			 <input type="password" id="pasahitza" class="form-control" placeholder="Pasahitza" aria-describedby="sizing-addon2">
+			</div>
+			
+     		<br/>
+     		
+       		<button class="btn btn-default" type="submit">
+       		 Erregistratu
+       		</button>
+       
+       			
+       		
+       			
+      		
+      	</form>
+
+</div>
+{% endblock %} 

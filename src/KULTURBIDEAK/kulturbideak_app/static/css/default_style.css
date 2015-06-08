@@ -1,0 +1,47 @@
+#logo {
+    height: 10px;
+    margin: 10px 0 45px;
+}
+
+#logo_in {
+    height: 10px;
+    margin: 10px 0 45px;
+    font-size: 24px;
+    border: 4px solid #579900;
+    border-radius: 50px 0;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
+    display:inline-block;
+}
+
+#logo_in a {
+    color: #0000ff;
+    font-weight: bold;
+    background: #ff0000;
+    
+}
+
+#title {
+    background: none repeat scroll 0 0 #72bb00;
+    border: 4px solid #579900;
+    border-radius: 50px 0;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
+    float: left;
+    margin-left: 5%;
+}
+#title .big_title {
+    color: #579900;
+    display: block;
+    font-size: 125px;
+    font-weight: bold;
+    margin: -35px 0 0 70px;
+}
+#title .highlight_title {
+    color: #bbdc80;
+}
+#title .small_title {
+    color: white;
+    display: block;
+    margin: -30px 0 0 15px;
+    text-align: left;
+}
+

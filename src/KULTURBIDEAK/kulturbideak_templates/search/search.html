@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+  	
+{% for item in page.object_list %}
+	<div class="column">	
+		<div class="col-xs-6 col-md-3">
+
+		<div class="thumbnail">
+			
+			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="erakutsi_item?id={{item.item_id}}" >
+				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
+			</a>
+			
+			<div class="caption">
+				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.item_id}}"/>
+				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
+				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
+				 
+				<h5><a class="" title="{{item.dc_title}}" href="erakutsi_item?id={{item.item_id}}" id="titulua">{{item.dc_title}}</a></h5>
+					
+				<p class="" id="hornitzailea"><b> Hornitzailea: </b> {{item.edm_provider}}</p>
+				<p class="" id="hizkuntza"><b> Hizkuntza:</b>{{item.dc_language}}</p>
+				<p class="" id="herrialdea"><b>Herrialdea:</b>{{item.edm_country}}</p>
+				<p class="" id="sortzailea"><b>Sortzailea:</b>{{item.dc_creator}}</p>
+				
+       			<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }});">
+       			Gehitu <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+       			</button>
+    		</div>
+		</div>
+	</div>				
+</div>
+			
+			
+{% empty %}
+	<p>Ez da erantzunik aurkitu.</p>
+{% endfor %}
+	
+</div>				
+</div>
+{% if page.has_previous or page.has_next %}
+    <div>
+     {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    |
+     {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+     </div>
+{% endif %}
+		
+{% endblock %} 
+			
+	
+	
+	
+	
+
+				
+	
+	

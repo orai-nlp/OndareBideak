@@ -1,0 +1,3 @@
+{{ object.dc_title }}
+{{ object.dc_subject }}
+{{ object.dc_description }}

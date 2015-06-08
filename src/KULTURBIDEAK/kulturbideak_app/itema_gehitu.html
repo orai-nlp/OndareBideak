@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="itema_gehitu">
+	
+	<form action="itema_gehitu" method="post" class="form"  enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ itema.titulua.errors}}
+		{{ itema.deskribapena.errors}}
+		{{itema}}
+		<br/>
+     		
+   		 <button class="btn btn-default" type="submit">
+   		 Gehitu
+  		  </button>
+       			
+       			
+      		
+      	
+      	</form>
+
+</div>
+{% endblock %} 

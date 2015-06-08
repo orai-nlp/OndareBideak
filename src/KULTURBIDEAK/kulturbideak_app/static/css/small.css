@@ -1,0 +1,36 @@
+.clearfix:after {clear:both;content:'.';display:block;visibility:hidden;height:0;}
+.clearfix {display:inline-block;}
+* html .clearfix {height:1%;}
+.clearfix {display:block;}
+
+.role-no-small {display:none;}
+
+body {font-size:120%;}
+header {margin:1.5em 0 0.5em 0;background:none;}
+div.role-header {background:none;padding-left:0;margin-left:0;}
+#user-menu {margin:0 4px 1em 4px;font-size:0.9em;}
+header img {max-height:50px;}
+#search-form {margin-top:0;margin-bottom:1em;}
+#search-form .search-form-content {margin:0 4px;}
+#search-form .search-form-select {width:100px;}
+#search-form .search-form-select .role-fancy-select .role-text {max-width:100px;}
+#history {overflow:auto;margin-top:0;margin-bottom:1em;font-size:0.9em;}
+#hierarchy {overflow:auto;margin-top:0;margin-bottom:1em;font-size:0.9em;}
+article#main {margin-top:0;}
+article #title {margin-top:0;}
+article #title h1 {clear:both;}
+article #title nav {margin:0 4px;float:none;}
+article aside, article section {margin:0 4px;}
+article #filters section {margin-bottom:1em;}
+article #filters section h2 {margin-bottom:0.5em;}
+article #filters section.empty {display:none;}
+article ul.items {clear:both;}
+#content > h2 {font-size:1.2em;}
+footer .role-about {text-align:center;margin-bottom:2em;}
+footer .role-eu-logo {float:left;}
+.role-cookie-warning {margin:2em 0.5em;}
+
+.role-part-handle {display:block;background-color:#efefef;text-decoration:none;border-bottom:1px solid #afafaf;padding:0.8em 4px;clear:both;}
+.role-part-handle.state-open {margin-bottom:0.5em;}
+.role-part-handle:link, .role-part-handle:visited {color:#222222;}
+.role-part-handle .ui-icon {float:right;margin-right:1em;}

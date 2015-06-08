@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="login-erregistratu">
+	
+	<form action="/logina" method="post" class="form">
+		{% csrf_token %}
+		{{ logina.erabiltzailea.errors}}
+		{{ logina.pasahitza.errors}}
+		{{logina}}
+		<!--
+      		<div class="input-group">
+  			<span class="input-group-addon" id="sizing-addon2">Izena</span>
+ 			<input type="text" id="erabIzena" class="form-control" placeholder="Erabiltzaile izena" aria-describedby="sizing-addon2">
+			</div>
+			
+			<br />
+			
+			<div class="input-group">
+  			<span class="input-group-addon" id="sizing-addon2">Pasahitza</span>
+ 			 <input type="password" id="pasahitza" class="form-control" placeholder="Pasahitza" aria-describedby="sizing-addon2">
+			</div>
+			-->
+     		<br/>
+     		
+       		<button class="btn btn-default" type="submit">
+       		 Sartu
+       		</button>
+       			
+       			
+      		
+      	
+      	</form>
+
+</div>
+{% endblock %} 

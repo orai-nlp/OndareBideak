@@ -1,0 +1,3 @@
+{{ object.path_dc_title }}
+{{ object.path_dc_subject }}
+{{ object.path_dc_description }}

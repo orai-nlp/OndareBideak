@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<input type="hidden" id="item_id_{{id}}" value="{{id}}"/>
+<input type="hidden" id="titulua_{{id}}" value="{{titulua}}"/>
+<input type="hidden" id="irudia_{{id}}" value="{{irudia}}"/>
+
+<div class="botoia_item">
+	<button class="btn btn-primary" type="button" onclick="create_workspace_box({{id}});">
+ 	Gehitu <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	</button>
+</div>
+<br><br>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h1 class="panel-title">{{titulua}}</h1>
+	</div>
+	<div class="panel-body">
+    
+   	 	<div class="col-xs-6 col-md-3" align="center">
+   			 <a href="#" class="thumbnail">
+     		 <!--<img alt="Item has not thumbnail image" src="http://paths.sheffield.ac.uk/pathsui/europeana/static/img/no_img.png">-->
+	 			 <img alt="{{titulua}}" src="{{irudia}}">
+ 			   </a>
+ 		</div>
+ 		<div class="item_edukia">
+ 			<!--
+ 			<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
+ 			<p><b>{% trans "Hizkuntza:" %} </b><a href="">{{hizkuntza}} </a></p>
+ 			<p><b>{% trans "Hornitzailea:" %} </b><a href="">{{hornitzailea}} </a></p>
+ 			<p><b>{% trans "Eskubideak:" %} </b><a href="">{{eskubideak}} </a></p>
+ 			<p><b>{% trans "Urtea:" %} </b><a href="">{{urtea}} </a></p>
+ 			<p><b>{% trans "Ikusi jatorrizkoa:" %} </b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
+ 			-->
+ 			<p><b>Herrialdea: </b><a href="">{{herrialdea}} </a></p>
+ 			<p><b>Hizkuntza:</b><a href="">{{hizkuntza}} </a></p>
+ 			<p><b>Hornitzailea:</b><a href="">{{hornitzailea}} </a></p>
+ 			<p><b>Eskubideak: </b><a href="">{{eskubideak}} </a></p>
+ 			<p><b>Urtea:</b><a href="">{{urtea}} </a></p>
+ 			<p><b>Ikusi jatorrizkoa:"</b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
+ 			
+ 		</div>
+ 		
+ 		
+ 	 </div>
+	
+</div>
+
+
+{% endblock %} 
