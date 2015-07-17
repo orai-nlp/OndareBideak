@@ -15,6 +15,9 @@
 {% bootstrap_messages %}
 
 
+
+
+
 <style type="text/css">
     body{
         font-family: Verdana,Arial,sans-serif;
@@ -23,7 +26,9 @@
     .page_head{
         height: 200px;
     }
-    
+    .headerra{
+    	background-color: #d9edf7;
+    }
    .bilaketaEmaitza{
 
 		background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");
@@ -31,6 +36,17 @@
 		background-size: 120px 120px;
 	
 	}
+	.bilaketaEmaitzaPath{
+		
+		background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiBide.png");
+		min-height: 120px;
+		background-size: 120px 120px;
+	}
+	 .emaitzaInfo{
+		text-align: left;
+		color:#337ab7;
+    }
+
 	
     #workspace{
         position:fixed;
@@ -46,7 +62,7 @@
         display: block;
         height: 0;
         border: 1px solid #808080;
-        background: lightblue;
+        background: #d9edf7;
         opacity: 0;
         -webkit-transition: height 1s,opacity 1s ease-in-out;
         transition: height 1s,opacity 1s ease-in-out;
@@ -170,7 +186,7 @@
 		background: white;
 		vertical-align: top;
 		text-align: left;
-		color:lightblue;
+		color:#31708f;
     }
     .ezkerra_div{
     	width: 15%;
@@ -179,7 +195,7 @@
     	background:white;
 		vertical-align: top;
 		text-align: left;
-		color: lightblue;
+		color: #31708f;
     }
     .content_div{
     	width: 65%;
@@ -190,6 +206,7 @@
 		margin: 0 20px;
 		text-align: left;
     }
+    
     .erabiltzaile-menua{
     	font-size: 9pt;
    		margin-top: 0.5em;font-size: 9pt;
@@ -205,7 +222,8 @@
    .footer{
    	bottom: 0;
    	position:fixed;
-   	background: lightblue;
+   	text-align:fixed;
+   	background: #F0FFFF; 
    	width: 95%;
    }
   .hizkuntzak_class {
@@ -253,8 +271,20 @@
 	.ibilbide-panela{
 		width: 98%;
 	}
-	
-	
+	.info{
+		color: #337ab7;
+	}	
+	.dropdown:hover .dropdown-menu {
+    display: block; right: 20px; top: 0px;
+    margin-top: 0;
+    width:300px;
+    position:relative;
+   	alignment-adjust: right;
+   	float: right;
+   	z-index: 1000000000;
+   	left:inherit;
+    
+ 	}
 
 
 </style>
@@ -269,17 +299,18 @@ var pb_box_space = 20;
 var paths_starts = [];
 var connections = [];
 
-function initialize(){
+
+function initialize(user_id){
 	//raphael martxan jartzeko
 	set_pb();
 	//kargatu workspaceko elementuak
-	load_ws();
+	load_ws(user_id);
 	//kargatu erabiltzailearen ibilbideak
-	var user_id=1;
 	load_paths_list(user_id);
 }
 
 function hizkuntza_url_egokitu(linka){
+	
     //Hizkuntza aukeraketa egiten duen formularioaren url helbidea egokitzen du
     var form=document.getElementById("hizkuntza_aukeraketa_id");
     var hizkuntza=linka.text.toLowerCase();
@@ -332,11 +363,22 @@ function load_paths_list_answer(xmlHttp,paths_list_container)
 			var xml_answer = xmlHttp.responseXML;
 			var xml_Document = xml_answer.documentElement;
 			var paths = xml_Document.getElementsByTagName("path");
+			
 			for (var i=0;i<paths.length;i++){
+				
 				id = paths[i].getElementsByTagName("id")[0].firstChild.data;
-				titulua = paths[i].getElementsByTagName("titulua")[0].firstChild.data;
-				deskribapena = paths[i].getElementsByTagName("deskribapena")[0].firstChild.data;
-				irudia = paths[i].getElementsByTagName("irudia")[0].firstChild.data;
+				titulua="";
+				if (paths[i].getElementsByTagName("titulua")[0].firstChild){
+					titulua = paths[i].getElementsByTagName("titulua")[0].firstChild.data;
+				}
+				deskribapena="";
+				if (paths[i].getElementsByTagName("deskribapena")[0].firstChild){
+					deskribapena = paths[i].getElementsByTagName("deskribapena")[0].firstChild.data;
+				}
+				irudia = "";
+				if (paths[i].getElementsByTagName("irudia")[0].firstChild){
+					irudia = paths[i].getElementsByTagName("irudia")[0].firstChild.data;
+				}
 				add_path_to_list(id,titulua,deskribapena,irudia);
 			}                                 
         }
@@ -360,10 +402,10 @@ function add_path_to_list(id,titulua,deskribapena,irudia){
     
 }
 
-function load_ws()
+function load_ws(user_id)
 {
-	var user_id =1;
-	var ws_id=1;
+	//var user_id =1;
+	var ws_id=user_id;
 	load_ws_request(user_id,ws_id);	
 }
 
@@ -511,14 +553,15 @@ function toggle_workspace(){
     }
 }
 
-function create_workspace_box(index){
+function create_workspace_box(index,user_id){
    	el_counter++;
     var item_id = document.getElementById("item_id_"+index).value;
     var titulua = document.getElementById("titulua_"+index).value;	
     var irudia = document.getElementById("irudia_"+index).value;
-   
+   	
     //Ondoren user id-aren arabera WS-id-a lortu
-    var fk_workspace_id=1;
+    //var fk_workspace_id=1;
+    var fk_workspace_id=user_id;
     var uri="uri_"+item_id;
     var dc_source="Euskomedia";
     var dc_title=titulua;
@@ -661,20 +704,24 @@ function wsb_handleDragLeave(ev) {
 function update_path_on_db(path_id)
 {
 	
-	start_loader("loader");  
-	                                                                                    // beharrezko baldintzak jaso
+	var dc_title = document.getElementById("path_titulua").value;
+	var dc_description = document.getElementById("path_desk").value;
+	var dc_subject = document.getElementById("path_gaia").value;
+	var paths_thumbnail = document.getElementById("file2");
+	var paths_thumbnail_name=paths_thumbnail.value;
 	
-	if (paths_starts.length > 0){
-		                                            
-		update_path_on_db_request(path_id);                                  
+	
+	start_loader("loader");  	                                                                                   	
+	if (paths_starts.length > 0){		                                            
+		update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name);                                  
 	}
-	else{                                                                                                       // baldintzak bete ez badira
-		alert("empty_path_error");                                                                  // (aukeran) errorea 
+	else{                                                                                                      
+		alert("empty_path_error");                                                                
 	}
 	stop_loader("loader");   
 }
 
-function update_path_on_db_request(path_id)
+function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name)
 {
 	
 	var csrftoken = getCookie('csrftoken');
@@ -697,7 +744,7 @@ function update_path_on_db_request(path_id)
       
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("path_id="+path_id+"&csrfmiddlewaretoken=" + csrftoken);                     
+        xmlHttp.send("path_id="+path_id+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail_name+"&csrfmiddlewaretoken=" + csrftoken);                     
     }
 	
 }
@@ -794,7 +841,7 @@ function update_path_node_answer(xmlHttp)
     		var path_node_id = server_answer(xmlHttp);
             if (path_node_id){
             	//alert ("gorde da nodea:"+path_node_id);
-            	console.log("eguneratu da nodea:"+path_node_id);
+            	//console.log("eguneratu da nodea:"+path_node_id);
             	document.getElementById("update_path_button").setAttribute("disabled","disabled");
 			}
 			else{                                                                                               // Jaso beharreko emaitza lortu ez bada, errorea
@@ -808,20 +855,147 @@ function update_path_node_answer(xmlHttp)
 
 
 
+/*
+Ajax bidez irudi bat igotzeko adibidea da beheko jQuery-a. sortu_ibilbidea.html-etik deitzen da
+ */
+/*
+$(document).ready(function(){
+$('#form').submit(function(e) {
+
+   var form = $(this);        
+   var formdata = false;
+   if(window.FormData){
+     formdata = new FormData(form[0]);
+                   
+     }
+
+   var formAction = form.attr('action');
+
+                $.ajax({
+                    type        : 'POST',
+                    url         : '../ajax_path_irudia_gorde_proba',
+                    cache       : false,
+                    data        : formdata ? formdata : form.serialize(),
+                    contentType : false,
+                    processData : false,
+
+                    success: function(response) {
+                        if(response != 'error') {
+                            //$('#messages').addClass('alert alert-success').text(response);
+                            // OP requested to close the modal
+                           
+                             $('#myModal').modal('hide');
+                        } else {
+                            $('#messages').addClass('alert alert-danger').text(response);
+                        }
+                    }
+                });
+                e.preventDefault();
+            });
+   
+});
+*/
+
+$(document).ready(function(){
+$('#form2').submit(function(e) {
+
+   var form = $(this);      
+   var formdata = false;
+   if(window.FormData){
+     formdata = new FormData(form[0]);
+                   
+     }
+
+   var formAction = form.attr('action');
+
+                $.ajax({
+                    type        : 'POST',
+                    url         : '../ajax_path_irudia_gorde',
+                    cache       : false,
+                    data        : formdata ? formdata : form.serialize(),
+                    contentType : false,
+                    processData : false,
+
+                    success: function(response) {
+                        if(response != 'error') {
+                            //$('#messages').addClass('alert alert-success').text(response);
+                            // OP requested to close the modal
+                            
+                            //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK
+                           create_path_on_db();
+                           
+                           //$('#myModal').modal('hide');
+                        } else {
+                            $('#messages').addClass('alert alert-danger').text(response);
+                        }
+                    }
+                });
+                e.preventDefault();
+            });
+   
+});
+
+//Ibilbidea eguneratzean irudia gordetzeko
+$(document).ready(function(){
+$('#formEguneratu').submit(function(e) {
+
+   var path_id = document.getElementById("path_id").value;
+   var form = $(this);      
+   var formdata = false;
+   if(window.FormData){
+     formdata = new FormData(form[0]);
+                   
+     }
+
+   var formAction = form.attr('action');
+
+                $.ajax({
+                    type        : 'POST',
+                    url         : '../ajax_path_irudia_gorde',
+                    cache       : false,
+                    data        : formdata ? formdata : form.serialize(),
+                    contentType : false,
+                    processData : false,
+
+                    success: function(response) {
+                        if(response != 'error') {
+                            //$('#messages').addClass('alert alert-success').text(response);
+                            // OP requested to close the modal
+                            
+                            //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK
+                           update_path_on_db(path_id);
+                           
+                           //$('#myModal').modal('hide');
+                        } else {
+                            $('#messages').addClass('alert alert-danger').text(response);
+                        }
+                    }
+                });
+                e.preventDefault();
+            });
+   
+});
+
 function create_path_on_db()
 {
-	var dc_title = prompt("Ibilbidearen titulua", "");
-	var dc_description = prompt("Ibilbidearen deskribapena", "");
-	var dc_subject = prompt("Ibilbidearen gaia", "");
+		
+	var dc_title = document.getElementById("path_titulua").value;
+	var dc_description = document.getElementById("path_desk").value;
+	var dc_subject = document.getElementById("path_gaia").value;
+	var paths_thumbnail = document.getElementById("file2");
+	var paths_thumbnail_name=paths_thumbnail.value;
+	
+	alert(paths_thumbnail_name);
+	
 	start_loader("loader");  
 	
 	uri="urii";
    
-    paths_thumbnail = "irudia";                                                                                        // beharrezko baldintzak jaso
+    //paths_thumbnail = "";   //MEDIA_URL+edm_object           , parametro bezala pasa MEDIA_URL                                                                             // beharrezko baldintzak jaso
 	
 	if (paths_starts.length > 0){
 		                                            
-		create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail);                                  
+		create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail_name);                                  
 	}
 	else{                                                                                                       // baldintzak bete ez badira
 		alert("empty_path_error");                                                                  // (aukeran) errorea 
@@ -829,8 +1003,8 @@ function create_path_on_db()
 	stop_loader("loader");                                                                                      // loaderra gelditu
 
 }
-	
-function create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail)
+
+function create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail_name)
 {
 	
 	var csrftoken = getCookie('csrftoken');
@@ -850,10 +1024,12 @@ function create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_
         xmlHttp.onreadystatechange = function (){
             create_path_on_db_answer(xmlHttp);                                                                   
         };
-      
+        
+       
+     
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("uri="+uri+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail+"&csrfmiddlewaretoken=" + csrftoken);                     
+        xmlHttp.send("uri="+uri+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail_name+"&csrfmiddlewaretoken=" + csrftoken);                     
     }
 	
 }
@@ -894,11 +1070,13 @@ function create_path_nodes(path_id)
 		var item_id= erroa.id;
 		var uri="uri_"+erroa.id;
 		var dc_source="Euskomedia";
-		var dc_description="desc";
+		//var dc_description="desc";
 		var type ="argazkia";
 		var paths_thumbnail=erroa.data("image_value");
 		
-		
+		//MAD
+		var item_narrazioa=erroa.data("item_narrazioa");
+		var dc_description=item_narrazioa;
 		
 		var paths_prev =(erroa.data("parent_id"))?erroa.data("parent_id"):"";
 		
@@ -952,8 +1130,16 @@ function create_path_node_answer(xmlHttp)
     		var path_node_id = server_answer(xmlHttp);
             if (path_node_id){
             	//alert ("gorde da nodea:"+path_node_id);
-            	console.log("gorde da nodea:"+path_node_id);
+            	//console.log("gorde da nodea:"+path_node_id);
+            	
+            	
+            	//leiho modaleko botoia desgaitu
+            	//document.getElementById("botSortu").setAttribute("disabled","disabled");
+            	//leiho modaletik irten
+               	 $('#modalwindow').modal('hide'); //JQUERY      	
+            	//pantaila nagusiko botoia desgaitu
             	document.getElementById("create_path_button").setAttribute("disabled","disabled");
+            	
 			}
 			else{                                                                                               // Jaso beharreko emaitza lortu ez bada, errorea
 				//show_message("default_error"); //AURRERAGO DIALOG BOX BAT adibidez
@@ -1021,10 +1207,13 @@ function pb_window_resize(){
 /*
 Elementua sortu path box-ean
 */
+
+
+
 function pb_new_element(data_id,text_value,image_value){
-	console.log("data_id:"+data_id);
-	console.log("text_value:"+text_value);
-	console.log("image_value:"+image_value);
+	//console.log("data_id:"+data_id);
+	//console.log("text_value:"+text_value);
+	//console.log("image_value:"+image_value);
 	
     //kokapen berria aurkitu
     var y_position = 0;
@@ -1050,6 +1239,11 @@ function pb_new_element(data_id,text_value,image_value){
 
     var rect = paper.rect(get_x(0), get_y(y_position), pb_box_w,pb_box_h, 5);
     rect.node.setAttribute("class","pb_box");
+    
+    //maddalen: Modal window-a zabaltzeko gehitu ditut ondorengo bi lerroak
+    //rect.node.setAttribute("data-toggle","modal");
+    //rect.node.setAttribute("data-target","#myModal");
+    
     rect.id = data_id;
     //beharrezko informazioa hemen gorde
     rect.data("text_value",text_value);
@@ -1059,12 +1253,136 @@ function pb_new_element(data_id,text_value,image_value){
     rect.data("children",[]);
     rect.drag(onmove, onstart, onend);
     paths_starts.push(rect.id);
-
+    
     var delete_button = paper.text(get_x(0)+pb_box_w-10, get_y(y_position)+10, "X");
     delete_button.id = data_id + "_delete_button";
     delete_button.node.setAttribute("class","pb_box_delete_button");
     delete_button.data("id_value",data_id);
     delete_button.click(pb_remove_me);
+    
+    
+    /*
+    //NARRAZIOA GEHITZEKO  PROMT BIDEZ
+  	rect.attr({
+    cursor: 'pointer',
+	}).dblclick(function(e) {
+    
+    //var path_item_description = document.getElementById("path_item_description").value;
+  	//alert("pb_new_element:"+path_item_description);
+    
+    var path_item_description = prompt("Itemaren narrazioa:", "");
+    rect.data("item_narrazioa",path_item_description);
+	}); 
+	*/
+	
+	// NARRAZIOA GEHITZEKO Klik bikoitzaz
+	rect.attr({
+    cursor: 'pointer',
+	}).dblclick(function(e) {
+    	
+    	/*
+  		var narra_div = document.getElementById("narrazioa");
+        
+    	var input = document.createElement("textarea");
+		var button = document.createElement("button");
+		input.name = "textarea";
+		input.id = "narra_textarea";
+		input.maxLength = "5000";
+		input.cols = "87";
+		input.rows = "5";
+	
+		narra_div.appendChild(input); //appendChild
+		var t = document.createTextNode("Gorde");       // Create a text node
+		button.appendChild(t);
+		narra_div.appendChild(button);
+	*/
+	
+			
+		//document.getElementById("narra_textarea").setAttribute("disabled","false");
+        //document.getElementById("narra_botoia").setAttribute("disabled","false");   
+        
+        document.getElementById("narra_p").innerHTML = "Momentuko itema: "+text_value;
+        
+        $("[name='narra_textarea']").prop("disabled", false);
+        $("[name='narra_textarea']").prop("value", '');
+		$("[name='narra_botoia']").prop("disabled", false);
+		
+		
+		
+		var button = document.getElementById("narra_botoia");
+		
+		button.onclick = function () {
+  	  		var balioa=$.trim($("textarea").val());
+  			
+  			//Raphael-en rect-aaren data-n gorde
+  			rect.data("item_narrazioa",balioa);
+			
+			//kendu pantailatik textArea eta botoia
+			//DIV-a ez borratu!!!! document.getElementById('narra_textarea')
+			//$('#narrazioa').remove();	
+			
+			document.getElementById("narra_textarea").setAttribute("disabled","disabled");
+        	document.getElementById("narra_botoia").setAttribute("disabled","disabled");  
+			
+			//Path-eko nodo hau zelabait markatu narrazioa duela jakiteko
+			
+			/*
+			paper.rect(get_x(0), get_y(y_position), pb_box_w,pb_box_h, 5).attr({
+			//fill: "red", 
+			stroke: "rgb(200,100,77)",
+			"stroke-width": 5
+			});*/
+		};
+	}); 
+	
+	//N botoia
+/*
+    var narra_button = paper.text(get_x(0)+pb_box_w-30, get_y(y_position)+10, "N");
+    narra_button.id = data_id + "_narra_button";
+    narra_button.node.setAttribute("class","pb_box_delete_button");
+    narra_button.data("id_value",data_id);
+    //narra_button.click(pb_narra_me);
+    
+    
+    narra_button.click(function(e){
+    	//pb_narra_me
+    
+    	var narra_div = document.getElementById("narrazioa");
+        
+    	var input = document.createElement("textarea");
+		var button = document.createElement("button");
+		input.name = "textarea";
+		input.maxLength = "5000";
+		input.cols = "87";
+		input.rows = "5";
+	
+		narra_div.appendChild(input); //appendChild
+		var t = document.createTextNode("Gorde");       // Create a text node
+		button.appendChild(t);
+		narra_div.appendChild(button);
+	
+		button.onclick = function () {
+  	  		var balioa=$.trim($("textarea").val());
+  			alert(balioa);
+  			//Raphael-en rect-aaren data-n gorde
+  			rect.data("item_narrazioa",balioa);
+			
+			//kendu pantailatik textArea eta botoia
+			$('#narrazioa').remove();	
+			
+			//Path-eko nodo hau zelabait markatu narrazioa duela jakiteko
+			
+			
+//			paper.rect(get_x(0), get_y(y_position), pb_box_w,pb_box_h, 5).attr({
+			//fill: "red", 
+//			stroke: "rgb(200,100,77)",
+//			"stroke-width": 5
+//			});
+		};
+    	
+    });
+    */
+   
     pb_window_resize();
 }
 
@@ -1195,6 +1513,46 @@ function pb_remove_me(){
     pb_remove_box(paper.getById(this.data("id_value")),true);
     pb_window_resize();
 }
+/*
+Narrazioa gehitzeko funtzioa
+*/
+/*
+function pb_narra_me(){
+	alert("pb_narra_me");
+	alert(this.data("id_value"));
+
+	//pb_remove_box(paper.getById(this.data("id_value")),true);
+    //pb_window_resize();
+    
+    var narra_div = document.getElementById("narrazioa");
+        
+    var input = document.createElement("textarea");
+	var button = document.createElement("button");
+	input.name = "textarea";
+	input.maxLength = "5000";
+	input.cols = "87";
+	input.rows = "5";
+	
+	narra_div.appendChild(input); //appendChild
+	var t = document.createTextNode("Gorde");       // Create a text node
+	button.appendChild(t);
+	narra_div.appendChild(button);
+	
+	button.onclick = function () {
+  		alert("blabla");
+  		var balioa=$.trim($("textarea").val());
+  		alert(balioa);
+  		//Raphael-en rect-aaren data-n gorde
+  		//this.rect.data("item_narrazioa",balioa);
+  		//paper.getById(this.data("id_value")).rect.data("item_narrazioa",balioa);
+  		
+	};
+    
+    
+   
+  
+}
+*/
 
 /*
 Ezabatu elementua:
@@ -1540,11 +1898,16 @@ function ibilbidea_kargatu(path_id)
         
 	 */
 }
+
 </script>
+
+
+
 
 </head>
 
-<body style="padding-top:20px;" onload="initialize();">
+{% if user.is_authenticated %}
+<body style="padding-top:20px;" onload="initialize({{request.user.id}});">
 	<!-- WORKSPACE -->
 	<div id="workspace">
        	<div id="workspace_boxes" ondrop="ws_drop(event)" ondragover="allowDrop(event)">
@@ -1562,10 +1925,14 @@ function ibilbidea_kargatu(path_id)
     </div>
  
     <!-- END WORKSPACE -->
+ {%else%}
+ <body style="padding-top:20px;">
+ {% endif %} 
     
+   
 	<!-- PAGE -->
 	<div  style="max-width:1140px;margin:0 auto;">
-		
+			
 	<div class="header-content">
 		<!-- HIZKUNTZAK -->
 		<div class="hizkuntzak_class" >
@@ -1594,31 +1961,70 @@ function ibilbidea_kargatu(path_id)
                 </ul>
             </form>  
 		</div>
+		</div>
 		<!-- LOGINA -->
+		
 		<div class="erabiltzaile-menua" >
+			{% if user.is_authenticated %}
+			<!--
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      {{request.user.username}} <span class="caret"></span>
+   			 </a>
+  --> 
+			<!-- Single button -->
+			<div class="dropdown">
+  				<!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   					 {{request.user.username}} <span class="caret"></span>
+ 				 </button>-->
+ 				 <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">{{request.user.username}} <b class="caret"></b></a>
+        
+				<ul class="dropdown-menu">
+    				<li><a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a></li>
+    				<li><a href="nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a></li>
+    				<li><a href="itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+       				</li></a>
+      				
+    				<li role="separator" class="divider"></li>
+				    <li><a href="perfila_erakutsi">{% trans "Profila" %}</a></li>
+				    <li><a href="pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a></li>
+				    <li role="separator" class="divider"></li>
+				    <li><a href="irten">{% trans "Irten" %} <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+						
+					</li>
+  				</ul>
+			</div>
+
+			<a href="irten">{% trans "Irten" %}</a>
+			<span class="glyphicon glyphicon-log-out" aria-hidden="true"> 
+			</span>
+			{% else %}
 			<a href="erregistratu">{% trans "Erregistratu" %} </a>
+			|
 			<a href="logina">{% trans "Login" %} </a>
 			<span class="glyphicon glyphicon-log-in" aria-hidden="true"> 
     	   	</span>
+    	   	{% endif %}
 		</div>
-	</div>	
-	<!-- END LOGINA -->
-
-	<!-- HEADER -->
-	<div class="page-header">
-		<a title="KulturBideak" href="http://www.kulturbideak.org/search">
- 			<h1>K<small>ultur</small>B<small>ideak</small></h1>
- 			<!--<img  alt="KulturBideak" href="kulturBideakLogoa.png"> -->
-		</a>
 		
-	</div>
+
+		
+	<!-- END LOGINA -->
 	
+	<!-- HEADER -->
+		
+	<div class="page-header headerra">
+		<a title="KulturBideak" href="http://www.kulturbideak.org/search">
+ 			<h1>K<small>ultur</small>B<small>ideak</small></h1>			
+		</a>		
+	</div>
+
+	{% if user.is_authenticated %}
 	<div class="erabiltzaile-menua" >
       	<a href="itema_gehitu">{% trans "Item berria gehitu" %} </a>
       	<span class="glyphicon glyphicon-upload" aria-hidden="true"> 
        	</span>
      <div>
-	
+	{% endif %}
 	<!-- END HEADER -->	
 		
 	<!-- BILATZAILEA -->
@@ -1636,6 +2042,8 @@ function ibilbidea_kargatu(path_id)
        			
        			
       		</span>
+      		
+      		
       	</form>
       	
    	</div><!-- /input-group -->
@@ -1648,15 +2056,47 @@ function ibilbidea_kargatu(path_id)
 	 	<div class="eskuma_div" align="right" >
 	 		<b>{% trans "Hornitzaileak" %} </b>
 	 	</div>	
-				
+			
 		<div class="content_div" align="center">
 			{% if mezua %}
 				
 				<div class="alert alert-info" role="alert"><strong>Ondo!</strong> {{mezua}}</div>
 
 			{%endif%}
+			{% if nondik %}
+			
+			<div class="itema_gehitu">
+				<div class="panel panel-info">
+				<div class="panel-heading">
+					<h1 class="panel-title">{{titulua}}</h1>
+				</div>
+			<div class="panel-body">
+    
+   	 		<div class="col-xs-6 col-md-3" align="center">
+   			 <a href="#" class="thumbnail">
+     		 <!--<img alt="Item has not thumbnail image" src="http://paths.sheffield.ac.uk/pathsui/europeana/static/img/no_img.png">-->
+	 			 <img alt="{{titulua}}" src="{{irudia}}">
+ 			   </a>
+ 			</div>
+ 			<div class="item_edukia">
+ 			
+ 			<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
+ 			<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
+ 			<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{hornitzailea}} </a></p>
+ 			<p><b>{% trans "Eskubideak: " %}</b><a href="">{{eskubideak}} </a></p>
+ 			<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
+ 			
+ 			</div>
+		
+ 		 	</div>
+	
+			</div>
+
+			</div>
+			{%endif%}
 			
 			{% block content %}
+			
 			
 			{% endblock content %}
 		</div>
@@ -1665,9 +2105,10 @@ function ibilbidea_kargatu(path_id)
 			
 			<br />
 			<br />
-			
-			<!-- nire_ibilbideak javascript bidez kargatzen da-->	
+			{% if user.is_authenticated %}
+			<!-- nire_ibilbideak javascript bidez kargatzen da. Initialize() -> load_paths_list(user_id)-->	
 			<div id="nire_ibilbideak"><b>{% trans "Nire Ibilbideak" %} </b></div>
+			{% endif %}
 		</div>
  	</div>	
 
@@ -1676,7 +2117,7 @@ function ibilbidea_kargatu(path_id)
 <div class="footer">
 	
 	<div id="funding">
-		<p></p>
+		
 		<p>
 		<strong>Elhuyar Fundazioa</strong>
 		<br>

@@ -1,16 +1,49 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
 
 
 <input type="hidden" id="item_id_{{id}}" value="{{id}}"/>
 <input type="hidden" id="titulua_{{id}}" value="{{titulua}}"/>
 <input type="hidden" id="irudia_{{id}}" value="{{irudia}}"/>
-
-<div class="botoia_item">
-	<button class="btn btn-primary" type="button" onclick="create_workspace_box({{id}});">
+<!--
+<div class="botoia_item" align="right">
+	<button class="btn btn-primary" type="button" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
  	Gehitu <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 	</button>
 </div>
+
+{% if user.username == hornitzailea %}
+<div class="botoia_item_editatu" align="left">
+	<button class="btn btn-primary" type="button" onclick="editatu_item">
+ 	Editatu <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	</button>
+</div>
+{%endif%}
+-->
+
+<!--user.is_authenticated-->
+<div class="btn-group" role="group" aria-label="...">
+  <button class="btn btn-default" type="button" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
+ 	{% trans "Gehitu" %}
+	</button>
+	
+  {% if user.username == hornitzailea %}
+
+	<a class="btn btn-default" type="button" href="editatu_itema?id={{id}}" >
+ 	{% trans "Editatu" %} 
+	</a>
+  {%else%}
+	<button class="btn btn-default" type="button" action="editatu_itema" disabled>
+ 	{% trans "Editatu" %} 
+	</button>
+	{%endif%}
+</div>
+
+  
+
+
+
 <br><br>
 <div class="panel panel-info">
 	<div class="panel-heading">
@@ -25,20 +58,13 @@
  			   </a>
  		</div>
  		<div class="item_edukia">
- 			<!--
+ 			
  			<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
- 			<p><b>{% trans "Hizkuntza:" %} </b><a href="">{{hizkuntza}} </a></p>
- 			<p><b>{% trans "Hornitzailea:" %} </b><a href="">{{hornitzailea}} </a></p>
- 			<p><b>{% trans "Eskubideak:" %} </b><a href="">{{eskubideak}} </a></p>
- 			<p><b>{% trans "Urtea:" %} </b><a href="">{{urtea}} </a></p>
- 			<p><b>{% trans "Ikusi jatorrizkoa:" %} </b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
- 			-->
- 			<p><b>Herrialdea: </b><a href="">{{herrialdea}} </a></p>
- 			<p><b>Hizkuntza:</b><a href="">{{hizkuntza}} </a></p>
- 			<p><b>Hornitzailea:</b><a href="">{{hornitzailea}} </a></p>
- 			<p><b>Eskubideak: </b><a href="">{{eskubideak}} </a></p>
- 			<p><b>Urtea:</b><a href="">{{urtea}} </a></p>
- 			<p><b>Ikusi jatorrizkoa:"</b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
+ 			<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
+ 			<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{hornitzailea}} </a></p>
+ 			<p><b>{% trans "Eskubideak:" %}</b><a href="">{{eskubideak}} </a></p>
+ 			<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
+ 			<p><b>{% trans "Ikusi jatorrizkoa:" %}</b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
  			
  		</div>
  		

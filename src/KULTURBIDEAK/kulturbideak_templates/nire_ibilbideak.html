@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+
+ 
+<div class="panel panel-info">
+	<div class="panel-heading"><b>{% trans "Nire Ibilbideak" %}</b></div>
+  <div class="panel-body">
+{% for ibilbidea in ibilbideak %}
+	<div class="column">	
+		<div class="col-xs-6 col-md-3">
+			
+	
+		<div class="thumbnail">
+			
+			<a class="{% if not ibilbidea.paths_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="editatu_ibilbidea?id={{ibilbidea.id}}" >
+				{% if ibilbidea.paths_thumbnail %}<img  alt="{{ibilbidea.dc_title}}" src="{{ibilbidea.paths_thumbnail}}">{% endif %}
+			</a>
+			
+			<div class="caption">
+				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{ibilbidea.id}}"/>
+				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{ibilbidea.dc_title}}"/>
+				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{ibilbidea.edm_object}}"/>
+				 
+				<h5><a class="" title="{{ibilbidea.dc_title}}" href="editatu_ibilbidea?id={{ibilbidea.id}}" id="titulua">{{ibilbidea.dc_title}}</a></h5>
+					
+					
+					
+				<a class="btn btn-default" type="button" href="editatu_ibilbidea?id={{ibilbidea.id}}" >				
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+				</a>
+				<!--<p class="" id="hizkuntza"><b> Hizkuntza:</b>{{ibilbidea.dc_language}}</p> -->
+			
+				<!--
+				<div class="btn-group" role="group" aria-label="...">
+       			<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
+       				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+       			</button>
+       			{% if user.username == item.edm_provider %}
+
+					<a class="btn btn-default" type="button" href="editatu_itema?id={{item.item_id}}" >				
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</a>
+  				{%else%}
+					<button class="btn btn-default" type="button" action="editatu_itema" disabled>
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</button>
+				{%endif%}
+				
+				</div>
+				-->
+    		</div>
+		</div>
+	</div>
+	</div>
+
+{% empty %}
+	<p>{% trans "Ez da zure ibilbiderik aurkitu." %}</p>
+{% endfor %}
+
+	</div>
+</div>
+
+
+
+{% endblock %} 

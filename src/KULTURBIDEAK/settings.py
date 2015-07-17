@@ -26,9 +26,6 @@ HIZKUNTZAK={
 #4:['fr','Frantsesa']
 }
 
-
-
-
 MANAGERS = ADMINS
 
 ALLOWED_HOSTS = ['*']
@@ -80,9 +77,9 @@ TIME_ZONE = 'Europe/Madrid'
 LANGUAGE_CODE = 'eu'
 
 LANGUAGES = (
-    ('eu', 'eu'),
-    ('en', 'en'), 
+    ('eu', 'eu'), 
     ('es', 'es'),
+    ('en', 'en'),
     #('fr', 'fr'),
        
 )
@@ -202,6 +199,7 @@ INSTALLED_APPS += (
     # Added.
     'haystack',
     'bootstrap3',
+    'ajaxuploader',
     #'rosetta',
     'KULTURBIDEAK.kulturbideak_app',
    

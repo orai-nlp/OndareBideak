@@ -10,6 +10,7 @@ from KULTURBIDEAK.kulturbideak_app.views import erakutsi_item
 from KULTURBIDEAK.kulturbideak_app.views import logina
 from KULTURBIDEAK.kulturbideak_app.views import erregistratu
 from KULTURBIDEAK.kulturbideak_app.views import itema_gehitu
+from KULTURBIDEAK.kulturbideak_app.views import editatu_itema
 from KULTURBIDEAK.kulturbideak_app.views import sortu_ibilbidea
 from KULTURBIDEAK.kulturbideak_app.views import ajax_workspace_item_gehitu
 from KULTURBIDEAK.kulturbideak_app.views import ajax_workspace_item_borratu
@@ -20,6 +21,12 @@ from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_paths_list
 from KULTURBIDEAK.kulturbideak_app.views import editatu_ibilbidea
 from KULTURBIDEAK.kulturbideak_app.views import ajax_path_eguneratu
 from KULTURBIDEAK.kulturbideak_app.views import ajax_path_node_eguneratu
+from KULTURBIDEAK.kulturbideak_app.views import ajax_path_irudia_gorde_proba
+from KULTURBIDEAK.kulturbideak_app.views import ajax_path_irudia_gorde
+from KULTURBIDEAK.kulturbideak_app.views import nire_itemak_erakutsi
+from KULTURBIDEAK.kulturbideak_app.views import nire_ibilbideak_erakutsi
+from KULTURBIDEAK.kulturbideak_app.views import perfila_erakutsi
+from KULTURBIDEAK.kulturbideak_app.views import pasahitza_aldatu
 from django.contrib import admin
 
 #MAddalen
@@ -47,9 +54,13 @@ urlpatterns = patterns('',
     #url(r'^$',kulturBideak ),
     # url(r'^$', include('haystack.urls')),
     url(r'^$', SearchView(), name='haystack_search'), 
-    url(r'^login', logina),
+    url(r'login', logina),
     url(r'^erregistratu', erregistratu),
-    url(r'itema_gehitu$', itema_gehitu), 
+    url(r'perfila_erakutsi', perfila_erakutsi), 
+    url(r'pasahitza_aldatu', pasahitza_aldatu),     
+    (r'irten/$', 'django.contrib.auth.views.logout',{'next_page': '/'}),
+    url(r'itema_gehitu$', itema_gehitu),
+    url(r'editatu_itema$', editatu_itema),     
     url(r'sortu_ibilbidea$', sortu_ibilbidea),
     url(r'^search/erakutsi_item', erakutsi_item),
     url(r'ajax_workspace_item_gehitu$', ajax_workspace_item_gehitu),
@@ -60,9 +71,16 @@ urlpatterns = patterns('',
     url(r'ajax_lortu_paths_list$', ajax_lortu_paths_list),
     url(r'editatu_ibilbidea', editatu_ibilbidea),
     url(r'ajax_path_eguneratu$', ajax_path_eguneratu),
-    url(r'ajax_path_node_eguneratu$', ajax_path_node_eguneratu),   
+    url(r'ajax_path_node_eguneratu$', ajax_path_node_eguneratu), 
+    url(r'ajax_path_irudia_gorde_proba$', ajax_path_irudia_gorde_proba),  
+    url(r'ajax_path_irudia_gorde$', ajax_path_irudia_gorde), 
+    url(r'nire_itemak_erakutsi$', nire_itemak_erakutsi), 
+    url(r'nire_ibilbideak_erakutsi$', nire_ibilbideak_erakutsi),     
     (r'^search/', include('haystack.urls')),
     #url(r'^rosetta/', include('rosetta.urls')),
+    
+ 
+    
       
 )
 

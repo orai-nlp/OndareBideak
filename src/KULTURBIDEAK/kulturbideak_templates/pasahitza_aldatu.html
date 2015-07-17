@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<div class="login-erregistratu">
+	
+	<form action="/pasahitza_aldatu" method="post" class="form">
+		{% csrf_token %}
+		
+		{{erabiltzailea}}
+	
+     		<br/>
+     		
+       		<button class="btn btn-default" type="submit" name="Pasahitza_aldatu">
+       		 {% trans "Aldatu" %}
+       		</button>
+       
+       			
+       		
+       			
+      		
+      	</form>
+
+</div>
+{% endblock %} 

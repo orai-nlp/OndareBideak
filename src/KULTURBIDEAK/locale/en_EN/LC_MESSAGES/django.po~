@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-20 14:14+0200\n"
+"POT-Creation-Date: 2015-07-16 13:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1153,77 +1153,230 @@ msgstr ""
 msgid "Index of %(directory)s"
 msgstr ""
 
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1530
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:22
+#, fuzzy
+#| msgid "Hornitzaileak"
+msgid "erabiltzailea"
+msgstr "user"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:23
+#, fuzzy
+#| msgid "Pasahitza Aldatu"
+msgid "pasahitza"
+msgstr "password"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:35
+#, fuzzy
+#| msgid "Pasahitza Aldatu"
+msgid "Pasahitza ez da zuzena"
+msgstr "The specified password is not correct"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:56
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:108
+msgid "Izena"
+msgstr "Name"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:57
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:109
+msgid "Abizenak"
+msgstr "Surname"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:58
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:110
+#, fuzzy
+#| msgid "Hornitzaileak"
+msgid "Erabiltzailea"
+msgstr "User"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:60
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:112
+msgid "Helbide elektronikoa"
+msgstr "Email"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:61
+#, fuzzy
+#| msgid "Pasahitza Aldatu"
+msgid "Pasahitza"
+msgstr "Password"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:62
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:148
+#, fuzzy
+#| msgid "Pasahitza Aldatu"
+msgid "Errepikatu pasahitza"
+msgstr "Repeat Password"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:81
+msgid "Erabiltzaile izen hau dagoeneko erregistratua dago"
+msgstr "This username is already registered"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:88
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:153
+#, fuzzy
+#| msgid "Pasahitza Aldatu"
+msgid "Pasahitzak ezberdinak dira"
+msgstr "The Passwords are not the same"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:147
+#, fuzzy
+#| msgid "Pasahitza Aldatu"
+msgid "Pasahitz berria"
+msgstr "New Password"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:167
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:178
+msgid "titulua"
+msgstr "title"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:169
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:180
+#, fuzzy
+#| msgid "deskribapena:"
+msgid "deskribapena"
+msgstr "description"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:171
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:182
+msgid "gaia"
+msgstr "theme, subbject"
+
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:172
+#: src/KULTURBIDEAK/kulturbideak_app/forms.py:183
+#, fuzzy
+#| msgid "Eskubideak:"
+msgid "eskubideak"
+msgstr "rights"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1921
 msgid "sortu ibilbidea"
 msgstr "create path"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1538
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1929
 msgid "Lan eremua"
-msgstr "workspace"
+msgstr "Workspace"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1578
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1989
+#: src/KULTURBIDEAK/kulturbideak_templates/nire_itemak.html:9
+#, fuzzy
+#| msgid "Nire Ibilbideak"
+msgid "Nire itemak"
+msgstr "My items"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1990
+#, fuzzy
+#| msgid "Nire Ibilbideak"
+msgid "Nire ibilbideak"
+msgstr "My paths"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1991
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:2030
+msgid "Item berria gehitu"
+msgstr "Add a new item"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1995
+msgid "Profila"
+msgstr "Profile"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1996
+msgid "Pasahitza Aldatu"
+msgstr "Change Password"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1998
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:2004
+msgid "Irten"
+msgstr "Log-out"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:2008
+#: src/KULTURBIDEAK/kulturbideak_templates/erregistratu.html:34
 msgid "Erregistratu"
 msgstr "Register"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1579
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:2010
 msgid "Login"
 msgstr "Log-in"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1596
-msgid "Item berria gehitu"
-msgstr "Add new item"
-
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1609
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:2043
 msgid "Bilatu ..."
-msgstr ""
+msgstr "Search ..."
 
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1628
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:2064
 msgid "Hornitzaileak"
 msgstr "Providers"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1643
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:2081
 msgid "Ibilbide Ezagunak"
 msgstr "Famous paths"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/base.html:1649
+#: src/KULTURBIDEAK/kulturbideak_templates/base.html:2087
+#: src/KULTURBIDEAK/kulturbideak_templates/nire_ibilbideak.html:10
 msgid "Nire Ibilbideak"
 msgstr "My paths"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/editatu_ibilbidea.html:18
-msgid "deskribapena:"
-msgstr "descriptions:"
-
-#: src/KULTURBIDEAK/kulturbideak_templates/editatu_ibilbidea.html:38
-msgid "Eguneratu Ibilbidea"
-msgstr "Update path"
-
 #: src/KULTURBIDEAK/kulturbideak_templates/item.html:28
+msgid "Gehitu"
+msgstr "Add"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/item.html:34
+#: src/KULTURBIDEAK/kulturbideak_templates/item.html:38
+msgid "Editatu"
+msgstr "Edit"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/item.html:62
+#: src/KULTURBIDEAK/kulturbideak_templates/search/search.html:33
 msgid "Herrialdea:"
 msgstr "Country:"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/item.html:29
+#: src/KULTURBIDEAK/kulturbideak_templates/item.html:63
+#: src/KULTURBIDEAK/kulturbideak_templates/nire_itemak.html:29
+#: src/KULTURBIDEAK/kulturbideak_templates/search/search.html:32
 msgid "Hizkuntza:"
 msgstr "Language:"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/item.html:30
+#: src/KULTURBIDEAK/kulturbideak_templates/item.html:64
+#: src/KULTURBIDEAK/kulturbideak_templates/search/search.html:31
 msgid "Hornitzailea:"
 msgstr "Provider:"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/item.html:31
+#: src/KULTURBIDEAK/kulturbideak_templates/item.html:65
+#, fuzzy
+#| msgid "Eskubideak:"
 msgid "Eskubideak:"
-msgstr "Rights:"
+msgstr "rights"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/item.html:32
+#: src/KULTURBIDEAK/kulturbideak_templates/item.html:66
 msgid "Urtea:"
 msgstr "Year:"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/item.html:33
+#: src/KULTURBIDEAK/kulturbideak_templates/item.html:67
 msgid "Ikusi jatorrizkoa:"
 msgstr "View at source:"
 
-#: src/KULTURBIDEAK/kulturbideak_templates/sortu_ibilbidea.html:8
-msgid "Gorde Ibilbidea"
-msgstr "Save path"
+#: src/KULTURBIDEAK/kulturbideak_templates/logina.html:28
+msgid "Sartu"
+msgstr ""
 
-#~ msgid "Sortzailea:"
-#~ msgstr "Creator"
+#: src/KULTURBIDEAK/kulturbideak_templates/nire_ibilbideak.html:61
+#, fuzzy
+#| msgid "Ez da erantzunik aurkitu."
+msgid "Ez da zure ibilbiderik aurkitu."
+msgstr "You have no any paths."
+
+#: src/KULTURBIDEAK/kulturbideak_templates/nire_itemak.html:50
+#, fuzzy
+#| msgid "Ez da erantzunik aurkitu."
+msgid "Ez da zure itemik aurkitu."
+msgstr "You have no any items."
+
+#: src/KULTURBIDEAK/kulturbideak_templates/search/search.html:34
+msgid "Sortzailea:"
+msgstr "Creator:"
+
+#: src/KULTURBIDEAK/kulturbideak_templates/search/search.html:82
+msgid "Ez da erantzunik aurkitu."
+msgstr "Your search did not match any results."
+
+#~ msgid "Eguneratu Ibilbidea"
+#~ msgstr "Update path"
+
+#~ msgid "Gorde Ibilbidea"
+#~ msgstr "Save path"

@@ -30,13 +30,24 @@ pb_new_element(elementu_id,testua,irudiaren_urla);
 path_box-ean seme bat sartzeko:
 pb_new_son(aitaren_id,elementu_id,testua,irudiaren_urla);
 -->
-<input type="hidden" id="path_id" value="{{path_id}}"/>
 
+<input type="hidden" id="path_id" value="{{path_id}}"/>
+<!--
 <button id="update_path_button" type="button" class="btn btn-default btn-xs" onclick="update_path_on_db({{path_id}})">
        		<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"> 
        		</span> 
        		Eguneratu Ibilbidea		
        	</button>
+ -->      	
+<button id="update_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modalwindow" >
+	<span  aria-hidden="true"> 
+		<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"> 
+       	</span> 
+    	Eguneratu Ibilbidea   
+    </span> 	
+</button>        	
+       	
+       	
  <div id="path_boxes" ondrop="pb_drop(event);" ondragover="allowDrop(event)"></div>
 <script>set_pb();</script>
 
@@ -56,17 +67,17 @@ pb_new_son(aitaren_id,elementu_id,testua,irudiaren_urla);
 	console.log("irudia:"+irudia);*/
 	if(aita_id=="")
 	{
-		if (id==15){
+		//if (id==15){
 		//console.log("pb_new_element(" + id + "," + titulua + "," + irudia + ")");
 		pb_new_element("pb_"+id,titulua,irudia);
-		}
+		//}
 	}
 	else
 	{
-		if(id==26 || id==69){
+		//if(id==26 || id==69){
 		//console.log("pb_add_new_son(" + aita_id + "," + id + "," + titulua + "," + irudia + ")");
 		pb_add_new_son("pb_"+aita_id,"pb_"+id,titulua,irudia);
-		}
+		//}
 		
 	}
  	
@@ -75,6 +86,72 @@ pb_new_son(aitaren_id,elementu_id,testua,irudiaren_urla);
 
 
 {% endfor%}
+
+
+
+
+ <!--Ventana modal-->
+
+<div class="modal fade" id="modalwindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Ibilbideari buruzko ondorengo datuak sartu</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body">
+                    	
+                    		<div id="messages"></div>
+                              <div class="form-group">
+                                <label for="exampleInputEmail1">Titulua</label><br/><br/>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-barcode"></span></span>
+                                    <input type="text" name="path_titulua" id="path_titulua" class="form-control" placeholder="" size="18" value="{{path_titulua}}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Gaia</label><br/><br/>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-tags"></span></span>
+                                    <input type="text" name="path_gaia" id="path_gaia" class="form-control" placeholder="" size="18" value="{{path_gaia}}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Deskribapena</label><br/><br/>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon"></span></span>
+                                    <textarea name="path_desk" id="path_desk" class="form-control" placeholder="" rows="5" cols="200" required>{{path_deskribapena}}</textarea>
+                                </div>
+                            </div>
+                            <br/>
+                            <form id="formEguneratu" enctype="multipart/form-data" role="form">
+                            <span class="btn btn-info fileinput-button">
+							<span>Irudia gehitu</span>
+							<input id="file2" class="imgform_image"  type="file" multiple="" name="file2">
+							</span>
+							
+							
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>
+                                <button type="submit" class="btn btn-primary">Eguneratu</button>
+                            </div>
+                            
+                            <p><br/></p>
+                      </form>
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+ 
+
+<!--Fin Ventana modal-->
 
 
 <!--

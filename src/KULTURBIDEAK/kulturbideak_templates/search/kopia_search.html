@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% load i18n %}
 
-<!--<p> Showing {{ page.object_list|length }} of {{ page.paginator.count }} Results on Page {{ page.number }} of {{ page.paginator.n\
-um_pages }}</p>-->
-<p class="emaitzaInfo"> {{ page.paginator.count }} Emaitza ({{ page.paginator.num_pages }}tik {{page.number}}.Orria)</p>
+
+<p> Showing {{ page.object_list|length }} of {{ page.paginator.count }} Results on Page {{ page.number }} of {{ page.paginator.num_pages }}</p>
+
 <div class="panel panel-default">
   <div class="panel-body">
   	
@@ -28,27 +27,14 @@ um_pages }}</p>-->
 				 
 				<h5><a class="" title="{{item.dc_title}}" href="erakutsi_item?id={{item.item_id}}" id="titulua">{{item.dc_title}}</a></h5>
 					
-				<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
-				<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
-				<p class="" id="herrialdea"><b>{% trans "Herrialdea:" %}</b>{{item.edm_country}}</p>
-				<p class="" id="sortzailea"><b>{% trans "Sortzailea:" %}</b>{{item.dc_creator}}</p>
+				<p class="" id="hornitzailea"><b> Hornitzailea: </b> {{item.edm_provider}}</p>
+				<p class="" id="hizkuntza"><b> Hizkuntza:</b>{{item.dc_language}}</p>
+				<p class="" id="herrialdea"><b>Herrialdea:</b>{{item.edm_country}}</p>
+				<p class="" id="sortzailea"><b>Sortzailea:</b>{{item.dc_creator}}</p>
 				
-				<div class="btn-group" role="group" aria-label="...">
-       			<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
-       				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+       			<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }});">
+       			Gehitu <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
        			</button>
-       			{% if user.username == item.edm_provider %}
-
-					<a class="btn btn-default" type="button" href="editatu_itema?id={{item.item_id}}" >				
- 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					</a>
-  				{%else%}
-					<button class="btn btn-default" type="button" action="editatu_itema" disabled>
- 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					</button>
-				{%endif%}
-				
-				</div>
     		</div>
 		</div>
 		{% endif %}
@@ -79,7 +65,7 @@ um_pages }}</p>-->
 			
 			
 {% empty %}
-	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
+	<p>Ez da erantzunik aurkitu.</p>
 {% endfor %}
 	
 </div>				

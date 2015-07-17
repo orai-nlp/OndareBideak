@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="login-erregistratu">
+	
+	<form action="/perfila_erakutsi" method="post" class="form">
+		{% csrf_token %}
+		
+		{{erabiltzailea}}
+	
+     		<br/>
+     		
+       		<button class="btn btn-default" type="submit" name="Erabiltzailea_eguneratu">
+       		 Eguneratu
+       		</button>
+       
+       			
+       		
+       			
+      		
+      	</form>
+
+</div>
+{% endblock %} 

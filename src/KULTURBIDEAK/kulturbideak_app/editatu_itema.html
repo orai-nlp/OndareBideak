@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<div class="itema_gehitu">
+	<div class="panel panel-info">
+	<div class="panel-heading">
+		<h1 class="panel-title">{{titulua}}</h1>
+	</div>
+	<div class="panel-body">
+    
+   	 	<div class="col-xs-6 col-md-3" align="center">
+   			 <a href="#" class="thumbnail">
+     		 <!--<img alt="Item has not thumbnail image" src="http://paths.sheffield.ac.uk/pathsui/europeana/static/img/no_img.png">-->
+	 			 <img alt="{{titulua}}" src="{{irudia}}">
+ 			   </a>
+ 		</div>
+ 		<div class="item_edukia">
+ 			
+ 			<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
+ 			<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
+ 			<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{hornitzailea}} </a></p>
+ 			<p><b>{% trans "Eskubideak: " %}</b><a href="">{{eskubideak}} </a></p>
+ 			<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
+ 			<p><b>{% trans "Ikusi jatorrizkoa:" %}"</b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
+ 			
+ 		</div>
+ 		
+ 		
+ 	 </div>
+	
+</div>
+
+	
+	
+	<form action="editatu_itema" method="post" class="form"  enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ itema.titulua.errors}}
+		{{ itema.deskribapena.errors}}
+		<input type="hidden" id="id" value="{{id}}"/>
+		{{itema}}
+		<br><br>
+     		
+   		 <button class="btn btn-default" type="submit">
+   		 Aldatu
+  		  </button>
+       			
+       			
+      		
+      	
+      	</form>
+
+</div>
+{% endblock %} 
