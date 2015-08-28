@@ -335,7 +335,7 @@ def editatu_itema(request):
         if(request.FILES):
         
             edm_object=request.FILES['irudia'].name
-            irudia_url=MEDIA_URL+edm_object
+            irudia_url=MEDIA_URL+ str(azken_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
       
         dc_language=request.POST['hizkuntza']
         edm_language=request.POST['hizkuntza']
@@ -367,6 +367,7 @@ def editatu_itema(request):
        
         if(irudia_url!=""):
             #Irudia igo
+            edm_object= str(azken_id)+edm_object
             handle_uploaded_file(request.FILES['irudia'],edm_object)        
             item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
         else:
@@ -448,7 +449,7 @@ def itema_gehitu(request):
         irudia_url=""
         if(request.FILES):
             edm_object=request.FILES['irudia'].name
-            irudia_url=MEDIA_URL+edm_object
+            irudia_url=MEDIA_URL+str(azken_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
       
         dc_language=request.POST['hizkuntza']
         edm_language=request.POST['hizkuntza']
@@ -476,6 +477,7 @@ def itema_gehitu(request):
         edm_country="Euskal Herria"
         if(irudia_url!=""):
             #Irudia igo
+            edm_object=str(azken_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
             handle_uploaded_file(request.FILES['irudia'],edm_object)
         
         item_berria = item(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
@@ -693,7 +695,12 @@ def ajax_path_irudia_gorde (request):
         #fileName = request.GET.get('fileName')
        
         #fileName="mm"
-       
+        
+        
+        #irudiari id-a gehitzeko
+        azken_id = path.objects.latest('id').id
+        azken_id += 1
+        fileName=str(azken_id)+fileObject.name
         
 
         handle_uploaded_file(fileObject,fileObject.name)
@@ -741,17 +748,23 @@ def ajax_path_berria_gorde(request):
         
         #fk_usr_id=1
         
+        #irudiari id-a gehitzeko
+        azken_id = path.objects.latest('id').id
+        azken_id += 1
+        
         fk_usr_id=request.user.id
         uri=request.POST.get('uri')
         dc_title=request.POST.get('dc_title')
         dc_subject=request.POST.get('dc_subject')
         dc_description=request.POST.get('dc_description')
         paths_thumbnail = request.POST.get('paths_thumbnail')
+        ######paths_thumbnail=str(azken_id)+paths_thumbnail
        
         #fileObject= request.FILES.get('fileObject')
         #fileObject= request.GET.get('fileObject')
         #print fileObject
         ##
+        #######paths_thumbnail_url=MEDIA_URL+str(azken_id)+paths_thumbnail
         paths_thumbnail_url=MEDIA_URL+paths_thumbnail
      
         #Irudia igo
@@ -821,6 +834,9 @@ def ajax_path_node_gorde(request):
        
         fk_path_id_id=request.POST.get('path_id')
         fk_item_id_id=request.POST.get('item_id')
+  
+        fk_item_id_id=fk_item_id_id.replace("ws_box_","") #aldaketa
+
         
         uri=request.POST.get('uri')
         dc_source=request.POST.get('dc_source')
@@ -829,7 +845,9 @@ def ajax_path_node_gorde(request):
         type=request.POST.get('type')
         paths_thumbnail = request.POST.get('paths_thumbnail')
         paths_prev = request.POST.get('paths_prev')
+        paths_prev=paths_prev.replace("ws_box_","") #aldaketa
         paths_next = request.POST.get('paths_next')
+        paths_next=paths_next.replace("ws_box_","") #aldaketa
         paths_start = (int(request.POST.get('paths_start')) > 0)
     
         

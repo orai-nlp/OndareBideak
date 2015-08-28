@@ -638,8 +638,8 @@ function add_workspace_box(box_id,text_value,image_value){
 	var ws = document.getElementById("workspace_boxes");
     
     var ws_box = document.createElement("div");
-    //ws_box.setAttribute("id","ws_box_" + box_id);
-    ws_box.setAttribute("id", box_id);
+    ws_box.setAttribute("id","ws_box_" + box_id);
+    //ws_box.setAttribute("id", box_id); //aldaketa
     ws_box.setAttribute("class","ws_box");
     ws_box.setAttribute("draggable","true");
     ws_box.addEventListener('dragstart',drag);
@@ -1180,7 +1180,7 @@ function pb_drop(ev) {
         var text_value = source.children[2].firstChild.data;
         pb_new_element(data,text_value,image_value);
         //alert(data);//ws_box_1
-        var item_id=data.replace("ws_box_", "");
+        var item_id=data.replace("ws_box_", ""); 
         remove_me(source,item_id);
     }
 }
