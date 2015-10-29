@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+<!--EGUNEKO IBILBIDEA ERAKUTSI -->
+
+<button  type="button" class="btn btn-info">
+	<span  aria-hidden="true"> 
+		<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> 
+       	</span> 
+    	Eguneko Ibilbidea Burutu
+    </span> 	
+</button> 
+  
+<div id="path_boxes_egunekoa"  ondrop="pb_drop_egunekoa(event);" ondragover="allowDrop(event)"></div>
+<script>set_pb_egunekoa();</script>
+
+
+{% for node in path_nodeak%}
+
+<script type="text/javascript">
+	
+	//var path_node = "{{node}}".split(";"); 
+	
+	var id="{{node.fk_item_id_id}}";//path_node[0];
+	var titulua="{{node.dc_title}}";//path_node[1];
+	var irudia="{{node.paths_thumbnail}}";//path_node[2];
+	var aita_id="{{node.paths_prev}}";//path_node[3];
+	/*console.log("id:"+id);
+	console.log("titulua:"+titulua);
+	console.log("irudia:"+irudia);*/
+	if(aita_id=="")
+	{
+		//if (id==15){
+		//console.log("pb_new_element(" + id + "," + titulua + "," + irudia + ")");
+		pb_new_element_egunekoa("pb_"+id,titulua,irudia);
+		//}
+	}
+	else
+	{
+		//if(id==26 || id==69){
+		//console.log("pb_add_new_son(" + aita_id + "," + id + "," + titulua + "," + irudia + ")");
+		pb_add_new_son_egunekoa("pb_"+aita_id,"pb_"+id,titulua,irudia);
+		//}
+		
+	}
+ 	
+	
+</script>
+
+
+{% endfor%}
+
+
+
+{% endblock %} 

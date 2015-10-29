@@ -202,6 +202,7 @@ INSTALLED_APPS += (
     'ajaxuploader',
     #'rosetta',
     'KULTURBIDEAK.kulturbideak_app',
+    'leaflet',
    
 
     #'south',
@@ -210,6 +211,17 @@ INSTALLED_APPS += (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+#Mapa
+LEAFLET_CONFIG = {
+   'DEFAULT_CENTER': ( 43.3174526, -1.9818285), #Donostia: Artzai ona
+   'DEFAULT_ZOOM': 18,
+   'MIN_ZOOM': 3,
+   'MAX_ZOOM': 18,
+   'ATTRIBUTION_PREFIX': '',
+   #'MINIMAP': True
+}
+
 
 # Maddalen- Haystack
 HAYSTACK_CONNECTIONS = {

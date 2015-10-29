@@ -39,13 +39,29 @@ pb_new_son(aitaren_id,elementu_id,testua,irudiaren_urla);
        		Eguneratu Ibilbidea		
        	</button>
  -->      	
+ 
 <button id="update_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modalwindow" >
 	<span  aria-hidden="true"> 
 		<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"> 
        	</span> 
     	Eguneratu Ibilbidea   
     </span> 	
-</button>        	
+</button>  
+
+<br>
+<br>
+<div class="info">
+	<p>Ibilbideko item baten <b>narrazioa gehitzeko</b> egin klik bikoitza itemaren gainean</p>
+</div>
+
+<div id="narrazioa">
+	<p id="narra_p" class="info"></p>
+	<textarea id="narra_textarea" name="narra_textarea" maxlength="5000" cols="87" rows="5" disabled="true"></textarea>
+	
+	<button id="narra_botoia" class="btn btn-info" name="narra_botoia" disabled="true"><span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span> Gorde Narrazioa</button>
+
+
+</div>     	
        	
        	
  <div id="path_boxes" ondrop="pb_drop(event);" ondragover="allowDrop(event)"></div>
@@ -128,8 +144,9 @@ pb_new_son(aitaren_id,elementu_id,testua,irudiaren_urla);
                             </div>
                             <br/>
                             <form id="formEguneratu" enctype="multipart/form-data" role="form">
+                            <input type="hidden" id="path_id_h" value="{{path_id}}">
                             <span class="btn btn-info fileinput-button">
-							<span>Irudia gehitu</span>
+							<span>Irudia gehitu</span>							
 							<input id="file2" class="imgform_image"  type="file" multiple="" name="file2">
 							</span>
 							

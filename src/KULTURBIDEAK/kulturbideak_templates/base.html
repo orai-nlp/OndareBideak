@@ -8,11 +8,22 @@
 {# Load CSS and JavaScript #}
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/kulturbideak.js"></script>
+<!-- Social Share Kit CSS -->
+<link rel="stylesheet" href="{{STATIC_URL}}css/social-share-kit.css" type="text/css">
+<!-- Social Share Kit JS -->
+<script type="text/javascript" src="{{STATIC_URL}}js/social-share-kit.js"></script>
+
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
+
+{% load leaflet_tags %}
+{% load tags%}
+
+{% leaflet_js %}
+{% leaflet_css %}
 
 
 
@@ -28,6 +39,9 @@
     }
     .headerra{
     	background-color: #d9edf7;
+    }
+    .titulu-kolorea{
+    	color: #31708f;
     }
    .bilaketaEmaitza{
 
@@ -62,7 +76,7 @@
         display: block;
         height: 0;
         border: 1px solid #808080;
-        background: #d9edf7;
+        background: #e7e7e7;
         opacity: 0;
         -webkit-transition: height 1s,opacity 1s ease-in-out;
         transition: height 1s,opacity 1s ease-in-out;
@@ -119,6 +133,24 @@
         background: #d3d3d3;
     }
 
+	#path_boxes_egunekoa{
+		width: 98%;
+        height: 500px;
+        display: block;
+        margin-top: 20px;
+        background: #e7e7e7;
+        resize: both;
+        overflow: scroll;
+	}
+	#path_boxes_overview{
+		width: 98%;
+        height: 205px;
+        display: block;
+        margin-top:-29px;
+        background: ;
+        resize: both;
+        overflow: scroll;
+	}
     #path_boxes{
         width: 98%;
         height: 500px;
@@ -141,10 +173,27 @@
         stroke: #000000;
         stroke-width:1;
     }
+    
+    .pb_box_overview{
+        cursor: move;
+        fill: transparent;
+        stroke: #000000;
+        stroke-width:1;
+        height:50;
+    }
 
     .pb_box_back{
         fill: #ffffff;
     }
+    
+    .pb_box_back_nabarmendu{
+        fill: #FFEBFF;
+    }
+    .pb_box_back_overview{
+        fill: #F3F3F3;
+    }
+
+    
 
     .pb_box_title{
         font-size: 12pt!important;
@@ -237,7 +286,7 @@
 	float: left;
 	padding: 0px 6px 0px 6px;
 	border-right: 2px solid #FFFFFF;
-	color:transparent;
+	color:#31708F;
 	
 	}
 	.ulhizkuntzak li:last-child {
@@ -285,17 +334,222 @@
    	left:inherit;
     
  	}
+	
+	.text-center {
+    text-align: center;
+    }
+	.laguntza {
+		color:  #9e8012;
+	}
+	
+	.thumb-128 {
+    height: 128px;
+    line-height: 128px;
+    padding: 4px;
+    width: 128px;  
+    max-height: 100%;
+    max-width: 100%;
 
+	}
+	.eskuma{
+	float:right;
+	}
+	.ezkerra{
+	float:left;
+	}
+	.aurkezpena{}
+	.path_sarrera{
+		overflow:hidden;
+	}
+/* HEADERRAREN ESTILOA*/
 
+ .navbar-default-berria .navbar-brand-berria {
+    color: #31708f!important;
+  }
+ .navbar-brand-berria {
+    float: left;
+    font-size: 35px!important;
+    height: 70px!important;
+    line-height: 0;
+    padding: 20px!important;
+ }
+
+	.navbar-default .navbar-nav > li > a {
+    color: #31708f!important;
+	}
+	.navbar-nav > li > a {
+    padding-bottom: 15px!important;
+    padding-top: 35px!important;
+	}
+	.bilatzailea-kutxa{
+	 padding: 20px;
+   	 
+	}
+	.kolorea{
+		background-color: #31708f!important;
+    	border-color: #31708f!important;
+    	color: #fff;
+    
+    }
+    .table-barrukoa{
+    	font-size: 15px!important;
+    }
+    
+    tr.spaceUnder > th
+	{
+ 	 padding-bottom: 0.1em;
+	}
+	
+	a.morelink {
+    text-decoration:none;
+    outline: none;
+	}
+	.morecontent span {
+    display: none;
+	}
+	.comment {
+    /*width: 400px;*/
+    margin: 10px;
+	}
+	
 </style>
+
+<script type="text/javascript">
+  
+  //MAPA FUNTZIOAK
+  
+    var global_map;
+    var layer_array = Array();
+    var LeafIcon = L.Icon.extend({});    
+    var markers = [];
+   
+    {% if non == 'itema_gehitu'  %}
+        function load_map(map, options){
+            global_map=map;
+            //for (i=0; i<markers.length; i++)
+             //{
+                // zentratu mapa 
+                if(markers.length>0)
+                {
+                 map.panTo(new L.LatLng( markers[0].getLatLng().lat, markers[0].getLatLng().lng));
+               
+              
+                // gehitu puntuak  eta arrayean markerra sartu
+                
+                var marker = L.marker([markers[0].getLatLng().lat, markers[0].getLatLng().lng].on("click",function(e) {map.removeLayer(this);}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}));
+                marker.addTo(map).openPopup();
+                markers.push(marker);
+              }
+         
+        //   	}
+            // maparen click eventoa
+            map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0])}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);});
+			markers.push(marker);
+       		 
+       	}
+    {% else %}
+        function load_map(map, options)
+        {
+        	
+        	map.panTo(new L.LatLng({{ geoloc_longitude|correct_float_format }}, {{ geoloc_latitude|correct_float_format }}));
+           L.marker([{{ geoloc_longitude|correct_float_format }}, {{ geoloc_latitude|correct_float_format }}]).addTo(map).openPopup();                
+  
+        }
+    {% endif %}
+</script>
+
 <script>
+	$(function () {
+        // Remove Search if user Resets Form or hits Escape!
+		$('body, .navbar-collapse form[role="search"] button[type="reset"]').on('click keyup', function(event) {
+			console.log(event.currentTarget);
+			if (event.which == 27 && $('.navbar-collapse form[role="search"]').hasClass('active') ||
+				$(event.currentTarget).attr('type') == 'reset') {
+				closeSearch();
+			}
+		});
+
+		function closeSearch() {
+            var $form = $('.navbar-collapse form[role="search"].active')
+    		$form.find('input').val('');
+			$form.removeClass('active');
+		}
+
+		// Show Search if form is not active // event.preventDefault() is important, this prevents the form from submitting
+		$(document).on('click', '.navbar-collapse form[role="search"]:not(.active) button[type="submit"]', function(event) {
+			event.preventDefault();
+			var $form = $(this).closest('form'),
+				$input = $form.find('input');
+			$form.addClass('active');
+			$input.focus();
+
+		});
+		// ONLY FOR DEMO // Please use $('form').submit(function(event)) to track from submission
+		// if your form is ajax remember to call `closeSearch()` to close the search container
+		$(document).on('click', '.navbar-collapse form[role="search"].active button[type="submit"]', function(event) {
+			event.preventDefault();
+			var $form = $(this).closest('form'),
+				$input = $form.find('input');
+			$('#showSearchTerm').text($input.val());
+            closeSearch()
+		});
+    });
+	
+	
+</script>
+
+<script>
+
+
+//READ MORE FUNTZIOAK
+
+$(document).ready(function() {
+    var showChar = 200;
+    var ellipsestext = "...";
+    var moretext = "more";
+    var lesstext = "less";
+    $('.more').each(function() {
+        var content = $(this).html();
+ 
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+ 
+            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+ 
+            $(this).html(html);
+        }
+ 
+    });
+ 
+    $(".morelink").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+});
+
+</script>
+
+<script>
+
+
+
 
 var paper = null;
 var el_counter=0;
 var svgns = "http://www.w3.org/2000/svg";
 var pb_box_w = 160;
 var pb_box_h = 120;
-var pb_box_space = 20;
+var pb_box_space = 20;//
 var paths_starts = [];
 var connections = [];
 
@@ -306,7 +560,9 @@ function initialize(user_id){
 	//kargatu workspaceko elementuak
 	load_ws(user_id);
 	//kargatu erabiltzailearen ibilbideak
-	load_paths_list(user_id);
+	//load_paths_list(user_id);
+	//Kargatu Ibilbide bozkatuenak
+	load_most_voted_paths();
 }
 
 function hizkuntza_url_egokitu(linka){
@@ -329,6 +585,7 @@ function load_paths_list(user_id){
 		load_paths_list_request(paths_list_container, user_id);
 	}
 }
+
 
 function load_paths_list_request(paths_list_container,user_id)
 {
@@ -385,6 +642,7 @@ function load_paths_list_answer(xmlHttp,paths_list_container)
     }
 	
 }
+
 function add_path_to_list(id,titulua,deskribapena,irudia){
 	
 	var ibilbideak_div = document.getElementById("nire_ibilbideak");
@@ -396,6 +654,101 @@ function add_path_to_list(id,titulua,deskribapena,irudia){
 	a.appendChild(linkText);
 	a.title = titulua;
 	a.href = "editatu_ibilbidea?id="+id;
+	ibilbideak_div.appendChild(p);
+	ibilbideak_div.appendChild(a);
+    
+    
+}
+
+
+//pantailaren albo batean Ibilbide bozkatuenak kargatzeko
+function load_most_voted_paths(){
+	var paths_list_container = document.getElementById("ibilbide_bozkatuenak");
+	if (paths_list_container){
+		//ajax deia, kargatu kontainerrean zerrenda
+		load_most_voted_paths_request(paths_list_container);
+	}
+}
+
+
+function load_most_voted_paths_request(paths_list_container)
+{
+	
+	var csrftoken = getCookie('csrftoken');
+	var xmlHttp = createXmlHttpRequestObject();
+	
+	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
+		
+		$.ajaxSetup({
+   			beforeSend: function(xhr, settings) {
+       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
+       		}
+   		 	}
+		});
+        xmlHttp.open("POST","../ajax_lortu_most_voted_paths",true);
+        xmlHttp.onreadystatechange = function (){
+            load_most_voted_paths_answer(xmlHttp,paths_list_container);                                                                   // Erantzuna jasotzean exekutatuko den deia
+        };
+        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xmlHttp.send("csrfmiddlewaretoken=" + csrftoken);     // Eskaera bidali
+    }
+}
+
+function load_most_voted_paths_answer(xmlHttp,paths_list_container)
+{
+	//alert("load_most_voted_paths_answer");	
+	if (xmlHttp.readyState == 4){
+        if(xmlHttp.status == 200){
+			var xml_answer = xmlHttp.responseXML;
+			var xml_Document = xml_answer.documentElement;
+			var paths = xml_Document.getElementsByTagName("path");
+			
+			
+			for (var i=0;i<paths.length;i++){
+				
+				id = paths[i].getElementsByTagName("id")[0].firstChild.data;
+				
+				titulua="";
+				
+				if (paths[i].getElementsByTagName("titulua")[0].firstChild){
+					titulua = paths[i].getElementsByTagName("titulua")[0].firstChild.data;
+														
+				}
+				/*
+				deskribapena="";
+				if (paths[i].getElementsByTagName("deskribapena")[0].firstChild){
+					deskribapena = paths[i].getElementsByTagName("deskribapena")[0].firstChild.data;
+				}
+				irudia = "";
+				if (paths[i].getElementsByTagName("irudia")[0].firstChild){
+					irudia = paths[i].getElementsByTagName("irudia")[0].firstChild.data;
+				}
+				*/
+				
+				add_most_voted_path_to_list(id,titulua);
+			}                                 
+        }
+    }
+	
+}
+
+function add_most_voted_path_to_list(id,titulua){
+	
+	
+	
+	var ibilbideak_div = document.getElementById("ibilbide_bozkatuenak");
+    
+    var p = document.createElement('p');
+    
+    var a = document.createElement('a');
+   
+	var linkText = document.createTextNode(titulua);
+	a.appendChild(linkText);
+	
+	a.title = titulua;
+	a.href = "nabigazioa_hasi?path_id="+id;
 	ibilbideak_div.appendChild(p);
 	ibilbideak_div.appendChild(a);
     
@@ -701,158 +1054,6 @@ function wsb_handleDragLeave(ev) {
 //path box funtzioak
 
 
-function update_path_on_db(path_id)
-{
-	
-	var dc_title = document.getElementById("path_titulua").value;
-	var dc_description = document.getElementById("path_desk").value;
-	var dc_subject = document.getElementById("path_gaia").value;
-	var paths_thumbnail = document.getElementById("file2");
-	var paths_thumbnail_name=paths_thumbnail.value;
-	
-	
-	start_loader("loader");  	                                                                                   	
-	if (paths_starts.length > 0){		                                            
-		update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name);                                  
-	}
-	else{                                                                                                      
-		alert("empty_path_error");                                                                
-	}
-	stop_loader("loader");   
-}
-
-function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name)
-{
-	
-	var csrftoken = getCookie('csrftoken');
-	var xmlHttp = createXmlHttpRequestObject();
-	
-	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
-		
-		$.ajaxSetup({
-   			beforeSend: function(xhr, settings) {
-       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
-       		}
-   		 	}
-		});
-		
-        xmlHttp.open("POST","../ajax_path_eguneratu",true);
-        xmlHttp.onreadystatechange = function (){
-            update_path_on_db_answer(xmlHttp,path_id);                                                                   
-        };
-      
-        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("path_id="+path_id+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail_name+"&csrfmiddlewaretoken=" + csrftoken);                     
-    }
-	
-}
-
-
-function update_path_on_db_answer(xmlHttp,path_id)
-{
-	if (xmlHttp.readyState == 4){
-        if(xmlHttp.status == 200){
-    		var path_id = server_answer(xmlHttp);
-            if (path_id){ 
-            
-            	//ORAIN NODE TAULA EGUNERATU
-            	update_path_nodes(path_id);
-            	
-            	
-			}
-			else{                                                                                               // Jaso beharreko emaitza lortu ez bada, errorea
-				//show_message("default_error"); //AURRERAGO DIALOG BOX BAT adibidez
-				alert ("default error");
-			}
-			stop_loader("loader");                                                                              // Emaitza ona edo txarra jaso bada, loaderra paratu
-        }
-    }
-	
-}
-
-function update_path_nodes(path_id)
-{
-	
-	//NODE BAKOITZEKO
-	start_loader("loader");
-	//Erroak
-	var nodes = paths_starts;
-	for(var i = 0; i < nodes.length; i++) {
-		var erroa=paper.getById(nodes[i]);
-
-		var item_id= erroa.id;
-		var uri="uri_"+erroa.id;
-		var dc_source="Euskomedia";
-		var dc_description="desc";
-		var type ="argazkia";
-		var paths_thumbnail=erroa.data("image_value");
-		
-		
-		
-		var paths_prev =(erroa.data("parent_id"))?erroa.data("parent_id"):"";
-		
-		var dc_title =erroa.data("text_value");
-		var semeak =erroa.data("children");
-		var paths_next=semeak.join();
-		var paths_start =(erroa.data("parent_id"))?0:1;
-			
-		update_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start);
-		nodes = nodes.concat(semeak);
-	}
-
-	stop_loader("loader");           
-	
-}
-
-function update_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start)
-{
-	
-	var csrftoken = getCookie('csrftoken');
-	var xmlHttp = createXmlHttpRequestObject();
-	
-	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
-		
-		$.ajaxSetup({
-   			beforeSend: function(xhr, settings) {
-       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
-       		}
-   		 	}
-		});
-		
-        xmlHttp.open("POST","../ajax_path_node_eguneratu",true);
-        xmlHttp.onreadystatechange = function (){
-            update_path_node_answer(xmlHttp);                                                                   
-        };
-      
-        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("path_id="+path_id+"&item_id="+item_id.replace("pb_","")+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+dc_title+"&dc_description="+dc_description+"&type="+type+"&paths_thumbnail="+paths_thumbnail+"&paths_prev="+paths_prev.replace("pb_","")+"&paths_next="+paths_next.replace("pb_","")+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
-    }
-}
-
-function update_path_node_answer(xmlHttp)
-{
-	
-	if (xmlHttp.readyState == 4){
-        if(xmlHttp.status == 200){
-    		var path_node_id = server_answer(xmlHttp);
-            if (path_node_id){
-            	//alert ("gorde da nodea:"+path_node_id);
-            	//console.log("eguneratu da nodea:"+path_node_id);
-            	document.getElementById("update_path_button").setAttribute("disabled","disabled");
-			}
-			else{                                                                                               // Jaso beharreko emaitza lortu ez bada, errorea
-				//show_message("default_error"); //AURRERAGO DIALOG BOX BAT adibidez
-				alert ("default error");
-			}
-			stop_loader("loader");                                                                              // Emaitza ona edo txarra jaso bada, loaderra paratu
-        }
-    }
-}
-
 
 
 /*
@@ -951,7 +1152,7 @@ $('#formEguneratu').submit(function(e) {
 
                 $.ajax({
                     type        : 'POST',
-                    url         : '../ajax_path_irudia_gorde',
+                    url         : '../ajax_path_irudia_eguneratu',
                     cache       : false,
                     data        : formdata ? formdata : form.serialize(),
                     contentType : false,
@@ -976,6 +1177,13 @@ $('#formEguneratu').submit(function(e) {
    
 });
 
+/*
+ * 
+ * IBILBIDEA SORTZEKO FUNTZIOAK
+ * 
+ */
+
+
 function create_path_on_db()
 {
 		
@@ -985,7 +1193,7 @@ function create_path_on_db()
 	var paths_thumbnail = document.getElementById("file2");
 	var paths_thumbnail_name=paths_thumbnail.value;
 	
-	alert(paths_thumbnail_name);
+	//alert(paths_thumbnail_name);
 	
 	start_loader("loader");  
 	
@@ -1150,11 +1358,202 @@ function create_path_node_answer(xmlHttp)
     }
 }
 
+
+/*
+ * IBILBIDEA EGUNERATZEKO FUNTZIOAK
+ * 
+ */
+
+function update_path_on_db(path_id)
+{
+	
+	var dc_title = document.getElementById("path_titulua").value;
+	var dc_description = document.getElementById("path_desk").value;
+	var dc_subject = document.getElementById("path_gaia").value;
+	var paths_thumbnail = document.getElementById("file2");
+	var paths_thumbnail_name=paths_thumbnail.value;
+	
+	
+	start_loader("loader");  	                                                                                   	
+	if (paths_starts.length > 0){		                                            
+		update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name);                                  
+	}
+	else{                                                                                                      
+		alert("empty_path_error");                                                                
+	}
+	stop_loader("loader");   
+}
+
+function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name)
+{
+	
+	var csrftoken = getCookie('csrftoken');
+	var xmlHttp = createXmlHttpRequestObject();
+	
+	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
+		
+		$.ajaxSetup({
+   			beforeSend: function(xhr, settings) {
+       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
+       		}
+   		 	}
+		});
+		
+        xmlHttp.open("POST","../ajax_path_eguneratu",true);
+        xmlHttp.onreadystatechange = function (){
+            update_path_on_db_answer(xmlHttp,path_id);                                                                   
+        };
+      
+        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xmlHttp.send("path_id="+path_id+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail_name+"&csrfmiddlewaretoken=" + csrftoken);                     
+    }
+	
+}
+
+
+function update_path_on_db_answer(xmlHttp,path_id)
+{
+	if (xmlHttp.readyState == 4){
+        if(xmlHttp.status == 200){
+    		var path_id = server_answer(xmlHttp);
+            if (path_id){ 
+            
+            	//ORAIN NODE TAULA EGUNERATU
+            	update_path_nodes(path_id);
+            	
+            	
+			}
+			else{                                                                                               // Jaso beharreko emaitza lortu ez bada, errorea
+				//show_message("default_error"); //AURRERAGO DIALOG BOX BAT adibidez
+				alert ("default error");
+			}
+			stop_loader("loader");                                                                              // Emaitza ona edo txarra jaso bada, loaderra paratu
+        }
+    }
+	
+}
+
+
+/* Ibilbidea eguneratzean, ibilbideko nodo bakoitzaren eguneraketa burutzen da ajax bidez jarraian
+ dauden funtzioekin */
+
+function update_path_nodes(path_id)
+{
+		
+	//NODE BAKOITZEKO
+	start_loader("loader");
+	//Erroak
+	var nodes = paths_starts;
+	for(var i = 0; i < nodes.length; i++) {
+		var erroa=paper.getById(nodes[i]);
+
+		var item_id= erroa.id;
+		var uri="uri_"+erroa.id;
+		var dc_source="Euskomedia";
+		//var dc_description="desc";
+		var type ="argazkia";
+		var paths_thumbnail=erroa.data("image_value");
+		
+		//MAD
+		var item_narrazioa=erroa.data("item_narrazioa");
+		var dc_description=item_narrazioa;
+		
+		var paths_prev =(erroa.data("parent_id"))?erroa.data("parent_id"):"";
+		
+		var dc_title =erroa.data("text_value");
+		var semeak =erroa.data("children");
+		var paths_next=semeak.join();
+		var paths_start =(erroa.data("parent_id"))?0:1;
+			
+		update_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start);
+		nodes = nodes.concat(semeak);
+	}
+
+	stop_loader("loader");           
+	
+	
+
+	
+}
+function update_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start)
+{
+	
+	var csrftoken = getCookie('csrftoken');
+	var xmlHttp = createXmlHttpRequestObject();
+	
+	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
+		
+		$.ajaxSetup({
+   			beforeSend: function(xhr, settings) {
+       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
+       		}
+   		 	}
+		});
+		
+        xmlHttp.open("POST","../ajax_path_node_eguneratu",true);
+        xmlHttp.onreadystatechange = function (){
+            update_path_node_answer(xmlHttp);                                                                   
+        };
+      
+        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+       // xmlHttp.send("path_id="+path_id+"&item_id="+item_id+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+dc_title+"&dc_description="+dc_description+"&type="+type+"&paths_thumbnail="+paths_thumbnail+"&paths_prev="+paths_prev+"&paths_next="+paths_next+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
+        xmlHttp.send("path_id="+path_id+"&item_id="+item_id.replace("pb_","")+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+dc_title+"&dc_description="+dc_description+"&type="+type+"&paths_thumbnail="+paths_thumbnail+"&paths_prev="+paths_prev.replace("pb_","")+"&paths_next="+paths_next.replace("pb_","")+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
+    }
+}
+
+function update_path_node_answer(xmlHttp)
+{
+	
+	if (xmlHttp.readyState == 4){
+        if(xmlHttp.status == 200){
+    		var path_node_id = server_answer(xmlHttp);
+            if (path_node_id){
+            	//alert ("gorde da nodea:"+path_node_id);
+            	//console.log("gorde da nodea:"+path_node_id);
+            	
+            	
+            	//leiho modaleko botoia desgaitu
+            	//document.getElementById("botSortu").setAttribute("disabled","disabled");
+            	//leiho modaletik irten
+               	 $('#modalwindow').modal('hide'); //JQUERY      	
+            	//pantaila nagusiko botoia desgaitu
+            	document.getElementById("update_path_button").setAttribute("disabled","disabled");
+            	
+			}
+			else{                                                                                               // Jaso beharreko emaitza lortu ez bada, errorea
+				//show_message("default_error"); //AURRERAGO DIALOG BOX BAT adibidez
+				alert ("default error");
+			}
+			stop_loader("loader");                                                                              // Emaitza ona edo txarra jaso bada, loaderra paratu
+        }
+    }
+}
+
+
+
+//ibilbideak sortzeko arbela
 function set_pb(){
     if (document.getElementById("path_boxes") && (document.getElementById("path_boxes").children.length == 0)){
         paper = Raphael(document.getElementById("path_boxes"), "100%", "100%");
     }
 }
+//Maddalen: hasierako pantailan eguneko ibilbidea marrazteko
+function set_pb_egunekoa(){
+    if (document.getElementById("path_boxes_egunekoa") && (document.getElementById("path_boxes_egunekoa").children.length == 0)){
+        paper = Raphael(document.getElementById("path_boxes_egunekoa"), "100%", "100%");
+    }
+}
+//Maddalen: Ibilbidearen eskema orokorra eta momentuko itema nabamenduta marrazteko
+function set_pb_overview(){
+    if (document.getElementById("path_boxes_overview") && (document.getElementById("path_boxes_overview").children.length == 0)){
+        paper = Raphael(document.getElementById("path_boxes_overview"), "100%", "25%");
+    }
+}
+
 function get_x(pos){
     return (pb_box_space + pos*(pb_box_space + pb_box_w));
 }
@@ -1184,7 +1583,22 @@ function pb_drop(ev) {
         remove_me(source,item_id);
     }
 }
-
+//Maddalen
+/*
+function pb_drop_egunekoa(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("id");
+    var source = document.getElementById(data);
+    if ((ev.target.parentNode.id == "path_boxes_egunekoa") && source && source.getAttribute("class") == "ws_box") {
+        var image_value = source.children[1].src;
+        var text_value = source.children[2].firstChild.data;
+        pb_new_element_egunekoa(data,text_value,image_value);
+        //alert(data);//ws_box_1
+        var item_id=data.replace("ws_box_", ""); 
+        remove_me(source,item_id);
+    }
+}
+*/
 function pb_window_resize(){
     var svg = paper.canvas;
     var svgBBox = paper.canvas.getBBox();
@@ -1384,6 +1798,167 @@ function pb_new_element(data_id,text_value,image_value){
     */
    
     pb_window_resize();
+}
+
+//Maddalen, aurreko funtzioaren kopia bat da, baina X botoia ez du sortzen ezta narrazioa
+//Gainera, Ibilbideen nabigaziorako beahrrezkoa diren datuak gordeko ditugu .data-n: path_id
+
+function pb_new_element_egunekoa(data_id,text_value,image_value,path_id,item_id){
+	
+	
+    //kokapen berria aurkitu
+    var y_position = 0;
+    if (paths_starts.length > 0){
+        y_position = get_new_y(paper.getById(paths_starts[paths_starts.length-1]));
+    }
+
+    var back_rect = paper.rect(get_x(0), get_y(y_position), pb_box_w,pb_box_h, 5);
+    back_rect.node.setAttribute("class","pb_box_back");
+    back_rect.id = data_id + "_back";
+
+    //azpi elementuak sortu
+    if (text_value.length > 15){
+        text_value = text_value.substring(0,12) + "...";
+    }
+    var text = paper.text(get_x(0)+60, get_y(y_position)+100, text_value);
+    text.id = data_id + "_title";
+    text.node.setAttribute("class","pb_box_title");
+
+    var image = paper.image(image_value, get_x(0)+10, get_y(y_position)+15, pb_box_w -20, pb_box_h - 50)
+    image.id = data_id + "_image";
+    image.node.setAttribute("class","pb_box_image");
+
+    var rect = paper.rect(get_x(0), get_y(y_position), pb_box_w,pb_box_h, 5);
+    rect.node.setAttribute("class","pb_box");
+    
+        
+    rect.id = data_id;
+    //beharrezko informazioa hemen gorde
+    rect.data("text_value",text_value);
+    rect.data("image_value",image_value);
+    //diagramaren kudeaketarako beharrezko balioak
+    rect.data("parent_id",null);
+    rect.data("children",[]);
+    
+    //Nabigaziorako beharrezkoak diren datuak kargatu
+    /*
+    rect.data("path_id",path_id);
+    rect.data("narrazioa",narrazioa);
+    rect.data("hurrengoak_id",hurrengoak_id);
+    rect.data("hasieraDa",hasieraDa);
+    */
+    //var node_id = data_id.replace("pb_", "");
+    //rect.data("node_id",node_id);
+    
+    //rect.drag(onmove, onstart, onend); //MAddalen: ez utzi erabiltzaileari nodoak mugitzen
+    paths_starts.push(rect.id);
+    
+    
+    // NABIGAZIOA GEHITZEKO
+	rect.attr({
+    cursor: 'pointer',
+	}).click(function(e) {
+    	
+    	
+    	var url = 'nabigazio_item';
+    	
+    	//window.location.href=url; //get moduan bidaltzeko
+		
+		
+		var form = $('<form action="' + url + '" method="post">' +
+		'<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">'+
+  		'<input type="hidden" name="path_id" value="' + path_id + '" />'+
+  		//'<input type="hidden" name="titulua" value="' + text_value + '" />'+
+  		//'<input type="hidden" name="irudia" value="' + image_value + '" />'+
+  		//'<input type="hidden" name="narrazioa" value="' + narrazioa + '" />'+
+  		//'<input type="hidden" name="hurrengoak_id" value="' + hurrengoak_id + '" />'+
+  		//'<input type="hidden" name="hasieraDa" value="' + hasieraDa + '" />'+
+  		'<input type="hidden" name="item_id" value="' + item_id + '" />'+
+ 		 '</form>');
+		$('body').append(form);
+		form.submit();
+    
+   	});
+   
+    pb_window_resize();
+}
+
+function pb_new_element_overview(data_id,text_value,path_id,item_id,nabarmentzeko_id)
+{
+	
+	//kokapen berria aurkitu
+    var y_position = 0;
+    if (paths_starts.length > 0){
+        y_position = get_new_y(paper.getById(paths_starts[paths_starts.length-1]));
+    }
+	//Maddalen: heigh-70, width-30
+    var back_rect = paper.rect(get_x(0), get_y(y_position), pb_box_w-30,pb_box_h-70, 5);
+    
+    if (item_id==nabarmentzeko_id)
+    {
+    	back_rect.node.setAttribute("class","pb_box_back_nabarmendu");
+    }
+    else
+    {
+    	back_rect.node.setAttribute("class","pb_box_back_overview");
+    }
+    back_rect.id = data_id + "_back";
+
+    //azpi elementuak sortu
+    if (text_value.length > 15){
+        text_value = text_value.substring(0,12) + "...";
+    }
+    //Maddalen:y+30
+    var text = paper.text(get_x(0)+60, get_y(y_position)+30, text_value);
+    text.id = data_id + "_title";
+    text.node.setAttribute("class","pb_box_title");
+
+	//Maddalen:heigh-70, width-30
+    var rect = paper.rect(get_x(0), get_y(y_position), pb_box_w-30,pb_box_h-70, 5);
+    rect.node.setAttribute("class","pb_box_overview");
+    
+    
+    //MOMENTUKO NODEA NABARMENDU (BESTE KOLORE BAT EMAN ADIBIDEZ)
+        
+    rect.id = data_id;
+    //beharrezko informazioa hemen gorde
+    rect.data("text_value",text_value);
+    //diagramaren kudeaketarako beharrezko balioak
+    rect.data("parent_id",null);
+    rect.data("children",[]);
+    
+    paths_starts.push(rect.id);
+    
+    
+    // NABIGAZIOA GEHITZEKO
+	rect.attr({
+    cursor: 'pointer',
+	}).click(function(e) {   	
+    	
+    	var url = 'nabigazio_item';   	
+    	//window.location.href=url; //get moduan bidaltzeko				
+		var form = $('<form action="' + url + '" method="post">' +
+		'<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">'+
+  		'<input type="hidden" name="path_id" value="' + path_id + '" />'+  		
+  		'<input type="hidden" name="item_id" value="' + item_id + '" />'+
+ 		 '</form>');
+		$('body').append(form);
+		form.submit();
+    
+   	});
+   
+    pb_window_resize();
+	
+}
+
+
+function nabigatu(path_id,node_id)
+{
+
+	//ALA nabigazio_item-era zuzenean?
+	var url = 'nabigatu?path_id='+path_id+'&item_id='+node_id;   	
+    window.location.href=url;
+	
 }
 
 //get new element y size
@@ -1624,7 +2199,7 @@ function pb_children_left(parent){
     var children = parent.data("children");
     parent.data("children",[]);
     for (var c=0;c<children.length; c++){
-        var child = paper.getById(children[c])
+        var child = paper.getById(children[c]);
         //gurasoak gurasorik badu, elementuaren guraso berria bihurtuko da
         if (parent.data("parent_id")){
             //geziak ezabatu
@@ -1708,6 +2283,42 @@ function pb_brothers_up(pb_box){
     }
 }
 
+function pb_brothers_up_egunekoa(pb_box){
+    var parent_id = pb_box.data("parent_id");
+    if (parent_id){
+        var parent = paper.getById(parent_id);
+        var next_children = parent.data("children").slice(parent.data("children").indexOf(pb_box.id)+1);
+        for (var c=0;c<next_children.length; c++) {
+            pb_move_up_egunekoa(paper.getById(next_children[c]));
+        }
+        pb_brothers_up_egunekoa(parent);
+    }
+    else{
+        var next_paths_starts = paths_starts.slice(paths_starts.indexOf(pb_box.id)+1);
+        for (var c=0;c<next_paths_starts.length; c++) {
+            pb_move_up_egunekoa(paper.getById(next_paths_starts[c]));
+        }
+    }
+}
+
+function pb_brothers_up_overview(pb_box){
+    var parent_id = pb_box.data("parent_id");
+    if (parent_id){
+        var parent = paper.getById(parent_id);
+        var next_children = parent.data("children").slice(parent.data("children").indexOf(pb_box.id)+1);
+        for (var c=0;c<next_children.length; c++) {
+            pb_move_up_overview(paper.getById(next_children[c]));
+        }
+        pb_brothers_up_overview(parent);
+    }
+    else{
+        var next_paths_starts = paths_starts.slice(paths_starts.indexOf(pb_box.id)+1);
+        for (var c=0;c<next_paths_starts.length; c++) {
+            pb_move_up_overview(paper.getById(next_paths_starts[c]));
+        }
+    }
+}
+
 /*
 Elementuak gora:
     errekurtsiboa da.
@@ -1732,13 +2343,64 @@ function pb_move_up(pb_box){
     }
 }
 
+function pb_move_up_egunekoa(pb_box){
+    //elementuak mugitu
+    pb_box.attr({x: pb_box.attr("x"), y: pb_box.attr("y") - (pb_box_space + pb_box_h)});
+    //azpi elementuak mugitu
+    var back = paper.getById(pb_box.id + "_back");
+    back.attr({x: back.attr("x"), y: back.attr("y") - (pb_box_space + pb_box_h)});
+    var text = paper.getById(pb_box.id + "_title");
+    text.attr({x: text.attr("x"), y: text.attr("y") - (pb_box_space + pb_box_h)});
+    var image = paper.getById(pb_box.id + "_image");
+    image.attr({x: image.attr("x"), y: image.attr("y") - (pb_box_space + pb_box_h)});
+    var children = pb_box.data("children");
+    for (var c=0;c<children.length; c++){
+        pb_move_up_egunekoa(paper.getById(children[c]));
+    }
+}
+
+function pb_move_up_overview(pb_box){
+    //elementuak mugitu
+    pb_box.attr({x: pb_box.attr("x"), y: pb_box.attr("y") - (pb_box_space + pb_box_h)});
+    //azpi elementuak mugitu
+    var back = paper.getById(pb_box.id + "_back");
+    back.attr({x: back.attr("x"), y: back.attr("y") - (pb_box_space + pb_box_h)});
+    var text = paper.getById(pb_box.id + "_title");
+    text.attr({x: text.attr("x"), y: text.attr("y") - (pb_box_space + pb_box_h)});
+    //var image = paper.getById(pb_box.id + "_image");
+    //image.attr({x: image.attr("x"), y: image.attr("y") - (pb_box_space + pb_box_h)});
+    var children = pb_box.data("children");
+    for (var c=0;c<children.length; c++){
+        pb_move_up_overview(paper.getById(children[c]));
+    }
+}
+
+
 function pb_add_new_son(parent_id,data_id,text_value,image_value){
-    var parent = paper.getById(parent_id)
+    var parent = paper.getById(parent_id);
     pb_new_element(data_id,text_value,image_value);
     var new_son = paper.getById(data_id);
     pb_brothers_up(new_son);
     paths_starts.splice(paths_starts.indexOf(data_id),1);
     pb_add_son(parent,new_son);
+}
+
+function pb_add_new_son_egunekoa(parent_id,data_id,text_value,image_value,path_id,node_id){
+    var parent = paper.getById(parent_id);
+    pb_new_element_egunekoa(data_id,text_value,image_value,path_id,node_id); //nabigaziorako 
+    var new_son = paper.getById(data_id);
+    pb_brothers_up_egunekoa(new_son);
+    paths_starts.splice(paths_starts.indexOf(data_id),1);
+    pb_add_son_egunekoa(parent,new_son);
+}
+
+function pb_add_new_son_overview(parent_id,data_id,text_value,path_id,node_id,nabarmentzeko_id){
+    var parent = paper.getById(parent_id);
+    pb_new_element_overview(data_id,text_value,path_id,node_id,nabarmentzeko_id); 
+    var new_son = paper.getById(data_id);
+    pb_brothers_up_overview(new_son);
+    paths_starts.splice(paths_starts.indexOf(data_id),1);
+    pb_add_son_overview(parent,new_son);
 }
 
 /*
@@ -1782,6 +2444,74 @@ function pb_add_son(parent,pb_box){
     connections.push(connection);
 }
 
+//MAddalen
+function pb_add_son_egunekoa(parent,pb_box){
+    var back = paper.getById(pb_box.id + "_back");
+    var text = paper.getById(pb_box.id + "_title");
+    var image = paper.getById(pb_box.id + "_image");
+    
+    if (parent.data("children").length > 0){
+        pb_brothers_down_egunekoa(parent);
+        update_arrows();
+        var last_son = paper.getById(parent.data("children")[parent.data("children").length-1]);
+        y_position = get_new_y(last_son);
+        //elementua mugitu
+        pb_box.attr({x: last_son.attr("x"), y: get_y(y_position)});
+        //azpi elementuak mugitu
+        back.attr({x: last_son.attr("x"), y: get_y(y_position)});
+        text.attr({x: last_son.attr("x") + 60, y: get_y(y_position) + 100});
+        image.attr({x: last_son.attr("x") + 5, y: get_y(y_position) + 5});
+       
+    }
+    else{
+        //elementua mugitu
+        pb_box.attr({x: parent.attr("x") + (pb_box_space + pb_box_w), y: parent.attr("y")});
+        //azpi elementuak mugitu
+        back.attr({x: parent.attr("x") + (pb_box_space + pb_box_w), y: parent.attr("y")});
+        text.attr({x: parent.attr("x") + (pb_box_space + pb_box_w) + 60, y: parent.attr("y") + 100});
+        image.attr({x: parent.attr("x") + (pb_box_space + pb_box_w) + 5, y: parent.attr("y") + 5});
+        
+    }
+    parent.data("children").push(pb_box.id);
+    pb_box.data("parent_id",parent.id);
+    var connection = paper.connection(parent,pb_box, "#000");
+    connections.push(connection);
+}
+
+function pb_add_son_overview(parent,pb_box){
+    var back = paper.getById(pb_box.id + "_back");
+    var text = paper.getById(pb_box.id + "_title");
+    
+    
+    if (parent.data("children").length > 0){
+        pb_brothers_down_overview(parent);
+        update_arrows();
+        var last_son = paper.getById(parent.data("children")[parent.data("children").length-1]);
+        y_position = get_new_y(last_son);
+        //elementua mugitu
+        pb_box.attr({x: last_son.attr("x"), y: get_y(y_position)});
+        //azpi elementuak mugitu
+        back.attr({x: last_son.attr("x"), y: get_y(y_position)});
+        //Maddalen: +30
+        text.attr({x: last_son.attr("x") + 60, y: get_y(y_position) + 30});
+        
+       
+    }
+    else{
+        //elementua mugitu
+        pb_box.attr({x: parent.attr("x") + (pb_box_space + pb_box_w), y: parent.attr("y")});
+        //azpi elementuak mugitu
+        back.attr({x: parent.attr("x") + (pb_box_space + pb_box_w), y: parent.attr("y")});
+        //Maddalen: +30
+        text.attr({x: parent.attr("x") + (pb_box_space + pb_box_w) + 60, y: parent.attr("y") + 30});
+       
+    }
+    parent.data("children").push(pb_box.id);
+    pb_box.data("parent_id",parent.id);
+    var connection = paper.connection(parent,pb_box, "#000");
+    connections.push(connection);
+}
+
 /*
 Anaiak eta hurrengoak behera mugitu
 */
@@ -1799,6 +2529,42 @@ function pb_brothers_down(pb_box){
         var next_paths_starts = paths_starts.slice(paths_starts.indexOf(pb_box.id)+1);
         for (var c=0;c<next_paths_starts.length; c++) {
             pb_move_down(paper.getById(next_paths_starts[c]));
+        }
+    }
+}
+
+function pb_brothers_down_egunekoa(pb_box){
+    var parent_id = pb_box.data("parent_id");
+    if (parent_id){
+        var parent = paper.getById(parent_id);
+        var next_children = parent.data("children").slice(parent.data("children").indexOf(pb_box.id)+1);
+        for (var c=0;c<next_children.length; c++) {
+            pb_move_down_egunekoa(paper.getById(next_children[c]));
+        }
+        pb_brothers_down_egunekoa(parent);
+    }
+    else{
+        var next_paths_starts = paths_starts.slice(paths_starts.indexOf(pb_box.id)+1);
+        for (var c=0;c<next_paths_starts.length; c++) {
+            pb_move_down_egunekoa(paper.getById(next_paths_starts[c]));
+        }
+    }
+}
+
+function pb_brothers_down_overview(pb_box){
+    var parent_id = pb_box.data("parent_id");
+    if (parent_id){
+        var parent = paper.getById(parent_id);
+        var next_children = parent.data("children").slice(parent.data("children").indexOf(pb_box.id)+1);
+        for (var c=0;c<next_children.length; c++) {
+            pb_move_down_overview(paper.getById(next_children[c]));
+        }
+        pb_brothers_down_overview(parent);
+    }
+    else{
+        var next_paths_starts = paths_starts.slice(paths_starts.indexOf(pb_box.id)+1);
+        for (var c=0;c<next_paths_starts.length; c++) {
+            pb_move_down_overview(paper.getById(next_paths_starts[c]));
         }
     }
 }
@@ -1824,6 +2590,37 @@ function pb_move_down(pb_box){
         pb_move_down(paper.getById(children[c]));
     }
 }
+
+//Maddalen, aurreko funtzioaren kopia da
+function pb_move_down_egunekoa(pb_box){
+    pb_box.attr({x: pb_box.attr("x"), y: pb_box.attr("y") + (pb_box_space + pb_box_h)});
+    var back = paper.getById(pb_box.id + "_back");
+    back.attr({x: back.attr("x"), y: back.attr("y") + (pb_box_space + pb_box_h)});
+    var text = paper.getById(pb_box.id + "_title");
+    text.attr({x: text.attr("x"), y: text.attr("y") + (pb_box_space + pb_box_h)});
+    var image = paper.getById(pb_box.id + "_image");
+    image.attr({x: image.attr("x"), y: image.attr("y") + (pb_box_space + pb_box_h)});
+    var children = pb_box.data("children");
+    for (var c=0;c<children.length; c++){
+        pb_move_down_egunekoa(paper.getById(children[c]));
+    }
+}
+
+function pb_move_down_overview(pb_box){
+    pb_box.attr({x: pb_box.attr("x"), y: pb_box.attr("y") + (pb_box_space + pb_box_h)});
+    var back = paper.getById(pb_box.id + "_back");
+    back.attr({x: back.attr("x"), y: back.attr("y") + (pb_box_space + pb_box_h)});
+    var text = paper.getById(pb_box.id + "_title");
+    text.attr({x: text.attr("x"), y: text.attr("y") + (pb_box_space + pb_box_h)});
+    //var image = paper.getById(pb_box.id + "_image");
+    //image.attr({x: image.attr("x"), y: image.attr("y") + (pb_box_space + pb_box_h)});
+    var children = pb_box.data("children");
+    for (var c=0;c<children.length; c++){
+        pb_move_down_overview(paper.getById(children[c]));
+    }
+}
+
+
 
 Raphael.fn.connection = function (obj1, obj2, line, bg) {
     if (obj1.line && obj1.from && obj1.to) {
@@ -1900,14 +2697,14 @@ function ibilbidea_kargatu(path_id)
 }
 
 </script>
-
-
-
+	
 
 </head>
 
+
 {% if user.is_authenticated %}
-<body style="padding-top:20px;" onload="initialize({{request.user.id}});">
+<body style="padding-top:0px;" onload="initialize({{request.user.id}});">
+	
 	<!-- WORKSPACE -->
 	<div id="workspace">
        	<div id="workspace_boxes" ondrop="ws_drop(event)" ondragover="allowDrop(event)">
@@ -1926,56 +2723,21 @@ function ibilbidea_kargatu(path_id)
  
     <!-- END WORKSPACE -->
  {%else%}
- <body style="padding-top:20px;">
+ <body style="padding-top:0px;"><!--goiko margina -->
  {% endif %} 
     
    
 	<!-- PAGE -->
-	<div  style="max-width:1140px;margin:0 auto;">
+	<div  style="max-width:1210px;margin:0 auto;"><!--aldeetako margina -->
 			
-	<div class="header-content">
-		<!-- HIZKUNTZAK -->
-		<div class="hizkuntzak_class" >
-			
-		
-			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">{% csrf_token %}
-                <input name="next" type="hidden" value="#" />
-                <input type="hidden" name="language" value="{{ lang.0 }}" />
-                {% get_current_language as LANGUAGE_CODE %}
-                <ul class="ulhizkuntzak">
-                {% for langa in LANGUAGES %}
-                    {% if forloop.last %}
-                        {% if langa.1 ==  LANGUAGE_CODE %}
-                           <li><a class="active" href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
-                        {% else %}
-                            <li><a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
-                        {% endif %}                    
-                    {% else %}
-                        {% if langa.1 == LANGUAGE_CODE %}
-                            <li><a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
-                        {% else %}
-                           <li> <a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
-                        {% endif %}                
-                    {% endif %}
-                {% endfor %}
-                </ul>
-            </form>  
-		</div>
-		</div>
-		<!-- LOGINA -->
-		
+	
+		<!-- LOGINA  ZAHARRA-->
+<!--		
 		<div class="erabiltzaile-menua" >
 			{% if user.is_authenticated %}
-			<!--
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-      {{request.user.username}} <span class="caret"></span>
-   			 </a>
-  --> 
-			<!-- Single button -->
+			
 			<div class="dropdown">
-  				<!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   					 {{request.user.username}} <span class="caret"></span>
- 				 </button>-->
+  				
  				 <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">{{request.user.username}} <b class="caret"></b></a>
         
 				<ul class="dropdown-menu">
@@ -2006,29 +2768,207 @@ function ibilbidea_kargatu(path_id)
     	   	{% endif %}
 		</div>
 		
-
+-->
 		
-	<!-- END LOGINA -->
+	<!-- END LOGINA  ZAHARRA-->
 	
-	<!-- HEADER -->
-		
+	<!-- HEADER  ZAHARRA-->
+		<!--
 	<div class="page-header headerra">
 		<a title="KulturBideak" href="http://www.kulturbideak.org/search">
  			<h1>K<small>ultur</small>B<small>ideak</small></h1>			
-		</a>		
+		</a>	
+		<div class="input-group">
+		<form action="/search" method="get" class="form">
+		{% csrf_token %}
+		
+			{% trans "Bilatu ..." as the_placeholder %}
+      		<input id="id_q" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="q">
+     		<span class="input-group-btn">
+       			<button class="btn btn-default" type="submit">
+       			   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>	!
+       			 </button>
+       			
+       			
+      		</span>
+      		
+      		
+      	</form>
+      	
+   	</div>
 	</div>
+	-->
+	<!-- BUKATU HEADER  ZAHARRA-->
+	
+	<!-- HIZKUNTZAK-->
+	<!--
+    <div class="header-content">
+		
+		<div class="hizkuntzak_class" >
+			
+		
+			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="#" />
+                <input type="hidden" name="language" value="{{ lang.0 }}" />
+                {% get_current_language as LANGUAGE_CODE %}
+                <ul class="ulhizkuntzak">
+                {% for langa in LANGUAGES %}
+                    {% if forloop.last %}
+                        {% if langa.1 ==  LANGUAGE_CODE %}
+                           <li><a class="active" href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
+                        {% else %}
+                            <li><a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
+                        {% endif %}                    
+                    {% else %}
+                        {% if langa.1 == LANGUAGE_CODE %}
+                            <li><a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
+                        {% else %}
+                           <li> <a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
+                        {% endif %}                
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </form>  
+		</div>
+	</div>
+	-->
+	
+	<!--HEADER PROBA -->
+	
+	
+    
+    <nav class="navbar navbar-default navbar-default-berria" role="navigation">
+ 	 <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  
+			
+		
+			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="#" />
+                <input type="hidden" name="language" value="{{ lang.0 }}" />
+                {% get_current_language as LANGUAGE_CODE %}
+                <p>
+                
+                {% for langa in LANGUAGES %}
+                    {% if forloop.last %}
+                        {% if langa.1 ==  LANGUAGE_CODE %}
+                           <a class="active" href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+                        {% else %}
+                            <a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+                        {% endif %}                    
+                    {% else %}
+                        {% if langa.1 == LANGUAGE_CODE %}
+                            <a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+                        {% else %}
+                          <a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+                        {% endif %}                
+                    {% endif %}
+                {% endfor %}
+               </p>
+               <p>
+    			<a class="navbar-brand navbar-brand-berria" title="kulturbideak" href="http://www.kulturbideak.org/search">
+ 					<span class="laguntza">O<small>ndare</small></span>B<small>ideak</small>			
+				</a>
+				</p>
+                
+            </form>  
+		
+		
+	
+  </div>
 
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li><a href="itemak_hasiera">
+         ITEMAK
+         </a>
+      </li>
+      <li>
+      	<a href="ibilbideak_hasiera">
+      		IBILBIDEAK
+      	</a>
+      </li>
+    </ul>
+  
+    <div class="col-sm-3 col-md-3 bilatzailea-kutxa">
+		<form action="/search" method="get" class="navbar-form">
+		{% csrf_token %}
+			<div class="input-group">
+			{% trans "Bilatu ..." as the_placeholder %}
+      		<input id="id_q" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="q">
+     		<span class="input-group-btn">
+       			<button class="btn btn-default" type="submit">
+       			   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>	!
+       			 </button>
+       			
+       			
+      		</span>
+      	</div>
+      		
+      	</form>
+      	
+   	</div><!-- /input-group -->	
+    {% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"> 
+	 </span> {% trans "Irten" %}</a></li>
+     <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a></li>
+    				<li><a href="nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a></li>
+    				<li><a href="itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+       				</li></a>
+      				
+    				<li role="separator" class="divider"></li>
+				    <li><a href="perfila_erakutsi">{% trans "Profila" %}</a></li>
+				    <li><a href="pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a></li>
+				    <li role="separator" class="divider"></li>
+				    <li><a href="irten">{% trans "Irten" %} 
+				    	<!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
+						
+					</li>
+        </ul>
+      </li>
+    </ul>
+    {% else %}
+     <ul class="nav navbar-nav navbar-right">
+			<li><a href="erregistratu">{% trans "Erregistratu" %} </a></li>
+			
+			<li><a href="logina"><span class="glyphicon glyphicon-log-in" aria-hidden="true"> 
+    	   	</span> {% trans "Login" %} </a>
+			</li>
+     </ul>
+    {% endif %}
+    
+    
+  </div><!-- /.navbar-collapse -->
+</nav>
+    
+    
+    
+<!-- BUKATU HEADER PROBA-->
+<!--
 	{% if user.is_authenticated %}
 	<div class="erabiltzaile-menua" >
       	<a href="itema_gehitu">{% trans "Item berria gehitu" %} </a>
       	<span class="glyphicon glyphicon-upload" aria-hidden="true"> 
        	</span>
-     <div>
+       	
+       			
+     </div>
 	{% endif %}
-	<!-- END HEADER -->	
+	-->
 		
 	<!-- BILATZAILEA -->
-		
+	<!--	
 	<div class="input-group">
 		<form action="/search" method="get" class="form">
 		{% csrf_token %}
@@ -2046,8 +2986,8 @@ function ibilbidea_kargatu(path_id)
       		
       	</form>
       	
-   	</div><!-- /input-group -->
-		
+   	</div>
+	-->	
 	<!-- END BILATZAILEA -->
 		
 	<hr>	
@@ -2055,6 +2995,9 @@ function ibilbidea_kargatu(path_id)
 	<div class="orria">
 	 	<div class="eskuma_div" align="right" >
 	 		<b>{% trans "Hornitzaileak" %} </b>
+	 		<br />
+	 		<br />
+	 		<p>EuskoMedia</p>
 	 	</div>	
 			
 		<div class="content_div" align="center">
@@ -2101,31 +3044,69 @@ function ibilbidea_kargatu(path_id)
 			{% endblock content %}
 		</div>
 		<div class="ezkerra_div" align="left">
-			<b>{% trans "Ibilbide Ezagunak" %} </b>
+			<div><b>{% trans "Azkenak" %} </b></div>
 			
 			<br />
 			<br />
 			{% if user.is_authenticated %}
 			<!-- nire_ibilbideak javascript bidez kargatzen da. Initialize() -> load_paths_list(user_id)-->	
-			<div id="nire_ibilbideak"><b>{% trans "Nire Ibilbideak" %} </b></div>
+			<!--<div id="nire_ibilbideak"><b>{% trans "Nire Ibilbideak" %} </b></div>-->
+			
 			{% endif %}
+			
+			<div id="ibilbide_bozkatuenak"><b>{% trans "Ibilbide Bozkatuenak" %} </b></div>
+			
+			<br />
+			<br />
+			{% if user.is_authenticated %}
+			<!-- nire_ibilbideak javascript bidez kargatzen da. Initialize() -> load_paths_list(user_id)-->	
+			<!--<div id="nire_ibilbideak"><b>{% trans "Nire Ibilbideak" %} </b></div>-->
+			
+			{% endif %}
+			
+			<div class=""><b>{% trans "Eguneko Itema" %} </b>
+				
+				<div class="column">
+				<br />
+  					<div class="col-xs-6 col-md-12">
+    					<a class="thumbnail" href="#">
+						<img src="http://europeanastatic.eu/api/image?uri=http://www.peoplesnetwork.gov.uk/dpp/resource/2515311/stream/thumbnail_image_jpeg&size=FULL_DOC">
+						</a>
+  					</div>
+				</div>
+				
+			</div>
+			<br />
+			<br />
+			<div class="laguntza"><b>{% trans "Laguntza" %} </b>
+				<p>In this area you will always find a brief help text for the current page.</p>
+				
+			</div>
 		</div>
  	</div>	
 
 </div> <!-- END PAGE -->
 <hr>
-<div class="footer">
+
 	
-	<div id="funding">
-		
-		<p>
-		<strong>Elhuyar Fundazioa</strong>
-		<br>
-		
-		</p>
+	
+	<div class="container marketing">
+		<div class="well text-center">
+			<div class="ssk-group ssk-round ssk-count">
+				<a class="ssk ssk-facebook" href="">
+				
+				</a>
+				<a class="ssk ssk-twitter" href="">
+				
+				</a>
+				<a class="ssk ssk-google-plus" href="">
+				
+				</a>
+				<a class="ssk ssk-email" href=""></a>
+			</div>
+		</div>
 	</div>
-	
-</div>
+
 
 
 <!--
@@ -2134,6 +3115,10 @@ function ibilbidea_kargatu(path_id)
 -->
 <!-- Latest compiled and minified JavaScript -->
 <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+<script type="text/javascript">
+SocialShareKit.init();
+</script>
+
 </body>
 </html>
 

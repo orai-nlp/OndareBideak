@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% load leaflet_tags %}
+
+
 {% block content %}
 
 <div class="itema_gehitu">
@@ -8,7 +11,10 @@
 		{{ itema.titulua.errors}}
 		{{ itema.deskribapena.errors}}
 		{{itema}}
+	
 		<br/>
+		
+		{% leaflet_map "yourmap" callback="load_map" %}
      		
    		 <button class="btn btn-default" type="submit">
    		 Gehitu

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load leaflet_tags %}
 {% block content %}
 
 
@@ -22,11 +23,12 @@
 {%endif%}
 -->
 
-<!--user.is_authenticated-->
+ {% if user.is_authenticated %}
 <div class="btn-group" role="group" aria-label="...">
   <button class="btn btn-default" type="button" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
  	{% trans "Gehitu" %}
 	</button>
+	
 	
   {% if user.username == hornitzailea %}
 
@@ -40,14 +42,54 @@
 	{%endif%}
 </div>
 
+  {%endif%}
   
+  
+ <!-- BOTAZIO SISTEMA--> 
+  
+  {% if user.is_authenticated %}
+  
+  	<div class="eskuma"><a class="titulu-kolorea eskuma" type="button" href="#">Kultur itema gustoko duzu?</a></div>
+	<br />
+	<div class="btn-group eskuma" role="group" aria-label="...">
+	
+  	{% if botatuDu == 1 %}
+		<a class="btn btn-default " type="button" href="botoa_eman_item?id={{id}}" disabled>
+			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+ 	
+		</a>
+		<a class="btn btn-default " type="button" href="#" >
+			<b class="eskuma titulu-kolorea">{{botoKopurua}}</b>
+		</a>
+		<a class="btn btn-default " type="button" href="botoa_kendu_item?id={{id}}" >
+			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+ 	
+		</a>
+	
+  	{%else%}
+ 		 <a class="btn btn-default " type="button" href="botoa_eman_item?id={{id}}" >
+			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+ 	
+		</a>
+		<a class="btn btn-default " type="button" href="#">
+			<b class="eskuma titulu-kolorea">{{botoKopurua}}</b>
+		</a>
+		<a class="btn btn-default " type="button" href="botoa_kendu_item?id={{id}}" disabled >
+			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+ 	
+		</a>
+	{%endif%}
+</div>
 
-
+  {%endif%}
+  
+ 
 
 <br><br>
 <div class="panel panel-info">
 	<div class="panel-heading">
 		<h1 class="panel-title">{{titulua}}</h1>
+		
 	</div>
 	<div class="panel-body">
     
@@ -66,12 +108,19 @@
  			<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
  			<p><b>{% trans "Ikusi jatorrizkoa:" %}</b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
  			
+ 			<br />
+ 			
+ 			<div class="comment more">
+    			{{item.dc_description}}
+ 			</div>
+ 			
  		</div>
  		
  		
  	 </div>
 	
 </div>
+{% leaflet_map "yourmap" callback="load_map" %}
 
 
 {% endblock %} 

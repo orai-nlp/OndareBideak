@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+  	
+
+	 {% for item in itemak %}
+	 
+	 <div class="column">	
+		<!--<div class="col-xs-6 col-md-3">-->
+		<!--<div class="col-sm-6 col-md-4">-->
+		<div class="col-sm-6 col-md-6">	
+		<div class="thumbnail">
+			
+			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="erakutsi_item?id={{item.id}}" >
+				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
+			</a>
+			
+			<div class="caption">
+				
+				<h5><a class="" title="{{item.dc_title}}" href="erakutsi_item?id={{item.id}}" id="titulua">{{item.dc_title}}</a></h5>
+					
+				<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
+				<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
+				<p class="" id="herrialdea"><b>{% trans "Herrialdea:" %}</b>{{item.edm_country}}</p>
+				<p class="" id="sortzailea"><b>{% trans "Sortzailea:" %}</b>{{item.dc_creator}}</p>
+				
+	
+ 	 		</div>
+	
+		</div>
+
+		</div>
+	
+	</div>
+{% endfor %}
+</div>
+	
+	</div>
+
+{% endblock %} 

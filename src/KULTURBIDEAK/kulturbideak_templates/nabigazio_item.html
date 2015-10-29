@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+
+<!-- BOTAZIO SISTEMA IBILBIDEA--> 
+
+  {% if user.is_authenticated %}
+  
+  	<div class="eskuma"><b class="laguntza eskuma">Ibilbidea gustoko duzu?</b></div>
+	<br />
+	<div class="btn-group eskuma" role="group" aria-label="...">
+	
+  	{% if botatuDuPath == 1 %}
+		<a class="btn btn-default eskuma" type="button" href="botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" disabled>
+			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+ 	
+		</a>
+		<a class="btn btn-default eskuma" type="button" href="#" >
+			<b class="eskuma laguntza">{{botoKopuruaPath}}</b>
+		</a>
+		<a class="btn btn-default eskuma" type="button" href="botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" >
+			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+ 	
+		</a>
+	
+  	{%else%}
+ 		 <a class="btn btn-default eskuma" type="button" href="botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" >
+			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+ 	
+		</a>
+		<a class="btn btn-default eskuma" type="button" href="#">
+			<b class="eskuma laguntza">{{botoKopuruaPath}}</b>
+		</a>
+		<a class="btn btn-default eskuma" type="button" href="botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" disabled >
+			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+ 	
+		</a>
+	{%endif%}
+</div>
+
+  {%endif%}
+<br />
+<br />
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><b class="titulu-kolorea">HEMEN ZAUDE </b></div>
+  <div class="panel-body">
+  	<div id="path_boxes_overview"></div>
+	
+	<script>set_pb_overview();</script>
+    {% for node in path_nodeak%}
+
+		<script type="text/javascript">
+	
+		var id="{{node.fk_item_id_id}}";//path_node[0];
+		var titulua="{{node.dc_title}}";//path_node[1];
+		var aita_id="{{node.paths_prev}}";//path_node[3];
+		
+		var path_id="{{path_id}}";
+		var momentukoNodea="{{node_id}}";
+	
+		if(aita_id=="")
+		{
+			pb_new_element_overview("pb_"+id,titulua,path_id,id,momentukoNodea);		
+		}
+		else
+		{
+			pb_add_new_son_overview("pb_"+aita_id,"pb_"+id,titulua,path_id,id,momentukoNodea);		
+		}
+		</script>
+
+
+	{% endfor%}
+  </div>
+</div
+
+<br />
+
+<!-- BOTAZIO SISTEMA ITEMAK--> 
+
+  {% if user.is_authenticated %}
+  	<div class="eskuma"><b class="laguntza eskuma">Kultur itema gustoko duzu?</b></div>
+  
+	<br />
+	<div class="btn-group eskuma" role="group" aria-label="...">
+	
+  	{% if botatuDuItem == 1 %}
+		<a class="btn btn-default eskuma" type="button"  href="botoa_eman_item?id={{node_id}}" disabled>
+			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+ 	
+		</a>
+		<a class="btn btn-default eskuma" type="button" href="#" >
+			<b class="eskuma titulu-kolorea">{{botoKopuruaItem}}</b>
+		</a>
+		<a class="btn btn-default eskuma" type="button"  href="botoa_kendu_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}" >
+			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+ 	
+		</a>
+	
+  	{%else%}
+ 		 <a class="btn btn-default eskuma" type="button"  href="botoa_eman_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}">
+			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+ 	
+		</a>
+		<a class="btn btn-default eskuma" type="button" href="#">
+			<b class="eskuma titulu-kolorea">{{botoKopuruaItem}}</b>
+		</a>
+		<a class="btn btn-default eskuma" type="button" href="botoa_kendu_item?id={{node_id}}" disabled >
+			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+ 	
+		</a>
+	{%endif%}
+</div>
+
+  {%endif%}
+
+<br />
+<br />
+<div>
+<!--AUKERATUTAKO ITEMA ERAKUTSI -->
+<div class="media path_sarrera">
+  <div class="media-left">
+    <a href="#">
+      <img class="media-object" src="{{momentukoItema.edm_object}}" alt="{{momentukoItema.edm_object}}">
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading titulu-kolorea">{{momentukoItema.dc_title}}({{momentukoItema.dc_language}})</h4>
+    {{momentukoNodea.dc_description}}
+  </div>
+  	
+ </div>
+  	
+  	<!-- HURRENGOAK -->
+  
+ 
+  	<div>
+  		<table class="eskuma">
+  
+  		{% for hurrengoa in hurrengoak %}
+  		<tr class="spaceUnder">
+  			<th>
+  				<a>
+ 		 <button type="button" class="btn btn-info eskuma kolorea" onclick="nabigatu({{path_id}},{{hurrengoa.fk_item_id_id}})">
+			<span  aria-hidden="true"> 
+			
+			<!--hemen hurrengoaren titulua jarri -->
+    		{{hurrengoa.dc_title}} 
+    		<span class="glyphicon glyphicon-forward" aria-hidden="true">  	</span>	   	
+    		</span> 	
+		</button>
+		</a>
+		</th>
+		</tr> 
+		<br />
+	{% endfor %}
+		</table>
+  
+  
+  
+  <!-- AURREKOAK -->
+   		<table class="ezkerra">
+  		{% for aurrekoa in aurrekoak %}
+ 		<tr class="spaceUnder">
+  			<th>
+ 		 <button type="button" class="btn btn-info ezkerra kolorea" onclick="nabigatu({{path_id}},{{aurrekoa.fk_item_id_id}})">
+		<span  aria-hidden="true"> 
+			<span class="glyphicon glyphicon-backward" aria-hidden="true"> 
+    	   	</span>
+    	  
+    		{{aurrekoa.dc_title}}
+    	</span> 	
+	</button> 
+			</th>
+		</tr>
+		<br />
+	{% endfor %}
+	</table>
+  </div>
+ </div> 
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><b class="titulu-kolorea">Itemaren informazioa </b></div>
+  <div class="panel-body comment more">
+    {{momentukoItema.dc_description}}
+  </div>
+  
+</div>
+ 
+ <div class="metadatuak">
+	  <b class="titulu-kolorea"></b>
+	  {% if momentukoItema.dc_subject %}
+      <b class="titulu-kolorea">Gaia: </b>{{momentukoItema.dc_subject}}&nbsp;
+      {% endif %}
+      {% if momentukoItema.edm_country %}
+      <b class="titulu-kolorea">Herrialdea: </b>{{momentukoItema.edm_country}}&nbsp;
+      {% endif %}   
+      {% if momentukoItema.dc_creator %}
+      <b class="titulu-kolorea">Hornitzailea: </b>{{momentukoItema.dc_creator}}&nbsp;
+      {% endif %} 
+      {% if momentukoItema.edm_rights %}
+      <b class="titulu-kolorea">Eskubideak: </b>{{momentukoItema.edm_rights}}&nbsp;
+      {% endif %} 
+
+</div>
+
+
+
+{% endblock %} 

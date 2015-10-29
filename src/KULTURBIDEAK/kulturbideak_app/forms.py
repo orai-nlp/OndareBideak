@@ -11,11 +11,13 @@ from django.utils.translation import ugettext_lazy as _
 
 HIZKUNTZA_CHOICES = (
     (1, 'Euskera'),
-    (2, 'Gaztelania'),
+    (2, 'Gaztelania'),   
     (3, 'Ingelesa'),
 )
 
-
+def get_initial_language():
+    
+        return HIZKUNTZA_CHOICES[2]
 
 class LoginForm(Form):
     """Earbiltzaile bat logeatzeko formularioa kargatzen du"""
@@ -166,12 +168,15 @@ class ItemGehituForm(Form):
     """Item berri bat gehitzeko formularioa kargatzen du"""
     titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("titulua"),"type":"text", "class":"form-control"}))
     #  sortzailea: logeatuta dagoen erabiltzailea
-    deskribapena=CharField(max_length=150,required=True, widget=TextInput(attrs={"placeholder":_("deskribapena"),"type":"text", "class":"form-control"}))
+    deskribapena=CharField(max_length=1500,required=True, widget=TextInput(attrs={"placeholder":_("deskribapena"),"type":"text", "class":"form-control"}))
     # date : momentukoa
     gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
     eskubideak=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("eskubideak"),"type":"text", "class":"form-control"}))
     irudia=ImageField(max_length=32,required=False)
-    hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
+    hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES, initial=get_initial_language())
+    
+    
+    
     
 class ItemEditatuForm(Form):
     """Item bat editatzeko formularioa kargatzen du"""

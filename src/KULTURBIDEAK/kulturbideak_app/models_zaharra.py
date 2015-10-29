@@ -3,10 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from django.utils.translation import ugettext as _
-from django.db.models import Count
-
-
-
 
 
 
@@ -24,7 +20,7 @@ from django.db.models import Count
 #Primary key constraint name: PK_item 
 class item(models.Model):
     #id = models.IntegerField(primary_key=True) 
-    uri = models.CharField(max_length=250, unique=True) #unique=tue beharrezkoa da, beste taula batzuk Fk bezala erabiltzen dute eta
+    uri = models.CharField(max_length=250, unique=True)
     usfd_id = models.CharField(max_length=3000)
     dc_title = models.TextField()
     dc_creator = models.TextField()
@@ -70,69 +66,10 @@ class item(models.Model):
     paths_facet_date=models.CharField(max_length=1000)
     paths_informativeness=models.FloatField(null=True)
     paths_trav_count=models.IntegerField(null=True)
-    proposatutakoa = models.BooleanField(default=False)
-    egunekoa = models.BooleanField(default=False)
-    geoloc_longitude = models.FloatField(null=True)
-    geoloc_latitude = models.FloatField(null=True)
     # idxfti=models.TSVectorField('dc_title')
     
     def __unicode__(self):
         return self.dc_title
-    
-    # botoak lortu
-    def get_votes(self):
-        votes = votes_item.objects.filter(item = self)
-        votes_count = len(votes)
-        
-        return votes_count
-
-    #boto bat eman
-    def vote(self, user):
-        try:
-            
-            # user vote number
-            user_votes = votes_item.objects.filter(user = user.id)
-           
-            item_user_votes = user_votes.filter(item = self)
-            # check  user's votes in the project
-            if len(item_user_votes) == 0:
-                vote = votes_item()
-                vote.item = self
-                vote.user = user
-                vote.save()
-                return True
-            else:
-                return False
-        except Exception as error:
-            print error
-            return False
-    
-    #botoa kendu
-    def unvote(self,user):
-        try:
-            
-            # user vote number
-            user_votes = votes_item.objects.filter(user = user.id)
-           
-            item_user_votes = user_votes.filter(item = self)
-            # check  user's votes in the project
-            if len(item_user_votes) == 0:
-                return False
-               
-            else:              
-                votes_item.objects.filter(item = self,user = user).delete()             
-                return True
-        except Exception as error:
-            print error
-            return False
-        
-
-
-class votes_item(models.Model):
-    item = models.ForeignKey(item)
-    user = models.ForeignKey(User)
-    
-
     
 #Description:Links between Items and external background resources (e.g. Wikipedia) as derived from semantic processing.
 class item_link(models.Model):
@@ -164,7 +101,6 @@ class item_similarity(models.Model):
     sentiment = models.FloatField()# Paths-en NUMERIC motakoa da
 
 #Description:Information on which Items a user has traversed between.
-
 class behaviour_link(models.Model):
     #id = models.IntegerField(primary_key=True) 
     fk_rel_suri = models.ForeignKey('item',to_field='uri', related_name='source_behaviour') #Source URI resource (the URI of the resource the user came from)
@@ -261,60 +197,8 @@ class path (models.Model):
     paths_thumbnail = models.CharField(max_length=1000) # The complete URI of a thumbnail specifically chosen for this path - not derived from the items 
     paths_iscloneable = models.BooleanField(default=False)
     tstamp =models.DateField(auto_now_add=True)
-    creation_date = models.DateField(auto_now_add=True)
-    proposatutakoa = models.BooleanField(default=False)
-    egunekoa = models.BooleanField(default=False)
-    
-        
-    # botoak lortu
-    def get_votes(self):
-        votes = votes_path.objects.filter(path = self)
-        votes_count = len(votes)
-        
-        return votes_count
-
-    #boto bat eman
-    def vote(self, user):
-        try:
-            # user vote number
-            user_votes = votes_path.objects.filter(user = user.id)
-            path_user_votes = user_votes.filter(path = self)
-            # check  user's votes in the project
-            if len(path_user_votes) == 0:
-                vote = votes_path()
-                vote.path = self
-                vote.user = user
-                vote.save()
-                return True
-            else:
-                return False
-        except Exception as error:
-            print error
-            return False
-
-    #botoa kendu
-    def unvote(self,user):
-        try:
-            
-            # user vote number
-            user_votes = votes_path.objects.filter(user = user.id)
-           
-            path_user_votes = user_votes.filter(path = self)
-            # check  user's votes in the project
-            if len(path_user_votes) == 0:
-                return False
-               
-            else:              
-                votes_path.objects.filter(path = self,user = user).delete()             
-                return True
-        except Exception as error:
-            print error
-            return False
-
-class votes_path(models.Model):
-    path = models.ForeignKey(path)
-    user = models.ForeignKey(User)   
-    
+    # idxfti=models.TSVectorField('dc_title') # An index field including keyword information from main metadata fields to be used by PostgreSQLs internal full-text search functions    
+  
 #Description: Comments added to objects identifiable by a URI      
 class comment(models.Model):
     #id = models.IntegerField(primary_key=True)
@@ -340,9 +224,8 @@ class node (models.Model):
     paths_start =models.BooleanField(default=False) # A boolean value that is set to true on any node where a path can start, i.e. where there are no node identifiers in paths_prev.
     isdeleted =models.BooleanField(default=False) # A boolean value that indicates whether a node has been deleted. True =deleted, false = not deleted.    
     tstamp = models.DateField(auto_now_add=True)
-    geoloc_longitude = models.FloatField(null=True)
-    geoloc_latitude = models.FloatField(null=True)
-    
+    # idxfti=models.TSVectorField('dc_title') # An index field including keyword information from main metadata fields to be used by PostgreSQLs internal full-text search functions    
+
 #Description: Rating scale for paths and other resources identifiable by a URI. 1 = dislikes, 2 =likes.
 class rating_scale (models.Model):
     #id = models.IntegerField(primary_key=True)
