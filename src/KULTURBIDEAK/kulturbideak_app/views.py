@@ -55,7 +55,7 @@ def hasiera(request):
     #EGUNEKO IBILBIDEAREN PARAMETROAK BIDALI BEHAR DIRA HEMEN
     #DB-an GALDERA EGIN EGUNEKO IBILBIDEA LORTZEKO
     #egunekoIbilbidea = path.objects.get(egunekoa=1)
-       
+   
     if(path.objects.filter(egunekoa=1)):
         
         egunekoIbilbidea = path.objects.get(egunekoa=1)
@@ -136,6 +136,12 @@ def nabigazioa_hasi(request):
     if 'path_id' in request.GET:
         path_id=request.GET['path_id']
         
+        momentukoPatha=path.objects.get(id=path_id)
+        
+        #Ibilbidearen Hasierak hartu
+        hasieraNodoak= node.objects.filter(fk_path_id_id=path_id,paths_start=1)
+    
+        
         #Hasierako nodo bat lortu
         momentukoNodea = node.objects.filter(fk_path_id_id=path_id, paths_start=1)[0]
         item_id=momentukoNodea.fk_item_id_id
@@ -144,9 +150,16 @@ def nabigazioa_hasi(request):
         aurrekoak=momentukoNodea.paths_prev
     
         hurrengoak_list=[]
+        hasieraBakarra=0
         #node taulatik "hurrengoak" tuplak hartu 
         if(hurrengoak != ""):
             hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
+        elif(hasieraNodoak.count()==1):       
+            hurrengoak_list=hasieraNodoak.fk_item_id_id
+        else:
+            hasieraBakarra=0       
+            hurrengoak_list=map(lambda x: x.fk_item_id_id,list(hasieraNodoak))
+    
     
         hurrengoak=node.objects.filter(fk_path_id_id=path_id,fk_item_id_id__in=hurrengoak_list)
     
@@ -180,7 +193,7 @@ def nabigazioa_hasi(request):
         botoKopuruaPath=momentukoIbilbidea.get_votes()
         botoKopuruaItem=momentukoItema.get_votes()
     
-        return render_to_response('nabigazio_item.html',{'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('nabigazio_item.html',{'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
     
     return False
         
@@ -190,6 +203,11 @@ def nabigazio_item(request):
     path_id=request.POST['path_id']
     item_id=request.POST['item_id']
     
+    print "nabigazio_item"
+    momentukoPatha=path.objects.get(id=path_id)
+    
+    #Ibilbidearen Hasierak hartu
+    hasieraNodoak= node.objects.filter(fk_path_id_id=path_id,paths_start=1)
     
     #DB-an GALDERA EGIN MOMENTUKO NODEA LORTZEKO
     momentukoNodea = node.objects.get(fk_item_id_id=item_id, fk_path_id_id=path_id) 
@@ -198,10 +216,19 @@ def nabigazio_item(request):
     aurrekoak=momentukoNodea.paths_prev
     
     hurrengoak_list=[]
+    hasieraBakarra=0
     #node taulatik "hurrengoak" tuplak hartu 
     if(hurrengoak != ""):
         hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
+    elif(hasieraNodoak.count()==1):       
+        #hurrengoak_list=hasieraNodoak.fk_item_id_id
+        hurrengoak_list=map(lambda x: x.fk_item_id_id,list(hasieraNodoak))
+        hasieraBakarra=1
+    else:
+        hasieraBakarra=0       
+        hurrengoak_list=map(lambda x: x.fk_item_id_id,list(hasieraNodoak))
     
+    print hasieraBakarra
     hurrengoak=node.objects.filter(fk_path_id_id=path_id,fk_item_id_id__in=hurrengoak_list)
     
     aurrekoak_list=[]
@@ -236,12 +263,18 @@ def nabigazio_item(request):
     botoKopuruaPath=momentukoIbilbidea.get_votes()
     botoKopuruaItem=momentukoItema.get_votes()
     
-    return render_to_response('nabigazio_item.html',{'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    return render_to_response('nabigazio_item.html',{'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 def nabigatu(request):
      
     path_id=request.GET['path_id']
     item_id=request.GET['item_id']
+    
+    print "nabigatu"
+    momentukoPatha=path.objects.get(id=path_id)
+    
+    #Ibilbidearen Hasierak hartu
+    hasieraNodoak= node.objects.filter(fk_path_id_id=path_id,paths_start=1)
     
     #DB-an GALDERA EGIN MOMENTUKO NODEA LORTZEKO
     momentukoNodea = node.objects.get(fk_item_id_id=item_id, fk_path_id_id=path_id) 
@@ -250,10 +283,19 @@ def nabigatu(request):
     aurrekoak=momentukoNodea.paths_prev
     
     hurrengoak_list=[]
+    hasieraBakarra=0
     #node taulatik "hurrengoak" tuplak hartu 
     if(hurrengoak != ""):
         hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
-    
+    elif(hasieraNodoak.count()==1):       
+        hurrengoak_list=hasieraNodoak.fk_item_id_id
+        hasieraBakarra=1
+    else:
+        hasieraBakarra=0      
+        hurrengoak_list=map(lambda x: x.fk_item_id_id,list(hasieraNodoak))
+        
+        
+    print hasieraBakarra
     hurrengoak=node.objects.filter(fk_path_id_id=path_id,fk_item_id_id__in=hurrengoak_list)
     
     aurrekoak_list=[]
@@ -282,10 +324,14 @@ def nabigatu(request):
     if(votes_item.objects.filter(item=item_id,user_id=request.user.id)):
         botatuDuItem=1
         
-        
+     #Momentuko Ibilbidea lortu
+    momentukoIbilbidea=path.objects.get(id=path_id)
+     
+    botoKopuruaPath=momentukoIbilbidea.get_votes()
+    botoKopuruaItem=momentukoItema.get_votes()   
     
     
-    return render_to_response('nabigazio_item.html',{'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    return render_to_response('nabigazio_item.html',{'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 def botoa_eman_path(request):
@@ -659,6 +705,7 @@ def erakutsi_item(request):
         geoloc_longitude=item_tupla.geoloc_longitude
         geoloc_latitude=item_tupla.geoloc_latitude
         
+        
         botatuDu=0
         if(votes_item.objects.filter(item=id,user_id=request.user.id)):
             botatuDu=1
@@ -866,17 +913,17 @@ def editatu_itema(request):
         edm_language=request.POST['hizkuntza']
         
         
-        print dc_language
+        
        
         if(dc_language=="1"):
-            dc_language="Euskera"
-            edm_language="Euskera"
+            dc_language="eu"
+            edm_language="eu"
         elif(dc_language=="2"):
-            dc_language="Gaztelania"
-            edm_language="Gaztelania"            
+            dc_language="es"
+            edm_language="es"            
         else:
-            dc_language="Ingelesa"
-            edm_language="Ingelesa"
+            dc_language="en"
+            edm_language="en"
          
         
         #dc_creator="Euskomedia" # ondoren logeatutako erabiltzailea jarri
@@ -921,6 +968,13 @@ def editatu_itema(request):
         gaia=item_tupla.dc_subject
         herrialdea=item_tupla.edm_country
         hizkuntza=item_tupla.dc_language
+        if(hizkuntza=="eu"):
+            hizkuntza=1
+        elif(hizkuntza=="es"):
+            hizkuntza=2
+        else:
+            hizkuntza=3
+            
         kategoria=item_tupla.dc_type
         eskubideak=item_tupla.edm_rights
         urtea=item_tupla.edm_year 
@@ -983,14 +1037,14 @@ def itema_gehitu(request):
         edm_language=request.POST['hizkuntza']
        
         if(dc_language=="1"):
-            dc_language="Euskera"
-            edm_language="Euskera"
+            dc_language="eu"
+            edm_language="eu"
         elif(dc_language=="2"):
-            dc_language="Gaztelania"
-            edm_language="Gaztelania"            
+            dc_language="es"
+            edm_language="es"            
         else:
-            dc_language="Ingelesa"
-            edm_language="Ingelesa"
+            dc_language="en"
+            edm_language="en"
          
         
         #dc_creator="Euskomedia" # ondoren logeatutako erabiltzailea jarri
@@ -1008,7 +1062,11 @@ def itema_gehitu(request):
             edm_object=str(azken_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
             handle_uploaded_file(request.FILES['irudia'],edm_object)
         
-        item_berria = item(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
+        latitude=request.POST['latitude']
+        print latitude
+        longitude=request.POST['longitude']
+        print longitude
+        item_berria = item(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
         item_berria.save()   
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
@@ -1016,29 +1074,20 @@ def itema_gehitu(request):
          
         return render_to_response('base.html',{'mezua':"item berria gehitu da"},context_instance=RequestContext(request))
     else:
-        itema=ItemGehituForm()
+        # language==interface language
+        
+        if(request.LANGUAGE_CODE=="eu"):
+            hizk=1
+        elif(request.LANGUAGE_CODE=="es"):
+            hizk=2
+        else:
+            hizk=3
+        
+        itema=ItemGehituForm(initial={'hizkuntza':hizk})
         non="itema_gehitu" #Mapako baimenak kontrolatzeko erabiliko da hau
         return render_to_response('itema_gehitu.html',{'itema':itema,'non':non},context_instance=RequestContext(request))
    
-'''
-def erregistratu(request):
-    
-    
-    if 'pasahitza' in request.POST:
-        #Datu-basean erabiltzaile berria sartu
-       
-        
-        izena=request.POST['erabIzena']
-        posta=request.POST['posta']
-        pasahitza=request.POST['pasahitza']
-         
-        user = User.objects.create_user(izena, posta, pasahitza)
-        
-        return render_to_response('base.html',context_instance=RequestContext(request))
-    else:
-        return render_to_response('erregistratu.html',context_instance=RequestContext(request))    
 
-'''
 def sortu_ibilbidea(request):
     
    
@@ -1109,13 +1158,16 @@ def ajax_lortu_most_voted_paths(request):
     #votes_path:path,user
     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path_id')).order_by('-votes_count')[:5]
     
-    path_ids=[]
-    for bozkatuena in bozkatuenak_path_zerrenda:
-        path_ids = bozkatuena.path_id
+    if bozkatuenak_path_zerrenda:
+        path_ids=[]
+        for bozkatuena in bozkatuenak_path_zerrenda:
+            path_ids = bozkatuena.path_id
     
     #hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
     
-    path_bozkatuenak=path.objects.filter(id__in=[path_ids])    
+        path_bozkatuenak=path.objects.filter(id__in=[path_ids]) 
+    else:
+        path_bozkatuenak=[]
     
     return render_to_response('ibilbide_bozkatuenak.xml', {'paths': path_bozkatuenak}, context_instance=RequestContext(request), mimetype='application/xml')
 

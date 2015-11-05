@@ -3,6 +3,10 @@
 {% block content %}
 
 
+<!--IBILBIDEAREN TITULUA -->
+
+<div><h4 class="media-heading titulu-kolorea">{{momentukoPatha.dc_title}}</h4></div>
+
 <!-- BOTAZIO SISTEMA IBILBIDEA--> 
 
   {% if user.is_authenticated %}
@@ -91,7 +95,7 @@
  	
 		</a>
 		<a class="btn btn-default eskuma" type="button" href="#" >
-			<b class="eskuma titulu-kolorea">{{botoKopuruaItem}}</b>
+			<b class="eskuma laguntza">{{botoKopuruaItem}}</b>
 		</a>
 		<a class="btn btn-default eskuma" type="button"  href="botoa_kendu_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}" >
 			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
@@ -103,8 +107,8 @@
 			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
  	
 		</a>
-		<a class="btn btn-default eskuma" type="button" href="#">
-			<b class="eskuma titulu-kolorea">{{botoKopuruaItem}}</b>
+		<a class="btn btn-default eskuma " type="button" href="#">
+			<b class="eskuma laguntza">{{botoKopuruaItem}}</b>
 		</a>
 		<a class="btn btn-default eskuma" type="button" href="botoa_kendu_item?id={{node_id}}" disabled >
 			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
@@ -145,10 +149,14 @@
  		 <button type="button" class="btn btn-info eskuma kolorea" onclick="nabigatu({{path_id}},{{hurrengoa.fk_item_id_id}})">
 			<span  aria-hidden="true"> 
 			
+			{%if hasieraBakarra == 1%}
+			<span class="glyphicon glyphicon-repeat" aria-hidden="true">  	</span>
+			{%else%}
 			<!--hemen hurrengoaren titulua jarri -->
     		{{hurrengoa.dc_title}} 
     		<span class="glyphicon glyphicon-forward" aria-hidden="true">  	</span>	   	
-    		</span> 	
+    		</span> 
+    		{% endif %}
 		</button>
 		</a>
 		</th>

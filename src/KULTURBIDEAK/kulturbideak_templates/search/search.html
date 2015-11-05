@@ -59,7 +59,7 @@ um_pages }}</p>-->
 		
 		<div class="thumbnail">
 
-			<a class="{% if not item.path_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="editatu_ibilbidea?id={{item.path_id}}" >
+			<a class="{% if not item.path_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="nabigazioa_hasi?path_id={{item.path_id}}" >
 				{% if item.path_thumbnail %}<img  src="{{item.path_thumbnail}}">{% endif %}
 			</a>
 			
@@ -68,7 +68,24 @@ um_pages }}</p>-->
 				 <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{item.path_dc_title}}"/>
 				 <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{item.path_thumbnail}}"/>
 				 
-				<h5><a class="" title="{{item.path_dc_title}}" href="editatu_ibilbidea?id={{item.path_id}}" id="path_titulua">{{item.path_dc_title}}</a></h5>
+				<h5><a class="" title="{{item.path_dc_title}}" href="nabigazioa_hasi?path_id={{item.path_id}}" id="path_titulua">{{item.path_dc_title}}</a></h5>
+    		
+    		<div class="btn-group" role="group" aria-label="...">
+       			<a class="btn btn-primary" type="button" href="nabigazioa_hasi?path_id={{item.path_id}}">
+       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+       			</a>
+       			{% if user.id == item.fk_usr_id_id %}
+
+					<a class="btn btn-default" type="button" href="editatu_ibilbidea?id={{item.path_id}}" >				
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</a>
+  				{%else%}
+					<button class="btn btn-default" type="button" action="editatu_ibilbidea?id={{item.path_id}}" disabled>
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</button>
+				{%endif%}
+				
+				</div>
     		</div>
 		</div>
 		{% endif %}

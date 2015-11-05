@@ -13,8 +13,6 @@ from django.db.models import Count
 #from pg_fts.fields import TSVectorField
 
 
-# Maddalen: Create your models here.
-
 #Laguntza: https://docs.djangoproject.com/en/1.8/ref/models/fields/#model-field-types
 #https://docs.djangoproject.com/en/1.8/topics/db/models/#field-types
 
@@ -74,6 +72,7 @@ class item(models.Model):
     egunekoa = models.BooleanField(default=False)
     geoloc_longitude = models.FloatField(null=True)
     geoloc_latitude = models.FloatField(null=True)
+    aberastua = models.BooleanField(default=False)
     # idxfti=models.TSVectorField('dc_title')
     
     def __unicode__(self):

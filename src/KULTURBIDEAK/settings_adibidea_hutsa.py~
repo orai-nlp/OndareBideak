@@ -15,7 +15,8 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-   ('YourName', 'email.email@email.com'),
+    ('Iker', 'i.manterola@elhuyar.com'),
+    ('Maddalen', 'm.lopezdelacalle@elhuyar.com'),
 )
 
 HIZKUNTZAK={
@@ -32,14 +33,21 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = ()
 ####################################
 
+'''CACHES = {
+    'default': {
+    'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+    'LOCATION': 'basque_research_cache_table',
+}
+}'''
+
 #BASE_URL="http://10.0.0.164:8008"
 DATABASES = {
         'default': {
-            'ENGINE': '', #django.db.backends.mysql Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': '',                      # Or path to database file if using sqlite3.
+            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'kulturbideak_db',                      # Or path to database file if using sqlite3.
             # The following settings are not used with sqlite3:
-            'USER': '',
-            'PASSWORD': '',
+            'USER': 'root',
+            'PASSWORD': 'llm_F054',
             'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
             'PORT': '',                      # Set to empty string for default.
         },      
@@ -191,6 +199,8 @@ INSTALLED_APPS += (
     # Added.
     'haystack',
     'bootstrap3',
+    'ajaxuploader',
+    #'rosetta',
     'KULTURBIDEAK.kulturbideak_app',
     'leaflet',
    
@@ -213,15 +223,14 @@ LEAFLET_CONFIG = {
 }
 
 
-# Haystack
+# Maddalen- Haystack
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': ''
-        #'URL': 'http://127.0.0.1:8983/solr'
+        'URL': 'http://127.0.0.1:8983/solr'
         # ...or for multicore...
         # 'URL': 'http://127.0.0.1:8983/solr/mysite',
     },
 }
-# Haystack
+# Maddalen- Haystack
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

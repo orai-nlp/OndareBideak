@@ -15,9 +15,9 @@ HIZKUNTZA_CHOICES = (
     (3, 'Ingelesa'),
 )
 
-def get_initial_language():
+#def get_initial_language():
     
-        return HIZKUNTZA_CHOICES[2]
+ #       return HIZKUNTZA_CHOICES[2]
 
 class LoginForm(Form):
     """Earbiltzaile bat logeatzeko formularioa kargatzen du"""
@@ -173,7 +173,7 @@ class ItemGehituForm(Form):
     gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
     eskubideak=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("eskubideak"),"type":"text", "class":"form-control"}))
     irudia=ImageField(max_length=32,required=False)
-    hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES, initial=get_initial_language())
+    hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
     
     
     
