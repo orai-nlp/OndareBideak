@@ -163,7 +163,7 @@ def nabigazioa_hasi(request):
         
         #Hasierako nodo bat lortu
         momentukoNodea = node.objects.filter(fk_path_id=momentukoPatha, paths_start=1)[0]
-        item_id=momentukoNodea.fk_item_id
+        item_id=momentukoNodea.fk_item_id.id
         
         hurrengoak=momentukoNodea.paths_next
         aurrekoak=momentukoNodea.paths_prev
@@ -173,12 +173,14 @@ def nabigazioa_hasi(request):
         #node taulatik "hurrengoak" tuplak hartu 
         if(hurrengoak != ""):
             hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
-        elif(hasieraNodoak.count()==1):       
-            hurrengoak_list=hasieraNodoak.fk_item_id
+        elif(hasieraNodoak.count()==1):
+          
+            hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
+            hasieraBakarra=1
         else:
             hasieraBakarra=0       
-            hurrengoak_list=map(lambda x: x.fk_item_id,list(hasieraNodoak))
-    
+            hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
+            
     
         hurrengoak=node.objects.filter(fk_path_id=momentukoPatha,fk_item_id__in=hurrengoak_list)
     
