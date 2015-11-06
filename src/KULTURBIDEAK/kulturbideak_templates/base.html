@@ -550,11 +550,11 @@ var paths_starts = [];
 var connections = [];
 
 
-function initialize(user_id){
+function initialize(){
 	//raphael martxan jartzeko
 	set_pb();
 	//kargatu workspaceko elementuak
-	load_ws(user_id);
+	load_ws();
 	//kargatu erabiltzailearen ibilbideak
 	//load_paths_list(user_id);
 	//Kargatu Ibilbide bozkatuenak
@@ -751,14 +751,13 @@ function add_most_voted_path_to_list(id,titulua){
     
 }
 
-function load_ws(user_id)
+function load_ws()
 {
-	//var user_id =1;
-	var ws_id=user_id;
-	load_ws_request(user_id,ws_id);	
+	
+	load_ws_request();	
 }
 
-function load_ws_request(user_id,ws_id){
+function load_ws_request(){
 	
 	
 	var csrftoken = getCookie('csrftoken');
@@ -779,7 +778,8 @@ function load_ws_request(user_id,ws_id){
         };
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("user_id=" + user_id +"&ws_id="+ ws_id + "&csrfmiddlewaretoken=" + csrftoken);                       // Eskaera bidali
+        //xmlHttp.send("user_id=" + user_id +"&ws_id="+ ws_id + "&csrfmiddlewaretoken=" + csrftoken);
+        xmlHttp.send("csrfmiddlewaretoken=" + csrftoken);                       // Eskaera bidali
     }
 }
 
@@ -835,8 +835,7 @@ function csrfSafeMethod(method) {
 
 
 function remove_me(element,item_id){
-	//AJAX-HASI
-	
+	//AJAX-HASI	
 	start_loader("loader");                          
 	create_remove_me_request(element,item_id);                                       	                                                           
 	stop_loader("loader");                                                  
@@ -909,8 +908,8 @@ function create_workspace_box(index,user_id){
     var irudia = document.getElementById("irudia_"+index).value;
    	
     //Ondoren user id-aren arabera WS-id-a lortu
-    //var fk_workspace_id=1;
-    var fk_workspace_id=user_id;
+   	
+    //var fk_workspace_id=user_id;  //EZ DAGO ONDO
     var uri="uri_"+item_id;
     var dc_source="Euskomedia";
     var dc_title=titulua;
@@ -922,7 +921,7 @@ function create_workspace_box(index,user_id){
   	//AJAX
   	start_loader("loader");                             
 	if (item_id.value != ""){		                                       
-		create_workspace_box_request(item_id,fk_workspace_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail);                                       //request!
+		create_workspace_box_request(item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail);                                       //request!
 	}
 	else{                                                                                                       // baldintzak bete ez badira
 		show_message("empty_workspace_box_error");                                                                  // (aukeran) errorea 
@@ -936,7 +935,7 @@ function create_workspace_box(index,user_id){
 
 
 //create workspace_box request
-function create_workspace_box_request(item_id,fk_workspace_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail)
+function create_workspace_box_request(item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail)
 {
 //var csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 	var csrftoken = getCookie('csrftoken');
@@ -958,17 +957,19 @@ function create_workspace_box_request(item_id,fk_workspace_id,uri,dc_source,dc_t
         };
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("item_id="+item_id+"&fk_workspace_id=" + fk_workspace_id + "&uri=" + uri + "&dc_source=" + dc_source + "&dc_title=" + dc_title + "&dc_description=" + dc_description + "&type=" + type + "&paths_thumbnail=" + paths_thumbnail + "&csrfmiddlewaretoken=" + csrftoken);                     
+        xmlHttp.send("item_id="+item_id+ "&uri=" + uri + "&dc_source=" + dc_source + "&dc_title=" + dc_title + "&dc_description=" + dc_description + "&type=" + type + "&paths_thumbnail=" + paths_thumbnail + "&csrfmiddlewaretoken=" + csrftoken);                     
     }
 	
 	
 }
 //create workspace box answer
 function create_workspace_box_answer(xmlHttp,item_id,titulua,irudia){
+    
     if (xmlHttp.readyState == 4){
         if(xmlHttp.status == 200){
-    		var item_id = server_answer(xmlHttp);
-            if (item_id){ 
+    		var item_id_server = server_answer(xmlHttp);
+    		
+            if (item_id_server){ 
             	
             	//Datu-basean sartu den Id-a nahi dut
             	add_workspace_box(item_id,titulua,irudia);
@@ -983,6 +984,7 @@ function create_workspace_box_answer(xmlHttp,item_id,titulua,irudia){
 }
 
 function add_workspace_box(box_id,text_value,image_value){
+	
 	
 	var ws = document.getElementById("workspace_boxes");
     
@@ -2699,7 +2701,7 @@ function ibilbidea_kargatu(path_id)
 
 
 {% if user.is_authenticated %}
-<body style="padding-top:0px;" onload="initialize({{request.user.id}});">
+<body style="padding-top:0px;" onload="initialize();">
 	
 	<!-- WORKSPACE -->
 	<div id="workspace">
