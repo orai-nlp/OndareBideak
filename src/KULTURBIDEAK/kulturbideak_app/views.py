@@ -1186,15 +1186,17 @@ def ajax_lortu_most_voted_paths(request):
     #bozkatuenak lortu
     #votes_path:path,user
     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:5]
-    
+   
     if bozkatuenak_path_zerrenda:
         path_ids=[]
         for bozkatuena in bozkatuenak_path_zerrenda:
-            path_ids = bozkatuena.path.id
-    
-    #hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
-    
-        path_bozkatuenak=path.objects.filter(id__in=[path_ids]) 
+            id = bozkatuena.path.id
+            path_ids.append(id)
+       
+        #hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
+        path_bozkatuenak=path.objects.filter(id__in=path_ids) 
+  
+        #path_bozkatuenak=path.objects.filter(id__in=[path_ids]) 
     else:
         path_bozkatuenak=[]
     
