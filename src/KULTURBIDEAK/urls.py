@@ -39,6 +39,7 @@ from KULTURBIDEAK.kulturbideak_app.views import botoa_eman_path
 from KULTURBIDEAK.kulturbideak_app.views import botoa_kendu_path
 from KULTURBIDEAK.kulturbideak_app.views import nabigazioa_hasi
 from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_most_voted_paths
+from KULTURBIDEAK.kulturbideak_app.views import cross_search
 from django.contrib import admin
 
 #MAddalen
@@ -61,7 +62,8 @@ urlpatterns = patterns('',
     url(r'uploads/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
    #url(r'^$', SearchView(), name='haystack_search'),
     url(r'^$', hasiera),
-    url(r'search', SearchView(), name='haystack_search'), 
+    #url(r'search', SearchView(), name='haystack_search'), 
+    url(r'cross_search', cross_search),
     url(r'login', logina),
     url(r'erregistratu$', erregistratu),
     url(r'perfila_erakutsi', perfila_erakutsi), 

@@ -1161,7 +1161,7 @@ $('#formEguneratu').submit(function(e) {
                             //$('#messages').addClass('alert alert-success').text(response);
                             // OP requested to close the modal
                             
-                            //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK
+                            //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK,HIZK
                            update_path_on_db(path_id);
                            
                            //$('#myModal').modal('hide');
@@ -1190,6 +1190,7 @@ function create_path_on_db()
 	var dc_subject = document.getElementById("path_gaia").value;
 	var paths_thumbnail = document.getElementById("file2");
 	var paths_thumbnail_name=paths_thumbnail.value;
+	var hizkuntza =document.getElementById("hizkuntza").value;
 	
 	//alert(paths_thumbnail_name);
 	
@@ -1201,7 +1202,7 @@ function create_path_on_db()
 	
 	if (paths_starts.length > 0){
 		                                            
-		create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail_name);                                  
+		create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail_name,hizkuntza);                                  
 	}
 	else{                                                                                                       // baldintzak bete ez badira
 		alert("empty_path_error");                                                                  // (aukeran) errorea 
@@ -1210,7 +1211,7 @@ function create_path_on_db()
 
 }
 
-function create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail_name)
+function create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail_name,hizkuntza)
 {
 	
 	var csrftoken = getCookie('csrftoken');
@@ -1235,7 +1236,7 @@ function create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_
      
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("uri="+uri+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail_name+"&csrfmiddlewaretoken=" + csrftoken);                     
+        xmlHttp.send("uri="+uri+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail_name+"&hizkuntza="+hizkuntza+"&csrfmiddlewaretoken=" + csrftoken);                     
     }
 	
 }
@@ -1369,12 +1370,14 @@ function update_path_on_db(path_id)
 	var dc_description = document.getElementById("path_desk").value;
 	var dc_subject = document.getElementById("path_gaia").value;
 	var paths_thumbnail = document.getElementById("file2");
-	var paths_thumbnail_name=paths_thumbnail.value;
+	var paths_thumbnail_name=paths_thumbnail.value;	
+	var hizkuntza =document.getElementById("hizkuntza").value;
+	
 	
 	
 	start_loader("loader");  	                                                                                   	
 	if (paths_starts.length > 0){		                                            
-		update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name);                                  
+		update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name,hizkuntza);                                  
 	}
 	else{                                                                                                      
 		alert("empty_path_error");                                                                
@@ -1382,7 +1385,7 @@ function update_path_on_db(path_id)
 	stop_loader("loader");   
 }
 
-function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name)
+function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name,hizkuntza)
 {
 	
 	var csrftoken = getCookie('csrftoken');
@@ -1405,7 +1408,7 @@ function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,pa
       
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("path_id="+path_id+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail_name+"&csrfmiddlewaretoken=" + csrftoken);                     
+        xmlHttp.send("path_id="+path_id+"&dc_title="+dc_title+"&dc_subject="+dc_subject+"&dc_description="+dc_description+"&paths_thumbnail="+paths_thumbnail_name+"&hizkuntza="+hizkuntza+"&csrfmiddlewaretoken=" + csrftoken);                     
     }
 	
 }
@@ -2695,7 +2698,319 @@ function ibilbidea_kargatu(path_id)
 }
 
 </script>
+
+<script>
 	
+var rows = 10;
+var text_buffer= "";
+var solr_url="http://localhost:8983/solr/";
+
+//load article
+function load_search(){
+    var search_text = get_url_post("search_text");
+    if (search_text != ""){
+        document.getElementById("search_input").value = search_text;
+        make_search();
+    }
+}
+
+//update offset
+function update_offset(offset){
+    var h_search_box = document.getElementById("h_search_box");
+    var h_search_language = document.getElementById("h_search_language");
+    var h_multilingual = document.getElementById("h_multilingual");
+    var h_search_area = document.getElementById("h_search_area");
+    var h_search_order = document.getElementById("h_search_order");
+    var doc_list = document.getElementById("search_results");
+    remove_content(doc_list);
+    make_search_request(h_search_box.value,h_search_language.value,Boolean(h_multilingual.value),h_search_area.value,h_search_order.value,(parseInt(offset)-1)*rows);
+}
+
+//make search
+function make_search(){
+	start_loader();
+    var search_text = document.getElementById("search_input").value.trim();
+    var search_language = document.getElementById("language_select").value;
+    $('input[name="genderS"]:checked').val();
+    //var multilingual = document.getElementById("multilingual").checked;
+    var multilingual = 1;
+    //var search_area = document.getElementById("search_area_select").value;
+    //var search_order =  document.getElementById("search_order_select").value;
+    //var doc_list = document.getElementById("search_results");
+    //var suggestion_box = document.getElementById("suggestion_box");
+    //var offset_s = document.getElementById("offset");
+    //suggestion_box.style.visibility = "hidden";
+    //offset_s.setAttribute("disabled","disabled");
+    //remove_content(doc_list);
+    //remove_content(offset);
+    if (search_text != ""){
+        make_search_request(search_text,search_language,multilingual,search_area,search_order);
+    }else{
+		show_bs_message("empty_search_error");
+        stop_loader();
+    }
+}
+
+//make search request
+function make_search_request(search_text,search_language,multilingual,search_area,search_order,offset,corrected_query){
+    if (!offset){
+        offset = 0;
+    }
+	if (!corrected_query){
+        corrected_query = false;
+    }
+	var xmlHttp = createXmlHttpRequestObject();
+	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){
+        var search_url = solr_url + "collection1/select";
+        search_url = search_url + "?q=";
+        var word_list = search_text.match(/".*?"|\S+/g);
+        for (var index=0;index<word_list.length;index++){
+            if (word_list[index] != ""){
+                if (search_language == 0 || search_language == 1){
+                    if (search_area > 1){
+                        search_url = search_url + " title_leu:" + word_list[index] + "^1.5";
+                    }
+                    else{
+                        search_url = search_url + " text_leu:" + word_list[index] + "^1.5";
+                    }
+                    if (multilingual){
+                        if (search_area > 1){
+                            search_url = search_url + " title_les2eu:" + word_list[index];
+                        }
+                        else {
+                            search_url = search_url + " text_les2eu:" + word_list[index];
+                        }
+                    }
+                }
+                if (search_language == 0 || search_language == 2){
+                    if (search_area > 1){
+                        search_url = search_url + " title_les:" + word_list[index] + "^1.5";
+                    }
+                    else{
+                        search_url = search_url + " text_les:" + word_list[index] + "^1.5";
+                    }
+                    if (multilingual){
+                        if (search_area > 1){
+                            search_url = search_url + " title_leu2es:" + word_list[index];
+                        }
+                        else{
+                            search_url = search_url + " text_leu2es:" + word_list[index];
+                        }
+                    }
+                }
+            }
+        }
+        if (!corrected_query){
+            search_url = search_url + "&spellcheck=true";
+            if (search_language == 0 || search_language == 1){
+                search_url = search_url + "&spellcheck.dictionary=spell_eu&spellcheck.dictionary=wordbreak_eu";
+            }
+            if (search_language == 0 || search_language == 2){
+                search_url = search_url + "&spellcheck.dictionary=spell_es&spellcheck.dictionary=wordbreak_es";
+            }
+        }
+        search_url = search_url + "&hl=true&hl.fl=title_st description_st body_st";
+        if (offset > 0){
+            search_url = search_url + "&start=" + offset;
+        }
+        if (search_order > 1){
+            search_url = search_url + "&sort=pub_date desc";
+        }
+        search_url = search_url + "&rows=" + rows + "&wt=xml";
+        xmlHttp.open("GET",search_url,true);
+        xmlHttp.onreadystatechange = function (){
+            make_search_answer(xmlHttp,search_text,search_language,multilingual,search_area,search_order,offset,corrected_query);
+        };
+        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xmlHttp.send();
+    }
+}
+
+//make search answer
+function make_search_answer(xmlHttp,search_text,search_language,multilingual,search_area,search_order,offset,corrected_query){
+    if (xmlHttp.readyState == 4){
+        if(xmlHttp.status == 200){
+            xml_answer = xmlHttp.responseXML;
+            xml_Document = xml_answer.documentElement;
+            var answer_docs = xml_Document.getElementsByTagName("result")[0];
+            var highlighting = answer_docs.nextElementSibling;
+            var collation_hits = 0;
+            var to_correct = false;
+            if ((!corrected_query) && (highlighting.nextElementSibling)){
+                var suggestions = highlighting.nextElementSibling.firstChild;
+                if (suggestions.children.length > 0){
+                    var collation = suggestions.lastElementChild;
+                    if (collation.getAttribute("name") == "collation"){
+                        collation_hits = collation.children[1].firstChild.data;
+                    }
+                }
+            }
+            if ((!corrected_query) && (collation_hits > 0) && (collation_hits >= answer_docs.children.length)){
+                var corrections = collation.lastElementChild.children;
+                var candidates = new Array();
+                var textFrom = "";
+                for (var index=0;index<corrections.length;index++){
+                    textFrom = corrections[index].getAttribute("name");
+                    if (!candidates[textFrom]){
+                        candidates[textFrom] = corrections[index].firstChild.data;
+                    }
+                    if (textFrom == corrections[index].firstChild.data){
+                        candidates[textFrom] = corrections[index].firstChild.data;
+                    }
+                }
+                for(var candidate in candidates) {
+                    if (candidates.hasOwnProperty(candidate)) {
+                        to_correct = to_correct || (candidates[candidate] != candidate);
+                    }
+                }
+                if (to_correct){
+                    var doc_list = document.getElementById("search_results");
+                    var did_you_mean = search_text;
+                    for(var candidate in candidates) {
+                        if (candidates.hasOwnProperty(candidate)) {
+                            did_you_mean = did_you_mean.replace(new RegExp(candidate, "i"),candidates[candidate]);
+                        }
+                    }
+                    var span_dym = document.createElement("div");
+                    span_dym.setAttribute("class","alert alert-warning");
+                    span_dym.appendChild(document.createTextNode(did_you_mean + " bilatu nahi zenuen?"));
+                    doc_list.appendChild(span_dym);
+                    var collation = suggestions.children[index];
+                    make_search_request(did_you_mean,search_language,multilingual,search_area,search_order,offset,true);
+                }
+            }
+            if (!to_correct){
+                if ((answer_docs.children.length > 0) && (collation_hits <= answer_docs.children.length)){
+                    var answers_found = answer_docs.getAttribute("numFound");
+                    var offset_s = document.getElementById("offset");
+                    if (offset_s.options.length == 0){
+                        var h_search_box = document.getElementById("h_search_box");
+                        var h_search_language = document.getElementById("h_search_language");
+                        var h_multilingual = document.getElementById("h_multilingual");
+                        var h_search_area = document.getElementById("h_search_area");
+                        var h_search_order = document.getElementById("h_search_order");
+                        h_search_box.value = search_text;
+                        h_search_language.value = search_language;
+                        h_multilingual.value = multilingual;
+                        h_search_area.value = search_area;
+                        h_search_order.value = search_order;
+                        var offset_s = document.getElementById("offset");
+                        for (var index=0;index<Math.ceil(answers_found/rows);index++){
+                            var option = document.createElement("option");
+                            option.appendChild(document.createTextNode(index+1))
+                            offset_s.appendChild(option);
+                        }
+                        if (offset_s.options.length > 1){
+                            offset_s.removeAttribute("disabled");
+                        }
+                    }
+                    for (var index=0;index<Math.min(rows, answer_docs.children.length);index++){
+                        create_answer(answer_docs.children[index],highlighting.children[index]);
+                    }
+        			stop_loader();
+                }
+                else if (answer_docs.children.length == 0){
+				    show_bs_message("empty_answer_error"); 
+        			stop_loader();
+                }
+            }
+        }
+    }
+}
+
+//create answer
+function create_answer(doc_element,highlight_element){
+    var pub_date = "";
+    var article_id = "";
+    var article_language = "";
+    var image_url = "";
+    var description = "";
+    var title = "";
+    var body = "";
+    for (index=0;index<doc_element.children.length;index++){
+        switch (doc_element.children[index].getAttribute("name")){
+            case "id":
+                article_id = doc_element.children[index].firstChild.data;
+                break;
+            case "language":
+                article_language = doc_element.children[index].firstChild.data;
+                break;
+            case "title_st":
+                title = doc_element.children[index].firstChild.data;
+                break;
+            case "description_st":
+                description = doc_element.children[index].firstChild.data;
+                break;
+            case "pub_date":
+                pub_date = new Date(doc_element.children[index].firstChild.data).toISOString().slice(0, 10);
+                break;
+            case "image_url":
+                if (doc_element.children[index].firstChild){
+                    image_url = doc_element.children[index].firstChild.data;
+                }
+                else{
+                    image_url = "";
+                }
+                break;
+        }
+    }
+    if (highlight_element){
+        for (index=0;index<highlight_element.children.length;index++){
+            switch (highlight_element.children[index].getAttribute("name")){
+                case "title_st":
+                    title = highlight_element.children[index].children[0].firstChild.data;
+                    break;
+                case "description_st":
+                    description = highlight_element.children[index].children[0].firstChild.data;
+                    break;
+                case "body_st":
+                    body = highlight_element.children[index].children[0].firstChild.data;
+                    break;
+            }
+        }
+    }
+
+    var div_doc = document.createElement("div");
+    div_doc.setAttribute("class","row clearfix");
+
+    var doc_url = document.createElement("a");
+    doc_url.setAttribute("class","doc_title");
+    doc_url.setAttribute("target","_blank");
+    doc_url.setAttribute("href","article_detail.html?id=" + article_id + "&lang=" + article_language);
+
+    var doc_title = document.createElement("h3");
+    doc_title.innerHTML = title
+    doc_url.appendChild(doc_title);
+
+    div_doc.appendChild(doc_url);
+
+    if (image_url != ""){
+        var doc_img = document.createElement("img");
+        doc_img.setAttribute("class","doc_image");
+        doc_img.setAttribute("src",image_url);
+        div_doc.appendChild(doc_img);
+    }
+    
+    var doc_date = document.createElement("small");
+    doc_date.appendChild(document.createTextNode(pub_date));
+    div_doc.appendChild(doc_date);
+
+    var doc_desc = document.createElement("h4");
+    doc_desc.setAttribute("class","doc_description");
+    doc_desc.innerHTML = description;
+    div_doc.appendChild(doc_desc);
+
+    var doc_body = document.createElement("p");
+    doc_body.innerHTML = body;
+    div_doc.appendChild(doc_body);
+
+    var doc_list = document.getElementById("search_results");
+    doc_list.appendChild(div_doc);
+}
+	
+	
+</script>
 
 </head>
 
@@ -2895,20 +3210,25 @@ function ibilbidea_kargatu(path_id)
     </ul>
   
     <div class="col-sm-3 col-md-3 bilatzailea-kutxa">
-		<form action="/search" method="get" class="navbar-form">
+		<!--<form action="/search" method="get" class="navbar-form">-->
+		<form action="/cross_search" method="post" class="navbar-form">
+			
 		{% csrf_token %}
 			<div class="input-group">
 			{% trans "Bilatu ..." as the_placeholder %}
-      		<input id="id_q" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="q">
+			<!-- id=id_q-->
+      		<input id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
      		<span class="input-group-btn">
        			<button class="btn btn-default" type="submit">
        			   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>	!
-       			 </button>
-       			
+       			 </button>      			
        			
       		</span>
-      	</div>
       		
+      	</div>
+      		<input  type="radio" name="hizkRadio" value="eu" checked> Eu
+			<input  type="radio" name="hizkRadio" value="es"> Es
+			<input  type="radio" name="hizkRadio" value="en"> En
       	</form>
       	
    	</div><!-- /input-group -->	

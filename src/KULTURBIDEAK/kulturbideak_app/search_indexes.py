@@ -5,7 +5,7 @@ from KULTURBIDEAK.kulturbideak_app.models import path
 
 
 class itemIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.CharField(document=True, use_template=True, template_name='search/indexes/kulturbideak_app/item_text.txt')
     dc_title = indexes.CharField(model_attr='dc_title')
     dc_subject = indexes.CharField(model_attr='dc_subject')
     dc_description = indexes.CharField(model_attr='dc_description')
@@ -25,27 +25,103 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     dc_identifier = indexes.CharField(model_attr='dc_identifier')
     dc_source = indexes.CharField(model_attr='dc_source')
     item_id = indexes.CharField(model_attr='id')
+    # LANGUAGE FIELDS:
+    text_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_eu.txt')
+    #title_eu=indexes.CharField()
+    #description_eu=indexes.CharField()
+    #subject_eu=indexes.CharField()
+    
+    text_eu2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_eu2es.txt')
+    #title_eu2es=indexes.CharField()
+    #description_eu2es=indexes.CharField()
+    #subject_eu2es=indexes.CharField()
+    
+    text_eu2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_eu2en.txt')
+    #title_eu2en=indexes.CharField()
+    #description_eu2en=indexes.CharField()
+    #subject_eu2en=indexes.CharField()
+    
+    
+    text_es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_es.txt')
+    #title_es=indexes.CharField()
+    #description_es=indexes.CharField()
+    #subject_es=indexes.CharField()
+    
+    text_es2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_es2eu.txt')
+    #title_es2eu=indexes.CharField()
+    #description_es2eu=indexes.CharField()
+    #subject_es2eu=indexes.CharField()
+    
+    text_es2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_es2en.txt')
+    #title_es2en=indexes.CharField()
+    #description_es2en=indexes.CharField()
+    #subject_es2en=indexes.CharField()
+    
+    
+    text_en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_en.txt')
+    #title_en=indexes.CharField()
+    #description_en=indexes.CharField()
+    #subject_en=indexes.CharField()
+    
+    text_en2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_en2eu.txt')
+    #title_en2eu=indexes.CharField()
+    #description_en2eu=indexes.CharField()
+    #subject_en2eu=indexes.CharField()
+    
+    text_en2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_en2es.txt')
+    #title_en2es=indexes.CharField()
+    #description_en2es=indexes.CharField()
+    #subject_en2es=indexes.CharField()
+    
     
     def get_model(self):
         return item
 
     def index_queryset(self, using=None):
+        '''Used when the entire index for model is updated.'''
         return self.get_model().objects.all()
     
     
 class pathIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.CharField(document=True, use_template=True , template_name='search/indexes/kulturbideak_app/path_text.txt')
     path_id = indexes.CharField(model_attr='id')
+    path_fk_user_id = indexes.CharField(model_attr='fk_user_id')
     path_uri = indexes.CharField(model_attr='uri')
     path_dc_title = indexes.CharField(model_attr='dc_title')
     path_dc_subject = indexes.CharField(model_attr='dc_subject')
     path_dc_description = indexes.CharField(model_attr='dc_description')
     path_lom_length = indexes.CharField(model_attr='lom_length')
     path_thumbnail = indexes.CharField(model_attr='paths_thumbnail')
+    language = indexes.CharField(model_attr='language')
+       
+    
+    # LANGUAGE FIELDS:
+    text_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_eu.txt')
+       
+    text_eu2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_eu2es.txt')
+     
+    text_eu2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_eu2en.txt')
+           
+    text_es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_es.txt')
+       
+    text_es2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_es2eu.txt')
+    
+    text_es2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_es2en.txt')
+     
+    text_en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_en.txt')
+      
+    text_en2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_en2eu.txt')
+   
+    text_en2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_en2es.txt')
+  
     
     def get_model(self):
         return path
 
     def index_queryset(self, using=None):
+        '''Used when the entire index for model is updated.'''
         return self.get_model().objects.all()
    
+
+#site.register(item, itemIndex)
+#site.register(path, pathIndex)

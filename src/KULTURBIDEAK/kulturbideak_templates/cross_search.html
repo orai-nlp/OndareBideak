@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load i18n %}
+
+<!--<p> Showing {{ page.object_list|length }} of {{ page.paginator.count }} Results on Page {{ page.number }} of {{ page.paginator.n\
+um_pages }}</p>-->
+<!--<p class="emaitzaInfo"> {{ items.count }} Kultur Item eta {{paths.count}} Ibilbide</p>-->
+
+
+
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.count }})</a></li>
+  <li><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.count}}) </a></li>
+</ul>
+
+
+<div class="tab-content">
+  <div id="itemak" class="tab-pane fade in active">
+  	
+  <!-- <div class="panel panel-default">-->
+  <!-- <div class="panel-body"> -->
+ 	{% for item in items %}
+ 	
+ 	 
+	<div class="column">	
+		<div class="col-xs-6 col-md-3">
+			
+		
+		{% if  item.item_id%}
+		<div class="thumbnail">
+			
+			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="erakutsi_item?id={{item.item_id}}" >
+				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
+			</a>
+			
+			<div class="caption">
+				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.item_id}}"/>
+				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
+				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
+				 
+				<h5><a class="" title="{{item.dc_title}}" href="erakutsi_item?id={{item.item_id}}" id="titulua">{{item.dc_title}}</a></h5>
+					
+				<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
+				<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
+				<p class="" id="herrialdea"><b>{% trans "Herrialdea:" %}</b>{{item.edm_country}}</p>
+				<p class="" id="sortzailea"><b>{% trans "Sortzailea:" %}</b>{{item.dc_creator}}</p>
+				
+				<div class="btn-group" role="group" aria-label="...">
+       			<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
+       				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+       			</button>
+       			{% if user.username == item.edm_provider %}
+
+					<a class="btn btn-default" type="button" href="editatu_itema?id={{item.item_id}}" >				
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</a>
+  				{%else%}
+					<button class="btn btn-default" type="button" action="editatu_itema" disabled>
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</button>
+				{%endif%}
+				
+				</div>
+    		</div>
+		</div> <!-- thumbnail -->
+		{% endif %}
+		</div>
+  </div>
+  {% empty %}
+	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
+{% endfor %}
+
+  </div> <!--itemak -->
+  
+  <div id="ibilbideak" class="tab-pane fade">
+  
+   {% for path in paths %}
+	<div class="column">	
+		<div class="col-xs-6 col-md-3">
+    
+    <div class="thumbnail">
+
+			<a class="{% if not path.path_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="nabigazioa_hasi?path_id={{path.path_id}}" >
+				{% if path.paths_thumbnail %}<img  src="{{path.path_thumbnail}}">{% endif %}
+			</a>
+			
+			<div class="caption">
+				<input type="hidden" id="path_id_{{ forloop.counter }}" value="{{path.path_id}}"/>
+				 <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.path_dc_title}}"/>
+				 <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.path_thumbnail}}"/>
+				 
+				<h5><a class="" title="{{path.path_dc_title}}" href="nabigazioa_hasi?path_id={{path.path_id}}" id="path.path_dc_title">{{path.path_dc_title}}</a></h5>    		
+    		<div class="btn-group" role="group" aria-label="...">
+       			<a class="btn btn-primary" type="button" href="nabigazioa_hasi?path_id={{path.path_id}}">
+       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+       			</a>
+       		
+       			{% if user.username == path.path_fk_user_id %}
+
+					<a class="btn btn-default" type="button" href="editatu_ibilbidea?id={{path.path_id}}" >				
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</a>
+  				{%else%}
+					<button class="btn btn-default" type="button" action="editatu_ibilbidea?id={{path.path_id}}" disabled>
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</button>
+				{%endif%}
+				
+				</div>
+    		</div>
+		</div><!-- thumbnail -->
+
+		</div>
+  </div>
+  {% empty %}
+	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
+{% endfor %}
+
+		
+  </div><!-- ibilbideak -->
+  
+<!--  </div>	panel -->			
+<!--</div> panel -->	
+
+</div> <!-- tab content -->
+
+
+
+
+
+
+  	
+
+	
+
+
+{% if page.has_previous or page.has_next %}
+    <div>
+     {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    |
+     {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+     </div>
+{% endif %}
+		
+{% endblock %} 
+			
+	
+	
+	
+	
+
+				
+	
+	

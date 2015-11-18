@@ -32,6 +32,11 @@ from KULTURBIDEAK.settings import *
 
 from django.utils.translation import ugettext as _
 
+
+from KULTURBIDEAK.kulturbideak_app.search_indexes import itemIndex
+from KULTURBIDEAK.kulturbideak_app.search_indexes import pathIndex
+from haystack.query import SQ, SearchQuerySet
+
 #from django.template.context_processors import csrf
 #MADDALEN
 #from haystack.forms import ModelSearchForm, HighlightedSearchForm
@@ -149,6 +154,49 @@ def ibilbideak_hasiera(request):
         
         
     return render_to_response('ibilbideak_hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+
+def cross_search(request):
+    # Helburu hizkuntza guztietan burutuko du bilaketa
+    hizkuntza=request.POST['hizkRadio']   
+    galdera=request.POST['search_input']
+  
+    items=[]
+    paths=[]
+    search_models_items = [item]
+    search_models_paths = [path]
+    
+    if hizkuntza == 'eu':
+     
+        items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
+        paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+               
+        #items = itemIndex.objects.filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera))
+        #items = itemIndex.objects.filter(SQ(text=galdera))
+        #paths =pathIndex.objects.filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera))
+       
+    elif hizkuntza == 'es':
+       
+        #items = itemIndex.objects.filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera))
+        #paths = pathIndex.objects.filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera))
+    
+    
+        items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+        paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+    
+    
+        
+    elif hizkuntza == 'en':
+        
+        #items = itemIndex.objects.filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera))
+        #paths = pathIndex.objects.filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera))
+
+        items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+        paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+
+    
+    #,'paths':paths
+    
+    return render_to_response('cross_search.html',{'items':items,'paths':paths},context_instance=RequestContext(request))
 
 def nabigazioa_hasi(request):
     
@@ -679,7 +727,7 @@ def editatu_ibilbidea(request):
         gaia=ibilbidea.dc_subject
         deskribapena=ibilbidea.dc_description
         irudia=ibilbidea.paths_thumbnail
-        
+        #hizkuntza=ibilbidea.language
         
         #path hasierak hartu
        # nodes = []
@@ -1437,6 +1485,8 @@ def ajax_path_berria_gorde(request):
         dc_subject=request.POST.get('dc_subject')
         dc_description=request.POST.get('dc_description')
         paths_thumbnail = request.POST.get('paths_thumbnail')
+        language=request.POST.get('hizkuntza')
+        
         ######paths_thumbnail=str(azken_id)+paths_thumbnail
        
         #fileObject= request.FILES.get('fileObject')
@@ -1459,7 +1509,8 @@ def ajax_path_berria_gorde(request):
                                         dc_title = dc_title,
                                         dc_subject = dc_subject,
                                         dc_description = dc_description,
-                                        paths_thumbnail = paths_thumbnail_url)
+                                        paths_thumbnail = paths_thumbnail_url,
+                                        language=language)
     
     
         path_berria.save()
@@ -1473,13 +1524,15 @@ def ajax_path_berria_gorde(request):
 
 def ajax_path_eguneratu(request):
     
-        
+    print request.POST
     path_id=request.POST.get('path_id')
     fk_usr_id=request.user.id
     dc_title=request.POST.get('dc_title')
     dc_subject=request.POST.get('dc_subject')
     dc_description=request.POST.get('dc_description')
     paths_thumbnail = request.POST.get('paths_thumbnail')
+    language=request.POST.get('hizkuntza')
+    
     
     #erabiltzaileak ibilbidearen irudia eguneratu ez baldin badu zaharra hartu
     if paths_thumbnail=='':
@@ -1501,7 +1554,8 @@ def ajax_path_eguneratu(request):
                            dc_description = dc_description,
                            paths_thumbnail = paths_thumbnail_url,
                            tstamp = timezone.now(),
-                           creation_date = timezone.now())
+                           creation_date = timezone.now(),
+                           language=language)
     
     
     path_eguneratua.save()

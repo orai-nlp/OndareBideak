@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from django.utils.translation import ugettext as _
 from django.db.models import Count
+#from haystack import site
 
 
 
@@ -263,6 +264,7 @@ class path (models.Model):
     creation_date = models.DateField(auto_now_add=True)
     proposatutakoa = models.BooleanField(default=False)
     egunekoa = models.BooleanField(default=False)
+    language=models.TextField() #eu,es,en
     
         
     # botoak lortu
