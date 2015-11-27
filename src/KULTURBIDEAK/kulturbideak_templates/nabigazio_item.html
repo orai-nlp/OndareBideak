@@ -1,11 +1,31 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
 {% block content %}
 
+
+
+{% if autoplay == 1 %}
+
+	<script>	
+		
+		//var orr="{{autoplaypages.0}}";
+		var orr="{{autoplaypage}}";
+		orr=orr+"&autoplay=1&offset="+{{offset}};
+		
+		var orria = orr.replace("&amp;", "&"); 	
+		var sec=2000;
+		doSetTimeOutAutoplay(orria,sec);
+	</script>
+
+{%endif%} <!--  autoplay-->
 
 <!--IBILBIDEAREN TITULUA -->
 
 <div><h4 class="media-heading titulu-kolorea">{{momentukoPatha.dc_title}}</h4></div>
+
+{% qr_from_text pathqrUrl "s" %}
 
 <!-- BOTAZIO SISTEMA IBILBIDEA--> 
 
@@ -133,7 +153,7 @@
     <h4 class="media-heading titulu-kolorea">{{momentukoItema.dc_title}}({{momentukoItema.dc_language}})</h4>
     {{momentukoNodea.dc_description}}
   </div>
-  	
+  	{% qr_from_text itemqrUrl "s" %}
  </div>
   	
   	<!-- HURRENGOAK -->
@@ -218,7 +238,6 @@
       {% endif %} 
 
 </div>
-
 
 
 {% endblock %} 

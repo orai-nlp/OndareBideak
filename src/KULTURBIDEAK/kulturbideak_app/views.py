@@ -23,6 +23,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from KULTURBIDEAK.kulturbideak_app.models import item
 from KULTURBIDEAK.kulturbideak_app.models import path
+from KULTURBIDEAK.kulturbideak_app.models import node
 from KULTURBIDEAK.kulturbideak_app.models import workspace_item
 from django.contrib.auth.models import User
 from KULTURBIDEAK.kulturbideak_app.forms import *
@@ -36,6 +37,8 @@ from django.utils.translation import ugettext as _
 from KULTURBIDEAK.kulturbideak_app.search_indexes import itemIndex
 from KULTURBIDEAK.kulturbideak_app.search_indexes import pathIndex
 from haystack.query import SQ, SearchQuerySet
+
+
 
 #from django.template.context_processors import csrf
 #MADDALEN
@@ -168,7 +171,26 @@ def cross_search(request):
     if hizkuntza == 'eu':
      
         items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
+        
         paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+        '''
+        title=items[2].dc_title
+        print "titulua"
+        print title
+        entry = item.objects.get(dc_title=title)
+        mlt = SearchQuerySet().more_like_this(entry)
+        print "count"
+        print mlt.count() # 5
+        print "more like this 1"
+        print mlt[0].object.dc_title
+        '''
+        
+        #entry = Entry.objects.get(slug='haystack-one-oh-released')
+        #mlt = SearchQuerySet().more_like_this(entry)
+        #mlt.count() # 5
+        #mlt[0].object.title # "Haystack Beta 1 Released"
+        
+        
                
         #items = itemIndex.objects.filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera))
         #items = itemIndex.objects.filter(SQ(text=galdera))
@@ -262,11 +284,123 @@ def nabigazioa_hasi(request):
         botoKopuruaPath=momentukoIbilbidea.get_votes()
         botoKopuruaItem=momentukoItema.get_votes()
     
-        return render_to_response('nabigazio_item.html',{'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        autoplay=0
+        
+        #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
+        pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=momentukoItema)
+        
+        
+        return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
     
     return False
         
 
+def autoplay_hasieratik(request):
+    
+   
+    if 'path_id' in request.GET:
+       
+        
+        path_id=request.GET['path_id']        
+        momentukoPatha=path.objects.get(id=path_id)
+        
+        #Ibilbidearen Hasierak hartu
+        nodes = [] 
+        erroak= node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)
+  
+        for erroa in erroak:
+            nodes = nodes + get_tree(erroa)
+        
+        #Autonabigaziorako orrien path-ak sortu
+        autoplaypages=[]
+        for nodoa in nodes:
+           
+            #id=nodoa.id
+            nodoID_str=str(nodoa.fk_item_id.id)
+            path_id_str=str(path_id)
+            
+            #nodoID_str=map(lambda x: str(x),nodoa.id)
+            #path_id_str=map(lambda x: str(x),path_id)
+                    
+            berria = 'nabigatu?path_id='+path_id_str+'&item_id='+nodoID_str;
+            print berria
+          
+            autoplaypages.append(berria)
+                      
+        #
+        
+        #Hasierako nodo bat lortu
+        momentukoNodea = node.objects.filter(fk_path_id=momentukoPatha, paths_start=1)[0]
+        item_id=momentukoNodea.fk_item_id.id
+        
+        hurrengoak=momentukoNodea.paths_next
+        aurrekoak=momentukoNodea.paths_prev
+    
+        hurrengoak_list=[]
+        hasieraBakarra=0
+        #node taulatik "hurrengoak" tuplak hartu 
+        if(hurrengoak != ""):
+            hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
+        elif(erroak.count()==1):
+          
+            hurrengoak_list=map(lambda x: x.fk_item_id.id,list(erroak))
+            hasieraBakarra=1
+        else:
+            hasieraBakarra=0       
+            hurrengoak_list=map(lambda x: x.fk_item_id.id,list(erroak))
+            
+    
+        hurrengoak=node.objects.filter(fk_path_id=momentukoPatha,fk_item_id__in=hurrengoak_list)
+    
+        aurrekoak_list=[]
+        #node taulatik "aurrekoak" tuplak hartu
+        if(aurrekoak != ""):
+            aurrekoak_list=map(lambda x: int(x),aurrekoak.split(","))
+    
+        aurrekoak=node.objects.filter(fk_path_id=momentukoPatha, fk_item_id__in=aurrekoak_list)
+    
+        #DB-an GALDERA EGIN MOMENTUKO ITEMA LORTZEKO
+        momentukoItema = item.objects.get(id=item_id)  
+    
+        #path hasierak hartu
+        nodes = [] 
+        erroak = node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)
+        for erroa in erroak:
+            nodes = nodes + get_tree(erroa)
+        
+        botatuDuPath=0
+        if(votes_path.objects.filter(path=momentukoPatha,user_id=request.user)):
+            botatuDuPath=1
+        
+        botatuDuItem=0
+        if(votes_item.objects.filter(item=momentukoItema,user_id=request.user)):
+            botatuDuItem=1
+   
+        #Momentuko Ibilbidea lortu
+        momentukoIbilbidea=path.objects.get(id=path_id)
+    
+        botoKopuruaPath=momentukoIbilbidea.get_votes()
+        botoKopuruaItem=momentukoItema.get_votes()
+    
+        autoplay=1
+        offset=0
+        autoplaypage=autoplaypages[0]
+        
+        #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
+        pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=momentukoItema)
+      
+        
+        return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    
+ 
 def nabigazio_item(request):
     
     path_id=request.POST['path_id']
@@ -329,12 +463,67 @@ def nabigazio_item(request):
     botoKopuruaPath=momentukoIbilbidea.get_votes()
     botoKopuruaItem=momentukoItema.get_votes()
     
-    return render_to_response('nabigazio_item.html',{'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    autoplay=0
+    
+    #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
+    pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
+    itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+    
+    #Itema erabiltzen duten path-ak lortu
+    itemPaths=node.objects.filter(fk_item_id=momentukoItema)
+    
+    return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 def nabigatu(request):
      
+    
     path_id=request.GET['path_id']
     item_id=request.GET['item_id']
+   
+    if 'autoplay' in request.GET:
+        autoplay=request.GET['autoplay']
+    else:
+        autoplay='0'
+        
+    if 'offset' in request.GET:
+        offset=request.GET['offset']
+       
+    if(autoplay == '1'):
+        
+       
+        momentukoPatha=path.objects.get(id=path_id)
+        
+        #Ibilbidearen Hasierak hartu
+        nodes = [] 
+        erroak= node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)
+  
+        for erroa in erroak:
+            nodes = nodes + get_tree(erroa)
+        
+        #Autonabigaziorako orrien path-ak sortu
+        autoplaypages=[]
+        for nodoa in nodes:
+           
+            nodoID_str=str(nodoa.fk_item_id.id)
+            path_id_str=str(path_id)
+                    
+            berria = 'nabigatu?path_id='+path_id_str+'&item_id='+nodoID_str;
+           
+            autoplaypages.append(berria)
+    
+       
+        path_len=len(autoplaypages)
+        path_len_ken=path_len-1
+        if int(offset) == path_len_ken:            
+            autoplay=0
+            autoplaypage=autoplaypages[path_len_ken]
+        else:
+            autoplay=1
+            offset=int(offset)+1
+            autoplaypage=autoplaypages[offset]
+         
+    else:
+        autoplay=0
     
     
     momentukoPatha=path.objects.get(id=path_id)
@@ -363,7 +552,6 @@ def nabigatu(request):
     
    
     hurrengoak=node.objects.filter(fk_path_id=momentukoPatha,fk_item_id__id__in=hurrengoak_list)
-    
     aurrekoak_list=[]
     #node taulatik "aurrekoak" tuplak hartu
     if(aurrekoak != ""):
@@ -394,7 +582,21 @@ def nabigatu(request):
     botoKopuruaItem=momentukoItema.get_votes()   
     
     
-    return render_to_response('nabigazio_item.html',{'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    
+    #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
+    pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
+    itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+    
+    #Itema erabiltzen duten path-ak lortu
+    itemPaths=node.objects.filter(fk_item_id=momentukoItema)
+    
+    
+    if(autoplay == 1):
+       
+        return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+
+    else:
+        return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 def botoa_eman_path(request):
@@ -451,7 +653,12 @@ def botoa_eman_path(request):
     botoKopuruaPath=path_tupla.get_votes()
     botoKopuruaItem=momentukoItema.get_votes()
     
-    return render_to_response('nabigazio_item.html',{'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    
+    #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
+    pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
+    itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+    
+    return render_to_response('nabigazio_item.html',{'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 def botoa_kendu_path(request):
@@ -507,7 +714,12 @@ def botoa_kendu_path(request):
     botoKopuruaPath=path_tupla.get_votes()
     botoKopuruaItem=momentukoItema.get_votes()
     
-    return render_to_response('nabigazio_item.html',{'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    
+    #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
+    pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
+    itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+    
+    return render_to_response('nabigazio_item.html',{'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 
@@ -782,7 +994,19 @@ def erakutsi_item(request):
             botatuDu=1
         
         botoKopurua=item_tupla.get_votes()
-        return render_to_response('item.html',{'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+        
+        #MORE LIKE THIS      
+        mlt = SearchQuerySet().more_like_this(item_tupla)      
+        #print mlt.count() # 5        
+        #print mlt[0].object.dc_title
+        
+        #QR-a sortzeko
+        qrUrl="http://ondarebideak.org/erakutsi_item?id="+id
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=item_tupla)
+        
+        return render_to_response('item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
 def botoa_eman_item(request):
     
@@ -813,6 +1037,15 @@ def botoa_eman_item(request):
         botatuDuItem=1
             
     botoKopuruaItem=item_tupla.get_votes()
+    
+    #MORE LIKE THIS      
+    mlt = SearchQuerySet().more_like_this(item_tupla)
+    
+    #QR-a sortzeko
+    qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
+    
+    #Itema erabiltzen duten path-ak lortu
+    itemPaths=node.objects.filter(fk_item_id=item_tupla)
         
     if nondik=='nabigazioa':
         path_id=request.GET['path_id']
@@ -859,11 +1092,13 @@ def botoa_eman_item(request):
     
         botoKopuruaPath=momentukoIbilbidea.get_votes()
         botoKopuruaItem=momentukoItema.get_votes()
+        
+        
     
-        return render_to_response('nabigazio_item.html',{'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
-        return render_to_response('item.html',{'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        return render_to_response('item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
     
 def botoa_kendu_item(request):
@@ -899,6 +1134,15 @@ def botoa_kendu_item(request):
             
     botoKopuruaItem=item_tupla.get_votes()
     
+    #MORE LIKE THIS      
+    mlt = SearchQuerySet().more_like_this(item_tupla)
+    
+    #QR-a sortzeko
+    qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
+    
+    #Itema erabiltzen duten path-ak lortu
+    itemPaths=node.objects.filter(fk_item_id=item_tupla)
+    
     if nondik=='nabigazioa':
         path_id=request.GET['path_id']
             
@@ -945,11 +1189,11 @@ def botoa_kendu_item(request):
         botoKopuruaPath=momentukoIbilbidea.get_votes()
         botoKopuruaItem=momentukoItema.get_votes()
     
-        return render_to_response('nabigazio_item.html',{'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
         
-        return render_to_response('item.html',{'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        return render_to_response('item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
 
 def editatu_itema(request):

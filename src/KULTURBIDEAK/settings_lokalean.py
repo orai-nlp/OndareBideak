@@ -195,7 +195,7 @@ INSTALLED_APPS += (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'django.contrib.admin',
+    'django.contrib.admin',
     # Added.
     'haystack',
     'bootstrap3',
@@ -203,6 +203,7 @@ INSTALLED_APPS += (
     #'rosetta',
     'KULTURBIDEAK.kulturbideak_app',
     'leaflet',
+    'qrcode',
    
 
     #'south',

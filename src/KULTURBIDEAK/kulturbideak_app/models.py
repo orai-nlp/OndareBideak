@@ -126,7 +126,9 @@ class item(models.Model):
             print error
             return False
         
-
+    #Itemei dagokien QR kodeak sortzeko erabiliko da
+    def get_absolute_url(self):
+        return "http://www.kulturbideak.org/erakutsi_item?id=%i" % self.id
 
 class votes_item(models.Model):
     item = models.ForeignKey(item)

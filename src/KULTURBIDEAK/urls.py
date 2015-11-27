@@ -40,6 +40,7 @@ from KULTURBIDEAK.kulturbideak_app.views import botoa_kendu_path
 from KULTURBIDEAK.kulturbideak_app.views import nabigazioa_hasi
 from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_most_voted_paths
 from KULTURBIDEAK.kulturbideak_app.views import cross_search
+from KULTURBIDEAK.kulturbideak_app.views import autoplay_hasieratik
 from django.contrib import admin
 
 #MAddalen
@@ -96,7 +97,8 @@ urlpatterns = patterns('',
     url(r'botoa_eman_path', botoa_eman_path),
     url(r'botoa_kendu_path', botoa_kendu_path), 
     url(r'nabigazioa_hasi', nabigazioa_hasi),
-    url(r'ajax_lortu_most_voted_paths', ajax_lortu_most_voted_paths),   
+    url(r'ajax_lortu_most_voted_paths', ajax_lortu_most_voted_paths),
+    url(r'autoplay_hasieratik', autoplay_hasieratik),    
     (r'^search/', include('haystack.urls')),
     #url(r'^rosetta/', include('rosetta.urls')),
     

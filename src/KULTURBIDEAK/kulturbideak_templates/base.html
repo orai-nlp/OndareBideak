@@ -24,7 +24,7 @@
 
 {% leaflet_js %}
 {% leaflet_css %}
-
+{% load qr_tags %}
 
 
 
@@ -45,14 +45,15 @@
     }
    .bilaketaEmaitza{
 
-		background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");
+		/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
+		background-image: url("/uploads/NoIrudiItem.png");
 		min-height: 120px;
 		background-size: 120px 120px;
 	
 	}
 	.bilaketaEmaitzaPath{
 		
-		background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiBide.png");
+		background-image: url("/uploads/NoIrudiBide.png");
 		min-height: 120px;
 		background-size: 120px 120px;
 	}
@@ -1957,7 +1958,7 @@ function nabigatu(path_id,node_id)
 {
 
 	//ALA nabigazio_item-era zuzenean?
-	var url = 'nabigatu?path_id='+path_id+'&item_id='+node_id;   	
+	var url = 'nabigatu?path_id='+path_id+'&item_id='+node_id+'&autoplay=0';   	
     window.location.href=url;
 	
 }
@@ -3012,11 +3013,38 @@ function create_answer(doc_element,highlight_element){
 	
 </script>
 
+
+
+
+<script type="text/javascript">   
+
+//AUTOPLAY
+function Redirect(url) 
+{  
+	window.location=url; 
+} 
+//document.write("You will be redirected to a new page in 5 seconds"); 
+//setTimeout('Redirect()', 5000);   
+
+function doSetTimeOutAutoplay(url,sec)
+{
+	//alert("doSetTimeOutAutoplay");
+	//alert(url);
+	//setTimeout('Redirect('+url+')', sec);
+	setTimeout(function(){window.location = url;}, sec);
+}
+
+</script>
+
 </head>
+
+
+
 
 
 {% if user.is_authenticated %}
 <body style="padding-top:0px;" onload="initialize();">
+	<!--<body onload="setTimeout(function(){window.location = 'itemak_hasiera';}, 5000)">-->
 	
 	<!-- WORKSPACE -->
 	<div id="workspace">
@@ -3315,6 +3343,8 @@ function create_answer(doc_element,highlight_element){
 	 		<br />
 	 		<br />
 	 		<p>EuskoMedia</p>
+	 		
+
 	 	</div>	
 			
 		<div class="content_div" align="center">
@@ -3393,6 +3423,18 @@ function create_answer(doc_element,highlight_element){
 				</div>
 				
 			</div>
+			
+			<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI-->
+			{%if itemPaths %}
+			<div class=""><b>{% trans "Ze Ibilbidetan? " %} </b>
+			{% for node in itemPaths %}
+				{% if forloop.counter < 6 %}
+					<p><a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a></p>
+				{%endif%}
+			{%endfor%}
+			
+			</div>
+			{%endif%}
 			<br />
 			<br />
 			<div class="laguntza"><b>{% trans "Laguntza" %} </b>
@@ -3420,8 +3462,11 @@ function create_answer(doc_element,highlight_element){
 				
 				</a>
 				<a class="ssk ssk-email" href=""></a>
+				
 			</div>
+			
 		</div>
+		<!--{% qr_from_mail "m.lopezdelacalle@elhuyar.com" "s" %}-->
 	</div>
 
 
