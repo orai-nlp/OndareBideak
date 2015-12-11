@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<div class="login-erregistratu">
+	
+	<form action="/oaipmh_datubilketa" method="post" class="form">
+		{% csrf_token %}
+		
+		{{oaipmhform}}
+		
+     		<br/>
+     		
+       		<button class="btn btn-default" type="submit" name="oaipmh_bilketa">
+       		 {% trans "Hasi" %}
+       		</button>
+       			
+       		
+      		
+      	
+      	</form>
+
+</div>
+{% endblock %} 

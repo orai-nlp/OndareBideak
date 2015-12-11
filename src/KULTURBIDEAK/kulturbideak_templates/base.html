@@ -412,7 +412,9 @@
     /*width: 400px;*/
     margin: 10px;
 	}
-	
+	.aRight {
+		float: right;
+	}
 </style>
 
 <script type="text/javascript">
@@ -2981,7 +2983,7 @@ function create_answer(doc_element,highlight_element){
     doc_url.setAttribute("href","article_detail.html?id=" + article_id + "&lang=" + article_language);
 
     var doc_title = document.createElement("h3");
-    doc_title.innerHTML = title
+    doc_title.innerHTML = title;
     doc_url.appendChild(doc_title);
 
     div_doc.appendChild(doc_url);
@@ -3239,7 +3241,7 @@ function doSetTimeOutAutoplay(url,sec)
   
     <div class="col-sm-3 col-md-3 bilatzailea-kutxa">
 		<!--<form action="/search" method="get" class="navbar-form">-->
-		<form action="/cross_search" method="post" class="navbar-form">
+		<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
 			
 		{% csrf_token %}
 			<div class="input-group">
@@ -3247,10 +3249,10 @@ function doSetTimeOutAutoplay(url,sec)
 			<!-- id=id_q-->
       		<input id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
      		<span class="input-group-btn">
-       			<button class="btn btn-default" type="submit">
+       		<button class="btn btn-default" type="submit">
        			   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>	!
-       			 </button>      			
-       			
+       		</button>   
+       		
       		</span>
       		
       	</div>
@@ -3260,6 +3262,105 @@ function doSetTimeOutAutoplay(url,sec)
       	</form>
       	
    	</div><!-- /input-group -->	
+   	
+   	
+   	<!-- PROBA HASI -->  	
+
+
+   
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script type="text/javascript">
+    // In a perfect world, this would be its own library file that got included
+    // on the page and only the ``$(document).ready(...)`` below would be present.
+    // But this is an example.
+    var Autocomplete = function(options) {
+      this.form_selector = options.form_selector
+      this.url = options.url || '/autocomplete/'
+      this.delay = parseInt(options.delay || 300)
+      this.minimum_length = parseInt(options.minimum_length || 3)
+      this.form_elem = null
+      this.query_box = null
+    }
+
+    Autocomplete.prototype.setup = function() {
+      var self = this
+
+      this.form_elem = $(this.form_selector)
+      this.query_box = this.form_elem.find('input[name=search_input]')
+
+      // Watch the input box.
+      this.query_box.on('keyup', function() {
+        var query = self.query_box.val()
+
+        if(query.length < self.minimum_length) {
+          return false
+        }
+
+        self.fetch(query)
+      })
+
+      // On selecting a result, populate the search field.
+      this.form_elem.on('click', '.ac-result', function(ev) {
+        self.query_box.val($(this).text())
+        $('.ac-results').remove()
+        return false
+      })
+    }
+
+    Autocomplete.prototype.fetch = function(query) {
+      var self = this
+
+      $.ajax({
+        url: this.url
+      , data: {
+          'q': query
+        }
+      , success: function(data) {
+          self.show_results(data)
+          
+        }
+      })
+    }
+
+    Autocomplete.prototype.show_results = function(data) {
+      // Remove any existing results.
+      $('.ac-results').remove()
+
+      var results = data.results || []
+      var results_wrapper = $('<div class="ac-results"></div>')
+      var base_elem = $('<div class="result-wrapper"><a href="#" class="ac-result"></a></div>')
+
+      if(results.length > 0) {
+        for(var res_offset in results) {
+          var elem = base_elem.clone()
+          // Don't use .html(...) here, as you open yourself to XSS.
+          // Really, you should use some form of templating.
+          elem.find('.ac-result').text(results[res_offset])
+          results_wrapper.append(elem)
+        }
+      }
+      else {
+        var elem = base_elem.clone()
+        elem.text("No results found.")
+        results_wrapper.append(elem)
+      }
+
+      this.query_box.after(results_wrapper)
+    }
+
+    $(document).ready(function() {
+      window.autocomplete = new Autocomplete({
+        form_selector: '.autocomplete-me'
+      })
+      window.autocomplete.setup()
+    })
+  </script> 	
+   	
+   	
+   	
+   	
+   	<!-- BIGARREN PROBA-->
     {% if user.is_authenticated %}
     <ul class="nav navbar-nav navbar-right">
       <li><a href="irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"> 
@@ -3269,6 +3370,8 @@ function doSetTimeOutAutoplay(url,sec)
         <ul class="dropdown-menu">
           <li><a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a></li>
     				<li><a href="nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a></li>
+    				<li role="separator" class="divider"></li>
+    				<li><a href="oaipmh_datubilketa">{% trans "OAI-PMH bidezko itemen bilketa" %}</a></li>
     				<li><a href="itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
        				</li></a>
       				
@@ -3424,14 +3527,18 @@ function doSetTimeOutAutoplay(url,sec)
 				
 			</div>
 			
-			<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI-->
+			<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
 			{%if itemPaths %}
 			<div class=""><b>{% trans "Ze Ibilbidetan? " %} </b>
 			{% for node in itemPaths %}
-				{% if forloop.counter < 6 %}
+				{% if forloop.counter < 4 %}
 					<p><a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a></p>
 				{%endif%}
 			{%endfor%}
+			</br>
+			{% if itemPaths|length  >= 1 %} <!-- ONDOREN >= 4 JARRI-->
+			<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
+			{%endif%}
 			
 			</div>
 			{%endif%}
@@ -3471,10 +3578,46 @@ function doSetTimeOutAutoplay(url,sec)
 
 
 
-<!--
+<!--Ventana modal-->
+
+<div class="modal fade" id="modalMore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Itema ondorengo ibilbideetan bisita dezakezu</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body">
+                    	
+                    		<div id="messages"></div>                                                       
+                            {% for node in itemPaths %}							
+								<label for="exampleInputEmail1"><a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a></label><br/>				
+							{%endfor%}                      
+                            <br/>						
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
+                            </div>                            
+                            <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
 </div>
-</div>
--->
+
+ 
+
+<!--Fin Ventana modal-->
+
+
+
+
+
+
+
 <!-- Latest compiled and minified JavaScript -->
 <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
 <script type="text/javascript">

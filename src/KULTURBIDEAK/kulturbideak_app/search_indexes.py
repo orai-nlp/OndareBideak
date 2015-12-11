@@ -25,6 +25,13 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     dc_identifier = indexes.CharField(model_attr='dc_identifier')
     dc_source = indexes.CharField(model_attr='dc_source')
     item_id = indexes.CharField(model_attr='id')
+    
+    # We add this for autocomplete.
+    #content_auto = indexes.EdgeNgramField(model_attr='content')
+    content_auto = indexes.EdgeNgramField(model_attr='dc_title')
+    #content_auto = indexes.EdgeNgramField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text.txt')
+    
+    
     # LANGUAGE FIELDS:
     text_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_eu.txt')
     #title_eu=indexes.CharField()

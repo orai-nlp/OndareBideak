@@ -38,6 +38,9 @@ from KULTURBIDEAK.kulturbideak_app.search_indexes import itemIndex
 from KULTURBIDEAK.kulturbideak_app.search_indexes import pathIndex
 from haystack.query import SQ, SearchQuerySet
 
+import simplejson as json
+import getopt
+import tempfile
 
 
 #from django.template.context_processors import csrf
@@ -58,7 +61,7 @@ import tempfile
 
 import datetime
 import string
-
+from oaiharvestandstore_django import oaiharveststore
 
 
 def get_tree(el_node):
@@ -158,6 +161,21 @@ def ibilbideak_hasiera(request):
         
     return render_to_response('ibilbideak_hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
 
+def autocomplete(request):
+    
+    sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
+    suggestions = [result.dc_title for result in sqs]
+    # Make sure you return a JSON object, not a bare list.
+    # Otherwise, you could be vulnerable to an XSS attack.
+    the_data = json.dumps({
+        'results': suggestions
+    })
+    return HttpResponse(the_data, content_type='application/json')
+
+
+
+
+
 def cross_search(request):
     # Helburu hizkuntza guztietan burutuko du bilaketa
     hizkuntza=request.POST['hizkRadio']   
@@ -168,8 +186,11 @@ def cross_search(request):
     search_models_items = [item]
     search_models_paths = [path]
     
+    #egiteko: hizkuntza edozein dela ere, galdera hutsunea bada, item guztiak erakutsi
+    
     if hizkuntza == 'eu':
      
+        #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
         items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
         
         paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
@@ -753,7 +774,43 @@ def logina(request):
     else:
         logina=LoginForm()
         return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
+
+def db_oaipmh_bilketa(cd):
+    """ oai-pmh baseURL batetik abiatuta itemak EDM formatuan jetsi eta metadatuak datu-basean gorde"""
+    
+    baseurl=cd['baseurl']
+    wikify=cd['wikify']
+    
+    
+ 
+    # -c temporalak sortzen dira /tmp karpetan 
+    #collection="/home/maddalen/OAI-PMH_COLLECTION/"
+    collection = tempfile.mkdtemp() 
+    
   
+    if oaiharveststore(collection, baseurl, wikify):
+     
+        return True
+    else:
+        return False
+
+def oaipmh_datubilketa(request):
+    
+    oaipmhform=OaipmhForm()
+    
+    if 'oaipmh_bilketa' in request.POST: 
+        oaipmh_form=OaipmhForm(request.POST)
+        if oaipmh_form.is_valid():
+            cd=oaipmh_form.cleaned_data
+            if db_oaipmh_bilketa(cd):
+               
+                return render_to_response('base.html',{'mezua':"Itemak ondo biltegiratu dira"},context_instance=RequestContext(request))
+            else:
+                return render_to_response('base.html',{'mezua':"ERROREA: Itemak EZ DIRA ondo biltegiratu dira"},context_instance=RequestContext(request))
+            
+        else:
+                return render_to_response("oaipmh_datubilketa.html",{"oaipmhform":oaipmhform},context_instance=RequestContext(request)) 
+    return render_to_response("oaipmh_datubilketa.html",{"oaipmhform":oaipmhform},context_instance=RequestContext(request)) 
  
 def erregistratu(request):
     """Erabiltzaile bat sisteman erregistratzen du"""

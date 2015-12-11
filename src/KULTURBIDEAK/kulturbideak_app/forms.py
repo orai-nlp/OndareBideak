@@ -18,9 +18,15 @@ HIZKUNTZA_CHOICES = (
 #def get_initial_language():
     
  #       return HIZKUNTZA_CHOICES[2]
-
+ 
+ 
+class OaipmhForm(Form):
+    """OAI-PMH bidez itemak datu-baseratzeko formularioa kargatzen du"""
+    baseurl=CharField(max_length=150,required=True, widget=TextInput(attrs={"placeholder":_("baseUrl"),"type":"text", "class":"form-control"}))
+    wikify=BooleanField(required=False)
+    
 class LoginForm(Form):
-    """Earbiltzaile bat logeatzeko formularioa kargatzen du"""
+    """Erabiltzaile bat logeatzeko formularioa kargatzen du"""
     erabiltzailea=CharField(max_length=150,required=True, widget=TextInput(attrs={"placeholder":_("erabiltzailea"),"type":"text", "class":"form-control"}))
     pasahitza=CharField(max_length=32, widget=PasswordInput(attrs={"placeholder":_("pasahitza"),"type":"password", "class":"form-control"}),required=True)
 

@@ -1,0 +1,302 @@
+# coding=utf-8
+from lxml import etree
+from subprocess import call
+import os
+import sys, getopt
+import MySQLdb
+
+#EXAMPLE CALL
+#python  oaiharvestandstore.py -c/home/maddalen/OAI-HARVESTER/Hedatuz-EDM -bhttp://hedatuz.euskomedia.org/cgi/oai2
+
+
+def oaiharveststore(collection, baseurl, wikify):
+
+    print 'COLLECTION   :', collection
+    print 'BASEURL      :', baseurl
+    print 'WIKIFY       :', wikify
+    
+
+
+    print '++++++++++++++++START HARVESTER ++++++++++++++++'
+
+
+    os.chdir(collection)
+    #Subprocess ERABILI!!!
+    os.system("oai-harvest --no-delete -p edm '{0}'".format(baseurl))
+
+
+
+    ns = {'dcterms':'http://purl.org/dc/terms/','rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#','skos':'http://www.w3.org/2004/02/skos/core#','owl':'http://www.w3.org/2002/07/owl#','bibo':'http://purl.org/ontology/bibo/','ore':'http://www.openarchives.org/ore/terms/','xsi':'http://www.w3.org/2001/XMLSchema-instance','foaf':'http://xmlns.com/foaf/0.1/','edm':'http://www.europeana.eu/schemas/edm/','dc':'http://purl.org/dc/elements/1.1/'}
+
+    #connect to db
+    conndb = MySQLdb.connect(host= "localhost",
+                  user="root",
+                  passwd="llm_F054",
+                  db="kulturbideak_db",
+                  charset='utf8',
+                  use_unicode=True)
+
+    #setup cursor
+    cursor = conndb.cursor()
+
+
+    print '+++++++++++++++START STORE      ++++++++++++++++'
+
+    #for file in os.listdir(sys.argv[1]):
+    for file in os.listdir(collection):
+        if file.endswith(".xml"):
+            print(file)
+	    tree=etree.parse(file)
+
+            #Aldagaiak
+            #EDM
+	    edmProvider=[]
+	    edmDataProvider=[]
+	    edmRights=[]
+	    edmIsShownAt=[]
+	    edmIsShownBy=[]
+	    edmObject=[]
+	    edmHasView=[]
+	    edmType=[]
+
+            #DC
+	    dcTitle_eu=[]
+	    dcTitle_es=[]
+	    dcTitle_en=[]
+	    dcCreator=[]
+	    dcSubject=[]
+	    dcSubject2=[]
+	    dcDescription_eu=[]
+	    dcDescription_es=[]
+	    dcDescription_en=[]
+	    dcPublisher=[]
+	    dcLanguage=[]
+	    dcIdentifier=[]
+	    dcIsPartOf=[]
+	    dcIdentifier=[]
+        
+            #DCTERMS
+	    dctermsIssued=[]
+	    dctermsCreated=[]
+	    dctermsExtent=[]
+
+            #EDM
+	    edmProviderValue="";
+	    edmDataProviderValue="";
+	    edmRightsValue="";
+	    edmIsShownAtValue="";
+	    edmIsShownByValue="";
+	    edmObjectValue="";
+	    edmHasViewValue="";
+	    edmTypeValue="";
+
+            #DC
+	    dcTitle_lgValue=""
+	    dcTitle_euValue="";
+	    dcTitle_esValue="";
+	    dcTitle_enValue="";
+	    dcTitle_frValue="";
+	    dcCreatorValue="";
+	    dcSubjectValue="";
+	    dcDescription_lgValue="";
+	    dcDescription_euValue="";
+	    dcDescription_esValue="";
+	    dcDescription_enValue="";
+	    dcDescription_frValue="";
+	    dcPublisherValue="";
+	    dcLanguageValue="";
+	    dcIdentifierValue="";
+	    dcIsPartOfValue="";
+            dcIdentifierValue="";
+
+            #DCTERMS
+	    dctermsIssuedValue="";
+	    dctermsCreatedValue="";
+	    dctermsExtentValue="";
+
+
+            #xpath-ak
+            #EDM
+	    edmProvider=tree.xpath('/rdf:RDF/ore:Aggregation/edm:provider',namespaces=ns)
+	    edmDataProvider=tree.xpath('/rdf:RDF/ore:Aggregation/edm:dataProvider',namespaces=ns)
+	    edmRights=tree.xpath('/rdf:RDF/ore:Aggregation/edm:rights/@rdf:resource',namespaces=ns)
+	    edmIsShownAt=tree.xpath('/rdf:RDF/ore:Aggregation/edm:isShownAt/@rdf:resource',namespaces=ns)
+	    edmIsShownBy=tree.xpath('/rdf:RDF/ore:Aggregation/edm:isShownBy/@rdf:resource',namespaces=ns)
+	    edmObject=tree.xpath('/rdf:RDF/ore:Aggregation/edm:object/@rdf:resource',namespaces=ns)
+	    edmHasView=tree.xpath('/rdf:RDF/ore:Aggregation/edm:hasView/@rdf:resource',namespaces=ns)
+	    edmType=tree.xpath('/rdf:RDF/edm:ProvidedCHO/edm:type',namespaces=ns)
+
+            #DC
+	    dcTitle_lg=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:title',namespaces=ns)
+	    dcTitle_eu=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:title[@xml:lang="eu"]',namespaces=ns)
+            dcTitle_es=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:title[@xml:lang="es"]',namespaces=ns)
+	    dcTitle_en=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:title[@xml:lang="en"]',namespaces=ns)
+	    dcTitle_fr=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:title[@xml:lang="fr"]',namespaces=ns)
+	    dcCreator=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:creator/edm:Agent/skos:prefLabel',namespaces=ns)
+	    dcSubject=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:subject/skos:Concept/skos:prefLabel',namespaces=ns)
+	    dcSubject2=tree.xpath('/rdf:RDF/edm:ProvidedCHO/skos:prefLabel',namespaces=ns)
+	    dcDescription_lg=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:description',namespaces=ns)
+	    dcDescription_eu=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:description[@xml:lang="eu"]',namespaces=ns)
+	    dcDescription_es=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:description[@xml:lang="es"]',namespaces=ns)
+            dcDescription_en=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:description[@xml:lang="en"]',namespaces=ns)
+	    dcDescription_fr=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:description[@xml:lang="fr"]',namespaces=ns)
+	    dcPublisher=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:publisher',namespaces=ns)
+	    dcLanguage=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:language',namespaces=ns)
+	    dcIdentifier=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:identifier',namespaces=ns)
+	    dcIsPartOf=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:isPartOf',namespaces=ns)
+        
+            #DCTERMS
+	    dctermsIssued=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dcterms:issued',namespaces=ns)
+	    dctermsCreated=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dcterms:created',namespaces=ns)
+	    dctermsExtent=tree.xpath('/rdf:RDF/edm:ProvidedCHO/dcterms:extent',namespaces=ns)
+
+            #Balioak hartu
+      
+            #EDM
+	    for edukia in edmProvider:
+                edmProviderValue = edmProviderValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in edmDataProvider:
+		edmDataProviderValue = edmDataProviderValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in edmRights:
+		edmRightsValue = edmRightsValue + " " + edukia 
+	    for edukia in edmIsShownAt:
+                edmIsShownAtValue = edmIsShownAtValue + " " + edukia
+	    for edukia in edmIsShownBy:
+		edmIsShownByValue = edmIsShownByValue + " " + edukia
+	    for edukia in edmObject:
+		edmObjectValue = edmObjectValue + " " + edukia
+	    for edukia in edmHasView:
+		edmHasViewValue = edmHasViewValue + " " + edukia
+	    for edukia in edmType:
+		edmTypeValue = edmTypeValue +" " + edukia.text.encode('utf-8').strip()
+
+        
+            #DC     
+	    for edukia in dcTitle_eu:
+		dcTitle_euValue = dcTitle_euValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcTitle_es:
+		dcTitle_esValue = dcTitle_esValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcTitle_en:
+		dcTitle_enValue = dcTitle_enValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcTitle_fr:
+		dcTitle_frValue = dcTitle_frValue + " " + edukia.text.encode('utf-8').strip()
+	    if  dcTitle_euValue == "" and dcTitle_esValue=="" and dcTitle_enValue=="" and dcTitle_frValue=="":
+		for edukia in dcTitle_lg:
+		    dcTitle_lgValue = dcTitle_lgValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcCreator:
+		dcCreatorValue = dcCreatorValue + " " +edukia.text.encode('utf-8').strip()
+	    for edukia in dcSubject:
+		dcSubjectValue = dcSubjectValue + " " + edukia.text.encode('utf-8').strip()  #karaktere-kodeketa
+	    for edukia in dcSubject2:
+		dcSubjectValue = dcSubjectValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcDescription_eu:
+		dcDescription_euValue = dcDescription_euValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcDescription_es:
+		dcDescription_esValue = dcDescription_esValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcDescription_en:
+		dcDescription_enValue = dcDescription_enValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcDescription_fr:
+		dcDescription_frValue = dcDescription_frValue + " " + edukia.text.encode('utf-8').strip()
+	    if  dcDescription_euValue == "" and dcDescription_esValue=="" and dcDescription_enValue=="" and dcDescription_frValue=="":
+		for edukia in dcDescription_lg:
+                    dcDescription_lgValue = dcDescription_lgValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcPublisher:
+		dcPublisherValue = dcPublisherValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcLanguage:
+		dcLanguageValue = dcLanguageValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcIdentifier:
+		dcIdentifierValue = dcIdentifierValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dcIsPartOf:
+		dcIsPartOfValue = dcIsPartOfValue + " " + edukia.text.encode('utf-8').strip()
+
+
+        #DCTERMS
+	    for edukia in dctermsIssued:
+		dctermsIssuedValue = dctermsIssuedValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dctermsCreated:
+		dctermsCreatedValue = dctermsCreatedValue + " " + edukia.text.encode('utf-8').strip()
+	    for edukia in dctermsExtent:
+		dctermsExtentValue = dctermsExtentValue + " " + edukia.text.encode('utf-8').strip()
+
+
+	    dcTitle=""
+	    if dcTitle_lgValue != "" :
+		dcTitle = "<div class=\"titulu_lg\">"+dcTitle_lgValue+"</div>"
+	    else:    
+                if dcTitle_euValue != "" :
+		    dcTitle = "<div class=\"titulu_eu\">"+dcTitle_euValue+"</div>"
+		if dcTitle_esValue != "" :
+		    dcTitle =dcTitle +" "+"<div class=\"titulu_es\">"+dcTitle_esValue+"</div>"
+		if dcTitle_enValue != "" :
+		    dcTitle =dcTitle +" "+"<div class=\"titulu_en\">"+dcTitle_enValue+"</div>"
+      
+
+            dcDescription =""
+            if dcDescription_lgValue != "" :
+                dcDescription = "<div class=\"desc_lg\">"+dcDescription_lgValue+"</div>"
+	    else:    
+                if dcDescription_euValue != "" :
+	            dcDescription = "<div class=\"desc_eu\">"+dcDescription_euValue+"</div>"
+		if dcTitle_esValue != "" :
+		    dcDescription = dcDescription +" "+"<div class=\"desc_es\">"+dcDescription_esValue+"</div>"
+		if dcTitle_enValue != "" :
+		    dcDescription = dcDescription +" "+"<div class=\"desc_en\">"+dcDescription_enValue+"</div>"
+
+
+
+            #Eremu hutsak prestatu
+	    usfd_id=''
+	    dc_contributor=''
+	    dc_format=''
+	    dc_source=''
+	    dc_relation=''
+	    dc_rights=''
+	    dc_coverage=''
+	    dcterms_provenance=''
+	    dcterms_temporal=''
+	    dcterms_spatial=''
+	    dcterms_medium=''
+	    dcterms_alternative=''
+	    dcterms_tableofcontents=''
+	    dcterms_isreplacedby=''
+	    edm_unstored=''
+	    edm_dataprovider=''
+            #edm_isshownby=''
+	    edm_country=''
+	    edm_language=dcLanguageValue
+	    edm_uri=''
+	    edm_usertag=''
+	    edm_year=dctermsIssuedValue
+	    edm_previewnodistribute=''
+	    edm_hasobject=''
+	    paths_bow=''
+	    paths_facet_date=''
+	    paths_informativeness=0
+	    paths_trav_count=0
+	    proposatutakoa=0
+	    egunekoa=0
+	    geoloc_longitude=0.0
+	    geoloc_latitude=0.0
+	    aberastua=0
+
+
+
+        
+ 
+
+            #Datu-basean sartu
+        
+        
+	    sql=""" INSERT INTO kulturbideak_app_item (uri,usfd_id,dc_title,dc_creator,dc_subject,dc_description,dc_publisher,dc_contributor,dc_date,dc_type,dc_format,dc_identifier,dc_source,dc_language,dc_relation,dc_rights,dc_coverage,dcterms_provenance,dcterms_ispartof,dcterms_temporal,dcterms_spatial,dcterms_medium,dcterms_extent,dcterms_alternative,dcterms_issued,dcterms_tableofcontents,dcterms_isreplacedby,edm_unstored,edm_object,edm_provider,edm_type,edm_rights,edm_dataprovider,edm_isshownby,edm_isshownat,edm_country,edm_language,edm_uri,edm_usertag,edm_year,edm_previewnodistribute,edm_hasobject,paths_bow,paths_facet_date,paths_informativeness,paths_trav_count,proposatutakoa,egunekoa,geoloc_longitude,geoloc_latitude,aberastua) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}','{37}','{38}','{39}','{40}','{41}','{42}','{43}',{44},{45},{46},{47},{48},{49},{50})""".format(dcIdentifierValue,usfd_id,dcTitle,dcCreatorValue,dcSubjectValue,dcDescription,dcPublisherValue,dc_contributor,dctermsCreatedValue,edmTypeValue,dc_format,dcIdentifierValue,dc_source,dcLanguageValue,dc_relation, dc_rights,dc_coverage,dcterms_provenance,dcIsPartOfValue,dcterms_temporal,dcterms_spatial,dcterms_medium,dctermsExtentValue,dcterms_alternative,dctermsIssuedValue,dcterms_tableofcontents,dcterms_isreplacedby,edm_unstored,edmObjectValue,edmProviderValue,edmTypeValue,edmRightsValue,edm_dataprovider,edmIsShownByValue,edmIsShownAtValue,edm_country,edm_language,edm_uri,edm_usertag,edm_year,edm_previewnodistribute,edm_hasobject,paths_bow,paths_facet_date,paths_informativeness,paths_trav_count,proposatutakoa,egunekoa,geoloc_longitude,geoloc_latitude,aberastua)
+            #print sql
+   
+        
+            try:
+                cursor.execute(sql)
+                conndb.commit()
+                print '++++++++++++++++ STORED ++++++++++++++++'
+            except:
+                print '++++++++++++++++ NOT STORED ++++++++++++++++'
+                conndb.rollback()  
+         
+
