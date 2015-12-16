@@ -240,4 +240,94 @@
 </div>
 
 
+
+
+<!-- COMMENTS-->
+
+ <!-- Comments Form -->
+ <div class="well info_box">
+ 	<h4>Leave a Comment:</h4>
+    <form class="form-horizontal" role="form" method="POST" action="nabigazio_item">{% csrf_token %}
+    	<input type="hidden" name="item_id" value="{{node_id}}">
+    	<input type="hidden" name="path_id" value="{{path_id}}">
+    	<fieldset>
+        <div class="form-group">
+        <!--<textarea class="form-control" rows="3"></textarea>-->
+        	{{ comment_form.comment }}
+            {{ comment_form.comment.errors }}
+         </div>
+         {% if user.is_authenticated %}
+         	<button name="submit_comment" type="submit" class="btn btn-primary">{% trans "Send comment" %}</button>
+         {% else %}
+         <button name="submit_comment" class="btn btn-primary" onclick='window.location.href="/?next="; return fal
+se'>{% trans "Send comment" %}</button>
+         {% endif %}
+         </fieldset>
+     </form>
+</div>
+
+<hr>
+
+ <!-- Posted Comments -->
+ 	<!-- Comment -->
+{% for comment in comments %}
+	<div class="media">
+    	<form class="form-horizontal" role="form" method="POST" action="nabigazio_item">{% csrf_token %}
+    		<input type="hidden" name="item_id" value="{{node_id}}">
+    		<input type="hidden" name="path_id" value="{{path_id}}">
+        	<fieldset>
+            	<a class="pull-left" href="#" >
+                	<!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ comment.author.genre.genre }}.png" alt="">-->
+                	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                </a>
+                <div class="media-body">                        
+                	<h4 class="media-heading">
+                    	<small>{{ comment.author.first_name }} {{ comment.author.last_name }}</small> - <small>{{ comment.date|date:"SHORT_DATE_FORMAT" }}</small>
+                    </h4>
+					{{ comment.comment|safe }}
+                    <p><a href="#" onclick="$('#comment_response_div_{{ comment.id }}').show(1000);return false;">{% trans "Respond" %}</a></p>
+                    <div id="comment_response_div_{{ comment.id }}" style="display:none">
+	                	<div class="form-group">
+                        	<!--<textarea class="form-control" rows="3"></textarea>-->
+                            {{ comment_parent_form.parent_id }}
+                            {{ comment_parent_form.comment }}
+                            {{ comment_parent_form.comment.errors }}
+                         </div>
+                         {% if user.is_authenticated %}
+                         	<button onclick="$('#comment_response_div_{{ comment.id }} input').val({{ comment.id }})" name="submit_comment_parent" type="submit" class="btn btn-primary">Submit</button>
+                            <button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">Close</button>
+                         {% else %}
+                         	<button name="submit_comment_parent" class="btn btn-primary" onclick='window.location.href="/?next="; return false'>Submit</button>
+                            <button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">Close</button>
+                         {% endif %}
+                                    
+                     </div>
+                     {% for subcomment in comment.get_subcomments %}
+                     	<div class="media">
+                        	<a class="pull-left" href="#">
+                            	<!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ subcomment.author.genre.genre }}.png" alt="">-->
+                           		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            </a>
+                            <div class="media-body">
+								<h4 class="media-heading">
+                                	<small>{{ subcomment.author.first_name }} {{ subcomment.author.last_name }}</small> - <small>{{ subcomment.date|date:"SHORT_DATE_FORMAT" }}</small>
+                                
+                                </h4>
+                                {{ subcomment.comment|safe }}
+                            </div>
+                         </div>
+                     {% endfor %}
+                </div> <!-- ni -->
+              </fieldset>
+          </form>
+      </div>                                           
+{% endfor %}
+
+
+<!-- END COMMENTS-->
+
+
+
+
+
 {% endblock %} 

@@ -17,7 +17,8 @@ from django.db.models import Count
 #Laguntza: https://docs.djangoproject.com/en/1.8/ref/models/fields/#model-field-types
 #https://docs.djangoproject.com/en/1.8/topics/db/models/#field-types
 
-##id atributua ez badut inon definitzen guztietan sortuko da automatikoki   !!!!!
+
+
 
 #Desciption: Information on resources imported from Alinari and Europeana, corresponding to the EDM specification.
 #Primary key constraint name: PK_item 
@@ -75,6 +76,7 @@ class item(models.Model):
     geoloc_latitude = models.FloatField(null=True)
     aberastua = models.BooleanField(default=False)
     # idxfti=models.TSVectorField('dc_title')
+    #objects = ProposalManager()
     
     def __unicode__(self):
         return self.dc_title
@@ -129,11 +131,48 @@ class item(models.Model):
     #Itemei dagokien QR kodeak sortzeko erabiliko da
     def get_absolute_url(self):
         return "http://www.kulturbideak.org/erakutsi_item?id=%i" % self.id
-
+      
+    # get comments
+    def get_comments(self):
+        return itemComment.objects.filter(itema=self,parent_comment=None).order_by('-id')
+        
+    def get_all_comments(self):
+        return itemComment.objects.filter(itema=self).order_by('-id') 
+    
 class votes_item(models.Model):
     item = models.ForeignKey(item)
     user = models.ForeignKey(User)
     
+
+
+class itemCommentManager(models.Manager):
+
+    def create_comment(self,\
+                    comment,\
+                    item,\
+                    user,\
+                    parent):
+        item_comment = itemComment()
+        item_comment.comment = comment
+        item_comment.author = user
+        item_comment.itema = item
+        item_comment.parent_comment = parent
+        item_comment.save()
+        return item_comment
+
+
+class itemComment(models.Model):
+    itema = models.ForeignKey(item)
+    comment = models.TextField()
+    parent_comment = models.ForeignKey("self",null=True)
+    #author = models.ForeignKey(Profile)
+    author = models.ForeignKey(User)
+    date = models.DateField(auto_now = True, null = True)
+    
+    objects = itemCommentManager()
+    
+    def get_subcomments(self):
+        return self.itemcomment_set.all()
 
     
 #Description:Links between Items and external background resources (e.g. Wikipedia) as derived from semantic processing.
@@ -248,6 +287,8 @@ class usr (models.Model):
     #email
     
     
+
+    
 #Description:Information about paths such as title, subject, description etc.
 class path (models.Model):
     #id = models.IntegerField(primary_key=True)
@@ -313,11 +354,50 @@ class path (models.Model):
         except Exception as error:
             print error
             return False
-
+    
+    # get comments
+    def get_comments(self):
+        return pathComment.objects.filter(patha=self,parent_comment=None).order_by('-id')
+        
+    def get_all_comments(self):
+        return pathComment.objects.filter(patha=self).order_by('-id') 
+    
 class votes_path(models.Model):
     path = models.ForeignKey(path)
     user = models.ForeignKey(User)   
+
+
+
+class pathCommentManager(models.Manager):
+
+    def create_comment(self,\
+                    comment,\
+                    path,\
+                    profile,\
+                    parent):
+        path_comment = pathComment()
+        path_comment.comment = comment
+        path_comment.author = profile
+        path_comment.patha = path
+        path_comment.parent_comment = parent
+        path_comment.save()
+        return path_comment
+
+
+class pathComment(models.Model):
+    patha = models.ForeignKey(path)
+    comment = models.TextField()
+    parent_comment = models.ForeignKey("self",null=True)
+    #author = models.ForeignKey(Profile)
+    author = models.ForeignKey(User)
+    date = models.DateField(auto_now = True, null = True)
     
+    objects = pathCommentManager()
+    
+    def get_subcomments(self):
+        return self.pathcomment_set.all()
+
+   
 #Description: Comments added to objects identifiable by a URI      
 #class comment(models.Model):
     #id = models.IntegerField(primary_key=True)

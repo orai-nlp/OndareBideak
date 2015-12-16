@@ -17,7 +17,7 @@ HIZKUNTZA_CHOICES = (
 
 #def get_initial_language():
     
- #       return HIZKUNTZA_CHOICES[2]
+#       return HIZKUNTZA_CHOICES[2]
  
  
 class OaipmhForm(Form):
@@ -195,3 +195,44 @@ class ItemEditatuForm(Form):
     irudia=ImageField(max_length=32,required=False)
     hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
     hidden_Item_id = CharField(label='reset',max_length=256, widget=forms.HiddenInput())
+    
+    
+    
+    
+#####################
+### COMMENT FORMS ###
+#####################
+
+class CommentForm(forms.Form):
+    comment = forms.CharField(max_length=500,
+            label = _("Comment"),
+            required = True,
+            widget=forms.Textarea(attrs={"type":"text", 
+                                    "class":"form-control",
+                                    "placeholder":_("Comment"),
+                                    "rows":"3",
+                                 })
+    )
+    
+
+
+class CommentParentForm(forms.Form):
+    comment = forms.CharField(max_length=500,
+            label = _("Comment"),
+            required = True,
+            widget=forms.Textarea(attrs={"type":"text", 
+                                    "class":"form-control",
+                                    "placeholder":_("Comment"),
+                                    "rows":"3",
+                                 })
+    )
+    
+    parent_id =forms.CharField(
+            label = _("parent_id"),
+            required = False,
+            widget=forms.HiddenInput(attrs={"type":"text", 
+                                    "class":"form-control",
+                                    "placeholder":_("parent_id"),                                    
+                                 })
+    )
+
