@@ -50,4 +50,69 @@ def db_add_pathcomment(comment_form, path, profile):
 
 
 
+def db_register(register_form):
+    """Registers a user in the DB
+    PARAMETERS:
+    1. register_form
+    RETURNS:
+    (status_value,object)
+    status_value -> 0: invalid form, 1: no errors, 2: other error
+    object -> status_value==0: register_form, status_value==1: User object, status_value=2: error string
+    """
+    try:
+        status_code = 1
+        if register_form.is_valid():
+            cd_register_form = register_form.cleaned_data
+            profile = Profile.objects.create_profile(cd_register_form.get('username'),\
+                                                cd_register_form.get('first_name'),\
+                                                cd_register_form.get('last_name'),\
+                                                cd_register_form.get('email'),\
+                                                cd_register_form.get('hornitzailea'),\
+                                                cd_register_form.get('hornitzaile_izena'),\
+                                                cd_register_form.get('herrialdea'),\
+                                                cd_register_form.get('password1'))      
+            user = authenticate(username = cd_register_form.get('username'), password = cd_register_form.get('password1'))
+            return (status_code,user) 
+        else:
+            status_code = 0
+            return (status_code,register_form)
+    except Exception as error:
+        print error
+        status_code = 2
+        return (status_code,error)
+    
+
+def db_update_profile(profile_form):
+    """Update a user in the DB
+    PARAMETERS:
+    1. profile_form
+    RETURNS:
+    (status_value,object)
+    status_value -> 0: invalid form, 1: no errors, 2: other error
+    object -> status_value==0: profile_form, status_value==1: Profile object, status_value=2: error string
+    """
+    try:
+        status_code = 1
+        if profile_form.is_valid():
+            cd_profile_form = profile_form.cleaned_data
+            profile = Profile.objects.update_profile(cd_profile_form.get('username'),\
+                                                cd_profile_form.get('first_name'),\
+                                                cd_profile_form.get('last_name'),\
+                                                cd_profile_form.get('email'),\
+                                                cd_profile_form.get('hornitzailea'),\
+                                                cd_profile_form.get('hornitzaile_izena'),\
+                                                cd_profile_form.get('herrialdea'))                  
+            return (status_code,profile) 
+        else:
+            status_code = 0
+            return (status_code,profile_form)
+    except Exception as error:
+        print error
+        status_code = 2
+        return (status_code,error)        
+        
+
+
+
+
 

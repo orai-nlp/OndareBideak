@@ -534,5 +534,59 @@ class workspace_item(models.Model):
     dc_description = models.TextField()
     type = models.CharField(max_length=1000)
     paths_thumbnail = models.CharField(max_length=1000)
+
+
+
+class ProfileManager(models.Manager):
+    
+    def create_profile(self,\
+                    username,\
+                    name,\
+                    surname,\
+                    email,\
+                    hornitzailea,\
+                    hornitzaile_izena,\
+                    herrialdea,\
+                    password):
+        """Creates a new profile"""      
+        profile = Profile()        
+        profile.hornitzailea = hornitzailea
+        profile.hornitzaile_izena = hornitzaile_izena
+        profile.herrialdea = herrialdea
+        # Create a user object  
+        user = User.objects.create_user(first_name = name,last_name = surname, username = username, email = email, password = password)
+        group = Group.objects.get(name='arrunta') 
+        group.user_set.add(user)
+        profile.user = user
+        profile.save()
+        return profile
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User) 
+    hornitzailea = models.NullBooleanField()
+    hornitzaile_izena = models.CharField(max_length=100,null=True)
+    herrialdea = models.CharField(max_length=100,null=True)
+         
+    objects = ProfileManager()
+
+    
+    def is_admin(self):
+        group = Group.objects.get(name="admin")
+        return True if group in self.user.groups.all() else False
+        
+    def is_aditua(self):
+        group = Group.objects.get(name="aditua")
+        return True if group in self.user.groups.all() else False
+        
+    def is_arrunta(self):
+        group = Group.objects.get(name="arrunta")
+        return True if group in self.user.groups.all() else False
+        
+    def has_advanced_permissions(self):
+        return self.is_admin() or self.is_manager()
+
+
+
     
     

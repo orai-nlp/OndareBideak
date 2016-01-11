@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.decorators import login_required
 from django.template import RequestContext, loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, render, redirect
@@ -10,13 +9,14 @@ from django.utils.translation import ugettext as _,get_language
 from itertools import islice, chain
 from django.utils import simplejson
 from django.template import Context, Template
-from django.contrib.auth.decorators import user_passes_test
 from django.utils import timezone
 
 #from utils import *
 from django.core.paginator import Paginator
 
 from django.views.decorators.cache import cache_page
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 
 #MADDALEN
 from django.http import HttpResponse
@@ -36,7 +36,7 @@ from django.utils.translation import ugettext as _
 
 from KULTURBIDEAK.kulturbideak_app.search_indexes import itemIndex
 from KULTURBIDEAK.kulturbideak_app.search_indexes import pathIndex
-from db_views import db_add_itemcomment,db_add_pathcomment
+from db_views import db_add_itemcomment,db_add_pathcomment,db_register, db_update_profile
 from haystack.query import SQ, SearchQuerySet
 
 import simplejson as json
@@ -437,8 +437,7 @@ def autoplay_hasieratik(request):
  
 def nabigazio_item(request):
     
-    print "nabigazio_item"
-    
+ 
     path_id=request.POST['path_id']
     item_id=request.POST['item_id']
     
@@ -462,7 +461,6 @@ def nabigazio_item(request):
     #Komentario bati erantzun baldin badio
     if not request.user.is_anonymous() and "submit_comment_parent" in request.POST: # make a comment
         comment_parent_form = CommentParentForm(request.POST)
-        print "komentarioa erantzun"
         if comment_parent_form.is_valid():
             db_add_pathcomment(comment_parent_form, momentukoPatha, request.user)
             comment_parent_form = CommentParentForm()
@@ -971,6 +969,113 @@ def db_erregistratu_erabiltzailea_Iker(cd):
         #erabiltzailea.delete()
         #g.delete()
         return False
+ 
+'''
+ def register(request):
+    """Render register template
+    """    
+    # action status
+    register_status = 1
+    login_status = 1
+    # Initializations
+    login_form, search_form, forget_form, themes, corporation_upload = base_forms_initialization(request)
+    
+    if request.POST:
+        if "register_button" in request.POST:
+            register_form=RegisterForm(request.POST)
+            register_value = db_register(register_form)
+            register_status = register_value[0]
+            if register_status == 0: # validation error
+                register_form = register_value[1]
+                d = {"register_form":register_form , "login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form}
+                return render_to_response('register.html', d, context_instance = RequestContext(request))
+            elif register_status == 1: # login OK!
+                # Log in user:
+                user = register_value[1]              
+                auth_login(request,user)                
+                return redirect('/')
+                
+            elif register_status == 2: # error
+                pass
+                # TODO! Errore template bat!
+                
+        else:
+            register_form = RegisterForm()
+            
+        if "login_button" in request.POST:
+            profile = log_in(request)
+            if profile is None:
+                login_form = LoginForm(request.POST)
+                login_form.is_valid()
+                login_status = 0
+                d = {"register_form":register_form , "login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form}
+                return render_to_response('register.html', d, context_instance = RequestContext(request))
+    else:
+        # Initialize specific forms
+        register_form = RegisterForm()
+        
+    d = {"register_form":register_form, "login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form}
+    
+    return render_to_response('register.html', d, context_instance = RequestContext(request))
+    
+
+@login_required
+def profile(request):
+    """Render profile template
+    """
+    # action status
+    profile_status = 1
+    login_status = 1
+    # Initializations
+    login_form, search_form, forget_form, themes, corporation_upload = base_forms_initialization(request)
+    profile_form = ProfileForm()
+    
+    if request.POST:
+        if "profile_button" in request.POST:
+            profile_form=ProfileForm(request.POST)
+            profile_value = db_update_profile(profile_form)
+            profile_status = profile_value[0]
+            if profile_status == 0: # validation error
+                profile_form = profile_value[1]
+                d = {"profile_form":profile_form , "login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form}
+                return render_to_response('profile.html', d, context_instance = RequestContext(request))
+            elif profile_status == 1: # update OK!              
+                return redirect('/')
+                
+            elif profile_status == 2: # error
+                pass
+                # TODO! Errore template bat!
+    else:
+        # load profile information
+        profile = Profile.objects.get(user=request.user)
+        profile_initial={'username': profile.user.username,\
+                        'first_name':profile.user.first_name,\
+                        'last_name':profile.user.last_name,\
+                        'genre':profile.genre.id,\
+                        'birth_date': profile.birth_date,\
+                        'NAN': profile.NAN,\
+                        'email':profile.user.email,\
+                        'institution': profile.institution,\
+                        'institution_name':profile.institution_name,\
+                        'country': profile.country,\
+                        'info': profile.info}
+        profile_form = ProfileForm(initial=profile_initial)
+        
+    
+    
+    d = {"login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form, "profile_form":profile_form}
+    
+    return render_to_response('profile.html', d, context_instance = RequestContext(request))
+
+
+
+
+
+'''
+ 
+ 
+ 
+ 
  
  
 def perfila_erakutsi(request):
@@ -1693,7 +1798,7 @@ def ajax_workspace_item_gehitu(request):
         workspacea=workspace.objects.get(fk_usr_id=request.user)       
         itema=item.objects.get(id=item_id)
         
-       
+        #KONPONDU? fk_item=itema,
         ws_item_berria = workspace_item(fk_item_id=itema,
                                         uri =uri,
                                         fk_workspace_id = workspacea,

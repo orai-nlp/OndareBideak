@@ -1,4 +1,4 @@
-# Django settings for basque_research project.
+# Django settings for ondarebideak project.
 import os, sys, socket
 BASEDIR = os.path.dirname(__file__)
 sys.path.insert(0, BASEDIR)
