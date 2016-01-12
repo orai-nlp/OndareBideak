@@ -855,12 +855,14 @@ def db_oaipmh_bilketa(cd):
     """ oai-pmh baseURL batetik abiatuta itemak EDM formatuan jetsi eta metadatuak datu-basean gorde"""
     
     baseurl=cd['baseurl']
+    #baseurl adibidea : http://euskonews.oai.euskomedia.org/
     wikify=cd['wikify']
     
     
  
     # -c temporalak sortzen dira /tmp karpetan 
     #collection="/home/maddalen/OAI-PMH_COLLECTION/"
+    #collection="/tmp/tmpOAQvFR"
     collection = tempfile.mkdtemp() 
     
   
@@ -882,7 +884,7 @@ def oaipmh_datubilketa(request):
                
                 return render_to_response('base.html',{'mezua':"Itemak ondo biltegiratu dira"},context_instance=RequestContext(request))
             else:
-                return render_to_response('base.html',{'mezua':"ERROREA: Itemak EZ DIRA ondo biltegiratu dira"},context_instance=RequestContext(request))
+                return render_to_response('base.html',{'errore_mezua':"ERROREA: Itemak EZ DIRA ondo biltegiratu"},context_instance=RequestContext(request))
             
         else:
                 return render_to_response("oaipmh_datubilketa.html",{"oaipmhform":oaipmhform},context_instance=RequestContext(request)) 

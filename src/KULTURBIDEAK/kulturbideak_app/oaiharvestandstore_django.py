@@ -21,8 +21,8 @@ def oaiharveststore(collection, baseurl, wikify):
 
     print '++++++++++++++++START HARVESTER ++++++++++++++++'
    
-    #HEDATUZ http://hedatuz.euskomedia.org/cgi/oai2
-    #collection="/home/maddalen/OAI-PMH_COLLECTION/"
+    # BaseUrl: HEDATUZ http://hedatuz.euskomedia.org/cgi/oai2
+    
     os.chdir(collection)
     #Subprocess ERABILI!!!
     #os.system("oai-harvest --no-delete -p edm '{0}'".format(baseurl))
@@ -30,11 +30,13 @@ def oaiharveststore(collection, baseurl, wikify):
     edm="edm"
     
     
-    ##EZ DU BUKATU ARTE ITXOITEN
+    ##EZ DU BUKATU ARTE ITXOITEN   
     try:
         p=subprocess.Popen(['oai-harvest','-p', edm ,baseurl], stdout=subprocess.PIPE)
     except:
         return False
+    
+    
     
     ##ERRORE KONTROLA GEHITU!!!!
     '''
@@ -46,29 +48,19 @@ def oaiharveststore(collection, baseurl, wikify):
             return False
     '''
     # BUKATU ARTE ITXOITEKO HAU GEHITU DUT,  TXUKUNDUU!!
+    
     while p.poll() == None:
         time.sleep(0.5)
     
+    
     ns = {'dcterms':'http://purl.org/dc/terms/','rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#','skos':'http://www.w3.org/2004/02/skos/core#','owl':'http://www.w3.org/2002/07/owl#','bibo':'http://purl.org/ontology/bibo/','ore':'http://www.openarchives.org/ore/terms/','xsi':'http://www.w3.org/2001/XMLSchema-instance','foaf':'http://xmlns.com/foaf/0.1/','edm':'http://www.europeana.eu/schemas/edm/','dc':'http://purl.org/dc/elements/1.1/'}
-
-    #connect to db
-    #DJANGOKO KONEXIOA ERABILIIIIII
-    '''
-    conndb = MySQLdb.connect(host= "localhost",
-                  user="root",
-                  passwd="llm_F054",
-                  db="kulturbideak_db",
-                  charset='utf8',
-                  use_unicode=True)
-
-    #setup cursor
-    cursor = conndb.cursor()
-    '''
+    
 
     print '+++++++++++++++START STORE      ++++++++++++++++'
 
     #for file in os.listdir(sys.argv[1]):
     for file in os.listdir(collection):
+        
         if file.endswith(".xml"):
             print(file)
             tree=etree.parse(file)
@@ -267,8 +259,21 @@ def oaiharveststore(collection, baseurl, wikify):
                 if dcDescription_enValue != "" :
                     dcDescription = dcDescription +" "+"<div class=\"desc_en\">"+dcDescription_enValue+"</div>"
 
-
-
+            
+            # Hizkuntzaren balioa egokitu. Hau garrantzitsua da, 
+            #Solr-Haystack-ek balio honen arabera indexatuko du eta
+            dcLanguageValue = dcLanguageValue.strip()
+            if dcLanguageValue == "spa":
+                dcLanguageValue="es"
+            else:
+                if dcLanguageValue == "eng":
+                    dcLanguageValue="en"
+                if dcLanguageValue == "baq":
+                    dcLanguageValue="eu"
+                if dcLanguageValue == "fre":
+                    dcLanguageValue="fr"
+                
+                
             #Eremu hutsak prestatu
             usfd_id=''
             dc_contributor=''
@@ -305,9 +310,7 @@ def oaiharveststore(collection, baseurl, wikify):
             aberastua=0
 
 
-            #Datu-basean sartu  
-           
-            
+            #Datu-basean sartu    
             item_berria = item(uri=dcIdentifierValue, usfd_id=usfd_id, dc_title=dcTitle,dc_creator=dcCreatorValue,
                                dc_subject=dcSubjectValue,dc_description=dcDescription,dc_publisher=dcPublisherValue,
                                dc_contributor=dc_contributor,dc_date=dctermsCreatedValue,dc_type=edmTypeValue,dc_format=dc_format,dc_identifier=dcIdentifierValue,
@@ -323,24 +326,18 @@ def oaiharveststore(collection, baseurl, wikify):
                                proposatutakoa=proposatutakoa,egunekoa=egunekoa,geoloc_longitude=geoloc_longitude,geoloc_latitude=geoloc_latitude,aberastua=aberastua)
    
    
-            ###item_berria.save()  
+            item_berria.save()  
             
-            #HAYSTAC reindex!
-            #Haystack update_index EGIN berriak gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
-            ###update_index.Command().handle(age=1)
+          
             
-            '''
-            sql=""" INSERT INTO kulturbideak_app_item (uri,usfd_id,dc_title,dc_creator,dc_subject,dc_description,dc_publisher,dc_contributor,dc_date,dc_type,dc_format,dc_identifier,dc_source,dc_language,dc_relation,dc_rights,dc_coverage,dcterms_provenance,dcterms_ispartof,dcterms_temporal,dcterms_spatial,dcterms_medium,dcterms_extent,dcterms_alternative,dcterms_issued,dcterms_tableofcontents,dcterms_isreplacedby,edm_unstored,edm_object,edm_provider,edm_type,edm_rights,edm_dataprovider,edm_isshownby,edm_isshownat,edm_country,edm_language,edm_uri,edm_usertag,edm_year,edm_previewnodistribute,edm_hasobject,paths_bow,paths_facet_date,paths_informativeness,paths_trav_count,proposatutakoa,egunekoa,geoloc_longitude,geoloc_latitude,aberastua) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}','{37}','{38}','{39}','{40}','{41}','{42}','{43}',{44},{45},{46},{47},{48},{49},{50})""".format(dcIdentifierValue,usfd_id,dcTitle,dcCreatorValue,dcSubjectValue,dcDescription,dcPublisherValue,dc_contributor,dctermsCreatedValue,edmTypeValue,dc_format,dcIdentifierValue,dc_source,dcLanguageValue,dc_relation, dc_rights,dc_coverage,dcterms_provenance,dcIsPartOfValue,dcterms_temporal,dcterms_spatial,dcterms_medium,dctermsExtentValue,dcterms_alternative,dctermsIssuedValue,dcterms_tableofcontents,dcterms_isreplacedby,edm_unstored,edmObjectValue,edmProviderValue,edmTypeValue,edmRightsValue,edm_dataprovider,edmIsShownByValue,edmIsShownAtValue,edm_country,edm_language,edm_uri,edm_usertag,edm_year,edm_previewnodistribute,edm_hasobject,paths_bow,paths_facet_date,paths_informativeness,paths_trav_count,proposatutakoa,egunekoa,geoloc_longitude,geoloc_latitude,aberastua)
-            #print sql
+    #HAYSTAC reindex!
+    #Haystack update_index EGIN berriak gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
+            
+    #use 'remove' option to remove non-existing entries.
+    #"interactive" would prevent haystack asking question if you really want to rebuild index. This is equivalent to --no-input command line option.
+    #update_index.Command().handle(using='default',remove=True, interactive=False)
    
-        
-            try:
-                cursor.execute(sql)
-                conndb.commit()
-                print '++++++++++++++++ STORED ++++++++++++++++'
-            except:
-                print '++++++++++++++++ NOT STORED ++++++++++++++++'
-                conndb.rollback()  
-         
-            '''
+    update_index.Command().handle(age=1)
+    
+    
     return True

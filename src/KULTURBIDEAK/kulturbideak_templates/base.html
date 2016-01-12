@@ -3456,6 +3456,15 @@ function doSetTimeOutAutoplay(url,sec)
 				<div class="alert alert-info" role="alert"><strong>Ondo!</strong> {{mezua}}</div>
 
 			{%endif%}
+			{% if errore_mezua %}
+			
+				<div class="alert alert-danger" role="alert">
+ 					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+ 					<span class="sr-only">Error:</span>
+ 					<strong>Kontuz!</strong> {{errore_mezua}}	
+				</div>
+
+			{%endif%}
 			{% if nondik %}
 			
 			<div class="itema_gehitu">
