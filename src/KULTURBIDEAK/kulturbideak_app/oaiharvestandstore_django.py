@@ -7,6 +7,7 @@ import sys, getopt
 import MySQLdb
 from KULTURBIDEAK.kulturbideak_app.models import item
 from haystack.management.commands import update_index
+from django.utils.crypto import get_random_string
 
 
 
@@ -272,7 +273,11 @@ def oaiharveststore(collection, baseurl, wikify):
                     dcLanguageValue="eu"
                 if dcLanguageValue == "fre":
                     dcLanguageValue="fr"
-                
+             
+            #item taulako uri eremuaren balioa ez errepikatzeko
+            randomstr=get_random_string(length=12,allowed_chars=u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+            dcIdentifierValue=file+"_"+dcIdentifierValue+"_"+randomstr
+
                 
             #Eremu hutsak prestatu
             usfd_id=''

@@ -36,27 +36,27 @@
 	<div class="btn-group eskuma" role="group" aria-label="...">
 	
   	{% if botatuDuPath == 1 %}
-		<a class="btn btn-default eskuma" type="button" href="botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" disabled>
+		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" disabled>
 			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
  	
 		</a>
 		<a class="btn btn-default eskuma" type="button" href="#" >
 			<b class="eskuma laguntza">{{botoKopuruaPath}}</b>
 		</a>
-		<a class="btn btn-default eskuma" type="button" href="botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" >
+		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" >
 			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
  	
 		</a>
 	
   	{%else%}
- 		 <a class="btn btn-default eskuma" type="button" href="botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" >
+ 		 <a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" >
 			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
  	
 		</a>
 		<a class="btn btn-default eskuma" type="button" href="#">
 			<b class="eskuma laguntza">{{botoKopuruaPath}}</b>
 		</a>
-		<a class="btn btn-default eskuma" type="button" href="botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" disabled >
+		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" disabled >
 			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
  	
 		</a>
@@ -110,27 +110,27 @@
 	<div class="btn-group eskuma" role="group" aria-label="...">
 	
   	{% if botatuDuItem == 1 %}
-		<a class="btn btn-default eskuma" type="button"  href="botoa_eman_item?id={{node_id}}" disabled>
+		<a class="btn btn-default eskuma" type="button"  href="{{BASE_URL}}/botoa_eman_item?id={{node_id}}" disabled>
 			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
  	
 		</a>
 		<a class="btn btn-default eskuma" type="button" href="#" >
 			<b class="eskuma laguntza">{{botoKopuruaItem}}</b>
 		</a>
-		<a class="btn btn-default eskuma" type="button"  href="botoa_kendu_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}" >
+		<a class="btn btn-default eskuma" type="button"  href="{{BASE_URL}}/botoa_kendu_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}" >
 			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
  	
 		</a>
 	
   	{%else%}
- 		 <a class="btn btn-default eskuma" type="button"  href="botoa_eman_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}">
+ 		 <a class="btn btn-default eskuma" type="button"  href="{{BASE_URL}}/botoa_eman_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}">
 			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
  	
 		</a>
 		<a class="btn btn-default eskuma " type="button" href="#">
 			<b class="eskuma laguntza">{{botoKopuruaItem}}</b>
 		</a>
-		<a class="btn btn-default eskuma" type="button" href="botoa_kendu_item?id={{node_id}}" disabled >
+		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{node_id}}" disabled >
 			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
  	
 		</a>

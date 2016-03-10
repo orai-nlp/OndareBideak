@@ -4,7 +4,7 @@
 
 <div class="login-erregistratu">
 	
-	<form action="/erregistratu" method="post" class="form">
+	<form action="{{BASE_URL}}/erregistratu" method="post" class="form">
 		{% csrf_token %}
 		
 		{{erabiltzailea}}

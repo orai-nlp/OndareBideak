@@ -1,3 +1,4 @@
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 # Django settings for ondarebideak project.
 import os, sys, socket
 BASEDIR = os.path.dirname(__file__)
@@ -8,7 +9,7 @@ sys.path.insert(0, BASEDIR)
 SMTP_SERVER="localhost"
 DEFAULT_FROM_EMAIL='basqueresearch@elhuyar.com'
 DEFAULT_TO_EMAIL="i.manterola@elhuyar.com"
-BASE_URL = "http://basqueresearch.elh"
+BASE_URL = "http://127.0.0.1:8000"
 
 
 DEBUG = True
@@ -153,6 +154,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'django.core.context_processors.request',
   'django.core.context_processors.media',
   'django.core.context_processors.static',
+  'kulturbideak_app.context_processors.base_url',
 
     ) # Optional
 
@@ -212,6 +214,7 @@ INSTALLED_APPS += (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
 
 #Mapa
 LEAFLET_CONFIG = {

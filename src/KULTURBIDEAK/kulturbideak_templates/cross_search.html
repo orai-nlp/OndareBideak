@@ -31,7 +31,7 @@ um_pages }}</p>-->
 		{% if  item.item_id%}
 		<div class="thumbnail">
 			
-			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="erakutsi_item?id={{item.item_id}}" >
+			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
 				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
 			</a>
 			
@@ -40,7 +40,7 @@ um_pages }}</p>-->
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 				 
-				<h5><a class="" title="{{item.dc_title}}" href="erakutsi_item?id={{item.item_id}}" id="titulua">{{item.dc_title}}</a></h5>
+				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{item.dc_title}}</a></h5>
 					
 				<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
 				<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
@@ -53,7 +53,7 @@ um_pages }}</p>-->
        			</button>
        			{% if user.username == item.edm_provider %}
 
-					<a class="btn btn-default" type="button" href="editatu_itema?id={{item.item_id}}" >				
+					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >				
  					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</a>
   				{%else%}
@@ -82,7 +82,7 @@ um_pages }}</p>-->
     
     <div class="thumbnail">
 
-			<a class="{% if not path.path_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="nabigazioa_hasi?path_id={{path.path_id}}" >
+			<a class="{% if not path.path_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
 				{% if path.paths_thumbnail %}<img  src="{{path.path_thumbnail}}">{% endif %}
 			</a>
 			
@@ -91,15 +91,15 @@ um_pages }}</p>-->
 				 <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.path_dc_title}}"/>
 				 <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.path_thumbnail}}"/>
 				 
-				<h5><a class="" title="{{path.path_dc_title}}" href="nabigazioa_hasi?path_id={{path.path_id}}" id="path.path_dc_title">{{path.path_dc_title}}</a></h5>    		
+				<h5><a class="" title="{{path.path_dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" id="path.path_dc_title">{{path.path_dc_title}}</a></h5>    		
     		<div class="btn-group" role="group" aria-label="...">
-       			<a class="btn btn-primary" type="button" href="nabigazioa_hasi?path_id={{path.path_id}}">
+       			<a class="btn btn-primary" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}">
        				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
        			</a>
        		
        			{% if user.username == path.path_fk_user_id %}
 
-					<a class="btn btn-default" type="button" href="editatu_ibilbidea?id={{path.path_id}}" >				
+					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >				
  					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</a>
   				{%else%}

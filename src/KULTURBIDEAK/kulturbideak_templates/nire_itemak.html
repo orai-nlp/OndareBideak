@@ -15,7 +15,7 @@
 	
 		<div class="thumbnail">
 			
-			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="erakutsi_item?id={{item.id}}" >
+			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >
 				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
 			</a>
 			
@@ -24,7 +24,7 @@
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 				 
-				<h5><a class="" title="{{item.dc_title}}" href="erakutsi_item?id={{item.id}}" id="titulua">{{item.dc_title}}</a></h5>
+				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{item.dc_title}}</a></h5>
 					
 				<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
 				
@@ -34,7 +34,7 @@
        			<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
        				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
        			</button>
-       			<a class="btn btn-default" type="button" href="editatu_itema?id={{item.id}}" >				
+       			<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >				
  				<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 				</a>
   				

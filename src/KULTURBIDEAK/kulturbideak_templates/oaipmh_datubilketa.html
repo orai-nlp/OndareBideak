@@ -4,7 +4,7 @@
 
 <div class="login-erregistratu">
 	
-	<form action="/oaipmh_datubilketa" method="post" class="form">
+	<form action="{{BASE_URL}}/oaipmh_datubilketa" method="post" class="form">
 		{% csrf_token %}
 		
 		{{oaipmhform}}

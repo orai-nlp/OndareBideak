@@ -4,7 +4,7 @@
 
 <div class="login-erregistratu">
 	
-	<form action="/pasahitza_aldatu" method="post" class="form">
+	<form action="{{BASE_URL}}/pasahitza_aldatu" method="post" class="form">
 		{% csrf_token %}
 		
 		{{erabiltzailea}}

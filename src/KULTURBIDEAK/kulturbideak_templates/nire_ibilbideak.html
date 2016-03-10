@@ -16,7 +16,7 @@
 	
 		<div class="thumbnail">
 			
-			<a class="{% if not ibilbidea.paths_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="nabigazioa_hasi?path_id={{ibilbidea.id}}" >
+			<a class="{% if not ibilbidea.paths_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbidea.id}}" >
 				{% if ibilbidea.paths_thumbnail %}<img  alt="{{ibilbidea.dc_title}}" src="{{ibilbidea.paths_thumbnail}}">{% endif %}
 			</a>
 			
@@ -25,14 +25,14 @@
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{ibilbidea.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{ibilbidea.edm_object}}"/>
 				 
-				<h5><a class="" title="{{ibilbidea.dc_title}}" href="nabigazioa_hasi?path_id={{ibilbidea.id}}" id="titulua">{{ibilbidea.dc_title}}</a></h5>
+				<h5><a class="" title="{{ibilbidea.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbidea.id}}" id="titulua">{{ibilbidea.dc_title}}</a></h5>
 					
 					
 				<div class="btn-group" role="group" aria-label="...">
-					<a class="btn btn-primary" type="button" href="nabigazioa_hasi?path_id={{ibilbidea.id}}">
+					<a class="btn btn-primary" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbidea.id}}">
        					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
        				</a>
-					<a class="btn btn-default" type="button" href="editatu_ibilbidea?id={{ibilbidea.id}}" >				
+					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{ibilbidea.id}}" >				
  						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</a>
 				</div>

@@ -6,7 +6,7 @@
 
 <div class="itema_gehitu">
 	
-	<form action="itema_gehitu" method="post" class="form"  enctype="multipart/form-data">
+	<form action="{{BASE_URL}}/itema_gehitu" method="post" class="form"  enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ itema.titulua.errors}}
 		{{ itema.deskribapena.errors}}
