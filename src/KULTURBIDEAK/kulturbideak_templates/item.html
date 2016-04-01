@@ -3,6 +3,7 @@
 {% load leaflet_tags %}
 {% load qr_tags %}
 
+{% load tags%}
 {% block content %}
 
 
@@ -78,29 +79,95 @@
 <br><br>
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<h1 class="panel-title">{{titulua}}</h1>
 		
+		{% get_current_language as LANGUAGE_CODE %}
+		<h1 class="panel-title">  {{ LANGUAGE_CODE|choose_title_language:item }}</h1>
+		<!--
+		{% if LANGUAGE_CODE == "eu" %}
+			{%if titulu_eu != "" %}
+				<div class="titulu_eu"> 
+					<h1 class="panel-title">{{titulu_eu}}</h1>
+				</div>
+			{%else%}		
+				<h1 class="panel-title">{{titulua}}</h1>			
+			{%endif%}
+		{%endif%}
+		{% if LANGUAGE_CODE == "es" %}
+			
+			{%if titulu_es != ""%}
+				<div class="titulu_es"> 			
+					<h1 class="panel-title">{{titulu_es}}</h1>
+				</div>
+			{%else%}		
+				<h1 class="panel-title">{{titulua}}</h1>			
+			{%endif%}
+		{%endif%}
+		{% if LANGUAGE_CODE == "en" %}
+			{%if titulu_en != "" %}
+				
+				<div class="titulu_es"> 
+					<h1 class="panel-title">{{titulu_en}}</h1>
+				</div>
+			{%else%}		
+				<h1 class="panel-title">{{titulua}}</h1>			
+			{%endif%}
+		{%endif%}
+		-->
 	</div>
+	
 	<div class="panel-body">
     
-   	 	<div class="col-xs-6 col-md-3" align="center">
-   			 <a href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" class="thumbnail" target="{% if item.edm_isshownby %}_blank{%endif%}">
-     		 	 <img alt="{{titulua}}" src="{{irudia}}">
- 			   </a>
+   	 	<div class="col-xs-6 col-md-3" align="center">  			 
+   			 <a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" target="{% if item.edm_isshownby %}_blank{%endif%}" >
+				{% if item.edm_object %}<img  alt="{{titulua}}" src="{{item.edm_object}}">{% endif %}
+			</a>
  		</div>
  		<div class="item_edukia">
- 			
- 			<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
- 			<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
- 			<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{hornitzailea}} </a></p>
- 			<p><b>{% trans "Eskubideak:" %}</b><a href="">{{eskubideak}} </a></p>
- 			<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
- 			<p><b>{% trans "Ikusi jatorrizkoa:" %}</b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
- 			
+ 			{% if item.edm_country%}
+ 				<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
+ 			{%endif%}
+ 			{% if item.dc_language%}
+ 				<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_provider%}
+ 				<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{hornitzailea}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_rights%}
+ 				<p><b>{% trans "Eskubideak:" %}</b><a href="">{{eskubideak}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_year %}
+ 				<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
+ 			{%endif%}
+ 			{% if item.uri%}
+ 				<p><b>{% trans "Ikusi jatorrizkoa:" %}</b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
+ 			{%endif%}
  			<br />
  			
  			<div class="comment more">
-    			{{item.dc_description}}
+ 				{{ LANGUAGE_CODE|choose_description_language:item }}
+ 				<!--
+ 				{% if LANGUAGE_CODE == "eu" %}				
+					{%if deskribapena_eu != "" %}
+						{{deskribapena_eu}}
+					{%else%}		
+						{{deskribapena}}		
+					{%endif%}
+				{%endif%}
+				{% if LANGUAGE_CODE == "es" %}
+					{%if deskribapena_es != ""%}				 			
+						{{deskribapena_es}}
+					{%else%}		
+						{{deskribapena}}		
+					{%endif%}
+				{%endif%}
+				{% if LANGUAGE_CODE == "en" %}
+					{%if deskribapena_en != ""%}
+						{{deskribapena_en}}
+					{%else%}		
+						{{deskribapena}}			
+					{%endif%}
+				{%endif%} 
+			-->  		
  			</div>
  			
  		</div>
@@ -137,7 +204,7 @@
 						{% if antzekoa.edm_object %}<img  alt="{{antzekoa.dc_title}}" src="{{antzekoa.edm_object}}">{% endif %}
 					</a>
 					<div class="caption">
-					<p>{{antzekoa.dc_title}}</p>
+					<p>{{ antzekoa.dc_title|correct_language_tags }}</p>
 					</div>
 					</div>
 				</div>
@@ -153,7 +220,7 @@
 
 
 <!-- COMMENTS-->
-
+{% if user.is_authenticated %}
  <!-- Comments Form -->
  <div class="well info_box">
  	<h4>Leave a Comment:</h4>
@@ -174,7 +241,7 @@ se'>{% trans "Send comment" %}</button>
          </fieldset>
      </form>
 </div>
-
+{%endif%}
 <hr>
 
  <!-- Posted Comments -->
@@ -193,7 +260,9 @@ se'>{% trans "Send comment" %}</button>
                     	<small>{{ comment.author.first_name }} {{ comment.author.last_name }}</small> - <small>{{ comment.date|date:"SHORT_DATE_FORMAT" }}</small>
                     </h4>
 					{{ comment.comment|safe }}
-                    <p><a href="#" onclick="$('#comment_response_div_{{ comment.id }}').show(1000);return false;">{% trans "Respond" %}</a></p>
+					{% if user.is_authenticated %} <!--Maddalen-->
+                    	<p><a href="#" onclick="$('#comment_response_div_{{ comment.id }}').show(1000);return false;">{% trans "Respond" %}</a></p>
+                    {%endif%}
                     <div id="comment_response_div_{{ comment.id }}" style="display:none">
 	                	<div class="form-group">
                         	<!--<textarea class="form-control" rows="3"></textarea>-->

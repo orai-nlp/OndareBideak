@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load i18n %}
+{% load tags %}
 
 <!--<p> Showing {{ page.object_list|length }} of {{ page.paginator.count }} Results on Page {{ page.number }} of {{ page.paginator.n\
 um_pages }}</p>-->
@@ -40,29 +41,37 @@ um_pages }}</p>-->
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 				 
-				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{item.dc_title}}</a></h5>
-					
-				<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
-				<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
-				<p class="" id="herrialdea"><b>{% trans "Herrialdea:" %}</b>{{item.edm_country}}</p>
-				<p class="" id="sortzailea"><b>{% trans "Sortzailea:" %}</b>{{item.dc_creator}}</p>
-				
-				<div class="btn-group" role="group" aria-label="...">
-       			<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
-       				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-       			</button>
-       			{% if user.username == item.edm_provider %}
+				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
+				{% if item.edm_provider %}	
+					<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
+				{%endif%}
+				{% if item.dc_language %}
+					<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
+				{%endif%}
+				{% if item.edm_country %}
+					<p class="" id="herrialdea"><b>{% trans "Herrialdea:" %}</b>{{item.edm_country}}</p>
+				{%endif%}
+				{% if item.dc_creator %}
+					<p class="" id="sortzailea"><b>{% trans "Sortzailea:" %}</b>{{item.dc_creator}}</p>
+				{%endif%}
+				{% if user.is_authenticated %}
+					<div class="btn-group" role="group" aria-label="...">
+       				<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
+       					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+       				</button>
+       				{% if user.username == item.edm_provider %}
 
-					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >				
- 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					</a>
-  				{%else%}
+						<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >				
+ 						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+						</a>
+  					{%else%}
 					<button class="btn btn-default" type="button" action="editatu_itema" disabled>
  					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</button>
 				{%endif%}
 				
 				</div>
+				{%endif%}
     		</div>
 		</div> <!-- thumbnail -->
 		{% endif %}

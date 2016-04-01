@@ -63,7 +63,7 @@ import tempfile
 import datetime
 import string
 from oaiharvestandstore_django import oaiharveststore
-
+import re
 
 def get_tree(el_node):
     
@@ -165,12 +165,33 @@ def ibilbideak_hasiera(request):
 def autocomplete(request):
     
     sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
-    suggestions = [result.dc_title for result in sqs]
+    #suggestions = [result.item_id for result in sqs]
+    
+    #suggestions = [result.dc_title for result in sqs]
+    
+    # html ETIKETEN GARBIKETA EGIN HEMEN
+    suggestions=[]
+    for result in sqs:
+        titulua = result.dc_title
+        titulua = titulua.replace("<div class=\"titulu_es\">", " ")
+        titulua = titulua.replace("</div>", " ")
+        titulua = titulua.replace("<div class=\"titulu_en\">", " ")
+        #titulua = titulua.replace("</div>", " ")
+        titulua = titulua.replace("<div class=\"titulu_eu\">", " ")
+        #titulua = titulua.replace("</div>", " ")
+       
+        suggestions.append(titulua)
+    
+    
+    print suggestions
+    suggestions_id = [result.item_id for result in sqs]
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     the_data = json.dumps({
-        'results': suggestions
+        'results': suggestions,
+        'results_id': suggestions_id
     })
+    print the_data
     return HttpResponse(the_data, content_type='application/json')
 
 
@@ -293,13 +314,14 @@ def nabigazioa_hasi(request):
         for erroa in erroak:
             nodes = nodes + get_tree(erroa)
         
-        botatuDuPath=0
-        if(votes_path.objects.filter(path=momentukoPatha,user_id=request.user)):
-            botatuDuPath=1
         
+        botatuDuPath=0
         botatuDuItem=0
-        if(votes_item.objects.filter(item=momentukoItema,user_id=request.user)):
-            botatuDuItem=1
+        if not request.user.is_anonymous():
+            if(votes_path.objects.filter(path=momentukoPatha,user=request.user)):
+                botatuDuPath=1           
+            if(votes_item.objects.filter(item=momentukoItema,user=request.user)):
+                botatuDuItem=1
    
         #Momentuko Ibilbidea lortu
         momentukoIbilbidea=path.objects.get(id=path_id)
@@ -400,13 +422,14 @@ def autoplay_hasieratik(request):
         for erroa in erroak:
             nodes = nodes + get_tree(erroa)
         
+                   
         botatuDuPath=0
-        if(votes_path.objects.filter(path=momentukoPatha,user_id=request.user)):
-            botatuDuPath=1
-        
         botatuDuItem=0
-        if(votes_item.objects.filter(item=momentukoItema,user_id=request.user)):
-            botatuDuItem=1
+        if not request.user.is_anonymous():
+            if(votes_path.objects.filter(path=momentukoPatha,user=request.user)):
+                botatuDuPath=1           
+            if(votes_item.objects.filter(item=momentukoItema,user=request.user)):
+                botatuDuItem=1
    
         #Momentuko Ibilbidea lortu
         momentukoIbilbidea=path.objects.get(id=path_id)
@@ -507,12 +530,12 @@ def nabigazio_item(request):
         nodes = nodes + get_tree(erroa)
         
     botatuDuPath=0
-    if(votes_path.objects.filter(path=momentukoPatha,user=request.user)):
-        botatuDuPath=1
-        
     botatuDuItem=0
-    if(votes_item.objects.filter(item=momentukoItema,user=request.user)):
-        botatuDuItem=1
+    if not request.user.is_anonymous():
+        if(votes_path.objects.filter(path=momentukoPatha,user=request.user)):
+            botatuDuPath=1           
+        if(votes_item.objects.filter(item=momentukoItema,user=request.user)):
+            botatuDuItem=1
    
     #Momentuko Ibilbidea lortu
     momentukoIbilbidea=path.objects.get(id=path_id)
@@ -632,12 +655,12 @@ def nabigatu(request):
         nodes = nodes + get_tree(erroa)
         
     botatuDuPath=0
-    if(votes_path.objects.filter(path=momentukoPatha,user=request.user)):
-        botatuDuPath=1
-        
     botatuDuItem=0
-    if(votes_item.objects.filter(item=momentukoItema,user=request.user)):
-        botatuDuItem=1
+    if not request.user.is_anonymous():
+        if(votes_path.objects.filter(path=momentukoPatha,user=request.user)):
+            botatuDuPath=1
+        if(votes_item.objects.filter(item=momentukoItema,user=request.user)):
+            botatuDuItem=1
    
     #Momentuko Ibilbidea lortu
     momentukoIbilbidea=path.objects.get(id=path_id)
@@ -1236,14 +1259,100 @@ def erakutsi_item(request):
         
         
     if request.GET:
-        #ITEM BISITATU NAHI DA DA
+        #ITEMA BISITATU NAHI DA 
         if 'id' in request.GET:
             id=request.GET['id']        
             item_tupla = item.objects.get(pk=id)
             
-            
-            
+    '''       
+    #HIZKUNTZA DESBERDINETAKO TITULUEN TRATAMENDUA   
     titulua=item_tupla.dc_title
+    titulu_es=""
+    titulu_en=""
+    titulu_eu=""
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera
+    #<div class="titulu_es"> Distinción papal al movimiento cooperativo de Mondragón</div>
+    match_es = re.search('<div class=\"titulu_es\">(.*?)</div>', titulua)
+
+    if match_es:
+        titulu_es=match_es.group(0)
+        titulu_es=titulu_es.replace("<div class=\"titulu_es\">", " ")
+        titulu_es=titulu_es.replace("</div>", " ")
+    else:
+        titulu_es=""
+        
+    match_en = re.search('<div class=\"titulu_en\">(.*?)</div>', titulua)
+    if match_en:
+        titulu_en=match_es.group(0)
+        titulu_en=titulu_en.replace("<div class=\"titulu_en\">", " ")
+        titulu_en=titulu_en.replace("</div>", " ")
+    else:
+        titulu_en=""
+    
+    match_eu = re.search('<div class=\"titulu_eu\">(.*?)</div>', titulua)
+    if match_eu:
+        titulu_eu=match_eu.group(0)
+        titulu_eu=titulu_eu.replace("<div class=\"titulu_eu\">", " ")
+        titulu_eu=titulu_eu.replace("</div>", " ")
+    else:
+        titulu_eu=""
+    
+    #titulua= !!!erabaki defektuzkoa zein den eu,en,es
+    if titulu_eu:
+        titulua=titulu_eu
+    elif titulu_es:
+        titulua=titulu_es
+    else:
+        titulua=titulu_en
+    #DBko tituluak hizkuntza kontrola ez baldin badu
+    if titulua =="":
+        titulua=item_tupla.dc_title
+    '''
+            
+    '''
+    #HIZKUNTZA DESBERDINETAKO DESKRIBAPENEN TRATAMENDUA
+    deskribapena=item_tupla.dc_description
+    deskribapena_es=""
+    deskribapena_en=""
+    deskribapena_eu=""
+    #espresio erregularrak erabilita hizkuntza desberdinetako deskribapenak atera
+    match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena)
+
+    if match_es:
+        deskribapena_es=match_es.group(0)
+        deskribapena_es=deskribapena_es.replace("<div class=\"desc_es\">", " ")
+        deskribapena_es=deskribapena_es.replace("</div>", " ")
+    else:
+        deskribapena_es=""
+        
+    match_en = re.search('<div class=\"desc_en\">(.*?)</div>', deskribapena)
+    if match_en:
+        deskribapena_en=match_es.group(0)
+        deskribapena_en=deskribapena_en.replace("<div class=\"desc_en\">", " ")
+        deskribapena_en=deskribapena_en.replace("</div>", " ")
+    else:
+        deskribapena_en=""
+    
+    match_eu = re.search('<div class=\"desc_eu\">(.*?)</div>', deskribapena)
+    if match_eu:
+        deskribapena_eu=match_eu.group(0)
+        deskribapena_eu=deskribapena_eu.replace("<div class=\"desc_eu\">", " ")
+        deskribapena_eu=deskribapena_eu.replace("</div>", " ")
+    else:
+        deskribapena_eu=""
+    
+    #deskribapena= !!!erabaki defektuzkoa zein den eu,en,es
+    if deskribapena_eu:
+        deskribapena=deskribapena_eu
+    elif deskribapena_es:
+        deskribapena=deskribapena_es
+    else:
+        deskribapena=deskribapena_en
+    #DBko deskribapenak hizkuntza kontrolik ez badu
+    if deskribapena =="":
+        deskribapena=item_tupla.dc_description
+    
+    '''
     herrialdea=item_tupla.edm_country
     hizkuntza=item_tupla.dc_language
     kategoria=item_tupla.dc_type
@@ -1251,8 +1360,8 @@ def erakutsi_item(request):
     urtea=item_tupla.edm_year 
     viewAtSource=item_tupla.uri
     irudia=item_tupla.edm_object
-    #hornitzailea=item_tupla.edm_provider
-    hornitzailea=item_tupla.dc_creator
+    hornitzailea=item_tupla.edm_provider
+    #hornitzailea=item_tupla.dc_creator
     geoloc_longitude=item_tupla.geoloc_longitude
     geoloc_latitude=item_tupla.geoloc_latitude
        
@@ -1280,7 +1389,7 @@ def erakutsi_item(request):
     comment_form = CommentForm() 
     comment_parent_form = CommentParentForm()
 
-    return render_to_response('item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+    return render_to_response('item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
 def botoa_eman_item(request):
     
@@ -1654,10 +1763,13 @@ def itema_gehitu(request):
             edm_object=str(azken_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
             handle_uploaded_file(request.FILES['irudia'],edm_object)
         
-        latitude=request.POST['latitude']
-        print latitude
-        longitude=request.POST['longitude']
-        print longitude
+        latitude=0.0
+        longitude=0.0
+        if request.POST['latitude']:
+            latitude=request.POST['latitude']
+        if request.POST['longitude']:
+            longitude=request.POST['longitude']
+   
         item_berria = item(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
         item_berria.save()   
          
