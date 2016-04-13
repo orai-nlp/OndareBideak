@@ -1654,7 +1654,7 @@ def editatu_itema(request):
         item_berria.save()   
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
-        update_index.Command().handle(age=1)
+        #update_index.Command().handle(age=1)
          
         return render_to_response('base.html',{'mezua':"itema editatu da",'nondik':"editatu_itema",'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date},context_instance=RequestContext(request))
     
@@ -1774,7 +1774,7 @@ def itema_gehitu(request):
         item_berria.save()   
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
-        update_index.Command().handle(age=1)
+        #update_index.Command().handle(age=1)
          
         return render_to_response('base.html',{'mezua':"item berria gehitu da"},context_instance=RequestContext(request))
     else:
@@ -2143,11 +2143,11 @@ def ajax_path_berria_gorde(request):
                                         language=language)
     
     
-        path_berria.save()
+        path_berria.save() #AUTOMATIKOKI SOLR INDIZEA ERE EGUNERATZEN DA
         request_answer = path_berria.id  
         
         #Haystack update_index EGIN!!!
-        update_index.Command().handle()
+        #update_index.Command().handle()   ##ATASKATU EGITEN DA :-(  -> BAINA EGUNERATZEN DA INDIZEA
        
     return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
 
@@ -2192,7 +2192,7 @@ def ajax_path_eguneratu(request):
     request_answer = path_id 
         
     #Haystack update_index EGIN!!!
-    update_index.Command().handle()
+    #update_index.Command().handle()
     
     
 
@@ -2246,6 +2246,8 @@ def ajax_path_node_gorde(request):
         
     
         node_berria.save()
+        print "ajax_path_node_gorde"
+        print node_berria.id
         request_answer = node_berria.fk_item_id
         
         

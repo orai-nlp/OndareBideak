@@ -1,45 +1,5 @@
 
 
-//READ MORE FUNTZIOAK
-
-$(document).ready(function() {
-    var showChar = 200;
-    var ellipsestext = "...";
-    var moretext = "more";
-    var lesstext = "less";
-    $('.more').each(function() {
-        var content = $(this).html();
- 
-        if(content.length > showChar) {
- 
-            var c = content.substr(0, showChar);
-            var h = content.substr(showChar-1, content.length - showChar);
- 
-            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
- 
-            $(this).html(html);
-        }
- 
-    });
- 
-    $(".morelink").click(function(){
-        if($(this).hasClass("less")) {
-            $(this).removeClass("less");
-            $(this).html(moretext);
-        } else {
-            $(this).addClass("less");
-            $(this).html(lesstext);
-        }
-        $(this).parent().prev().toggle();
-        $(this).prev().toggle();
-        return false;
-    });
-});
-
-
-//RAPHAEL FUNTZIOAK
-
-
 var paper = null;
 var el_counter=0;
 var svgns = "http://www.w3.org/2000/svg";
@@ -272,7 +232,7 @@ function load_ws_request(){
        		}
    		 	}
 		});
-        xmlHttp.open("POST","../OndareBideak/ajax_load_ws",true);
+        xmlHttp.open("POST","../ajax_load_ws",true);
         xmlHttp.onreadystatechange = function (){
             load_ws_answer(xmlHttp);                                                                   // Erantzuna jasotzean exekutatuko den deia
         };
@@ -352,7 +312,7 @@ function create_remove_me_request(element,item_id)
 	
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
 		
-		$.ajax_load_wsSetup({
+		$.ajaxSetup({
    			beforeSend: function(xhr, settings) {
        		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
            		xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -554,6 +514,46 @@ function wsb_handleDragLeave(ev) {
 
 
 
+/*
+Ajax bidez irudi bat igotzeko adibidea da beheko jQuery-a. sortu_ibilbidea.html-etik deitzen da
+ */
+/*
+$(document).ready(function(){
+$('#form').submit(function(e) {
+
+   var form = $(this);        
+   var formdata = false;
+   if(window.FormData){
+     formdata = new FormData(form[0]);
+                   
+     }
+
+   var formAction = form.attr('action');
+
+                $.ajax({
+                    type        : 'POST',
+                    url         : '../ajax_path_irudia_gorde_proba',
+                    cache       : false,
+                    data        : formdata ? formdata : form.serialize(),
+                    contentType : false,
+                    processData : false,
+
+                    success: function(response) {
+                        if(response != 'error') {
+                            //$('#messages').addClass('alert alert-success').text(response);
+                            // OP requested to close the modal
+                           
+                             $('#myModal').modal('hide');
+                        } else {
+                            $('#messages').addClass('alert alert-danger').text(response);
+                        }
+                    }
+                });
+                e.preventDefault();
+            });
+   
+});
+*/
 
 $(document).ready(function(){
 $('#form2').submit(function(e) {
@@ -803,7 +803,8 @@ function create_path_node_answer(xmlHttp)
             	//leiho modaleko botoia desgaitu
             	//document.getElementById("botSortu").setAttribute("disabled","disabled");
             	//leiho modaletik irten
-               	 $('#modalwindow').modal('hide'); //JQUERY      	
+            	//jQuery.noConflict();
+               	$('#modalwindow').modal('hide'); //JQUERY      	
             	//pantaila nagusiko botoia desgaitu
             	document.getElementById("create_path_button").setAttribute("disabled","disabled");
             	
@@ -2155,335 +2156,5 @@ function ibilbidea_kargatu(path_id)
         pb_add_new_son("box_3","box_5","Gran Casino Kursaal","http://www.euskomedia.org/ImgsGaler/onati/OAA00220.jpg");
         
 	 */
-}
-
-/*
-var rows = 10;
-var text_buffer= "";
-var solr_url="http://localhost:8983/solr/";
-
-//load article
-function load_search(){
-    var search_text = get_url_post("search_text");
-    if (search_text != ""){
-        document.getElementById("search_input").value = search_text;
-        make_search();
-    }
-}
-
-//update offset
-function update_offset(offset){
-    var h_search_box = document.getElementById("h_search_box");
-    var h_search_language = document.getElementById("h_search_language");
-    var h_multilingual = document.getElementById("h_multilingual");
-    var h_search_area = document.getElementById("h_search_area");
-    var h_search_order = document.getElementById("h_search_order");
-    var doc_list = document.getElementById("search_results");
-    remove_content(doc_list);
-    make_search_request(h_search_box.value,h_search_language.value,Boolean(h_multilingual.value),h_search_area.value,h_search_order.value,(parseInt(offset)-1)*rows);
-}
-
-//make search
-function make_search(){
-	start_loader();
-    var search_text = document.getElementById("search_input").value.trim();
-    var search_language = document.getElementById("language_select").value;
-    $('input[name="genderS"]:checked').val();
-    //var multilingual = document.getElementById("multilingual").checked;
-    var multilingual = 1;
-    //var search_area = document.getElementById("search_area_select").value;
-    //var search_order =  document.getElementById("search_order_select").value;
-    //var doc_list = document.getElementById("search_results");
-    //var suggestion_box = document.getElementById("suggestion_box");
-    //var offset_s = document.getElementById("offset");
-    //suggestion_box.style.visibility = "hidden";
-    //offset_s.setAttribute("disabled","disabled");
-    //remove_content(doc_list);
-    //remove_content(offset);
-    if (search_text != ""){
-        make_search_request(search_text,search_language,multilingual,search_area,search_order);
-    }else{
-		show_bs_message("empty_search_error");
-        stop_loader();
-    }
-}
-
-//make search request
-function make_search_request(search_text,search_language,multilingual,search_area,search_order,offset,corrected_query){
-    if (!offset){
-        offset = 0;
-    }
-	if (!corrected_query){
-        corrected_query = false;
-    }
-	var xmlHttp = createXmlHttpRequestObject();
-	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){
-        var search_url = solr_url + "collection1/select";
-        search_url = search_url + "?q=";
-        var word_list = search_text.match(/".*?"|\S+/g);
-        for (var index=0;index<word_list.length;index++){
-            if (word_list[index] != ""){
-                if (search_language == 0 || search_language == 1){
-                    if (search_area > 1){
-                        search_url = search_url + " title_leu:" + word_list[index] + "^1.5";
-                    }
-                    else{
-                        search_url = search_url + " text_leu:" + word_list[index] + "^1.5";
-                    }
-                    if (multilingual){
-                        if (search_area > 1){
-                            search_url = search_url + " title_les2eu:" + word_list[index];
-                        }
-                        else {
-                            search_url = search_url + " text_les2eu:" + word_list[index];
-                        }
-                    }
-                }
-                if (search_language == 0 || search_language == 2){
-                    if (search_area > 1){
-                        search_url = search_url + " title_les:" + word_list[index] + "^1.5";
-                    }
-                    else{
-                        search_url = search_url + " text_les:" + word_list[index] + "^1.5";
-                    }
-                    if (multilingual){
-                        if (search_area > 1){
-                            search_url = search_url + " title_leu2es:" + word_list[index];
-                        }
-                        else{
-                            search_url = search_url + " text_leu2es:" + word_list[index];
-                        }
-                    }
-                }
-            }
-        }
-        if (!corrected_query){
-            search_url = search_url + "&spellcheck=true";
-            if (search_language == 0 || search_language == 1){
-                search_url = search_url + "&spellcheck.dictionary=spell_eu&spellcheck.dictionary=wordbreak_eu";
-            }
-            if (search_language == 0 || search_language == 2){
-                search_url = search_url + "&spellcheck.dictionary=spell_es&spellcheck.dictionary=wordbreak_es";
-            }
-        }
-        search_url = search_url + "&hl=true&hl.fl=title_st description_st body_st";
-        if (offset > 0){
-            search_url = search_url + "&start=" + offset;
-        }
-        if (search_order > 1){
-            search_url = search_url + "&sort=pub_date desc";
-        }
-        search_url = search_url + "&rows=" + rows + "&wt=xml";
-        xmlHttp.open("GET",search_url,true);
-        xmlHttp.onreadystatechange = function (){
-            make_search_answer(xmlHttp,search_text,search_language,multilingual,search_area,search_order,offset,corrected_query);
-        };
-        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send();
-    }
-}
-
-//make search answer
-function make_search_answer(xmlHttp,search_text,search_language,multilingual,search_area,search_order,offset,corrected_query){
-    if (xmlHttp.readyState == 4){
-        if(xmlHttp.status == 200){
-            xml_answer = xmlHttp.responseXML;
-            xml_Document = xml_answer.documentElement;
-            var answer_docs = xml_Document.getElementsByTagName("result")[0];
-            var highlighting = answer_docs.nextElementSibling;
-            var collation_hits = 0;
-            var to_correct = false;
-            if ((!corrected_query) && (highlighting.nextElementSibling)){
-                var suggestions = highlighting.nextElementSibling.firstChild;
-                if (suggestions.children.length > 0){
-                    var collation = suggestions.lastElementChild;
-                    if (collation.getAttribute("name") == "collation"){
-                        collation_hits = collation.children[1].firstChild.data;
-                    }
-                }
-            }
-            if ((!corrected_query) && (collation_hits > 0) && (collation_hits >= answer_docs.children.length)){
-                var corrections = collation.lastElementChild.children;
-                var candidates = new Array();
-                var textFrom = "";
-                for (var index=0;index<corrections.length;index++){
-                    textFrom = corrections[index].getAttribute("name");
-                    if (!candidates[textFrom]){
-                        candidates[textFrom] = corrections[index].firstChild.data;
-                    }
-                    if (textFrom == corrections[index].firstChild.data){
-                        candidates[textFrom] = corrections[index].firstChild.data;
-                    }
-                }
-                for(var candidate in candidates) {
-                    if (candidates.hasOwnProperty(candidate)) {
-                        to_correct = to_correct || (candidates[candidate] != candidate);
-                    }
-                }
-                if (to_correct){
-                    var doc_list = document.getElementById("search_results");
-                    var did_you_mean = search_text;
-                    for(var candidate in candidates) {
-                        if (candidates.hasOwnProperty(candidate)) {
-                            did_you_mean = did_you_mean.replace(new RegExp(candidate, "i"),candidates[candidate]);
-                        }
-                    }
-                    var span_dym = document.createElement("div");
-                    span_dym.setAttribute("class","alert alert-warning");
-                    span_dym.appendChild(document.createTextNode(did_you_mean + " bilatu nahi zenuen?"));
-                    doc_list.appendChild(span_dym);
-                    var collation = suggestions.children[index];
-                    make_search_request(did_you_mean,search_language,multilingual,search_area,search_order,offset,true);
-                }
-            }
-            if (!to_correct){
-                if ((answer_docs.children.length > 0) && (collation_hits <= answer_docs.children.length)){
-                    var answers_found = answer_docs.getAttribute("numFound");
-                    var offset_s = document.getElementById("offset");
-                    if (offset_s.options.length == 0){
-                        var h_search_box = document.getElementById("h_search_box");
-                        var h_search_language = document.getElementById("h_search_language");
-                        var h_multilingual = document.getElementById("h_multilingual");
-                        var h_search_area = document.getElementById("h_search_area");
-                        var h_search_order = document.getElementById("h_search_order");
-                        h_search_box.value = search_text;
-                        h_search_language.value = search_language;
-                        h_multilingual.value = multilingual;
-                        h_search_area.value = search_area;
-                        h_search_order.value = search_order;
-                        var offset_s = document.getElementById("offset");
-                        for (var index=0;index<Math.ceil(answers_found/rows);index++){
-                            var option = document.createElement("option");
-                            option.appendChild(document.createTextNode(index+1))
-                            offset_s.appendChild(option);
-                        }
-                        if (offset_s.options.length > 1){
-                            offset_s.removeAttribute("disabled");
-                        }
-                    }
-                    for (var index=0;index<Math.min(rows, answer_docs.children.length);index++){
-                        create_answer(answer_docs.children[index],highlighting.children[index]);
-                    }
-        			stop_loader();
-                }
-                else if (answer_docs.children.length == 0){
-				    show_bs_message("empty_answer_error"); 
-        			stop_loader();
-                }
-            }
-        }
-    }
-}
-
-//create answer
-function create_answer(doc_element,highlight_element){
-    var pub_date = "";
-    var article_id = "";
-    var article_language = "";
-    var image_url = "";
-    var description = "";
-    var title = "";
-    var body = "";
-    for (index=0;index<doc_element.children.length;index++){
-        switch (doc_element.children[index].getAttribute("name")){
-            case "id":
-                article_id = doc_element.children[index].firstChild.data;
-                break;
-            case "language":
-                article_language = doc_element.children[index].firstChild.data;
-                break;
-            case "title_st":
-                title = doc_element.children[index].firstChild.data;
-                break;
-            case "description_st":
-                description = doc_element.children[index].firstChild.data;
-                break;
-            case "pub_date":
-                pub_date = new Date(doc_element.children[index].firstChild.data).toISOString().slice(0, 10);
-                break;
-            case "image_url":
-                if (doc_element.children[index].firstChild){
-                    image_url = doc_element.children[index].firstChild.data;
-                }
-                else{
-                    image_url = "";
-                }
-                break;
-        }
-    }
-    if (highlight_element){
-        for (index=0;index<highlight_element.children.length;index++){
-            switch (highlight_element.children[index].getAttribute("name")){
-                case "title_st":
-                    title = highlight_element.children[index].children[0].firstChild.data;
-                    break;
-                case "description_st":
-                    description = highlight_element.children[index].children[0].firstChild.data;
-                    break;
-                case "body_st":
-                    body = highlight_element.children[index].children[0].firstChild.data;
-                    break;
-            }
-        }
-    }
-
-    var div_doc = document.createElement("div");
-    div_doc.setAttribute("class","row clearfix");
-
-    var doc_url = document.createElement("a");
-    doc_url.setAttribute("class","doc_title");
-    doc_url.setAttribute("target","_blank");
-    doc_url.setAttribute("href","article_detail.html?id=" + article_id + "&lang=" + article_language);
-
-    var doc_title = document.createElement("h3");
-    doc_title.innerHTML = title;
-    doc_url.appendChild(doc_title);
-
-    div_doc.appendChild(doc_url);
-
-    if (image_url != ""){
-        var doc_img = document.createElement("img");
-        doc_img.setAttribute("class","doc_image");
-        doc_img.setAttribute("src",image_url);
-        div_doc.appendChild(doc_img);
-    }
-    
-    var doc_date = document.createElement("small");
-    doc_date.appendChild(document.createTextNode(pub_date));
-    div_doc.appendChild(doc_date);
-
-    var doc_desc = document.createElement("h4");
-    doc_desc.setAttribute("class","doc_description");
-    doc_desc.innerHTML = description;
-    div_doc.appendChild(doc_desc);
-
-    var doc_body = document.createElement("p");
-    doc_body.innerHTML = body;
-    div_doc.appendChild(doc_body);
-
-    var doc_list = document.getElementById("search_results");
-    doc_list.appendChild(div_doc);
-}
-	
-	
-*/
-
- 
-
-//AUTOPLAY
-function Redirect(url) 
-{  
-	window.location=url; 
-} 
-//document.write("You will be redirected to a new page in 5 seconds"); 
-//setTimeout('Redirect()', 5000);   
-
-function doSetTimeOutAutoplay(url,sec)
-{
-	//alert("doSetTimeOutAutoplay");
-	//alert(url);
-	//setTimeout('Redirect('+url+')', sec);
-	setTimeout(function(){window.location = url;}, sec);
 }
 

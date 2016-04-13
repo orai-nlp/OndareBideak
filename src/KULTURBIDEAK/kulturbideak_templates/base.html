@@ -2,23 +2,24 @@
 <head>
 {% load i18n %}
 {# Load the tag library #}
-<script charset="utf-8" type="text/javascript" src="{{BASE_URL}}{{STATIC_URL}}js/jquery-1.9.1.js"></script>
-{% load bootstrap3 %}
-<script charset="utf-8" type="text/javascript" src="{{BASE_URL}}{{STATIC_URL}}js/raphael-min.js"></script>
-{# Load CSS and JavaScript #}
-<script charset="utf-8" type="text/javascript" src="{{BASE_URL}}{{STATIC_URL}}js/main.js"></script>
-<script charset="utf-8" type="text/javascript" src="{{BASE_URL}}{{STATIC_URL}}js/kulturbideak.js"></script>
 
+
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
+{% load bootstrap3 %}
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/raphael-min.js"></script>
+{# Load CSS and JavaScript #}
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/kulturbideak.js"></script>
 <!-- Social Share Kit CSS -->
-<link rel="stylesheet" href="{{BASE_URL}}{{STATIC_URL}}css/social-share-kit.css" type="text/css">
+<link rel="stylesheet" href="{{STATIC_URL}}css/social-share-kit.css" type="text/css">
 <!-- Social Share Kit JS -->
-<script type="text/javascript" src="{{BASE_URL}}{{STATIC_URL}}js/social-share-kit.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/social-share-kit.js"></script>
 
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
 {# Display django.contrib.messages as Bootstrap alerts #}
-{#bootstrap_messages#}
+{% bootstrap_messages %}
 
 {% load leaflet_tags %}
 {% load tags%}
@@ -27,93 +28,74 @@
 {% leaflet_css %}
 {% load qr_tags %}
 
-<script charset="utf-8" type="text/javascript" src="{{BASE_URL}}{{STATIC_URL}}js/ondarebideak.js"></script>
-<link rel="stylesheet" href="{{BASE_URL}}{{STATIC_URL}}css/ondarebideak.css" type="text/css">
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/readmore.js"></script>
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
+
+<link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
 
 
 
+
+<script>
+//READ MORE FUNTZIOAK
+</script>
+
+<script type="text/javascript">
+   //AUTOCOMPLETE
+</script> 	
+   	
+<script>
+//FUNTZIOAK ondare.js
+</script>
+
+<script type="text/javascript">   
+//AUTOPLAY
+</script>
 
 
 <script type="text/javascript">
   
-  //MAPA FUNTZIOAK
-  
-    var global_map;
-    var layer_array = Array();
-    var LeafIcon = L.Icon.extend({});    
-    var markers = [];
+//MAPA FUNTZIOAK
+ 
+var global_map;
+var layer_array = Array();
+var LeafIcon = L.Icon.extend({});    
+var markers = [];
    
-    {% if non == 'itema_gehitu'  %}
-        function load_map(map, options)
-        {
+{% if non == 'itema_gehitu'  %}
+    function load_map(map, options)
+    {
         	
-            global_map=map;
+        global_map=map;
            
-             // zentratu mapa erabiltzaileak 
-             if(markers.length>0)
-             {
-                 map.panTo(new L.LatLng( markers[0].getLatLng().lat, markers[0].getLatLng().lng));
-                 //document.getElementById("latitude").value = markers[0].getLatLng().lat;
-                 //document.getElementById("longitude").value = markers[0].getLatLng().lng;
-                 //alert(document.getElementById("longitude").value);
-             }
+        // zentratu mapa erabiltzaileak 
+        if(markers.length>0)
+        {
+            map.panTo(new L.LatLng( markers[0].getLatLng().lat, markers[0].getLatLng().lng));
+            //document.getElementById("latitude").value = markers[0].getLatLng().lat;
+            //document.getElementById("longitude").value = markers[0].getLatLng().lng;
+            //alert(document.getElementById("longitude").value);
+        }
 
-            // maparen click eventoa 
-            //map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);});
-			map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);document.getElementById("latitude").value = e.latlng.lat;document.getElementById("longitude").value = e.latlng.lng;});
+        // maparen click eventoa 
+        //map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);});
+		map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);document.getElementById("latitude").value = e.latlng.lat;document.getElementById("longitude").value = e.latlng.lng;});
 			
        		 
-       	}
-    {% else %}
-        function load_map(map, options)
-        {        	
-           		map.panTo(new L.LatLng({{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}));
-           		L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}]).addTo(map).openPopup();                
+    }
+{% else %}
+   function load_map(map, options)
+   {        	
+   		map.panTo(new L.LatLng({{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}));
+   		L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}]).addTo(map).openPopup();                
   		
-        }
-    {% endif %}
+   }
+{% endif %}
+    
 </script>
 
-
-<script>
-	$(function () {
-        // Remove Search if user Resets Form or hits Escape!
-		$('body, .navbar-collapse form[role="search"] button[type="reset"]').on('click keyup', function(event) {
-			console.log(event.currentTarget);
-			if (event.which == 27 && $('.navbar-collapse form[role="search"]').hasClass('active') ||
-				$(event.currentTarget).attr('type') == 'reset') {
-				closeSearch();
-			}
-		});
-
-		function closeSearch() {
-            var $form = $('.navbar-collapse form[role="search"].active')
-    		$form.find('input').val('');
-			$form.removeClass('active');
-		}
-
-		// Show Search if form is not active // event.preventDefault() is important, this prevents the form from submitting
-		$(document).on('click', '.navbar-collapse form[role="search"]:not(.active) button[type="submit"]', function(event) {
-			event.preventDefault();
-			var $form = $(this).closest('form'),
-				$input = $form.find('input');
-			$form.addClass('active');
-			$input.focus();
-
-		});
-		// ONLY FOR DEMO // Please use $('form').submit(function(event)) to track from submission
-		// if your form is ajax remember to call `closeSearch()` to close the search container
-		$(document).on('click', '.navbar-collapse form[role="search"].active button[type="submit"]', function(event) {
-			event.preventDefault();
-			var $form = $(this).closest('form'),
-				$input = $form.find('input');
-			$('#showSearchTerm').text($input.val());
-            closeSearch()
-		});
-    });
-	
-	
-</script>
 
 </head>
 
@@ -128,7 +110,7 @@
 	<!-- WORKSPACE -->
 	<div id="workspace">
        	<div id="workspace_boxes" ondrop="ws_drop(event)" ondragover="allowDrop(event)">
-       		<a type="button" class="btn btn-default btn-xs pathBotoia" href="{{BASE_URL}}/sortu_ibilbidea">{% trans "sortu ibilbidea" %}
+       		<a type="button" class="btn btn-default btn-xs pathBotoia" href="sortu_ibilbidea">{% trans "sortu ibilbidea" %}
        		<span class="glyphicon glyphicon-edit" aria-hidden="true"> 
        		</span> 
       	 	</a>
@@ -265,7 +247,9 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-  	
+  
+			
+		
 			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">{% csrf_token %}
                 <input name="next" type="hidden" value="#" />
                 <input type="hidden" name="language" value="{{ lang.0 }}" />
@@ -289,7 +273,7 @@
                 {% endfor %}
                </p>
                <p>
-    			<a class="navbar-brand navbar-brand-berria" title="kulturbideak" href="{{BASE_URL}}">
+    			<a class="navbar-brand navbar-brand-berria" title="kulturbideak" href="http://obprototipoa.elhuyar.eus">
  					<span class="laguntza">O<small>ndare</small></span>B<small>ideak</small>			
 				</a>
 				</p>
@@ -303,12 +287,12 @@
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
-      <li><a href="{{BASE_URL}}/itemak_hasiera">
+      <li><a href="itemak_hasiera">
          ITEMAK
          </a>
       </li>
       <li>
-      	<a href="{{BASE_URL}}/ibilbideak_hasiera">
+      	<a href="ibilbideak_hasiera">
       		IBILBIDEAK
       	</a>
       </li>
@@ -316,7 +300,7 @@
   
     <div class="col-sm-3 col-md-3 bilatzailea-kutxa">
 		<!--<form action="/search" method="get" class="navbar-form">-->
-		<form action="{{BASE_URL}}/cross_search" method="post" class="navbar-form autocomplete-me">
+		<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
 			
 		{% csrf_token %}
 			<div class="input-group">
@@ -344,122 +328,29 @@
 
    
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-  <script type="text/javascript">
-    // In a perfect world, this would be its own library file that got included
-    // on the page and only the ``$(document).ready(...)`` below would be present.
-    // But this is an example.
-    var Autocomplete = function(options) {
-      this.form_selector = options.form_selector
-      this.url = options.url || '/autocomplete/'
-      this.delay = parseInt(options.delay || 300)
-      this.minimum_length = parseInt(options.minimum_length || 3)
-      this.form_elem = null
-      this.query_box = null
-    }
-
-    Autocomplete.prototype.setup = function() {
-      var self = this
-
-      this.form_elem = $(this.form_selector)
-      this.query_box = this.form_elem.find('input[name=search_input]')
-
-      // Watch the input box.
-      this.query_box.on('keyup', function() {
-        var query = self.query_box.val()
-
-        if(query.length < self.minimum_length) {
-          return false
-        }
-
-        self.fetch(query)
-      })
-
-	 //MADDALEN : HAU KOMENTATU DUT KLIKATZEAN AUKERATUTAKO ITEMERA JOATEKO, bILAKETA KUTXAN IDATZI BEHARREAN
-      // On selecting a result, populate the search field.
-      /*this.form_elem.on('click', '.ac-result', function(ev) {
-        self.query_box.val($(this).text())
-        $('.ac-results').remove()
-        return false
-      })*/
-    }
-
-    Autocomplete.prototype.fetch = function(query) {
-      var self = this
-
-      $.ajax({
-        url: this.url
-      , data: {
-          'q': query
-        }
-      , success: function(data) {
-          self.show_results(data)
-          
-        }
-      })
-    }
-
-    Autocomplete.prototype.show_results = function(data) {
-      // Remove any existing results.
-      $('.ac-results').remove()
-
-      var results = data.results || []
-      var results_id = data.results_id || [] //mad
-      var results_wrapper = $('<div class="ac-results"></div>')
-      //var base_elem = $('<div class="result-wrapper"><a href="#" class="ac-result"></a></div>')
-
-      if(results.length > 0) {
-        for(var res_offset in results) {
-          var base_elem = $('<div class="result-wrapper"><a href="/erakutsi_item?id='+results_id[res_offset]+'" class="ac-result"></a></div>')
-          var elem = base_elem.clone()
-          // Don't use .html(...) here, as you open yourself to XSS.
-          // Really, you should use some form of templating.
-          elem.find('.ac-result').text(results[res_offset])
-          results_wrapper.append(elem)
-        
-        }
-      }
-      else {
-        var elem = base_elem.clone()
-        elem.text("No results found.")
-        results_wrapper.append(elem)
-      }
-      
-
-      this.query_box.after(results_wrapper)
-    }
-
-    $(document).ready(function() {
-      window.autocomplete = new Autocomplete({
-        form_selector: '.autocomplete-me'
-      })
-      window.autocomplete.setup()
-    })
-  </script> 	
-   	
-   	
+  
    	
    	
    	<!-- BIGARREN PROBA-->
     {% if user.is_authenticated %}
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="{{BASE_URL}}/irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"> 
+      <li><a href="irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"> 
 	 </span> {% trans "Irten" %}</a></li>
      <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a></li>
-    				<li><a href="{{BASE_URL}}/nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a></li>
+    				<li><a href="nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a></li>
     				<li role="separator" class="divider"></li>
-    				<li><a href="{{BASE_URL}}/oaipmh_datubilketa">{% trans "OAI-PMH bidezko itemen bilketa" %}</a></li>
-    				<li><a href="{{BASE_URL}}/itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+    				<li><a href="oaipmh_datubilketa">{% trans "OAI-PMH bidezko itemen bilketa" %}</a></li>
+    				<li><a href="itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
        				</li></a>
       				
     				<li role="separator" class="divider"></li>
-				    <li><a href="{{BASE_URL}}/perfila_erakutsi">{% trans "Profila" %}</a></li>
-				    <li><a href="{{BASE_URL}}/pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a></li>
+				    <li><a href="perfila_erakutsi">{% trans "Profila" %}</a></li>
+				    <li><a href="pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a></li>
 				    <li role="separator" class="divider"></li>
-				    <li><a href="{{BASE_URL}}/irten">{% trans "Irten" %} 
+				    <li><a href="irten">{% trans "Irten" %} 
 				    	<!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
 						
 					</li>
@@ -468,9 +359,9 @@
     </ul>
     {% else %}
      <ul class="nav navbar-nav navbar-right">
-			<li><a href="{{BASE_URL}}/erregistratu">{% trans "Erregistratu" %} </a></li>
+			<li><a href="erregistratu">{% trans "Erregistratu" %} </a></li>
 			
-			<li><a href="{{BASE_URL}}/logina"><span class="glyphicon glyphicon-log-in" aria-hidden="true"> 
+			<li><a href="logina"><span class="glyphicon glyphicon-log-in" aria-hidden="true"> 
     	   	</span> {% trans "Login" %} </a>
 			</li>
      </ul>
@@ -609,7 +500,7 @@
 				<br />
   					<div class="col-xs-6 col-md-12">
     					<a class="thumbnail" href="#">
-						<img src="http://europeanastatic.eu/api/image?uri=http://www.peoplesnetwork.gov.uk/dpp/resource/2515311/stream/thumbnail_image_jpeg&size=FULL_DOC">
+						<img src="">
 						</a>
   					</div>
 				</div>
@@ -710,8 +601,9 @@
 <!-- Latest compiled and minified JavaScript -->
 <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
 <script type="text/javascript">
-SocialShareKit.init();
+//SocialShareKit.init();
 </script>
+
 
 </body>
 </html>
