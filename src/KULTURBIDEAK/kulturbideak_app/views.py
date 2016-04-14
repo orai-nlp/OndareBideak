@@ -1880,8 +1880,12 @@ def ajax_lortu_most_voted_paths(request):
     
     return render_to_response('ibilbide_bozkatuenak.xml', {'paths': path_bozkatuenak}, context_instance=RequestContext(request), mimetype='application/xml')
 
+def ajax_lortu_eguneko_itema (request):
     
-    
+    print "ajax_lortu_eguneko_itema"
+    eguneko_itema=item.objects.filter(egunekoa=1) 
+    print eguneko_itema
+    return render_to_response('eguneko_itema.xml', {'items': eguneko_itema}, context_instance=RequestContext(request), mimetype='application/xml')
 
 def gorde_ibilbidea(request):
 

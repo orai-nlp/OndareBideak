@@ -19,6 +19,8 @@ function initialize(){
 	//load_paths_list(user_id);
 	//Kargatu Ibilbide bozkatuenak
 	load_most_voted_paths();
+	//Kargatu Eguneko Itema
+	load_eguneko_itema();
 }
 
 function hizkuntza_url_egokitu(linka){
@@ -127,6 +129,8 @@ function load_most_voted_paths(){
 }
 
 
+
+
 function load_most_voted_paths_request(paths_list_container)
 {
 	
@@ -210,6 +214,116 @@ function add_most_voted_path_to_list(id,titulua){
     
     
 }
+
+//pantailaren albo batean eguneko itema erakusteko
+
+function load_eguneko_itema()
+{
+	
+	var eguneko_itema_container = document.getElementById("eguneko_itema");
+	if (eguneko_itema_container){
+		//ajax deia, kargatu kontainerrean zerrenda
+	
+		load_eguneko_itema_request(eguneko_itema_container);
+	}
+}
+	
+function load_eguneko_itema_request(eguneko_itema_container)
+{
+		
+	var csrftoken = getCookie('csrftoken');
+	var xmlHttp = createXmlHttpRequestObject();
+	
+	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
+		
+		$.ajaxSetup({
+   			beforeSend: function(xhr, settings) {
+       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
+       		}
+   		 	}
+		});
+        xmlHttp.open("POST","../ajax_lortu_eguneko_itema",true);
+        xmlHttp.onreadystatechange = function (){
+            load_eguneko_itema_answer(xmlHttp,eguneko_itema_container);                                                                   // Erantzuna jasotzean exekutatuko den deia
+        };
+        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xmlHttp.send("csrfmiddlewaretoken=" + csrftoken);     // Eskaera bidali
+    }
+}
+
+function load_eguneko_itema_answer(xmlHttp,eguneko_itema_container)
+{
+	
+	if (xmlHttp.readyState == 4){
+		
+        if(xmlHttp.status == 200){
+        
+			var xml_answer = xmlHttp.responseXML;
+			var xml_Document = xml_answer.documentElement;
+			var items = xml_Document.getElementsByTagName("item");
+			
+			
+			//Eguneko item bat baino gehiago daudenean, random bidez aukeratu zein kargatu
+			var randomNum = Math.floor(Math.random() * items.length);
+			
+			
+			id = items[randomNum].getElementsByTagName("id")[0].firstChild.data;
+			titulua = items[randomNum].getElementsByTagName("titulua")[0].firstChild.data;
+			irudia = items[randomNum].getElementsByTagName("irudia")[0].firstChild.data;
+			
+			add_eguneko_itema_to_list(id,titulua,irudia);
+			/*
+			for (var i=0;i<items.length;i++){
+				
+				id = items[i].getElementsByTagName("id")[0].firstChild.data;
+				
+				titulua="";
+				
+				if (items[i].getElementsByTagName("titulua")[0].firstChild){
+					titulua = items[i].getElementsByTagName("titulua")[0].firstChild.data;
+														
+				}
+				irudia="";
+				if (items[i].getElementsByTagName("irudia")[0].firstChild){
+					irudia = items[i].getElementsByTagName("irudia")[0].firstChild.data;
+														
+				}
+			
+				
+				add_eguneko_itema_to_list(id,titulua,irudia);
+			} 
+			*/                                
+        }
+    }
+	
+}
+
+function add_eguneko_itema_to_list(id,titulua,irudia){
+	
+	
+	//Random-a inplementatu
+	var eguneko_itema_div = document.getElementById("eguneko_itema");
+    
+    var p = document.createElement('p');
+    
+    var a = document.createElement('a');
+    
+    var img = document.createElement("img");
+	img.setAttribute("src", irudia);
+   
+	//var linkText = document.createTextNode(titulua);
+	//a.appendChild(linkText);
+	a.appendChild(img);
+	//a.title = titulua;
+	a.href = "erakutsi_item?id="+id;
+	eguneko_itema_div.appendChild(p);
+	eguneko_itema_div.appendChild(a);
+    
+    
+}
+
 
 function load_ws()
 {
@@ -1328,7 +1442,8 @@ function pb_new_element_egunekoa(data_id,text_value,image_value,path_id,item_id)
 		
 		
 		var form = $('<form action="' + url + '" method="post">' +
-		'<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">'+
+		//'<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">'+
+		'<input type="hidden" name="csrfmiddlewaretoken" value="'+ csrf_token+'">'+
   		'<input type="hidden" name="path_id" value="' + path_id + '" />'+
   		//'<input type="hidden" name="titulua" value="' + text_value + '" />'+
   		//'<input type="hidden" name="irudia" value="' + image_value + '" />'+
@@ -1345,6 +1460,7 @@ function pb_new_element_egunekoa(data_id,text_value,image_value,path_id,item_id)
     pb_window_resize();
 }
 
+////Hemen:pb_new_element_overview 
 function pb_new_element_overview(data_id,text_value,path_id,item_id,nabarmentzeko_id)
 {
 	
@@ -1397,10 +1513,12 @@ function pb_new_element_overview(data_id,text_value,path_id,item_id,nabarmentzek
     cursor: 'pointer',
 	}).click(function(e) {   	
     	
-    	var url = 'nabigazio_item';   	
+    	var url = 'nabigazio_item'; 
+    	
     	//window.location.href=url; //get moduan bidaltzeko				
 		var form = $('<form action="' + url + '" method="post">' +
-		'<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">'+
+		//'<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">'+
+		'<input type="hidden" name="csrfmiddlewaretoken" value="'+ csrf_token+'">'+
   		'<input type="hidden" name="path_id" value="' + path_id + '" />'+  		
   		'<input type="hidden" name="item_id" value="' + item_id + '" />'+
  		 '</form>');

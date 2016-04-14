@@ -30,6 +30,9 @@
 
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/readmore.js"></script>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
+<script>
+var csrf_token = "{{ csrf_token }}";
+</script>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
 
@@ -48,6 +51,9 @@
    	
 <script>
 //FUNTZIOAK ondare.js
+
+
+
 </script>
 
 <script type="text/javascript">   
@@ -494,8 +500,9 @@ var markers = [];
 			
 			{% endif %}
 			
-			<div class=""><b>{% trans "Eguneko Itema" %} </b>
+			<div id="eguneko_itema"><b>{% trans "Eguneko Itema" %} </b></div>
 				
+				<!--
 				<div class="column">
 				<br />
   					<div class="col-xs-6 col-md-12">
@@ -504,8 +511,8 @@ var markers = [];
 						</a>
   					</div>
 				</div>
-				
-			</div>
+				-->
+			
 			
 			<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
 			{%if itemPaths %}
