@@ -24,10 +24,24 @@
 
 <!--IBILBIDEAREN TITULUA -->
 
-<div><h4 class="media-heading titulu-kolorea">{{momentukoPatha.dc_title}}</h4></div>
 
-{% qr_from_text pathqrUrl "s" %}
-
+<div>
+	<a type="button" class="btn btn-info eskuma kolorea" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
+		<span  aria-hidden="true"> 
+			<span class="glyphicon glyphicon-play" aria-hidden="true"> 
+    	   	</span> 
+    		Autoplay
+    	</span> 	
+	</a> 
+	
+	<h4 class="media-heading titulu-kolorea">{{momentukoPatha.dc_title}}</h4>
+	
+	<br />
+</div>
+<div>
+	<!-- QR KODEAK -->
+<!--{% qr_from_text pathqrUrl "s" %}--> 
+</div>
 <!-- BOTAZIO SISTEMA IBILBIDEA--> 
 
   {% if user.is_authenticated %}
@@ -157,7 +171,8 @@
     <!--<h4 class="media-heading titulu-kolorea">{{momentukoItema.dc_title}}</h4>-->
     {{momentukoNodea.dc_description}}
   </div>
-  	{% qr_from_text itemqrUrl "s" %}
+  	<!-- QR KODEAK -->
+  	<!--{% qr_from_text itemqrUrl "s" %}-->
  </div>
   	
   	<!-- HURRENGOAK -->
