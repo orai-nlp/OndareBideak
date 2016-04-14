@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding = "UTF-8" standalone="yes"?>
+<answer>
+	{% for item in items %}
+		<item>
+	    	<id>{{ item.id }}</id>
+	    	<titulua>{{ item.dc_title }}</titulua>
+	    	<irudia>{{ item.edm_object }}</irudia>
+    	</item>
+    {% endfor %}
+</answer>
