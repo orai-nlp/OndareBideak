@@ -32,6 +32,7 @@
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
 <script>
 var csrf_token = "{{ csrf_token }}";
+var erabiltzailea ="{{request.user.username}}";
 </script>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
@@ -419,12 +420,50 @@ var markers = [];
 	<!--PANTAILA EGITURA NAGUSIA-->
 	<div class="orria">
 	 	<div class="eskuma_div" align="right" >
-	 		<b>{% trans "Hornitzaileak" %} </b>
+	 		<div class="hornitzaileak"> <!-- DBtik kargatu -->
+	 			<b>{% trans "Hornitzaileak" %} </b>
+	 			<br />
+	 			<br />
+	 			<p><a href="/hornitzaile_search?h=ekm">EuskoMedia</a></p>
+	 		</div>
+	 		{% if bilaketa_filtroak == 1%}
 	 		<br />
 	 		<br />
-	 		<p>EuskoMedia</p>
-	 		
-
+	 		<div class="filtroak">
+	 			<b>{% trans "Bilaketa Filtroak" %} </b>
+	 			<br />
+	 			<br />
+	 			
+	 				<p>&nbsp;<b>{% trans "Hizkuntza" %} </b></p>
+	 				
+						&nbsp;&nbsp;<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu()">eu<br>
+						&nbsp;&nbsp;<input type="checkbox" name="hizkuntza2F" value="es" onclick="bilaketaFiltratu()">es <br>
+						&nbsp;&nbsp;<input type="checkbox" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu()">en <br>
+					<br />
+					<p>&nbsp;<b>{% trans "Hornitzailea" %} </b></p>
+					
+						&nbsp;&nbsp;<input type="checkbox" name="hornitzaile1F" value="ekm">EuskoMedia<br>
+						&nbsp;&nbsp;<input type="checkbox" name="hornitzaile2F" value="ekm">Erabiltzailea Arrunta<br>
+					<br />
+					<p>&nbsp;<b>{% trans "Mota" %} </b></p>
+						&nbsp;&nbsp;<input type="checkbox" name="mota1F" value="testua">testua<br>
+						&nbsp;&nbsp;<input type="checkbox" name="mota2F" value="audioa">audioa<br>
+						&nbsp;&nbsp;<input type="checkbox" name="mota3F" value="bideoa">bideoa <br>
+					<br />
+					<p>&nbsp;<b>{% trans "Ordena" %} </b></p>
+						&nbsp;&nbsp;<input type="checkbox" name="ordena1F" value="data">data<br>
+						&nbsp;&nbsp;<input type="checkbox" name="ordena2F" value="botoak">botoak<br>	
+					<br />
+					<p>&nbsp;<b>{% trans "Beste batzuk" %} </b></p>
+						&nbsp;&nbsp;<input type="checkbox" name="egunekoaF" value="eu">egunekoa<br>
+						&nbsp;&nbsp;<input type="checkbox" name="proposatutakoaF" value="es">proposatutakoa<br>
+						&nbsp;&nbsp;<input type="checkbox" name="wikifikatuaF" value="en">wikifikatua <br>
+						&nbsp;&nbsp;<input type="checkbox" name="irudiaDuF" value="en">irudia du <br>
+						&nbsp;&nbsp;<input type="checkbox" name="irudiaEzDuF" value="en">irudia ez du <br>
+				
+	 			
+	 		</div>
+			{%endif%}
 	 	</div>	
 			
 		<div class="content_div" align="center">

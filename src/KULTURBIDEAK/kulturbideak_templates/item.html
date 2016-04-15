@@ -81,7 +81,7 @@
 	<div class="panel-heading">
 		
 		{% get_current_language as LANGUAGE_CODE %}
-		<h1 class="panel-title">  {{ LANGUAGE_CODE|choose_title_language:item }}</h1>
+		<h1 class="panel-title">  {{ LANGUAGE_CODE|choose_title_language:item}}</h1>
 		<!--
 		{% if LANGUAGE_CODE == "eu" %}
 			{%if titulu_eu != "" %}
@@ -144,7 +144,9 @@
  			<br />
  			
  			<div class="comment more">
- 				{{ LANGUAGE_CODE|choose_description_language:item }}
+ 				<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
+ 				<!--{{ LANGUAGE_CODE|choose_description_language:item |striptags |safe }}-->
+ 				{{ LANGUAGE_CODE|choose_description_language:item |safe}}
  				<!--
  				{% if LANGUAGE_CODE == "eu" %}				
 					{%if deskribapena_eu != "" %}

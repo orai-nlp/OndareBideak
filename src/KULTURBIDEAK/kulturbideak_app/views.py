@@ -260,8 +260,38 @@ def cross_search(request):
 
     
     #,'paths':paths
+    bilaketa_filtroak=1
+    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak},context_instance=RequestContext(request))
+
+
+def hornitzaile_search(request):
+    # Hornitzaile jakin baten item eta ibilbide guztiak bilatuko dira
+    hornitzailea=request.GET['h'] 
+   
+    items=[]
+    paths=[]
+    search_models_items = [item]
+    search_models_paths = [path]
     
-    return render_to_response('cross_search.html',{'items':items,'paths':paths},context_instance=RequestContext(request))
+    hornitzaile_erab=User.objects.get(username=hornitzailea)
+    
+    items = SearchQuerySet().all().filter(edm_provider=hornitzailea).models(*search_models_items)   
+    paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
+        
+    bilaketa_filtroak=1
+    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak},context_instance=RequestContext(request))
+
+def filtro_search(request):
+    
+    items=[]
+    paths=[]
+    search_models_items = [item]
+    search_models_paths = [path]
+    bilaketa_filtroak=1
+    
+    print "filtro_search"
+    
+    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak},context_instance=RequestContext(request))
 
 def nabigazioa_hasi(request):
     
@@ -1372,8 +1402,11 @@ def erakutsi_item(request):
         botatuDu=1   
         botoKopurua=item_tupla.get_votes()
         
-    #MORE LIKE THIS      
-    mlt = SearchQuerySet().more_like_this(item_tupla)      
+    #MORE LIKE THIS
+    print "MORE LIKE THIS KALKULATZEN" 
+    mlt=[]   
+    mlt = SearchQuerySet().more_like_this(item_tupla)
+    print "MORE LIKE THIS KALKULATZEN BUKATU DU"        
     #print mlt.count() # 5        
     #print mlt[0].object.dc_title
         
@@ -1388,6 +1421,7 @@ def erakutsi_item(request):
       
     comment_form = CommentForm() 
     comment_parent_form = CommentParentForm()
+    print "item.html deitu baino lehen"
 
     return render_to_response('item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
@@ -1882,9 +1916,9 @@ def ajax_lortu_most_voted_paths(request):
 
 def ajax_lortu_eguneko_itema (request):
     
-    print "ajax_lortu_eguneko_itema"
+   
     eguneko_itema=item.objects.filter(egunekoa=1) 
-    print eguneko_itema
+  
     return render_to_response('eguneko_itema.xml', {'items': eguneko_itema}, context_instance=RequestContext(request), mimetype='application/xml')
 
 def gorde_ibilbidea(request):

@@ -765,9 +765,9 @@ function create_path_on_db()
 	var paths_thumbnail = document.getElementById("file2");
 	var paths_thumbnail_name=paths_thumbnail.value;
 	var hizkuntza =document.getElementById("hizkuntza").value;
+
 	
-	//alert(paths_thumbnail_name);
-	
+		
 	start_loader("loader");  
 	
 	uri="urii";
@@ -850,7 +850,7 @@ function create_path_nodes(path_id)
 
 		var item_id= erroa.id;
 		var uri="uri_"+erroa.id;
-		var dc_source="Euskomedia";
+		var dc_source=erabiltzailea;
 		//var dc_description="desc";
 		var type ="argazkia";
 		var paths_thumbnail=erroa.data("image_value");
@@ -2275,4 +2275,20 @@ function ibilbidea_kargatu(path_id)
         
 	 */
 }
+function bilaketaFiltratu()
+{
+	
+	alert("bilaketaFiltratu");
+
+	var hizkuntzak = []; 
+	var EuhizkElement = document.getElementById('hizkuntza1F');
+	var balioa;
+	if (EuhizkElement.checked == true)
+	 {
+	 	//balioa=EuhizkElement.value();
+	 	alert("True");
+	 }
+
+}
+	
 
