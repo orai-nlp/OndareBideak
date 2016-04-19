@@ -43,6 +43,7 @@ import simplejson as json
 import getopt
 import tempfile
 
+from  haystack.inputs import Not
 
 #from django.template.context_processors import csrf
 #MADDALEN
@@ -261,12 +262,15 @@ def cross_search(request):
     
     #,'paths':paths
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 
 def hornitzaile_search(request):
     # Hornitzaile jakin baten item eta ibilbide guztiak bilatuko dira
-    hornitzailea=request.GET['h'] 
+    hornitzailea=request.GET['h']
+    
+    galdera=""
+    hizkuntza="eu"
    
     items=[]
     paths=[]
@@ -279,9 +283,23 @@ def hornitzaile_search(request):
     paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
         
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 def filtro_search(request):
+    
+    # Helburu hizkuntza guztietan burutuko du bilaketa
+    hizkuntza=request.GET['hizkRadio']   
+    galdera=request.GET['search_input']
+    
+    #FILTROAK
+    hizkuntzakF=request.GET['hizkuntzakF']
+    hizkF=[]
+    hizkF=hizkuntzakF.split(',')
+    
+    hornitzaileakF=request.GET['hornitzaileakF']
+    horniF=[]
+    horniF=hornitzaileakF.split(',')
+    
     
     items=[]
     paths=[]
@@ -289,9 +307,74 @@ def filtro_search(request):
     search_models_paths = [path]
     bilaketa_filtroak=1
     
-    print "filtro_search"
     
-    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak},context_instance=RequestContext(request))
+    #FILTROAK PRESTATU
+    hEu="ez"
+    hEs="ez"
+    hEn="ez"
+    if hizkuntzakF != "":       
+        hizkF=hizkuntzakF.split(',')
+        for h in hizkF:
+            if(h=="eu"):
+                hEu="eu"
+            if(h=="es"):
+                hEs="es"
+            if(h=="en"):
+                hEn="en"
+                
+    horniEkm="ez"
+    horniArrunta="ez"
+    if hornitzaileakF != "":       
+        horniF=hornitzaileakF.split(',')
+        for h in horniF:
+            if(h=="ekm"):
+                horniEkm="ekm"
+            if(h=="arrunta"):
+                horniArrunta="arrunta"
+        
+      
+    
+
+    
+    #GALDERA BOTA
+    if hizkuntza == 'eu':
+        #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
+        items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
+        #hizkuntza filtroa
+        if hizkuntzakF != "":       
+            items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+        #hornitzaile filtroa
+        if(hornitzaileakF != ""):
+            items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
+            #items = items.filter(SQ(edm_provider=horniEkm)|SQ(edm_provider=horniArrunta))
+        #Mota filtroa, dc_type=Audioa,   edm_type=SOUND
+        
+        #...
+        
+        paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+        #hizkuntza filtroa
+        paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+    elif hizkuntza == 'es':
+       
+        items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+        #hizkuntza filtroa
+        items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+        
+        paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+        #hizkuntza filtroa
+        paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+    elif hizkuntza == 'en':
+  
+        items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+        #hizkuntza filtroa
+        items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+        
+        paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+        #hizkuntza filtroa
+        paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+    
+    
+    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF},context_instance=RequestContext(request))
 
 def nabigazioa_hasi(request):
     
@@ -1787,6 +1870,7 @@ def itema_gehitu(request):
         
         #username-a ez da errepikatzen datu-basean, beraz, id bezala erabili dezakegu 
         dc_creator= request.user.username # ondoren logeatutako erabiltzailea jarri
+        #BEGIRATU EA HORNITZAILEA DEN EDO EZ. EZ BADA:Arrunta balioa eman edm_providerri, bestela Hornitzailea
         edm_provider= request.user.username # ondoren logeatutako erabiltzailea jarri
         #Gaurko data hartu
         dc_date=datetime.datetime.now()

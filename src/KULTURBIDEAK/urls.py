@@ -45,6 +45,7 @@ from KULTURBIDEAK.kulturbideak_app.views import autoplay_hasieratik
 from KULTURBIDEAK.kulturbideak_app.views import autocomplete
 from KULTURBIDEAK.kulturbideak_app.views import oaipmh_datubilketa
 from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_search
+from KULTURBIDEAK.kulturbideak_app.views import filtro_search
 from django.contrib import admin
 
 #MAddalen
@@ -107,6 +108,7 @@ urlpatterns = patterns('',
     url(r'autocomplete', autocomplete),
     url(r'oaipmh_datubilketa',oaipmh_datubilketa),
     url(r'hornitzaile_search',hornitzaile_search),
+    url(r'filtro_search',filtro_search),
     (r'^search/', include('haystack.urls')),
     
     #url(r'^rosetta/', include('rosetta.urls')),

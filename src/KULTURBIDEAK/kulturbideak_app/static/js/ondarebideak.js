@@ -2278,17 +2278,57 @@ function ibilbidea_kargatu(path_id)
 function bilaketaFiltratu()
 {
 	
-	alert("bilaketaFiltratu");
+	var hizkR = document.getElementById('hizkRadio').value;
+	var galdera = document.getElementById('search_input').value;
 
-	var hizkuntzak = []; 
+	var hizkuntzakF_ar = []; 
+	var hornitzaileakF_ar = []; 
+	
+	//Hizkuntzak
 	var EuhizkElement = document.getElementById('hizkuntza1F');
+	var EshizkElement = document.getElementById('hizkuntza2F');
+	var EnhizkElement = document.getElementById('hizkuntza3F');
+	
+	//Hornitzaileak
+	var EkmHorniElement = document.getElementById('hornitzaile1F');
+	var ArruntaHorniElement = document.getElementById('hornitzaile2F');
+	
 	var balioa;
+	//HIZKUNTZAK
 	if (EuhizkElement.checked == true)
 	 {
-	 	//balioa=EuhizkElement.value();
-	 	alert("True");
+	 	balioa=EuhizkElement.value;
+	 	hizkuntzakF_ar.push(balioa);
 	 }
-
+	 if (EshizkElement.checked == true)
+	 {
+	 	balioa=EshizkElement.value;
+	 	hizkuntzakF_ar.push(balioa);
+	 
+	 }
+	 if (EnhizkElement.checked == true)
+	 {
+	 	balioa=EnhizkElement.value;
+	 	hizkuntzakF_ar.push(balioa);
+	 
+	 }
+	 //HORNITZAILEAK
+	 if(EkmHorniElement.checked == true)
+	 {
+	 	balioa=EkmHorniElement.value;
+	 	hornitzaileakF_ar.push(balioa);
+	 }
+	 if(ArruntaHorniElement.checked == true)
+	 {
+	 	balioa=ArruntaHorniElement.value;
+	 	hornitzaileakF_ar.push(balioa);
+	 }
+	 
+	 hizkuntzakF=hizkuntzakF_ar.toString(); 
+	 hornitzaileakF=hornitzaileakF_ar.toString(); 
+	 
+	var url = 'filtro_search?hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF;   	
+    window.location.href=url;
 }
 	
 

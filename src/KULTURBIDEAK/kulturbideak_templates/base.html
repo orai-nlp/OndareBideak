@@ -313,7 +313,12 @@ var markers = [];
 			<div class="input-group">
 			{% trans "Bilatu ..." as the_placeholder %}
 			<!-- id=id_q-->
-      		<input id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
+			{% if bilaketaGaldera%}
+      			<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
+     		{% else %}
+     			<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
+     		
+     		{%endif%}
      		<span class="input-group-btn">
        		<button class="btn btn-default" type="submit">
        			   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>	!
@@ -322,9 +327,22 @@ var markers = [];
       		</span>
       		
       	</div>
-      		<input  type="radio" name="hizkRadio" value="eu" checked> Eu
-			<input  type="radio" name="hizkRadio" value="es"> Es
-			<input  type="radio" name="hizkRadio" value="en"> En
+      		{% if radioHizkuntza == "eu" or not radioHizkuntza %}
+      		    <input  type="radio" id="hizkRadio" name="hizkRadio" value="eu" checked> Eu
+      		{%else%}
+      		    <input  type="radio" id="hizkRadio" name="hizkRadio" value="eu"> Eu
+      		{%endif%}
+      		{% if radioHizkuntza == "es"%}
+				<input  type="radio" id="hizkRadio" name="hizkRadio" value="es" checked> Es
+			{%else%}
+				<input  type="radio" id="hizkRadio" name="hizkRadio" value="es"> Es
+			{%endif%}
+			{% if radioHizkuntza == "en"%}
+				<input  type="radio" id="hizkRadio" name="hizkRadio" value="en"> En
+			{%else%}
+				<input  type="radio" id="hizkRadio" name="hizkRadio" value="en"> En
+			{%endif%}
+			
       	</form>
       	
    	</div><!-- /input-group -->	
@@ -435,31 +453,49 @@ var markers = [];
 	 			<br />
 	 			
 	 				<p>&nbsp;<b>{% trans "Hizkuntza" %} </b></p>
-	 				
-						&nbsp;&nbsp;<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu()">eu<br>
-						&nbsp;&nbsp;<input type="checkbox" name="hizkuntza2F" value="es" onclick="bilaketaFiltratu()">es <br>
-						&nbsp;&nbsp;<input type="checkbox" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu()">en <br>
+	 					{%if "eu" in hizkF%}
+							&nbsp;&nbsp;<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu()" checked>eu<br>
+						{%else%}
+							&nbsp;&nbsp;<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu()">eu<br>
+						{%endif%}
+						{%if "es" in hizkF%}
+							&nbsp;&nbsp;<input type="checkbox" id="hizkuntza2F" name="hizkuntza2F" value="es" onclick="bilaketaFiltratu()" checked>es <br>
+						{%else%}
+							&nbsp;&nbsp;<input type="checkbox" id="hizkuntza2F" name="hizkuntza2F" value="es" onclick="bilaketaFiltratu()">es <br>
+						{%endif%}
+						{%if "en" in hizkF%}
+							&nbsp;&nbsp;<input type="checkbox" id="hizkuntza3F" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu()" checked>en <br>
+						{%else%}
+							&nbsp;&nbsp;<input type="checkbox" id="hizkuntza3F" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu()">en <br>
+						{%endif%}
 					<br />
 					<p>&nbsp;<b>{% trans "Hornitzailea" %} </b></p>
-					
-						&nbsp;&nbsp;<input type="checkbox" name="hornitzaile1F" value="ekm">EuskoMedia<br>
-						&nbsp;&nbsp;<input type="checkbox" name="hornitzaile2F" value="ekm">Erabiltzailea Arrunta<br>
+						{%if "ekm" in horniF%}
+							&nbsp;&nbsp;<input type="checkbox" id="hornitzaile1F" name="hornitzaile1F" value="ekm" onclick="bilaketaFiltratu()" checked>EuskoMedia<br>
+						{%else%}
+							&nbsp;&nbsp;<input type="checkbox" id="hornitzaile1F" name="hornitzaile1F" value="ekm" onclick="bilaketaFiltratu()">EuskoMedia<br>
+						{%endif%}
+						{%if "arrunta" in horniF%}
+							&nbsp;&nbsp;<input type="checkbox" id="hornitzaile2F" name="hornitzaile2F" value="arrunta" onclick="bilaketaFiltratu()" checked>Erabiltzaile Arrunta<br>
+						{%else%}
+							&nbsp;&nbsp;<input type="checkbox" id="hornitzaile2F" name="hornitzaile2F" value="arrunta" onclick="bilaketaFiltratu()">Erabiltzaile Arrunta<br>
+						{%endif%}
 					<br />
 					<p>&nbsp;<b>{% trans "Mota" %} </b></p>
-						&nbsp;&nbsp;<input type="checkbox" name="mota1F" value="testua">testua<br>
-						&nbsp;&nbsp;<input type="checkbox" name="mota2F" value="audioa">audioa<br>
-						&nbsp;&nbsp;<input type="checkbox" name="mota3F" value="bideoa">bideoa <br>
+						&nbsp;&nbsp;<input type="checkbox" id="mota1F" name="mota1F" value="testua" onclick="bilaketaFiltratu()">testua<br>
+						&nbsp;&nbsp;<input type="checkbox" id="mota2F" name="mota2F" value="audioa" onclick="bilaketaFiltratu()">audioa<br>
+						&nbsp;&nbsp;<input type="checkbox" id="mota3F" name="mota3F" value="bideoa" onclick="bilaketaFiltratu()">bideoa <br>
 					<br />
 					<p>&nbsp;<b>{% trans "Ordena" %} </b></p>
 						&nbsp;&nbsp;<input type="checkbox" name="ordena1F" value="data">data<br>
 						&nbsp;&nbsp;<input type="checkbox" name="ordena2F" value="botoak">botoak<br>	
 					<br />
 					<p>&nbsp;<b>{% trans "Beste batzuk" %} </b></p>
-						&nbsp;&nbsp;<input type="checkbox" name="egunekoaF" value="eu">egunekoa<br>
-						&nbsp;&nbsp;<input type="checkbox" name="proposatutakoaF" value="es">proposatutakoa<br>
-						&nbsp;&nbsp;<input type="checkbox" name="wikifikatuaF" value="en">wikifikatua <br>
-						&nbsp;&nbsp;<input type="checkbox" name="irudiaDuF" value="en">irudia du <br>
-						&nbsp;&nbsp;<input type="checkbox" name="irudiaEzDuF" value="en">irudia ez du <br>
+						&nbsp;&nbsp;<input type="checkbox" name="egunekoaF" value="egunekoa">egunekoa<br>
+						&nbsp;&nbsp;<input type="checkbox" name="proposatutakoaF" value="proposatutakoa">proposatutakoa<br>
+						&nbsp;&nbsp;<input type="checkbox" name="wikifikatuaF" value="wikifikatua">wikifikatua <br>
+						&nbsp;&nbsp;<input type="checkbox" name="irudiaDuF" value="irudiaDu">irudia du <br>
+						&nbsp;&nbsp;<input type="checkbox" name="irudiaEzDuF" value="irudiaEzDu">irudia ez du <br>
 				
 	 			
 	 		</div>

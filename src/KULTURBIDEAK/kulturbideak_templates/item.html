@@ -132,6 +132,9 @@
  			{% if item.edm_provider%}
  				<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{hornitzailea}} </a></p>
  			{%endif%}
+ 			{% if item.dc_creator%}
+ 				<p><b>{% trans "Sortzailea:" %}</b><a href="">{{item.dc_creator}} </a></p>
+ 			{%endif%}
  			{% if item.edm_rights%}
  				<p><b>{% trans "Eskubideak:" %}</b><a href="">{{eskubideak}} </a></p>
  			{%endif%}
