@@ -82,37 +82,7 @@
 		
 		{% get_current_language as LANGUAGE_CODE %}
 		<h1 class="panel-title">  {{ LANGUAGE_CODE|choose_title_language:item}}</h1>
-		<!--
-		{% if LANGUAGE_CODE == "eu" %}
-			{%if titulu_eu != "" %}
-				<div class="titulu_eu"> 
-					<h1 class="panel-title">{{titulu_eu}}</h1>
-				</div>
-			{%else%}		
-				<h1 class="panel-title">{{titulua}}</h1>			
-			{%endif%}
-		{%endif%}
-		{% if LANGUAGE_CODE == "es" %}
-			
-			{%if titulu_es != ""%}
-				<div class="titulu_es"> 			
-					<h1 class="panel-title">{{titulu_es}}</h1>
-				</div>
-			{%else%}		
-				<h1 class="panel-title">{{titulua}}</h1>			
-			{%endif%}
-		{%endif%}
-		{% if LANGUAGE_CODE == "en" %}
-			{%if titulu_en != "" %}
-				
-				<div class="titulu_es"> 
-					<h1 class="panel-title">{{titulu_en}}</h1>
-				</div>
-			{%else%}		
-				<h1 class="panel-title">{{titulua}}</h1>			
-			{%endif%}
-		{%endif%}
-		-->
+		
 	</div>
 	
 	<div class="panel-body">
@@ -146,34 +116,9 @@
  			{%endif%}
  			<br />
  			
- 			<div class="comment more">
- 				<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
- 				<!--{{ LANGUAGE_CODE|choose_description_language:item |striptags |safe }}-->
- 				{{ LANGUAGE_CODE|choose_description_language:item |safe}}
- 				<!--
- 				{% if LANGUAGE_CODE == "eu" %}				
-					{%if deskribapena_eu != "" %}
-						{{deskribapena_eu}}
-					{%else%}		
-						{{deskribapena}}		
-					{%endif%}
-				{%endif%}
-				{% if LANGUAGE_CODE == "es" %}
-					{%if deskribapena_es != ""%}				 			
-						{{deskribapena_es}}
-					{%else%}		
-						{{deskribapena}}		
-					{%endif%}
-				{%endif%}
-				{% if LANGUAGE_CODE == "en" %}
-					{%if deskribapena_en != ""%}
-						{{deskribapena_en}}
-					{%else%}		
-						{{deskribapena}}			
-					{%endif%}
-				{%endif%} 
-			-->  		
- 			</div>
+ 			<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
+ 			<!--{{ LANGUAGE_CODE|choose_description_language:item |striptags |safe }}-->
+ 			<div class="comment more">{{ LANGUAGE_CODE|choose_description_language:item |safe}}</div>
  			
  		</div>
  		

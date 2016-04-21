@@ -54,6 +54,9 @@ um_pages }}</p>-->
 				{% if item.dc_creator %}
 					<p class="" id="sortzailea"><b>{% trans "Sortzailea:" %}</b>{{item.dc_creator}}</p>
 				{%endif%}
+				{% if item.edm_type %}
+					<p class="" id="mota"><b>{% trans "Mota:" %}</b>{{item.edm_type}}</p>
+				{%endif%}
 				{% if user.is_authenticated %}
 					<div class="btn-group" role="group" aria-label="...">
        				<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">

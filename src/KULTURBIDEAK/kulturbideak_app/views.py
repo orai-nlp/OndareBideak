@@ -44,7 +44,7 @@ import getopt
 import tempfile
 
 from  haystack.inputs import Not
-
+from haystack.inputs import Raw
 #from django.template.context_processors import csrf
 #MADDALEN
 #from haystack.forms import ModelSearchForm, HighlightedSearchForm
@@ -277,6 +277,7 @@ def hornitzaile_search(request):
     search_models_items = [item]
     search_models_paths = [path]
     
+    #Rolak gehitzen ditugunean agian hau aldatuko da
     hornitzaile_erab=User.objects.get(username=hornitzailea)
     
     items = SearchQuerySet().all().filter(edm_provider=hornitzailea).models(*search_models_items)   
@@ -293,13 +294,17 @@ def filtro_search(request):
     
     #FILTROAK
     hizkuntzakF=request.GET['hizkuntzakF']
-    hizkF=[]
-    hizkF=hizkuntzakF.split(',')
-    
+    hizkF=[] 
     hornitzaileakF=request.GET['hornitzaileakF']
     horniF=[]
-    horniF=hornitzaileakF.split(',')
-    
+    motakF=request.GET['motakF']
+    motaF=[]
+    ordenakF=request.GET['ordenakF']
+    ordenaF=[]
+    lizentziakF=request.GET['lizentziakF']
+    lizentziaF=[]  
+    besteakF=request.GET['besteakF']
+    besteaF=[]
     
     items=[]
     paths=[]
@@ -327,33 +332,143 @@ def filtro_search(request):
     if hornitzaileakF != "":       
         horniF=hornitzaileakF.split(',')
         for h in horniF:
-            if(h=="ekm"):
-                horniEkm="ekm"
+            if(h=="EuskoMedia"):
+                horniEkm="EuskoMedia"
             if(h=="arrunta"):
                 horniArrunta="arrunta"
         
-      
+    motaT="ez"
+    motaS="ez"
+    motaV="ez"  
+    motaI="ez"  
+    if motakF != "":       
+        motaF=motakF.split(',')
+        for m in motaF:
+            if(m=="testua"):
+                motaT="TEXT"
+            if(m=="audioa"):
+                motaS="SOUND"
+            if(m=="bideoa"):
+                motaV="VIDEO"
+            if(m=="irudia"):
+                motaI="IMAGE"
     
-
+    oData="ez"
+    oData2="ez"
+    oBoto="ez"
+    if ordenakF != "":       
+        ordenaF=ordenakF.split(',')
+        for o in ordenaF:
+            if(o=="data"):
+                oData="data"
+            if(o=="dataAsc"):
+                oData2="dataAsc"
+            if(o=="botoak"):
+                oBoto="botoak"
+    
+    lLibre="ez"
+    lCommons="ez"
+    lCopy="ez"
+    if lizentziakF !="":
+        lizentziaF=lizentziakF.split(',')
+        for l in lizentziaF:
+            if(l=="librea"):
+                lLibre="librea"
+            if(l=="creativeCommons"):
+                lCommons="creativeCommons"
+            if(l=="copyRight"):
+                lCopy="copyRight"
+    
+    
+    bEgun="ez"
+    bProp="ez"
+    bWikify="ez"
+    bIrudiBai="ez"
+    bIrudiEz="ez"
+    if besteakF != "":       
+        besteaF=besteakF.split(',')
+        for b in besteaF:
+            if(b=="egunekoa"):
+                bEgun="egunekoa"
+            if(b=="proposatutakoa"):
+                bProp="proposatutakoa"
+            if(b=="wikifikatua"):
+                bWikify="wikifikatua"
+            if(b=="irudiaDu"):
+                bIrudiBai="irudiaDu"
+            if(b=="irudiaEzDu"):
+                bIrudiEz="irudiaEzDu"
     
     #GALDERA BOTA
     if hizkuntza == 'eu':
+        #ITEMS
         #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
         items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
+       
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
         #hornitzaile filtroa
         if(hornitzaileakF != ""):
-            items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #items = items.filter(SQ(edm_provider=horniEkm)|SQ(edm_provider=horniArrunta))
-        #Mota filtroa, dc_type=Audioa,   edm_type=SOUND
-        
+            if(horniEkm=="ekm"):
+                items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
+            else:
+                items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
+        #Mota filtroa, edm_type=SOUND
+        if(motakF != ""):
+            items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+        #Ordena Filtroa
+        bozkatuenak_item_zerrenda=[]
+        if(ordenakF != ""):            
+            if(oData == "data"):
+                #items = items.order_by('-dc_date')
+                items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
+            if(oData2 == "dataAsc"):
+                print "DATA GORAKA"
+                #items = items.order_by('-dc_date')
+                items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
+            if(oBoto == "botoak"):
+                ##PROBATU order_by erabiltzen! agian azkarragoa            
+                bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+    
+                items_ids=[]
+                for itema in items:
+                    id = itema.item_id
+                    items_ids.append(id)
+                #Ordena mantentzen du??                        
+                items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
+        #Lizentziak filtroa
+        if lizentziakF !="":  
+            if  lLibre=="librea":
+                items=items.filter(edm_rights='librea')
+            if lCommons=="creativeCommons":
+                items=items.filter(edm_rights='creativeCommons')
+            if lCopy=="copyRight":
+                items=items.filter(edm_rights='copyRight')                
+        #Besteak filtroa
+        if (besteakF != ""):  
+            if bEgun=="egunekoa":
+                items=items.filter(egunekoa=1)
+            if bProp == "proposatutakoa":
+                items=items.filter(proposatutakoa=1)
+            if bWikify=="wikifikatua":
+                items=items.filter(wikifikatua=1)
+            if bIrudiBai=="irudiaDu":             
+                #import pdb
+                #pdb.set_trace()             
+                #self.searchqueryset.exclude(edm_object = None ) hau egiten du behekoak
+                items=items.filter(edm_object = Raw("[* TO *]"))  
+            if bIrudiEz=="irudiaEzDu":
+                #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                items=items.exclude(edm_object = Raw("[* TO *]"))
+                #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
         
+        #PATHS
         paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
         #hizkuntza filtroa
-        paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+        if hizkuntzakF != "":       
+            paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
     elif hizkuntza == 'es':
        
         items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
@@ -373,8 +488,8 @@ def filtro_search(request):
         #hizkuntza filtroa
         paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
     
-    
-    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF},context_instance=RequestContext(request))
+  
+    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
 def nabigazioa_hasi(request):
     

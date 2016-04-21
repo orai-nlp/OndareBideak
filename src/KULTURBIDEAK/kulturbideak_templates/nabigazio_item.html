@@ -235,11 +235,8 @@
 <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading"><b class="titulu-kolorea">Itemaren informazioa </b></div>
-  <div class="panel-body comment more">
-  	{% get_current_language as LANGUAGE_CODE %}
-  	{{ LANGUAGE_CODE|choose_description_language:momentukoItema }}
-    <!--{{momentukoItema.dc_description}}-->
-  </div>
+  {% get_current_language as LANGUAGE_CODE %}
+  <div class="panel-body comment more">{{ LANGUAGE_CODE|choose_description_language:momentukoItema |safe}}</div>
   
 </div>
  
@@ -252,7 +249,10 @@
       <b class="titulu-kolorea">Herrialdea: </b>{{momentukoItema.edm_country}}&nbsp;
       {% endif %}   
       {% if momentukoItema.dc_creator %}
-      <b class="titulu-kolorea">Hornitzailea: </b>{{momentukoItema.dc_creator}}&nbsp;
+      <b class="titulu-kolorea">Sortzailea: </b>{{momentukoItema.dc_creator}}&nbsp;
+      {% endif %} 
+      {% if momentukoItema.edm_provider %}
+      <b class="titulu-kolorea">Hornitzailea: </b>{{momentukoItema.edm_provider}}&nbsp;
       {% endif %} 
       {% if momentukoItema.edm_rights %}
       <b class="titulu-kolorea">Eskubideak: </b>{{momentukoItema.edm_rights}}&nbsp;
