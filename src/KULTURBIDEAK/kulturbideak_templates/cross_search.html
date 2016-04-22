@@ -12,16 +12,31 @@ um_pages }}</p>-->
 
 
 <ul class="nav nav-tabs">
-  <li class="active"><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.count }})</a></li>
-  <li><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.count}}) </a></li>
+  <li class="active"><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.paginator.count }})</a></li>
+  <li><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.paginator.count}}) </a></li>
 </ul>
 
 
 <div class="tab-content">
   <div id="itemak" class="tab-pane fade in active">
   	
-  <!-- <div class="panel panel-default">-->
-  <!-- <div class="panel-body"> -->
+  	<!-- PAGINATOR ITEMAK -->
+  	<div class="pagination">
+    <span class="step-links">
+        {% if items.has_previous %}
+            <a href="?page={{ items.previous_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}">aurrekoak</a>
+        {% endif %}
+
+        <span class="current">
+            {{ items.number }}.orrialdea {{ items.paginator.num_pages }}tik.
+        </span>
+
+        {% if items.has_next %}
+            <a href="?page={{ items.next_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}">hurrengoak</a>
+        {% endif %}
+    </span>
+	</div>
+
  	{% for item in items %}
  	
  	 
@@ -87,6 +102,24 @@ um_pages }}</p>-->
   </div> <!--itemak -->
   
   <div id="ibilbideak" class="tab-pane fade">
+  	
+  	<!-- PAGINATOR IBILBIDEAK-->
+  	
+  	<div class="pagination">
+    <span class="step-links">
+        {% if paths.has_previous %}
+            <a href="?page={{ paths.previous_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}">aurrekoak</a>
+        {% endif %}
+
+        <span class="current">
+            {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik.
+        </span>
+
+        {% if paths.has_next %}
+            <a href="?page={{ paths.next_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}">hurrengoak</a>
+        {% endif %}
+    </span>
+	</div>
   
    {% for path in paths %}
 	<div class="column">	

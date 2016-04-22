@@ -4,8 +4,78 @@
 {% block content %}
 
 
-<!--EGUNEKO IBILBIDEA ERAKUTSI -->
+<div class="pagination">
+    <span class="step-links">
+        {% if paths.has_previous %}
+            <a href="?page={{ paths.previous_page_number }}">aurrekoak</a>
+        {% endif %}
 
+        <span class="current">
+            {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik.
+        </span>
+
+        {% if paths.has_next %}
+            <a href="?page={{ paths.next_page_number }}">hurrengoak</a>
+        {% endif %}
+    </span>
+</div>
+
+<p class="emaitzaInfo"> {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</p>
+
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+  
+   {% for path in paths %}
+	<div class="column">	
+		<div class="col-xs-6 col-md-3">
+    
+    <div class="thumbnail">
+
+			<a class="{% if not path.paths_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
+				{% if path.paths_thumbnail %}<img  src="{{path.paths_thumbnail}}">{% endif %}
+			</a>
+			
+			<div class="caption">
+				<input type="hidden" id="path_id_{{ forloop.counter }}" value="{{path.id}}"/>
+				 <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.dc_title}}"/>
+				 <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.paths_thumbnail}}"/>
+				 
+				<h5><a class="" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h5>    		
+    		<div class="btn-group" role="group" aria-label="...">
+       			<a class="btn btn-primary" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}">
+       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+       			</a>
+       		
+       			{% if user.username == path.fk_user_id %}
+
+					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.id}}" >				
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</a>
+  				{%else%}
+					<button class="btn btn-default" type="button" action="editatu_ibilbidea?id={{path.id}}" disabled>
+ 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</button>
+				{%endif%}
+				
+				</div>
+    		</div>
+		</div><!-- thumbnail -->
+
+		</div>
+  </div>
+  {% empty %}
+	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
+{% endfor %}
+
+</div>
+</div>
+	
+
+
+<!--EGUNEKO IBILBIDEA ERAKUTSI -->
+<!--
 <button  type="button" class="btn btn-info">
 	<span  aria-hidden="true"> 
 		<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> 
@@ -53,6 +123,6 @@
 
 {% endfor%}
 
-
+-->
 
 {% endblock %} 

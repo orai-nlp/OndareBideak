@@ -103,6 +103,7 @@ class pathIndex(indexes.SearchIndex, indexes.Indexable):
     path_lom_length = indexes.CharField(model_attr='lom_length')
     path_thumbnail = indexes.CharField(model_attr='paths_thumbnail')
     language = indexes.CharField(model_attr='language')
+    path_creation_date  = indexes.DateField(model_attr='creation_date')
     path_proposatutakoa = indexes.BooleanField(model_attr='proposatutakoa')
     path_egunekoa = indexes.BooleanField(model_attr='egunekoa')
     

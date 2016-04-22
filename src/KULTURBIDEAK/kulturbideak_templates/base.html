@@ -327,6 +327,7 @@ var markers = [];
       		</span>
       		
       	</div>
+      		
       		{% if radioHizkuntza == "eu" or not radioHizkuntza %}
       		    <input  type="radio" id="hizkRadio" name="hizkRadio" value="eu" checked> Eu
       		{%else%}
@@ -338,7 +339,7 @@ var markers = [];
 				<input  type="radio" id="hizkRadio" name="hizkRadio" value="es"> Es
 			{%endif%}
 			{% if radioHizkuntza == "en"%}
-				<input  type="radio" id="hizkRadio" name="hizkRadio" value="en"> En
+				<input  type="radio" id="hizkRadio" name="hizkRadio" value="en" checked> En
 			{%else%}
 				<input  type="radio" id="hizkRadio" name="hizkRadio" value="en"> En
 			{%endif%}
@@ -438,15 +439,16 @@ var markers = [];
 	<!--PANTAILA EGITURA NAGUSIA-->
 	<div class="orria">
 	 	<div class="eskuma_div" align="right" >
+	 		{% if bilaketa_filtroak != 1 or not bilaketa_filtroak%}
 	 		<div class="hornitzaileak"> <!-- DBtik kargatu -->
 	 			<b>{% trans "Hornitzaileak" %} </b>
 	 			<br />
 	 			<br />
 	 			<p><a href="/hornitzaile_search?h=ekm">EuskoMedia</a></p>
 	 		</div>
+	 		{%endif%}
 	 		{% if bilaketa_filtroak == 1%}
-	 		<br />
-	 		<br />
+	 		
 	 		<div class="filtroak">
 	 			<b>{% trans "Bilaketa Filtroak" %} </b>
 	 			<br />
