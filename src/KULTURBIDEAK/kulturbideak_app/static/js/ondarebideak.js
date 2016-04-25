@@ -410,12 +410,43 @@ function csrfSafeMethod(method) {
 
 function remove_me(element,item_id){
 	//AJAX-HASI	
-	start_loader("loader");                          
+	start_loader("loader");
 	create_remove_me_request(element,item_id);                                       	                                                           
 	stop_loader("loader");                                                  
 	
     //element.parentNode.removeChild(element);
 }
+
+
+function add_me_to_the_SVG(element,item_id){
+if (document.getElementById("path_boxes").children[0].children[0].innerHTML == "Created with Raphaël 2.1.2"){
+	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
+	if (data.length == 0){
+			var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus/uploads/festivalCineDonostia.jpeg", "parent":'' }
+			data.push(root);
+	}
+	var id = element.id.substring(7,element.id.length);
+	var irudia = element.children[2].src;
+	var titulua = element.children[3].firstChild.data;
+	var svg = document.getElementById("path_boxes").children;
+	var obj={id: id, name: titulua , irudia: irudia, parent:0};
+	data.push(obj);
+	sortu(data);//funtzio hau d3ondarebideaksortu.js barruan dago.
+	remove_me(element,item_id);
+} else {
+	var id = element.id.substring(7,element.id.length);
+	var irudia = element.children[2].src;
+	var titulua = element.children[3].firstChild.data;
+	var svg = document.getElementById("path_boxes").children;
+	var obj={id: id, name: titulua , irudia: irudia, parent:0};
+	data.push(obj);
+	sortu(data);
+	remove_me(element,item_id);
+	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
+
+}
+}
+
 
 //create workspace_box request
 function create_remove_me_request(element,item_id)
@@ -577,6 +608,12 @@ function add_workspace_box(box_id,text_value,image_value){
     wsb_button.appendChild(document.createTextNode("Ezabatu"));
     ws_box.appendChild(wsb_button);
 
+    var wsb_button2 = document.createElement("span");
+    wsb_button2.setAttribute("class","wsb_button");
+    wsb_button2.setAttribute("onclick","add_me_to_the_SVG(this.parentNode,"+box_id+");");
+    wsb_button2.appendChild(document.createTextNode("Arbelera"));
+    ws_box.appendChild(wsb_button2);    
+
     var wsb_image = document.createElement("img");
     wsb_image.setAttribute("class","wsb_image");
     wsb_image.setAttribute("src",image_value);
@@ -710,14 +747,16 @@ $('#form2').submit(function(e) {
 
 //Ibilbidea eguneratzean irudia gordetzeko
 $(document).ready(function(){
+	
 $('#formEguneratu').submit(function(e) {
+ 
+
 
    var path_id = document.getElementById("path_id").value;
-   var form = $(this);      
+   var form = $(this);  
    var formdata = false;
    if(window.FormData){
-     formdata = new FormData(form[0]);
-                   
+     formdata = new FormData(form[0]);                   
      }
 
    var formAction = form.attr('action');
@@ -765,22 +804,22 @@ function create_path_on_db()
 	var paths_thumbnail = document.getElementById("file2");
 	var paths_thumbnail_name=paths_thumbnail.value;
 	var hizkuntza =document.getElementById("hizkuntza").value;
-
 	
-		
+	//alert(paths_thumbnail_name);
+	
 	start_loader("loader");  
 	
 	uri="urii";
    
     //paths_thumbnail = "";   //MEDIA_URL+edm_object           , parametro bezala pasa MEDIA_URL                                                                             // beharrezko baldintzak jaso
 	
-	if (paths_starts.length > 0){
+	//if (paths_starts.length > 0){
 		                                            
 		create_path_on_db_request(uri,dc_title,dc_subject,dc_description,paths_thumbnail_name,hizkuntza);                                  
-	}
-	else{                                                                                                       // baldintzak bete ez badira
-		alert("empty_path_error");                                                                  // (aukeran) errorea 
-	}
+	//}
+	//else{                                                                                                       // baldintzak bete ez badira
+		//alert("empty_path_error");                                                                  // (aukeran) errorea 
+	//}
 	stop_loader("loader");                                                                                      // loaderra gelditu
 
 }
@@ -840,42 +879,100 @@ function create_path_on_db_answer(xmlHttp)
 
 function create_path_nodes(path_id)
 {
-		
+
+    var json = [];
+	if (root.children.length>-1){
+		for (var i=0;i<root.children.length;i++){	
+	   	var obj={id: root.children[i].id, name: root.children[i].name , irudia: root.children[i].irudia , narrazioa: root.children[i].narrazioa ,  parent:root.children[i].parent.id , children:root.children[i].children};
+	   	json.push(obj);
+	   	   	if (root.children[i].children == undefined){
+	   	   	} else if (root.children[i].children.length>-1){
+	   	   		for (var b=0;b<root.children[i].children.length;b++){
+	   		   	var obj2={id: root.children[i].children[b].id, name: root.children[i].children[b].name , narrazioa: root.children[i].children[b].narrazioa , irudia: root.children[i].children[b].irudia, parent:root.children[i].children[b].parent.id,children:root.children[i].children[b].children};
+	   	   		json.push(obj2);
+	   	   			if (root.children[i].children[b].children == undefined){
+	   	   			} else if (root.children[i].children[b].children.length>-1){
+	   	   				for (var c=0;c<root.children[i].children[b].children.length;c++){
+			   		   	var obj3={id: root.children[i].children[b].children[c].id, name: root.children[i].children[b].children[c].name , narrazioa: root.children[i].children[b].children[c].narrazioa , irudia: root.children[i].children[b].children[c].irudia, parent:root.children[i].children[b].children[c].parent.id,children:root.children[i].children[b].children[c].children};
+	   	   				json.push(obj3);
+	   	   					if (root.children[i].children[b].children[c].children == undefined){
+	   	   					} else if (root.children[i].children[b].children[c].children.length>-1){
+	   	   						for (var d=0;d<root.children[i].children[b].children[c].children.length;d++){
+	   	   							var obj4={id: root.children[i].children[b].children[c].children[d].id, name: root.children[i].children[b].children[c].children[d].name , narrazioa: root.children[i].children[b].children[c].children[d].narrazioa , irudia: root.children[i].children[b].children[c].children[d].irudia, parent:root.children[i].children[b].children[c].children[d].parent.id,children:root.children[i].children[b].children[c].children[d].children};
+	   	   							json.push(obj4);
+	   	   						}
+	   	   					}
+	   	   				}
+	   	   			}//if (root.children[i].children[b].children.length>-1){
+
+	   	   		}//for (var b=0;b<root.children[i].children.length;b++){
+	    	} else {
+
+	    	}//if (root.children[i].children.length>-1){
+		}//for (var i=0;i<root.children.length;i++){
+	} else {
+	}//if (root.children.length>-1){  
+
+	//for bat semeak zein diren jakiteko eta semeen array-a string batean bihurtzen du..
+
+	for (var i=0;i<json.length;i++){
+		if (json[i].children == undefined){
+		} else {
+			var zenbat = json[i].children.length;
+			for (var z=0;z<zenbat;z++){
+				json[i].children.push(json[i].children[z].id);
+			}
+			json[i].children.splice(0,zenbat);
+		}
+	}
+	//console.log(json);
+
 	//NODE BAKOITZEKO
 	start_loader("loader");
 	//Erroak
+	for(var i = 0; i < json.length; i++) {
+		if (json[i].parent.id == 0){
+			paths_starts.push(json[i]);
+		}
+		
+	}
+	//Erroak
 	var nodes = paths_starts;
-	for(var i = 0; i < nodes.length; i++) {
-		var erroa=paper.getById(nodes[i]);
-
-		var item_id= erroa.id;
-		var uri="uri_"+erroa.id;
-		var dc_source=erabiltzailea;
+	for(var i = 0; i < json.length; i++) {
+		var item_id= json[i].id;
+		var uri="uri_"+json[i].id;
+		var dc_source="Euskomedia";
 		//var dc_description="desc";
 		var type ="argazkia";
-		var paths_thumbnail=erroa.data("image_value");
+		var paths_thumbnail=json[i].irudia;
 		
 		//MAD
-		var item_narrazioa=erroa.data("item_narrazioa");
-		var dc_description=item_narrazioa;
+		var dc_description=json[i].narrazioa;
 		
-		var paths_prev =(erroa.data("parent_id"))?erroa.data("parent_id"):"";
-		
-		var dc_title =erroa.data("text_value");
-		var semeak =erroa.data("children");
-		var paths_next=semeak.join();
-		var paths_start =(erroa.data("parent_id"))?0:1;
-			
+		if (json[i].parent == 0){
+			var paths_prev = "pb_"; //ez dauka aitarik, bera da aita nagusia
+			var paths_start = 1; //root da
+		} else {
+			var paths_prev = "pb_"+json[i].parent; //
+			var paths_start = 0; //ez da root 
+		}
+		var dc_title =json[i].name;
+			if (json[i].children == undefined){
+				var semeak = '';
+				var paths_next = 'pb_';
+			} else {
+				var semeak =json[i].children;
+				var paths_next=json[i].children.join();
+				nodes = nodes.concat(semeak);
+			}		
 		create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start);
-		nodes = nodes.concat(semeak);
+		//nodes = nodes.concat(semeak);
 	}
 
 	stop_loader("loader");           
-	
-	
-
-	
 }
+
+
 function create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start)
 {
 	
@@ -899,7 +996,8 @@ function create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_des
       
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("path_id="+path_id+"&item_id="+item_id+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+dc_title+"&dc_description="+dc_description+"&type="+type+"&paths_thumbnail="+paths_thumbnail+"&paths_prev="+paths_prev+"&paths_next="+paths_next+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
+        xmlHttp.send("path_id="+path_id+"&item_id="+item_id.replace("pb_","")+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+dc_title+"&dc_description="+dc_description+"&type="+type+"&paths_thumbnail="+paths_thumbnail+"&paths_prev="+paths_prev.replace("pb_","")+"&paths_next="+paths_next.replace("pb_","")+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
+
     }
 }
 
@@ -950,19 +1048,18 @@ function update_path_on_db(path_id)
 	
 	
 	
-	start_loader("loader");  	                                                                                   	
-	if (paths_starts.length > 0){		                                            
+	start_loader("loader");
+	//if (paths_starts.length > 0){		                                            
 		update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name,hizkuntza);                                  
-	}
-	else{                                                                                                      
-		alert("empty_path_error");                                                                
-	}
-	stop_loader("loader");   
+	//}
+	//else{                                                                                                      
+	//	alert("empty_path_error");                                                                
+	//}
+	//stop_loader("loader");   
 }
 
 function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,paths_thumbnail_name,hizkuntza)
 {
-	
 	var csrftoken = getCookie('csrftoken');
 	var xmlHttp = createXmlHttpRequestObject();
 	
@@ -1017,34 +1114,101 @@ function update_path_on_db_answer(xmlHttp,path_id)
 
 function update_path_nodes(path_id)
 {
-		
+	//zuhaitza , json formatura pasa.
+   var root = treeData[0];
+   var json = [];
+
+if (root.children.length>-1){
+	for (var i=0;i<root.children.length;i++){	
+   	var obj={id: root.children[i].id, name: root.children[i].name , irudia: root.children[i].irudia , narrazioa: root.children[i].narrazioa ,  parent:root.children[i].parent.id , children:root.children[i].children};
+   	json.push(obj);
+   	   	if (root.children[i].children == undefined){
+   	   	} else if (root.children[i].children.length>-1){
+   	   		for (var b=0;b<root.children[i].children.length;b++){
+   		   	var obj2={id: root.children[i].children[b].id, name: root.children[i].children[b].name , narrazioa: root.children[i].children[b].narrazioa , irudia: root.children[i].children[b].irudia, parent:root.children[i].children[b].parent.id,children:root.children[i].children[b].children};
+   	   		json.push(obj2);
+   	   			if (root.children[i].children[b].children == undefined){
+   	   			} else if (root.children[i].children[b].children.length>-1){
+   	   				for (var c=0;c<root.children[i].children[b].children.length;c++){
+		   		   	var obj3={id: root.children[i].children[b].children[c].id, name: root.children[i].children[b].children[c].name , narrazioa: root.children[i].children[b].children[c].narrazioa , irudia: root.children[i].children[b].children[c].irudia, parent:root.children[i].children[b].children[c].parent.id,children:root.children[i].children[b].children[c].children};
+   	   				json.push(obj3);
+   	   					if (root.children[i].children[b].children[c].children == undefined){
+   	   					} else if (root.children[i].children[b].children[c].children.length>-1){
+   	   						for (var d=0;d<root.children[i].children[b].children[c].children.length;d++){
+   	   							var obj4={id: root.children[i].children[b].children[c].children[d].id, name: root.children[i].children[b].children[c].children[d].name , narrazioa: root.children[i].children[b].children[c].children[d].narrazioa , irudia: root.children[i].children[b].children[c].children[d].irudia, parent:root.children[i].children[b].children[c].children[d].parent.id,children:root.children[i].children[b].children[c].children[d].children};
+   	   							json.push(obj4);
+   	   							if (root.children[i].children[b].children[c].children[d].children == undefined){
+   	   							} else if (root.children[i].children[b].children[c].children[d].children.length>-1){
+   	   								for (var e=0;e<root.children[i].children[b].children[c].children[d].length;e++){
+   	   									var obj5={id: root.children[i].children[b].children[c].children[d].children[e].id, name: root.children[i].children[b].children[c].children[d].children[e].name , narrazioa: root.children[i].children[b].children[c].children[d].children[e].narrazioa , irudia: root.children[i].children[b].children[c].children[d].children[e].irudia, parent:root.children[i].children[b].children[c].children[d].children[e].parent.id,children:root.children[i].children[b].children[c].children[d].children[e].children};
+   	   									console.log(obj5);
+   	   									json.push(obj5);
+   	   								}//for (var e=0;e<root.children[i].children[b].children[c].children[d].length;e++){
+   	   							}//if (root.children[i].children[b].children[c].children[d].children.length>-1){
+   	   						}//for (var d=0;d<root.children[i].children[b].children[c].children.length;d++){
+   	   					}//if (root.children[i].children[b].children[c].children.length>-1){
+   	   				}//for (var c=0;c<root.children[i].children[b].children.length;c++){
+   	   			}//if (root.children[i].children[b].children.length>-1){
+
+   	   		}//for (var b=0;b<root.children[i].children.length;b++){
+    	} else {
+
+    	}//if (root.children[i].children.length>-1){
+	}//for (var i=0;i<root.children.length;i++){
+} else {
+}//if (root.children.length>-1){
+
+
+//for bat semeak zein diren jakiteko eta semeen array-a string batean bihurtzen du..
+
+for (var i=0;i<json.length;i++){
+	if (json[i].children == undefined){
+	} else {
+		var zenbat = json[i].children.length;
+		for (var z=0;z<zenbat;z++){
+			json[i].children.push(json[i].children[z].id);
+		}
+		json[i].children.splice(0,zenbat);
+	}
+}
+//console.log(json);
+
 	//NODE BAKOITZEKO
 	start_loader("loader");
 	//Erroak
+	for(var i = 0; i < json.length; i++) {
+		if (json[i].parent.id == 0){
+			paths_starts.push(json[i]);
+		}
+		
+	}
 	var nodes = paths_starts;
-	for(var i = 0; i < nodes.length; i++) {
-		var erroa=paper.getById(nodes[i]);
-
-		var item_id= erroa.id;
-		var uri="uri_"+erroa.id;
+	for(var i = 0; i < json.length; i++) {
+		var item_id= json[i].id;
+		var uri="uri_"+json[i].id;
 		var dc_source="Euskomedia";
-		//var dc_description="desc";
 		var type ="argazkia";
-		var paths_thumbnail=erroa.data("image_value");
+		var paths_thumbnail=json[i].irudia;
+		var dc_description=json[i].narrazioa;
 		
-		//MAD
-		var item_narrazioa=erroa.data("item_narrazioa");
-		var dc_description=item_narrazioa;
-		
-		var paths_prev =(erroa.data("parent_id"))?erroa.data("parent_id"):"";
-		
-		var dc_title =erroa.data("text_value");
-		var semeak =erroa.data("children");
-		var paths_next=semeak.join();
-		var paths_start =(erroa.data("parent_id"))?0:1;
-			
+		if (json[i].parent == 0){
+			var paths_prev = "pb_"; //ez dauka aitarik, bera da aita nagusia
+			var paths_start = 1; //root da
+		} else {
+			var paths_prev = "pb_"+json[i].parent; //
+			var paths_start = 0; //ez da root 
+		}
+		var dc_title =json[i].name;
+			if (json[i].children == undefined){
+				var semeak = '';
+				var paths_next = 'pb_';
+			} else {
+				var semeak =json[i].children;
+				var paths_next=json[i].children.join();
+				nodes = nodes.concat(semeak);
+			}		
 		update_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start);
-		nodes = nodes.concat(semeak);
+		//nodes = nodes.concat(semeak);
 	}
 
 	stop_loader("loader");           
@@ -2275,184 +2439,4 @@ function ibilbidea_kargatu(path_id)
         
 	 */
 }
-function bilaketaFiltratu()
-{
-	
-	var radios = document.getElementsByName('hizkRadio');
-	var galdera = document.getElementById('search_input').value;
-	
-	for (var i = 0, length = radios.length; i < length; i++) 
-	{
-   	    if (radios[i].checked)
-        {
-            // do whatever you want with the checked radio
-            hizkR=radios[i].value;
-            // only one radio can be logically checked, don't check the rest
-            break;
-        }
-	}
-
-
-
-	var hizkuntzakF_ar = []; 
-	var hornitzaileakF_ar = [];
-	var motaF_ar = [];
-	var ordenaF_ar = [];
-	var lizentziaF_ar = [];
-	var besteF_ar = [];
-	
-	//Hizkuntzak
-	var EuhizkElement = document.getElementById('hizkuntza1F');
-	var EshizkElement = document.getElementById('hizkuntza2F');
-	var EnhizkElement = document.getElementById('hizkuntza3F');
-	
-	//Hornitzaileak
-	var EkmHorniElement = document.getElementById('hornitzaile1F');
-	var ArruntaHorniElement = document.getElementById('hornitzaile2F');
-	
-	//Mota
-	var textMotaElement = document.getElementById('mota1F');
-	var audioMotaElement = document.getElementById('mota2F');
-	var videoMotaElement = document.getElementById('mota3F');
-	var imgMotaElement = document.getElementById('mota4F');
-	
-	//Ordena
-	var dataOrdenaElement = document.getElementById('ordena1F');
-	var data2OrdenaElement = document.getElementById('ordena3F');
-	var botoOrdenaElement = document.getElementById('ordena2F');
-	
-	//Lizentzia
-	var lizentziaLibreElement =document.getElementById('lizentzia1F');
-	var lizentziaCommonsElement =document.getElementById('lizentzia2F');
-	var lizentziaCopyElement =document.getElementById('lizentzia3F');
-	
-	//Beste batzuk
-	var egunekoaElement = document.getElementById('egunekoaF');
-	var proposatutakoaElement = document.getElementById('proposatutakoaF');
-	var wikifikatuaElement = document.getElementById('wikifikatuaF');
-	var irudiaDuElement = document.getElementById('irudiaDuF');
-	var irudiaEzDuElement = document.getElementById('irudiaEzDuF');
-	
-	var balioa;
-	//HIZKUNTZAK
-	if (EuhizkElement.checked == true)
-	 {
-	 	balioa=EuhizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 }
-	 if (EshizkElement.checked == true)
-	 {
-	 	balioa=EshizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 
-	 }
-	 if (EnhizkElement.checked == true)
-	 {
-	 	balioa=EnhizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 
-	 }
-	 //HORNITZAILEAK
-	 if(EkmHorniElement.checked == true)
-	 {
-	 	balioa=EkmHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 if(ArruntaHorniElement.checked == true)
-	 {
-	 	balioa=ArruntaHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 //MOTA
-	 if(textMotaElement.checked == true)
-	 {
-	 	balioa=textMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(audioMotaElement.checked == true)
-	 {
-	 	balioa=audioMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(videoMotaElement.checked == true)
-	 {
-	 	balioa=videoMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(imgMotaElement.checked == true)
-	 {
-	 	balioa=imgMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 //ORDENA
-	 if(dataOrdenaElement.checked == true)
-	 {
-	 	balioa=dataOrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-	 if(data2OrdenaElement.checked == true)
-	 {
-	 	balioa=data2OrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-	 if(botoOrdenaElement.checked == true)
-	 {
-	 	balioa=botoOrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-	 //LIZENTZIA
-	 if(lizentziaLibreElement.checked == true)
-	 {
-	 	balioa=lizentziaLibreElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCommonsElement.checked == true)
-	 {
-	 	balioa=lizentziaCommonsElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCopyElement.checked == true)
-	 {
-	 	balioa=lizentziaCopyElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	 //Beste batzuk
-	  if(egunekoaElement.checked == true)
-	 {
-	 	balioa=egunekoaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	 if(proposatutakoaElement.checked == true)
-	 {
-	 	balioa=proposatutakoaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(wikifikatuaElement.checked == true)
-	 {
-	 	balioa=wikifikatuaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(irudiaDuElement.checked == true)
-	 {
-	 	balioa=irudiaDuElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(irudiaEzDuElement.checked == true)
-	 {
-	 	balioa=irudiaEzDuElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	 
-	 
-	 var hizkuntzakF=hizkuntzakF_ar.toString(); 
-	 var hornitzaileakF=hornitzaileakF_ar.toString(); 
-	 var motakF=motaF_ar.toString();
-	 var ordenakF=ordenaF_ar.toString();
-	 var lizentziakF=lizentziaF_ar.toString();
-	 var besteakF =besteF_ar.toString();
-	 
-	var url = 'filtro_search?hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF;   	
-    window.location.href=url;
-}
-	
 
