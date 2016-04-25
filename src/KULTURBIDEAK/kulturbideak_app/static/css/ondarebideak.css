@@ -121,7 +121,7 @@
         margin-top:-29px;
         background: ;
         resize: both;
-        overflow: scroll;
+        /*overflow: scroll;*/
 	}
     #path_boxes{
         width: 98%;
