@@ -476,7 +476,7 @@ function update(source) {
             })
             .attr("text-anchor", function(d) { 
                 return d.children || d._children ? "end" : "start"; })
-            .text(function(d) { return d.name; })
+            .text(function(d) { var name=d.name.substring(0,10)+"..."; return name; })
             .style("fill-opacity", 1);
 
     //Nodoaren transizioaren posizioa.
