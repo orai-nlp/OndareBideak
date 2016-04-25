@@ -400,7 +400,9 @@ function update(source) {
 
         //Zakarrontzi irudia gehitu. Zakarrontzi honetan klik egiten baduzu nodoa ezabatu dezakezu.
         nodeEnter.append("image")
-            .attr("id",function(d) { return d.id })
+            .attr("id",function(d) { 
+                var z = "z"+d.id;
+                return z; })
             .attr("xlink:href","http://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png")
             .attr("x", function(d) { return -40;})
             .attr("y", function(d) { return -20;})
@@ -476,7 +478,9 @@ function update(source) {
             })
             .attr("text-anchor", function(d) { 
                 return d.children || d._children ? "end" : "start"; })
-            .text(function(d) { var name=d.name.substring(0,10)+"..."; return name; })
+            .text(function(d) { 
+                var name = d.name.substring(0,10)+"...";
+                return name; })
             .style("fill-opacity", 1);
 
     //Nodoaren transizioaren posizioa.
