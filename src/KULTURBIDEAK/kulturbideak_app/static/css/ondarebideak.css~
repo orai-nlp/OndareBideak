@@ -314,9 +314,7 @@
 	.laguntza {
 		color:  #9e8012;
 	}
-	.filtroak {
-		color:  #9e8012;
-	}
+	
 	.thumb-128 {
     height: 128px;
     line-height: 128px;

@@ -607,15 +607,13 @@ function add_workspace_box(box_id,text_value,image_value){
     wsb_button.setAttribute("onclick","remove_me(this.parentNode,"+box_id+");");
     wsb_button.appendChild(document.createTextNode("Ezabatu"));
     ws_box.appendChild(wsb_button);
-    
-    if (new RegExp("sortu_ibilbidea$").test(window.location.href) == true){
-    	var wsb_button2 = document.createElement("span");
-	    wsb_button2.setAttribute("class","wsb_button");
-	    wsb_button2.setAttribute("onclick","add_me_to_the_SVG(this.parentNode,"+box_id+");");
-	    wsb_button2.appendChild(document.createTextNode("Arbelera"));
-	    ws_box.appendChild(wsb_button2);
-    } else {  
-    }
+
+    var wsb_button2 = document.createElement("span");
+    wsb_button2.setAttribute("class","wsb_button");
+    wsb_button2.setAttribute("onclick","add_me_to_the_SVG(this.parentNode,"+box_id+");");
+    wsb_button2.appendChild(document.createTextNode("Arbelera"));
+    ws_box.appendChild(wsb_button2);    
+
     var wsb_image = document.createElement("img");
     wsb_image.setAttribute("class","wsb_image");
     wsb_image.setAttribute("src",image_value);
@@ -1121,30 +1119,25 @@ function update_path_nodes(path_id)
    var json = [];
 
 if (root.children.length>-1){
-	console.log(0);
 	for (var i=0;i<root.children.length;i++){	
    	var obj={id: root.children[i].id, name: root.children[i].name , irudia: root.children[i].irudia , narrazioa: root.children[i].narrazioa ,  parent:root.children[i].parent.id , children:root.children[i].children};
    	json.push(obj);
    	   	if (root.children[i].children == undefined){
-   	   		console.log(1);
    	   	} else if (root.children[i].children.length>-1){
    	   		for (var b=0;b<root.children[i].children.length;b++){
    		   	var obj2={id: root.children[i].children[b].id, name: root.children[i].children[b].name , narrazioa: root.children[i].children[b].narrazioa , irudia: root.children[i].children[b].irudia, parent:root.children[i].children[b].parent.id,children:root.children[i].children[b].children};
    	   		json.push(obj2);
    	   			if (root.children[i].children[b].children == undefined){
-   	   				console.log(2);
    	   			} else if (root.children[i].children[b].children.length>-1){
    	   				for (var c=0;c<root.children[i].children[b].children.length;c++){
 		   		   	var obj3={id: root.children[i].children[b].children[c].id, name: root.children[i].children[b].children[c].name , narrazioa: root.children[i].children[b].children[c].narrazioa , irudia: root.children[i].children[b].children[c].irudia, parent:root.children[i].children[b].children[c].parent.id,children:root.children[i].children[b].children[c].children};
    	   				json.push(obj3);
    	   					if (root.children[i].children[b].children[c].children == undefined){
-   	   						console.log(3);
    	   					} else if (root.children[i].children[b].children[c].children.length>-1){
    	   						for (var d=0;d<root.children[i].children[b].children[c].children.length;d++){
    	   							var obj4={id: root.children[i].children[b].children[c].children[d].id, name: root.children[i].children[b].children[c].children[d].name , narrazioa: root.children[i].children[b].children[c].children[d].narrazioa , irudia: root.children[i].children[b].children[c].children[d].irudia, parent:root.children[i].children[b].children[c].children[d].parent.id,children:root.children[i].children[b].children[c].children[d].children};
    	   							json.push(obj4);
    	   							if (root.children[i].children[b].children[c].children[d].children == undefined){
-   	   								console.log(4);
    	   							} else if (root.children[i].children[b].children[c].children[d].children.length>-1){
    	   								for (var e=0;e<root.children[i].children[b].children[c].children[d].length;e++){
    	   									var obj5={id: root.children[i].children[b].children[c].children[d].children[e].id, name: root.children[i].children[b].children[c].children[d].children[e].name , narrazioa: root.children[i].children[b].children[c].children[d].children[e].narrazioa , irudia: root.children[i].children[b].children[c].children[d].children[e].irudia, parent:root.children[i].children[b].children[c].children[d].children[e].parent.id,children:root.children[i].children[b].children[c].children[d].children[e].children};
@@ -1159,7 +1152,7 @@ if (root.children.length>-1){
 
    	   		}//for (var b=0;b<root.children[i].children.length;b++){
     	} else {
-    		console.log(6);
+
     	}//if (root.children[i].children.length>-1){
 	}//for (var i=0;i<root.children.length;i++){
 } else {
@@ -2446,6 +2439,7 @@ function ibilbidea_kargatu(path_id)
         
 	 */
 }
+
 function bilaketaFiltratu()
 {
 	
