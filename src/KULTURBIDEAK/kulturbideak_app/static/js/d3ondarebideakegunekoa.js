@@ -28,9 +28,14 @@ data.forEach(function(node) {
 
 
 // ************** Generate the tree diagram  *****************
+var divWidth = d3.select('#path_boxes_egunekoa').style('width').substr(0,d3.select('#path_boxes_egunekoa').style('width').length-2);
+var divWidth = divWidth-(divWidth*0.04);
+var divHeight = d3.select('#path_boxes_egunekoa').style('height').substr(0,d3.select('#path_boxes_egunekoa').style('height').length-2);
+var divHeight = divHeight-(divHeight*0.1);
+
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
-    width = 800 - margin.right - margin.left,
-    height = 600 - margin.top - margin.bottom;
+    width = divWidth - margin.right - margin.left,
+    height = divHeight - margin.top - margin.bottom;
     
     var i = 0;
     var duration = 750;
@@ -84,8 +89,8 @@ var svg = d3.select("#path_boxes_egunekoa").append("svg")
         scale = zoomListener.scale();
         x = -source.y0;
         y = -source.x0;
-        x = x * scale + viewerWidth / 2;
-        y = y * scale + viewerHeight / 2;
+        x = x * scale + divWidth / 2;
+        y = y * scale + divHeight / 2;
         d3.select('g').transition()
             .duration(duration)
             .attr("transform", "translate(" + 0 + "," + 0 + ")scale(" + scale + ")");
@@ -183,13 +188,20 @@ function update(source) {
         var nodeUpdate = node.transition()
             .duration(duration)
             .attr("transform", function(d) {
-                if (nodes.length>=10){
-                    var a = d.y-10;
-                    return "translate(" + a + "," + d.x + ")";
+                if (d.parent.name == "ROOT"){
+                    var a = (d.y*0.9)-20;
+                    var b = d.x*0.9;
+                    return "translate(" + a + "," + b + ")scale(" + 0.9 + ")";
+                } else if (nodes.length>=10){
+                    var a = (d.y*0.9)-10;
+                    var b = d.x*0.9;
+                    return "translate(" + a + "," + b + ")scale(" + 0.9 + ")"; 
                 } else {
-                    return "translate(" + d.y + "," + d.x + ")";
+                    var a = (d.y*0.9)-10;
+                    var b = d.x*0.9;
+                    return "translate(" + a + "," + b + ")scale(" + 0.9 + ")";
                 }
-            }); 
+            });
 
         nodeUpdate.select("text")
             .style("fill-opacity", 1);
@@ -222,18 +234,7 @@ function update(source) {
                 } })
             .attr('stroke-width', 2)
             .attr("marker-end", "url(#arrowhead)")
-            .attr("d", function(d) {
-                var o = {
-
-                    x: source.x0,
-                    y: source.y0
-                };
-                //o= Object {x: NaN, y: NaN};
-                return diagonal({
-                    source: o,
-                    target: o
-                })
-            }); 
+            .attr("transform", "translate(" + 0 + "," + 0 + ")scale(" + 0.9 + ")");  
 
         // Transition links to their new position.
         link.transition()

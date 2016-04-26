@@ -151,7 +151,7 @@ function update(source) {
      return 'nodo: '+d.name; })
     .attr("class", "aukeratuta")
     .attr("r", function(d){
-            return 10;
+            return 15;
     })
     .style("stroke", function(d){ 
         var id_url = window.location.href.substr((window.location.href.indexOf("item_id=")+8),window.location.href.length);
@@ -196,9 +196,9 @@ function update(source) {
   //Testua gehitu  
   nodeEnter.append("text")
       .attr("x", function(d) { 
-          return d.children || d._children ? 30 : -30; })
+          return d.children || d._children ? 35 : -35; })
       .attr("dy", function(d) {
-            return d.children || d._children ?  20 : 20;
+            return d.children || d._children ?  30 : 30;
     })
       .attr("text-anchor", function(d) { 
           return d.children || d._children ? "end" : "start"; })
@@ -208,18 +208,18 @@ function update(source) {
         var nodeUpdate = node.transition()
             .duration(duration)
         .attr("transform", function(d) {
-            if (nodes.length>=10){
-                var a = (d.y*0.5)-10;
-                console.log (a);
-                var b = d.x*0.5;
-                cosole.log(b);
-                return "translate(" + a + "," + b + ")scale(" + 0.5 + ")"; 
+            if (d.parent.name == "ROOT"){
+                var a = (d.y*0.8)-20;
+                var b = d.x*0.8;
+                return "translate(" + a + "," + b + ")scale(" + 0.8 + ")";
+            } else if (nodes.length>=10){
+                var a = (d.y*0.8)-10;
+                var b = d.x*0.8;
+                return "translate(" + a + "," + b + ")scale(" + 0.8 + ")"; 
             } else {
-                var a = (d.y*0.5)-10;
-                console.log (a);
-                var b = d.x*0.5;
-                console.log(b);
-                return "translate(" + a + "," + b + ")scale(" + 0.5 + ")";
+                var a = (d.y*0.8)-10;
+                var b = d.x*0.8;
+                return "translate(" + a + "," + b + ")scale(" + 0.8 + ")";
             }
         }); 
 
@@ -254,7 +254,7 @@ function update(source) {
                 } })
             .attr('stroke-width', 2)
             .attr("marker-end", "url(#arrowhead)")
-            .attr("transform", "translate(" + 0 + "," + 0 + ")scale(" + 0.5 + ")"); 
+            .attr("transform", "translate(" + 0 + "," + 0 + ")scale(" + 0.8 + ")"); 
 
         // Transition links to their new position.
         link.transition()
