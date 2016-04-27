@@ -1,7 +1,28 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load tags%}
 {% block content %}
+ 
+<!--
+{{ user.groups.all.0 }}
 
+{{ user.groups.all }}
+-->
+<!--
+{% if request.user|has_group:'hornitzailea' %}
+    <p>Erabiltzailea hornitzailea da
+{% else %}
+    <p>Erabiltzailea Ez da hornitzailea</p>
+{% endif %}
+-->
+
+
+<!--
+{% if hornitzailea in request.user.groups.all %}
+
+ <p>Hornitzailea da erabiltzailea</p>
+{%endif%}
+-->
 <div class="aurkezpena">
 	<h2 class="titulu-kolorea">{% trans "Ongi etorri OndareBideak proiektura" %}</h2>
 

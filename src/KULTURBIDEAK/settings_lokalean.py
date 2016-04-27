@@ -5,6 +5,10 @@ BASEDIR = os.path.dirname(__file__)
 sys.path.insert(0, BASEDIR)
 
 
+
+
+
+
 ## ADI, SETTINGS-AK EZBERDIN JOANGO DIRA ####
 SMTP_SERVER="localhost"
 DEFAULT_FROM_EMAIL='basqueresearch@elhuyar.com'
@@ -214,6 +218,8 @@ INSTALLED_APPS += (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+DEFAULT_EMAIL_SENDER = 'm.lopezdelacalle@elhuyar.com'
 
 
 #Mapa

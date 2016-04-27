@@ -10,6 +10,7 @@ from itertools import islice, chain
 from django.utils import simplejson
 from django.template import Context, Template
 from django.utils import timezone
+from django.core.mail import send_mail
 
 #from utils import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -65,6 +66,9 @@ import datetime
 import string
 from oaiharvestandstore_django import oaiharveststore
 import re
+
+
+
 
 def get_tree(el_node):
     
@@ -201,6 +205,19 @@ def ibilbideak_hasiera(request):
         
     return render_to_response('ibilbideak_hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
     '''
+
+def hornitzaileak_hasiera(request):
+    print "hornitzaileak_hasiera"
+    hornitzaileak=[]
+    return render_to_response('hornitzaileak_hasiera.html',{'hornitzaileak':hornitzaileak},context_instance=RequestContext(request))
+    
+
+def hornitzaile_fitxa_editatu(request):
+    hornitzailea=[]
+    
+    return render_to_response('hornitzaile_fitxa_editatu.html',{'hornitzailea':hornitzailea},context_instance=RequestContext(request))
+    
+   
 def autocomplete(request):
     
     sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
@@ -323,7 +340,7 @@ def cross_search(request):
 def hornitzaile_search(request):
     # Hornitzaile jakin baten item eta ibilbide guztiak bilatuko dira
     hornitzailea=request.GET['h']
-    
+  
     galdera=""
     hizkuntza="eu"
    
@@ -332,13 +349,14 @@ def hornitzaile_search(request):
     search_models_items = [item]
     search_models_paths = [path]
     
-    #Rolak gehitzen ditugunean agian hau aldatuko da
+    #Hornitzaileak taula gehitzen ditugunean agian hau aldatuko da
     hornitzaile_erab=User.objects.get(username=hornitzailea)
     
     items = SearchQuerySet().all().filter(edm_provider=hornitzailea).models(*search_models_items)   
     paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
+
     
-    
+  
     #PAGINATOR ITEMS
     paginator = Paginator(items, 26)    
     type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
@@ -1543,6 +1561,7 @@ def db_oaipmh_bilketa(cd):
     else:
         return False
 
+@user_passes_test(lambda u: u.groups.filter(name='hornitzailea').exists())
 def oaipmh_datubilketa(request):
     
     oaipmhform=OaipmhForm()
@@ -1551,12 +1570,18 @@ def oaipmh_datubilketa(request):
         oaipmh_form=OaipmhForm(request.POST)
         if oaipmh_form.is_valid():
             cd=oaipmh_form.cleaned_data
+            baseurl=cd['baseurl']
+            mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"OAI Url-a"+str(baseurl)+"\n"+"Bidali mezua hornitzaileari: "+str(request.user.email)
+            send_mail('OndareBideak - Itemak inportatzeko eskaera', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+            return render_to_response('base.html',{'mezua':"Zure eskaera jaso dugu. Itemen bilketa prest dagoenean jasoko duzu posta elektroniko bat."},context_instance=RequestContext(request))
+           
+            '''
             if db_oaipmh_bilketa(cd):
                
                 return render_to_response('base.html',{'mezua':"Itemak ondo biltegiratu dira"},context_instance=RequestContext(request))
             else:
                 return render_to_response('base.html',{'errore_mezua':"ERROREA: Itemak EZ DIRA ondo biltegiratu"},context_instance=RequestContext(request))
-            
+            '''
         else:
                 return render_to_response("oaipmh_datubilketa.html",{"oaipmhform":oaipmhform},context_instance=RequestContext(request)) 
     return render_to_response("oaipmh_datubilketa.html",{"oaipmhform":oaipmhform},context_instance=RequestContext(request)) 
@@ -1575,8 +1600,13 @@ def erregistratu(request):
             if db_erregistratu_erabiltzailea(cd):
                
                 new_user = authenticate(username=cd["username"],password=cd["password"],email=cd["posta"])
-                #return redirect("/search")
-                return render_to_response('base.html',{'mezua':"Kulturbideak sisteman Erregistaru zara"},context_instance=RequestContext(request))
+                
+                
+                #IF Hornitzailea izan nahi badu
+                if cd["hornitzailea"]:
+                    return render_to_response('base.html',{'mezua':"Kulturbideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.com"},context_instance=RequestContext(request)) 
+                else:
+                    return render_to_response('base.html',{'mezua':"Kulturbideak sisteman Erregistratu zara"},context_instance=RequestContext(request))
    
         else:
             #return render_to_response("izena_eman.html",{"bilaketa":bilaketa_form,"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
@@ -1588,21 +1618,27 @@ def db_erregistratu_erabiltzailea(cd):
    
     try:
         
-        #erabiltzailea=usr.objects.create_user(cd["username"], cd["posta"], cd["password"])
         erabiltzailea=User.objects.create_user(cd["username"], cd["posta"], cd["password"])
         erabiltzailea.first_name=cd['izena']
         erabiltzailea.last_name=cd['abizena']
         
         #Django-ko auth_user-en gordetzen du erabiltailea
         erabiltzailea.save()
-        #if cd["erabiltzaile_mota"]!='':
-            #g=Group.objects.get(name=cd["erabiltzaile_mota"])
-        #else:
-            # g=Group.objects.get(name='editorea')
-        # g.user_set.add(erabiltzailea)
-        # g.save()
-        #import pdb
-        #pdb.set_trace()
+       
+        #Hornitzaile bezala erregistratu nahi baldin badu
+        if cd["hornitzailea"]:
+            hornitzaile_izena=cd["honitzaile_izena"]
+            mezua="Hornitzailearen izena:"+str(hornitzaile_izena)+".\n"+"Ondorengoa egin datu-basean: update auth_user_groups set group_id=3 where user_id="+str(erabiltzailea.id)+"\n"+"Bidali mezua hornitzaileari: "+str(erabiltzailea.email)
+            send_mail('OndareBideak - Hornitzaile izateko eskaera', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+            #group = Group.objects.get(name='hornitzailea') 
+            #group.user_set.add(erabiltzailea)     
+         
+        #Hasieran beti 'arrunta' bezala erregistratu   
+        group = Group.objects.get(name='arrunta') 
+        group.user_set.add(erabiltzailea)     
+            
+       
+        
         
         #Nire usr taulan gordetzen du erabiltzailea
         erab=usr(user=erabiltzailea)
@@ -1643,111 +1679,7 @@ def db_erregistratu_erabiltzailea_Iker(cd):
         #g.delete()
         return False
  
-'''
- def register(request):
-    """Render register template
-    """    
-    # action status
-    register_status = 1
-    login_status = 1
-    # Initializations
-    login_form, search_form, forget_form, themes, corporation_upload = base_forms_initialization(request)
-    
-    if request.POST:
-        if "register_button" in request.POST:
-            register_form=RegisterForm(request.POST)
-            register_value = db_register(register_form)
-            register_status = register_value[0]
-            if register_status == 0: # validation error
-                register_form = register_value[1]
-                d = {"register_form":register_form , "login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form}
-                return render_to_response('register.html', d, context_instance = RequestContext(request))
-            elif register_status == 1: # login OK!
-                # Log in user:
-                user = register_value[1]              
-                auth_login(request,user)                
-                return redirect('/')
-                
-            elif register_status == 2: # error
-                pass
-                # TODO! Errore template bat!
-                
-        else:
-            register_form = RegisterForm()
-            
-        if "login_button" in request.POST:
-            profile = log_in(request)
-            if profile is None:
-                login_form = LoginForm(request.POST)
-                login_form.is_valid()
-                login_status = 0
-                d = {"register_form":register_form , "login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form}
-                return render_to_response('register.html', d, context_instance = RequestContext(request))
-    else:
-        # Initialize specific forms
-        register_form = RegisterForm()
-        
-    d = {"register_form":register_form, "login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form}
-    
-    return render_to_response('register.html', d, context_instance = RequestContext(request))
-    
 
-@login_required
-def profile(request):
-    """Render profile template
-    """
-    # action status
-    profile_status = 1
-    login_status = 1
-    # Initializations
-    login_form, search_form, forget_form, themes, corporation_upload = base_forms_initialization(request)
-    profile_form = ProfileForm()
-    
-    if request.POST:
-        if "profile_button" in request.POST:
-            profile_form=ProfileForm(request.POST)
-            profile_value = db_update_profile(profile_form)
-            profile_status = profile_value[0]
-            if profile_status == 0: # validation error
-                profile_form = profile_value[1]
-                d = {"profile_form":profile_form , "login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form}
-                return render_to_response('profile.html', d, context_instance = RequestContext(request))
-            elif profile_status == 1: # update OK!              
-                return redirect('/')
-                
-            elif profile_status == 2: # error
-                pass
-                # TODO! Errore template bat!
-    else:
-        # load profile information
-        profile = Profile.objects.get(user=request.user)
-        profile_initial={'username': profile.user.username,\
-                        'first_name':profile.user.first_name,\
-                        'last_name':profile.user.last_name,\
-                        'genre':profile.genre.id,\
-                        'birth_date': profile.birth_date,\
-                        'NAN': profile.NAN,\
-                        'email':profile.user.email,\
-                        'institution': profile.institution,\
-                        'institution_name':profile.institution_name,\
-                        'country': profile.country,\
-                        'info': profile.info}
-        profile_form = ProfileForm(initial=profile_initial)
-        
-    
-    
-    d = {"login_form":login_form, "forget_form": forget_form, "themes": themes, "corporation_upload": corporation_upload, "search_form":search_form, "profile_form":profile_form}
-    
-    return render_to_response('profile.html', d, context_instance = RequestContext(request))
-
-
-
-
-
-'''
- 
- 
- 
  
  
  

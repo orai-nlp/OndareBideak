@@ -536,7 +536,19 @@ class workspace_item(models.Model):
     paths_thumbnail = models.CharField(max_length=1000)
 
 
-
+class hornitzailea(models.Model):
+    
+    fk_user= models.ForeignKey(User)
+    izena=models.CharField(max_length=1000)
+    deskribapena = models.CharField(max_length=3000)
+    erakundeMota = models.CharField(max_length=1000)
+    ikonoa = models.CharField(max_length=1000)
+    helbidea = models.CharField(max_length=1000)
+    geoloc_longitude = models.FloatField(null=True)
+    geoloc_latitude = models.FloatField(null=True)
+    
+    
+    
 class ProfileManager(models.Manager):
     
     def create_profile(self,\
@@ -562,6 +574,9 @@ class ProfileManager(models.Manager):
         return profile
 
 
+
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User) 
     hornitzailea = models.NullBooleanField()
@@ -575,8 +590,8 @@ class Profile(models.Model):
         group = Group.objects.get(name="admin")
         return True if group in self.user.groups.all() else False
         
-    def is_aditua(self):
-        group = Group.objects.get(name="aditua")
+    def is_hornitzailea(self):
+        group = Group.objects.get(name="hornitzailea")
         return True if group in self.user.groups.all() else False
         
     def is_arrunta(self):

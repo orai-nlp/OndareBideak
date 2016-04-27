@@ -60,7 +60,8 @@
         overflow: hidden!important;
     }
     
-   .ws_box {
+   
+    .ws_box {
     
     cursor: move;
     display: inline-block;
@@ -86,7 +87,6 @@
         pointer-events: none;
     }
 
-
     .wsb_button{
         cursor: pointer;
         display: inline-block;
@@ -107,30 +107,29 @@
 
 	#path_boxes_egunekoa{
 		width: 98%;
-        height: 600px;
+        height: 500px;
         display: block;
         margin-top: 20px;
-        background: ;
+        background: #e7e7e7;
         resize: both;
-        overflow: auto;
+        overflow: scroll;
 	}
 	#path_boxes_overview{
 		width: 98%;
-        height: 400px;
+        height: 205px;
         display: block;
         margin-top:-29px;
-        padding-top: 10px;
         background: ;
         resize: both;
-        overflow: auto;
+        /*overflow: scroll;*/
 	}
     #path_boxes{
         width: 98%;
-        height: 600px;
+        height: 500px;
         display: block;
         border: 1px solid #808080;
         margin-top: 20px;
-        background:;
+        background: #F3F3F3;
         overflow: auto;
         resize: both;
     }
@@ -297,16 +296,16 @@
 		color: #337ab7;
 	}	
 	.dropdown:hover .dropdown-menu {
-            display: block; right: 20px; top: 0px;
-            margin-top: 70px;
-            width:300px;
-            position:absolute;
-            alignment-adjust: right;
-            float: right;
-            z-index: 1000000000;
-            left:inherit;
-     }
-
+    display: block; right: 20px; top: 0px;
+    margin-top: 0;
+    width:300px;
+    position:relative;
+   	alignment-adjust: right;
+   	float: right;
+   	z-index: 1000000000;
+   	left:inherit;
+    
+ 	}
 	
 	.text-center {
     text-align: center;
@@ -317,6 +316,7 @@
 	.filtroak {
 		color:  #9e8012;
 	}
+	
 	.thumb-128 {
     height: 128px;
     line-height: 128px;
@@ -389,14 +389,14 @@
 	.aRight {
 		float: right;
 	}
+	
+/* EGOITZ */
 
-    /*CSS svg*/
-
-    .node circle {
+  .node circle {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 3px;
-}
+	}
 
 .node text { font: 12px sans-serif; }
 

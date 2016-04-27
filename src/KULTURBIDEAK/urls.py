@@ -31,6 +31,7 @@ from KULTURBIDEAK.kulturbideak_app.views import perfila_erakutsi
 from KULTURBIDEAK.kulturbideak_app.views import pasahitza_aldatu
 from KULTURBIDEAK.kulturbideak_app.views import itemak_hasiera
 from KULTURBIDEAK.kulturbideak_app.views import ibilbideak_hasiera
+from KULTURBIDEAK.kulturbideak_app.views import hornitzaileak_hasiera
 from KULTURBIDEAK.kulturbideak_app.views import nabigazio_item
 from KULTURBIDEAK.kulturbideak_app.views import nabigatu
 from KULTURBIDEAK.kulturbideak_app.views import botoa_eman_item
@@ -95,6 +96,7 @@ urlpatterns = patterns('',
     url(r'nire_ibilbideak_erakutsi$', nire_ibilbideak_erakutsi),
     url(r'itemak_hasiera$', itemak_hasiera),
     url(r'ibilbideak_hasiera$', ibilbideak_hasiera),
+    url(r'hornitzaileak_hasiera$', hornitzaileak_hasiera),
     url(r'nabigazio_item', nabigazio_item),
     url(r'nabigatu', nabigatu),
     url(r'botoa_eman_item', botoa_eman_item),

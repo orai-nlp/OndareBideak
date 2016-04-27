@@ -3,11 +3,22 @@ from django import template
 from settings import *
 import re
 
+from django.contrib.auth.models import Group
 register = template.Library()
+
+
+@register.filter(name='has_group')
+def has_group(user, group_name):
+    group = Group.objects.get(name=group_name)
+    return True if group in user.groups.all() else False
+
+
+
 
 @register.filter
 def correct_float_format(value):
    return str(value).replace(',','.')
+
 
 
 @register.filter

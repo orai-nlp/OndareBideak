@@ -23,7 +23,7 @@ HIZKUNTZA_CHOICES = (
 class OaipmhForm(Form):
     """OAI-PMH bidez itemak datu-baseratzeko formularioa kargatzen du"""
     baseurl=CharField(max_length=150,required=True, widget=TextInput(attrs={"placeholder":_("baseUrl"),"type":"text", "class":"form-control"}))
-    wikify=BooleanField(required=False)
+    #wikify=BooleanField(required=False)
     
 class LoginForm(Form):
     """Erabiltzaile bat logeatzeko formularioa kargatzen du"""
@@ -64,6 +64,25 @@ class CreateUserForm(forms.Form):
     izena=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Izena"),"type":"text", "class":"form-control","id":"InputName"}))
     abizena=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Abizenak"),"type":"text", "class":"form-control","id":"InputName2"}))
     username=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Erabiltzailea"),"type":"text", "class":"form-control","id":"InputUser"}))
+    
+    hornitzailea = forms.BooleanField(
+        label = _("hornitzailea"),
+        required = False,
+        widget=forms.CheckboxInput(attrs={"type":"check", 
+                                "placeholder":_("Hornitzailea")
+                                })
+    )
+    
+    
+    honitzaile_izena = forms.CharField(
+        label = _("Hornitzailearen izena"),
+        required = False,
+        widget=forms.TextInput(attrs={"type":"text", 
+                                "class":"form-control",
+                                "placeholder":_("Hornitzailearen izena")
+                                })
+    )
+
     
     posta=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Helbide elektronikoa"),"type":"text", "class":"form-control","id":"InputEmail"}))
     password=CharField(max_length=32, widget=PasswordInput(attrs={"placeholder":_("Pasahitza"),"type":"password", "class":"form-control","id":"InputPass"}),required=True)
