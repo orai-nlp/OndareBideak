@@ -1,4 +1,5 @@
 var data = ibilbide_data;
+var path_id = path_id;
 
 // *********** Convert flat data into a nice tree ***************
 // create a name: node map
@@ -115,7 +116,7 @@ function update(source) {
       links = tree.links(nodes);
       //ezabatu root
       nodes.pop();
-      nodes.reverse();
+
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { 
@@ -136,6 +137,10 @@ function update(source) {
                     return "translate(" + d.y + "," + d.x + ")";
                 }
             })
+      .append("a")
+      //nabigatu?path_id='+path_id+'&item_id='+node_id+'&autoplay=0'
+        .attr("xlink:href", function(d) {
+     return "/nabigatu?path_id="+path_id+"&item_id="+d.id; })
       .on('click', click);    
 
   //Borobila sortu
@@ -152,14 +157,11 @@ function update(source) {
             return 30;
         }
     })
-    .style("fill", function(d) {
-                var ir = "#"+d.id;
-                return  "url("+ir+")";});
-
+    .style("fill","url(#irudia)");
 
            nodeEnter.append('defs')
         .append('pattern')
-	    .attr('id', function(d) { return (d.id);})
+            .attr('id', "irudia")
             .attr('width', 1)
             .attr('height', 1)
             .attr('patternContentUnits', 'objectBoundingBox')
@@ -177,14 +179,16 @@ function update(source) {
           return d.children || d._children ? 30 : -30; })
       .attr("dy", function(d) {
         if (nodes.length>=10){
-            return d.children || d._children ?  30 : 30;
+            return d.children || d._children ?  40 : 40;
         } else {
             return d.children || d._children ?  45 : 45;
         }
     })
       .attr("text-anchor", function(d) { 
           return d.children || d._children ? "end" : "start"; })
-      .text(function(d) { return d.name; })
+      .text(function(d) { 
+        var name = d.name.substring(0,10)+"...";
+        return name; })
       .style("fill-opacity", 1);
 
 

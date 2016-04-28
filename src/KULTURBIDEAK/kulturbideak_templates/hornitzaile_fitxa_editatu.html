@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<div class="login-erregistratu">
+	
+	<form action="{{BASE_URL}}/hornitzailea_editatu" method="post" class="form">
+		{% csrf_token %}
+		
+			<p>INPLEMENTATU GABE</p>
+     		<!--
+       		<button class="btn btn-default" type="submit" name="hornitzailea_editatu">
+       		{% trans "Eguneratu" %}
+       		</button>
+       -->
+       			
+       		
+       			
+      		
+      	</form>
+
+</div>
+{% endblock %} 

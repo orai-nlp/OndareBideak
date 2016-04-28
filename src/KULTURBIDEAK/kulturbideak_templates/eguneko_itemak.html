@@ -21,15 +21,15 @@
     </span>
 </div>
 
-<p class="emaitzaInfo"> {{itemak.paginator.count }} Item dataren arabera ordenatuta</p>
+<p class="emaitzaInfo"> {{itemak.paginator.count }} Eguneko Item </p>
 
 <div class="panel panel-default">
   <div class="panel-body">
   	
 
 	 {% for item in itemak %}
-	 	 
 	 
+ 
 	 <div class="column">	
 		<div class="col-xs-6 col-md-3">
 			
@@ -37,12 +37,12 @@
 		{% if  item.id%}
 		<div class="thumbnail">
 			
+			
 			{% if request.user|has_group:'hornitzailea' %}
-				<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >				
- 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=hasiera" >				
+ 						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 				</a>
 			{%endif%}
-			
 			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >
 				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
 			</a>
@@ -52,7 +52,7 @@
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 				 
-				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
+				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
 				{% if item.edm_provider %}	
 					<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
 				{%endif%}
@@ -75,7 +75,7 @@
        				</button>
        				{% if user.username == item.edm_provider %}
 
-						<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >				
+						<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >				
  						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 						</a>
   					{%else%}

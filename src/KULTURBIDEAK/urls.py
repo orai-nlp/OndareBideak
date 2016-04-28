@@ -47,6 +47,11 @@ from KULTURBIDEAK.kulturbideak_app.views import autocomplete
 from KULTURBIDEAK.kulturbideak_app.views import oaipmh_datubilketa
 from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_search
 from KULTURBIDEAK.kulturbideak_app.views import filtro_search
+from KULTURBIDEAK.kulturbideak_app.views import eguneko_itemak
+from KULTURBIDEAK.kulturbideak_app.views import eguneko_itema_kendu
+from KULTURBIDEAK.kulturbideak_app.views import eguneko_itema_gehitu
+from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_fitxa_editatu
+
 from django.contrib import admin
 
 #MAddalen
@@ -69,6 +74,7 @@ urlpatterns = patterns('',
     url(r'uploads/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
    #url(r'^$', SearchView(), name='haystack_search'),
     url(r'^$', hasiera),
+    url(r'eguneko_itema_gehitu',eguneko_itema_gehitu),  
     #url(r'search', SearchView(), name='haystack_search'), 
     url(r'cross_search', cross_search),
     url(r'login', logina),
@@ -111,6 +117,9 @@ urlpatterns = patterns('',
     url(r'oaipmh_datubilketa',oaipmh_datubilketa),
     url(r'hornitzaile_search',hornitzaile_search),
     url(r'filtro_search',filtro_search),
+    url(r'eguneko_itemak',eguneko_itemak),
+    url(r'eguneko_itema_kendu',eguneko_itema_kendu),
+    url(r'hornitzaile_fitxa_editatu',hornitzaile_fitxa_editatu),    
     (r'^search/', include('haystack.urls')),
     
     #url(r'^rosetta/', include('rosetta.urls')),
