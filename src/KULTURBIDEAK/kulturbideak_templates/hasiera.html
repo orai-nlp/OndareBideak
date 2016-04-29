@@ -65,7 +65,11 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
 	var id="{{node.fk_item_id_id}}";//path_node[0];
 	var titulua="{{node.dc_title}}";//path_node[1];
 	var irudia="{{node.paths_thumbnail}}";//path_node[2];
-	var aita_id="{{node.paths_prev}}";
+	if (irudia == " ")
+	{
+	    irudia="/uploads/NoIrudiItem.png";
+	}
+        var aita_id="{{node.paths_prev}}";
 	//aita hutsa bada , root izango da bere aita
 	if (aita_id== ""){
 		aita_id = 0;

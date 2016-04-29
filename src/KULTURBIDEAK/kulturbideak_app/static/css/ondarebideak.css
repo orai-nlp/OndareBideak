@@ -112,18 +112,26 @@
         margin-top: 20px;
         background: ;
         resize: both;
-        overflow: auto;
+        /*overflow: auto;*/
 	}
 	#path_boxes_overview{
 		width: 98%;
         height: 400px;
         display: block;
         margin-top:-29px;
-        padding-top: 10px;
+        padding-top: 5px;
         background: ;
         resize: both;
-        overflow: auto;
+       /* overflow: auto;*/
 	}
+	 #path_boxes_overview svg{
+        width: 98%;
+        height: 400px;
+        display: block;
+        padding-top: 5px;
+        background: ;
+        resize: both;
+    }
     #path_boxes{
         width: 98%;
         height: 600px;
