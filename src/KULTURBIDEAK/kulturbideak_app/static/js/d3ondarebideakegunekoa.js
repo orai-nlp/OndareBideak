@@ -116,6 +116,7 @@ function update(source) {
       links = tree.links(nodes);
       //ezabatu root
       nodes.pop();
+      nodes.reverse();
 
 
   // Normalize for fixed-depth.
@@ -157,11 +158,13 @@ function update(source) {
             return 30;
         }
     })
-    .style("fill","url(#irudia)");
+    .style("fill", function(d) { 
+      var ir = "#"+d.id;
+    return  "url("+ir+")";});
 
            nodeEnter.append('defs')
         .append('pattern')
-            .attr('id', "irudia")
+            .attr('id', function(d) { return (d.id);})
             .attr('width', 1)
             .attr('height', 1)
             .attr('patternContentUnits', 'objectBoundingBox')
