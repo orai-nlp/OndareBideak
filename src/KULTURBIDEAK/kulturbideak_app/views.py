@@ -195,7 +195,7 @@ def eguneko_itema_kendu(request):
 
     #GURI ALDAKETAREN BERRI EMAN?
     
-    mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko item hau gehitu du (id): "+str(item_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
+    mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko item hau kendu du (id): "+str(item_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
     send_mail('OndareBideak - Eguneko itemetan aldaketak', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):

@@ -16,14 +16,14 @@
 		/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
 		background-image: url("/uploads/NoIrudiItem.png");
 		min-height: 120px;
-		background-size: 120px 120px;
+		background-size: 153px 117px;
 	
 	}
 	.bilaketaEmaitzaPath{
 		
 		background-image: url("/uploads/NoIrudiBide.png");
 		min-height: 120px;
-		background-size: 120px 120px;
+		background-size: 154px 118px;
 	}
 	 .emaitzaInfo{
 		text-align: left;
@@ -432,3 +432,17 @@ circle .unselectedNode {
     stroke: none;
     stroke-width: 3px;
   }
+  
+  .filterButton {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+#logoa {
+    margin-top: -10px;
+    width: 195px;
+}

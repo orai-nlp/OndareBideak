@@ -2998,18 +2998,67 @@ function bilaketaFiltratu()
     window.location.href=url;
 }
 	
-function load_register_scripts(){
-    /* Loads register template's javascripts */
-       
-    $(document).ready(function(){
-        $('#id_hornitzailea_name_div').fadeOut();
-        $('#id_hornitzailea').change(function(){
-            if(this.checked)
-                $('#id_hornitzailea_name_div').fadeIn('slow');
-            else
-                $('#id_hornitzailea_name_div').fadeOut('slow');
+/* BILATZAILEAREN FILTROEN FUNTZIOAK*/
 
-        });
+$(document).ready(function(){
+    $("#hideBF").click(function(){
+        $("#besteFiltroak").hide();
+        $("#hideBF").hide();
+        $("#showBF").show();
     });
-    
-}
+    $("#showBF").click(function(){
+        $("#besteFiltroak").show();
+        $("#showBF").hide();
+        $("#hideBF").show();
+    });
+    $("#hideLF").click(function(){
+        $("#lizentziaFiltroak").hide();
+        $("#hideLF").hide();
+        $("#showLF").show();
+    });
+    $("#showLF").click(function(){
+        $("#lizentziaFiltroak").show();
+        $("#showLF").hide();
+        $("#hideLF").show();
+    });
+    $("#hideOF").click(function(){
+        $("#ordenaFiltroak").hide();
+        $("#hideOF").hide();
+        $("#showOF").show();
+    });
+    $("#showOF").click(function(){
+        $("#ordenaFiltroak").show();
+        $("#showOF").hide();
+        $("#hideOF").show();
+    });
+    $("#hideMF").click(function(){
+        $("#motaFiltroak").hide();
+        $("#hideMF").hide();
+        $("#showMF").show();
+    });
+    $("#showMF").click(function(){
+        $("#motaFiltroak").show();
+        $("#showMF").hide();
+        $("#hideMF").show();
+    });
+    $("#hideHF").click(function(){
+        $("#horFiltroak").hide();
+        $("#hideHF").hide();
+        $("#showHF").show();
+    });
+    $("#showHF").click(function(){
+        $("#horFiltroak").show();
+        $("#showHF").hide();
+        $("#hideHF").show();
+    });
+    $("#hideHiF").click(function(){
+        $("#hizkFiltroak").hide();
+        $("#hideHiF").hide();
+        $("#showHiF").show();
+    });
+    $("#showHiF").click(function(){
+        $("#hizkFiltroak").show();
+        $("#showHiF").hide();
+        $("#hideHiF").show();
+    });
+});

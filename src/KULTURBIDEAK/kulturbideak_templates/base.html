@@ -281,7 +281,10 @@ var markers = [];
                </p>
                <p>
     			<a class="navbar-brand navbar-brand-berria" title="kulturbideak" href="http://obprototipoa.elhuyar.eus">
- 					<span class="laguntza">O<small>ndare</small></span>B<small>ideak</small>			
+ 					<!--<span class="laguntza">O<small>ndare</small></span>B<small>ideak</small>-->
+ 					<!--<img src="/uploads/logoa.png" alt="Ondarebideak" height="102" width="300">-->
+ 					<img id="logoa" src="{{STATIC_URL}}img/logoa.png" alt="Ondarebideak" > 
+ 							
 				</a>
 				</p>
                 
@@ -305,6 +308,7 @@ var markers = [];
       </li>
       <li>
       	<a href="hornitzaileak_hasiera">
+      		<span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span>
       		HORNITZAILEAK
       	</a>
       </li>
@@ -466,7 +470,8 @@ var markers = [];
 	 			<br />
 	 			<br />
 	 			
-	 				<p>&nbsp;<b>{% trans "Hizkuntza" %} </b></p>
+	 				<p>&nbsp;<b>{% trans "Hizkuntza" %} </b><button class="filterButton" id="hideHiF"> <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button> <button class="filterButton" id="showHiF" style="display:none;"> <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></p>
+	 					<div class="hizkFiltroak" id="hizkFiltroak">
 	 					{%if "eu" in hizkF%}
 							&nbsp;&nbsp;<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu()" checked>eu<br>
 						{%else%}
@@ -482,8 +487,10 @@ var markers = [];
 						{%else%}
 							&nbsp;&nbsp;<input type="checkbox" id="hizkuntza3F" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu()">en <br>
 						{%endif%}
+						</div>
 					<br />
-					<p>&nbsp;<b>{% trans "Hornitzailea" %} </b></p>
+					<p>&nbsp;<b>{% trans "Hornitzailea" %} </b><button class="filterButton" id="hideHF" style="display:none;"> <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button> <button class="filterButton" id="showHF"> <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></p>
+						<div class="horFiltroak" id="horFiltroak" style="display:none;">
 						{%if "EuskoMedia" in horniF%}
 							&nbsp;&nbsp;<input type="checkbox" id="hornitzaile1F" name="hornitzaile1F" value="EuskoMedia" onclick="bilaketaFiltratu()" checked>EuskoMedia<br>
 						{%else%}
@@ -494,8 +501,10 @@ var markers = [];
 						{%else%}
 							&nbsp;&nbsp;<input type="checkbox" id="hornitzaile2F" name="hornitzaile2F" value="arrunta" onclick="bilaketaFiltratu()">Erabiltzaile Arrunta<br>
 						{%endif%}
+						</div>
 					<br />
-					<p>&nbsp;<b>{% trans "Mota" %} </b></p>
+					<p>&nbsp;<b>{% trans "Mota" %} </b><button class="filterButton" id="hideMF"> <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button> <button class="filterButton" id="showMF" style="display:none;"> <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></p>
+						<div class="motaFiltroak" id="motaFiltroak">
 						{%if "testua" in motaF%}
 							&nbsp;&nbsp;<input type="checkbox" id="mota1F" name="mota1F" value="testua" onclick="bilaketaFiltratu()" checked>testua<br>
 						{%else%}
@@ -516,8 +525,10 @@ var markers = [];
 						{%else%}
 							&nbsp;&nbsp;<input type="checkbox" id="mota4F" name="mota4F" value="irudia" onclick="bilaketaFiltratu()">irudia <br>
 						{%endif%}
+						</div>
 					<br />
-					<p>&nbsp;<b>{% trans "Ordena" %} </b></p>
+					<p>&nbsp;<b>{% trans "Ordena" %} </b><button class="filterButton" id="hideOF" style="display:none;"> <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button> <button class="filterButton" id="showOF"> <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></p>
+						<div class="ordenaFiltroak" id="ordenaFiltroak" style="display:none;">
 						{%if "data" in ordenaF%}
 							&nbsp;&nbsp;<input type="checkbox" id="ordena1F" name="ordena1F" value="data" onclick="bilaketaFiltratu()" checked>data (beheraka)<br>
 						{%else%}
@@ -533,9 +544,10 @@ var markers = [];
 						{%else%}
 							&nbsp;&nbsp;<input type="checkbox" id="ordena2F" name="ordena2F" value="botoak" onclick="bilaketaFiltratu()" >botoak<br>	
 						{%endif%}
-					
+						</div>
 					<br />
-					<p>&nbsp;<b>{% trans "Lizentzia" %} </b></p>
+					<p>&nbsp;<b>{% trans "Lizentzia" %} </b><button class="filterButton" id="hideLF" style="display:none;"> <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button> <button class="filterButton" id="showLF"> <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></p>
+						<div class="lizentziaFiltroak" id="lizentziaFiltroak" style="display:none;">
 						{%if "librea" in lizentziaF%}
 							&nbsp;&nbsp;<input type="checkbox" id="lizentzia1F" name="lizentzia1F" value="librea" onclick="bilaketaFiltratu()" checked>librea<br>
 						{%else%}
@@ -551,8 +563,10 @@ var markers = [];
 						{%else%}
 							&nbsp;&nbsp;<input type="checkbox" id="lizentzia3F" name="lizentzia3F" value="copyRight" onclick="bilaketaFiltratu()" >copyRight<br>
 						{%endif%}
+						</div>
 					<br />
-					<p>&nbsp;<b>{% trans "Beste batzuk" %} </b></p>
+					<p>&nbsp;<b>{% trans "Beste batzuk" %} </b> <button class="filterButton" id="hideBF" style="display:none;"> <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></button> <button class="filterButton" id="showBF"> <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></button></p>
+						<div class="besteFiltroak" id="besteFiltroak" style="display:none;">
 						{%if "egunekoa" in besteaF%}
 							&nbsp;&nbsp;<input type="checkbox"  id="egunekoaF" name="egunekoaF" value="egunekoa" onclick="bilaketaFiltratu()" checked>egunekoa<br>
 						{%else%}
@@ -578,7 +592,7 @@ var markers = [];
 						{%else%}
 							&nbsp;&nbsp;<input type="checkbox" id="irudiaEzDuF" name="irudiaEzDuF" value="irudiaEzDu" onclick="bilaketaFiltratu()">irudia ez du <br>
 						{%endif%}
-	 			
+	 					</div>
 	 		</div>
 			{%endif%}
 	 	</div>	
