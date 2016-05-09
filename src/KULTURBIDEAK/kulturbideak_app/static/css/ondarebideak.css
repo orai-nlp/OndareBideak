@@ -14,16 +14,21 @@
    .bilaketaEmaitza{
 
 		/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
-		background-image: url("/uploads/NoIrudiItem.png");
+		/*background-image: url("/uploads/NoIrudiItem.png");*/
 		min-height: 120px;
-		background-size: 153px 117px;
+		background-size:contain;
+		background-position:center;
+		background-repeat: no-repeat;
 	
 	}
 	.bilaketaEmaitzaPath{
 		
-		background-image: url("/uploads/NoIrudiBide.png");
+		/*background-image: url("/uploads/NoIrudiBide.png");*/
 		min-height: 120px;
-		background-size: 154px 118px;
+		background-size:contain;
+		background-position:center;
+		background-repeat: no-repeat;
+	
 	}
 	 .emaitzaInfo{
 		text-align: left;
@@ -207,7 +212,7 @@
     .orria{
     	display: block;
     	margin: 0 auto;
-    	text-align: center;
+    	/*text-align: center;*/
     }
     .eskuma_div{
     	width: 15%;

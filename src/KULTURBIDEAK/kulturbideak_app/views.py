@@ -87,6 +87,10 @@ def get_tree(el_node):
             nodes = nodes + get_tree(node.objects.filter(fk_item_id__id=child_node_id, fk_path_id__id=el_node.fk_path_id.id)[0])
     return nodes
 
+def brandy(request):
+    
+    return render_to_response('index_brandy.html',context_instance=RequestContext(request))
+ 
 
 def hasiera(request):
     #EGUNEKO IBILBIDEAREN PARAMETROAK BIDALI BEHAR DIRA HEMEN
@@ -122,6 +126,7 @@ def hasiera(request):
         
        
     return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+    #return render_to_response('index_brandy.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
 
    
    
@@ -183,7 +188,10 @@ def eguneko_itemak(request):
 def hornitzaile_fitxa_editatu(request):
     
         #INPLEMENTATU
-    return render_to_response('hornitzaile_fitxa_editatu.html',context_instance=RequestContext(request))
+    non="fitxaE"
+    user_id=request.user.id
+    hornitzaile =hornitzailea.objects.get(fk_user__id=user_id)
+    return render_to_response('hornitzaile_fitxa_editatu.html',{'non':non,"hornitzailea":hornitzaile},context_instance=RequestContext(request))
 
 def eguneko_itema_kendu(request):
     
@@ -1298,11 +1306,6 @@ def hornitzaileak_hasiera(request):
     return render_to_response('hornitzaileak_hasiera.html',{'hornitzaileak':hornitzaileak},context_instance=RequestContext(request))
     
 
-def hornitzaile_fitxa_editatu(request):
-    hornitzailea=[]
-    
-    return render_to_response('hornitzaile_fitxa_editatu.html',{'hornitzailea':hornitzailea},context_instance=RequestContext(request))
-    
    
 def autocomplete(request):
     

@@ -1,23 +1,200 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% load tags %}
+{% load leaflet_tags %}
+{% block additional_scripts %}
+<link href="{{ STATIC_URL }}css/new_proposal.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/areas.css" rel="stylesheet">
+{% endblock %}
+{% block onload_scripts %}
+load_add_proposal_scripts();
+{% endblock %}
 {% block content %}
 
-<div class="login-erregistratu">
-	
-	<form action="{{BASE_URL}}/hornitzailea_editatu" method="post" class="form">
-		{% csrf_token %}
-		
-			<p>INPLEMENTATU GABE</p>
-     		<!--
-       		<button class="btn btn-default" type="submit" name="hornitzailea_editatu">
-       		{% trans "Eguneratu" %}
-       		</button>
-       -->
-       			
-       		
-       			
-      		
-      	</form>
+<div class="container">
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" id="add_proposal_form">{% csrf_token %}
+        <h1 class="text-center">{% trans "Hornitzailea" %}</h1>
+        {{ template_name }}
+      	 <div class="row">
+           
+            <div id="proposal_information_id" class="alert alert-info text-center" role="alert">
+                <button type="button" class="close" onmousedown="$('#proposal_information_id').hide(1000)"><span aria-hidden="true">&times;</span></button>
+                <p><strong>{% trans "Ahalik eta informazio gehien betetzea komeni da" %}</strong></p>                
+            </div>
+            
+            <!-- Blog Post Content Column -->
+            <!--<div class="col-lg-8">-->
+       </div>
+       <hr>
+ 
+       <div class="row">
+            <div class="col-lg-2">  
+                <div class="well info_box  icon_info">
+                    <h4><img src="{{ STATIC_URL }}/img/area.png"> {% trans "Arloa" %}*: 
+                       
+                            <a href="#" data-toggle="modal" data-target="#area_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                                           
+                    </h4>
+            
+               
+                 	<h4><img src="{{ STATIC_URL }}/img/where.png"> {% trans "Kokapena" %}*:
+               		 <span id="id_where"></span>
+                        <a href="#" data-toggle="modal" data-target="#where_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                   
+                </h4>
+                
+               
+                    
+                </div>
+                
+                
+                 <div class="modal fade" id="area_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-area" id="myModalLabel">{% trans "Editatu arloa" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="col-md-12">
+									<input id="id_arloa" class="form-control" type="text" placeholder="Arloa" name="arloa">
+								</div>
+                              
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="button" onmousedown="close_proposal_area();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+               
+          
+                
+                   <div class="modal fade" id="where_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-where" id="myModalLabel">{% trans "Kokalekua editatu" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                             
+                              <div class="col-md-12">                
+                                <div>
+                                    <input id="id_kokalekua" class="form-control" type="text" placeholder="Kokalekua" name="Kokalekua">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" id="close_where" onmousedown="close_proposal_where('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                
+            </div> 
+            <div class=""> <!-- col-lg-8-->
 
+                <h1 class="text-center"><span id="id_title"> Hornitzailearen Izena*</span>
+                <a href="#" data-toggle="modal" data-target="#title_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+                </h1>  
+                
+           
+                            
+                    <div class="modal fade" id="title_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{% trans "Editatu Izena" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="col-md-12">
+									<input id="id_izena" class="form-control" type="text" placeholder="Hornitzailearen izena" name="izena">
+								</div>
+                              
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="button" id="close_title" onmousedown="close_proposal_title('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                <p class="lead">{% trans "Deskribapena" %} *</p>
+                <p><span id="id_summary"></span>
+                        <a href="#" data-toggle="modal" data-target="#summary_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                    </p>
+                    <div id="related_objects_summary" class="alert alert-warning" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#related_objects_summary').hide(1000)"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div id="language_error_summary" class="alert alert-warning text-center" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#language_error_summary').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {% trans "It seems that the inserted text is not in the correct language" %}
+                </div>     
+                    <div class="modal fade" id="summary_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-summary" id="myModalLabel">{% trans "Deskribapena editatu" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                               <!--TEXT AREA -->
+                                <div class="col-md-12">
+                                	<textarea id="id_desk" class="form-control"  placeholder="Hornitzailearen deskribapena" name="deskribapena" rows="4" cols="50">
+									</textarea>
+								</div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" id="close_summary" onmousedown="close_proposal_summary('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                
+                <hr>
+                
+              
+		<hr>
+                <!-- Preview Image -->
+                <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'upload file text' %}" class="hovertext"><img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt=""></a>
+
+                <hr>
+                
+                
+                <div id="map_where" class="alert alert-info" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#map_where').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <ul id="map_ul_id"></ul>
+                </div>      
+
+                                  {% leaflet_map "map" callback="load_map" %}
+            {{ coordinates_form }}
+                <hr>
+
+            </div>
+
+         <div class="form-group">
+              <div class="col-md-12 text-right">
+                <div id="dialog-confirm"></div>
+                <button type="submit" onmousedown="get_coordinates();return validate_language('{% trans 'It seems that the language is not correct in some inputs, do you want to continue?' %}');" name ="new_proposal_button" id="id_new_proposal_button" class="btn btn-primary btn-lg">{% trans "Create" %}</button>
+              </div>
+            </div>
+    </form>        
 </div>
-{% endblock %} 
+
+
+{% endblock %}
+
+

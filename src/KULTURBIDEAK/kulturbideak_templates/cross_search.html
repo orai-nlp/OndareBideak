@@ -60,10 +60,10 @@ um_pages }}</p>-->
 					</a>
 				{%endif%}
 			{%endif%}
-			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
-				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
+			<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
+				<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 			</a>
-			
+			<!--http://jsfiddle.net/WjKyF/-->
 			<div class="caption">
 				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.item_id}}"/>
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
@@ -140,8 +140,8 @@ um_pages }}</p>-->
     
     <div class="thumbnail">
 
-			<a class="{% if not path.path_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
-				{% if path.paths_thumbnail %}<img  src="{{path.path_thumbnail}}">{% endif %}
+			<a class="bilaketaEmaitzaPath thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
+				{% if path.path_thumbnail %}<img src="{{path.path_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}
 			</a>
 			
 			<div class="caption">

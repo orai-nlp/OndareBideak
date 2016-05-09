@@ -307,6 +307,7 @@ var markers = [];
       	</a>
       </li>
       <li>
+      		
       	<a href="hornitzaileak_hasiera">
       		<span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span>
       		HORNITZAILEAK
@@ -454,6 +455,8 @@ var markers = [];
 	<hr>	
 	<!--PANTAILA EGITURA NAGUSIA-->
 	<div class="orria">
+		
+		{% if non != "fitxaE" %}
 	 	<div class="eskuma_div" align="right" >
 	 		{% if bilaketa_filtroak != 1 or not bilaketa_filtroak%}
 	 		<div class="hornitzaileak"> <!-- DBtik kargatu -->
@@ -596,7 +599,8 @@ var markers = [];
 	 		</div>
 			{%endif%}
 	 	</div>	
-			
+	 	{%endif%}
+		
 		<div class="content_div" align="center">
 			{% if mezua %}
 				
@@ -649,6 +653,7 @@ var markers = [];
 			
 			{% endblock content %}
 		</div>
+		{% if non != "fitxaE" %}
 		<div class="ezkerra_div" align="left">
 			<div><b>{% trans "Azkenak" %} </b></div>
 			
@@ -706,6 +711,7 @@ var markers = [];
 				
 			</div>
 		</div>
+		{%endif%}
  	</div>	
 
 </div> <!-- END PAGE -->

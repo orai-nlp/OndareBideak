@@ -51,7 +51,7 @@ from KULTURBIDEAK.kulturbideak_app.views import eguneko_itemak
 from KULTURBIDEAK.kulturbideak_app.views import eguneko_itema_kendu
 from KULTURBIDEAK.kulturbideak_app.views import eguneko_itema_gehitu
 from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_fitxa_editatu
-
+from KULTURBIDEAK.kulturbideak_app.views import brandy
 from django.contrib import admin
 
 #MAddalen
@@ -74,6 +74,7 @@ urlpatterns = patterns('',
     url(r'uploads/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
    #url(r'^$', SearchView(), name='haystack_search'),
     url(r'^$', hasiera),
+    url(r'brandy', brandy),
     url(r'eguneko_itema_gehitu',eguneko_itema_gehitu),  
     #url(r'search', SearchView(), name='haystack_search'), 
     url(r'cross_search', cross_search),

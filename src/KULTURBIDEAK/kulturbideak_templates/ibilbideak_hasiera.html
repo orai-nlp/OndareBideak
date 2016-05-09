@@ -33,9 +33,10 @@
     
     <div class="thumbnail">
 
-			<a class="{% if not path.paths_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
-				{% if path.paths_thumbnail %}<img  src="{{path.paths_thumbnail}}">{% endif %}
+			<a class="bilaketaEmaitzaPath thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
+				{% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}
 			</a>
+			
 			
 			<div class="caption">
 				<input type="hidden" id="path_id_{{ forloop.counter }}" value="{{path.id}}"/>

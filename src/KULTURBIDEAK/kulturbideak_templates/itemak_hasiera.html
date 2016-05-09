@@ -43,9 +43,10 @@
 				</a>
 			{%endif%}
 			
-			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >
-				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
+			<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >
+				<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 			</a>
+			
 			
 			<div class="caption">
 				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.id}}"/>
