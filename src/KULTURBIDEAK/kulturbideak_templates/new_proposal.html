@@ -1,0 +1,515 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% load tags %}
+{% load leaflet_tags %}
+{% block additional_scripts %}
+<link href="{{ STATIC_URL }}css/new_proposal.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/areas.css" rel="stylesheet">
+{% endblock %}
+{% block onload_scripts %}
+load_add_proposal_scripts();
+{% endblock %}
+{% block body %}
+
+<div class="container body">
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" id="add_proposal_form">{% csrf_token %}
+        <h1 class="text-center">{% trans "New Proposal" %}</h1>
+        <div class="row">
+            <div id="proposal_help_criterions_id" class="alert alert-info text-center" role="alert">
+                <button type="button" class="close" onmousedown="$('#proposal_help_criterions_id').hide(1000)"><span aria-hidden="true">&times;</span></button>
+                <p><strong>{% trans "Proposal help criterions" %}:</strong></p>
+                {% for criterion in proposal_help_criterions %}
+                    <p><em>{{ criterion }}</em></p>
+                {% endfor %}
+            </div>
+            
+            <div id="proposal_information_id" class="alert alert-info text-center" role="alert">
+                <button type="button" class="close" onmousedown="$('#proposal_information_id').hide(1000)"><span aria-hidden="true">&times;</span></button>
+                <p><strong>{% trans "Provide as much information as possible" %}</strong></p>                
+            </div>
+            
+            <!-- Blog Post Content Column -->
+            <!--<div class="col-lg-8">-->
+       </div>
+       
+       <hr>
+       <div class="row">
+            <div class="col-lg-4">  
+                <div class="well info_box  icon_info">
+                    <h4><img src="{{ STATIC_URL }}/img/area.png"> {% trans "Area" %}*: 
+                        
+                            <a href="#" data-toggle="modal" data-target="#area_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                        
+                    
+                    <span id="id_area_p" class="list-group-item-text">
+                     {% for area in new_proposal_form.area.value %}
+                        <span class="label label-info area_{{ area.id }}">{{ area.area|translate_area }}</span>
+                     {% endfor %}
+                    </span>
+                    </h4>
+                    <h4><img src="{{ STATIC_URL }}/img/cost.png"> {% trans "Cost" %}:
+                        
+                            <a href="#" data-toggle="modal" data-target="#cost_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                        
+                    
+                    <span id="id_cost_p">{{ new_proposal_form.cost.value|new_or_none:"" }}</span>
+                    </h4>
+                    
+                    <h4><img src="{{ STATIC_URL }}/img/recipient.png"> {% trans "Recipient" %}:
+                <span id="id_recipient">{% with recipient_dict|get_lang_form:LANGUAGE_CODE as recipient_form %}{{ recipient_form.recipient.value|new_or_none:""|safe }}{% endwith %}</span>
+                        <a href="#" data-toggle="modal" data-target="#recipient_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                             
+                <div id="related_objects_recipient" class="alert alert-warning" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#related_objects_recipient').hide(1000)"><span aria-hidden="true">&times;</span></button>
+                </div>
+                </h4>
+                 <div id="language_error_recipient" class="alert alert-warning text-center" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#language_error_recipient').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {% trans "It seems that the inserted text is not in the correct language" %}
+                </div>   
+                
+                 <h4><img src="{{ STATIC_URL }}/img/where.png"> {% trans "Where" %}:
+                <span id="id_where">{% with where_dict|get_lang_form:LANGUAGE_CODE as where_form %}{{ where_form.where.value|new_or_none:""|safe }}{% endwith %}</span>
+                        <a href="#" data-toggle="modal" data-target="#where_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                   
+                </h4>
+                
+                <h4><img src="{{ STATIC_URL }}/img/documents.png"> {% trans "Attached files" %}: 
+                            <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                        </h4>
+                    
+                </div>
+                
+                
+                    <div class="modal fade" id="area_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-area" id="myModalLabel">{% trans "Edit area" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              
+                              <div class="col-md-12">              
+                                {{ new_proposal_form.area }}
+                                {{ new_proposal_form.area.errors }}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" onmousedown="close_proposal_area();" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+               
+                
+                    <div class="modal fade" id="cost_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-cost" id="myModalLabel">{% trans "Edit cost" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              
+                              <div class="col-md-12">              
+                                {{ new_proposal_form.cost }}
+                                {{ new_proposal_form.cost.errors }}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" onmousedown="close_proposal_cost();" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+               
+                
+                
+                
+              
+             
+                    <div class="modal fade" id="recipient_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-recipient" id="myModalLabel">{% trans "Edit recipient" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="alert alert-warning text-center" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span>{% trans "The chosen language by default in the edit fields is " %}<strong><em>{{ LANGUAGE_CODE |upper }}</em></strong></span></div> 
+                              
+                              <div class="col-md-12">                
+                                <div>
+                                    <div class="panel with-nav-tabs panel-primary">
+                                        <div class="panel-heading">
+                                                <ul class="nav nav-tabs">
+                                                    {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                        {% if forloop.counter == 1 %}
+                                                            <li class="active">
+                                                        {% else %}
+                                                            <li>
+                                                        {% endif %}
+                                                        <a href="#tab{{ forloop.counter }}recipient" onmousedown="$(this).click();return false;" data-toggle="tab">{{ lang.0|upper }}</a></li>
+                                                        
+                                                    {% endfor %}
+                                                    <button onmousedown="$(this).click();" onclick="automatic_translation('#recipient_div');return false;" type="submit" name ="translation_button" class="btn btn-primary btn-lg right-floated">{% trans "Translate text" %}</button>
+                                                </ul>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="tab-content" id="recipient_div">
+                                                {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                    {% with recipient_dict|get_lang_form:lang.0 as recipient_form %}
+                                                        <div class="tab-pane fade in {% if forloop.counter == 1 %}active{% endif %}" id="tab{{ forloop.counter }}recipient">{{ recipient_form.recipient }}{{ recipient_form.recipient.errors }}</div>
+                                                    {% endwith %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" id="close_recipient" onmousedown="close_proposal_recipient('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                
+                   
+                
+                 
+                            
+                
+                    <div class="modal fade" id="where_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-where" id="myModalLabel">{% trans "Edit where" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="alert alert-warning text-center" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span>{% trans "The chosen language by default in the edit fields is " %}<strong><em>{{ LANGUAGE_CODE |upper }}</em></strong></span></div> 
+                              
+                              <div class="col-md-12">                
+                                <div>
+                                    <div class="panel with-nav-tabs panel-primary">
+                                        <div class="panel-heading">
+                                                <ul class="nav nav-tabs">
+                                                    {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                        {% if forloop.counter == 1 %}
+                                                            <li class="active">
+                                                        {% else %}
+                                                            <li>
+                                                        {% endif %}
+                                                        <a href="#tab{{ forloop.counter }}where" onmousedown="$(this).click();return false;" data-toggle="tab">{{ lang.0|upper }}</a></li>
+                                                        
+                                                    {% endfor %}
+                                                    <button onmousedown="automatic_translation('#where_div');return false;" type="submit" name ="translation_button" class="btn btn-primary btn-lg right-floated">{% trans "Translate text" %}</button>
+                                                </ul>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="tab-content" id="where_div">
+                                                {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                    {% with where_dict|get_lang_form:lang.0 as where_form %}
+                                                        <div class="tab-pane fade in {% if forloop.counter == 1 %}active{% endif %}" id="tab{{ forloop.counter }}where">{{ where_form.where }}{{ where_form.where.errors }}</div>
+                                                    {% endwith %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" id="close_where" onmousedown="close_proposal_where('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                
+                    <div class="modal fade" id="attached_documents_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                        
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-attached_documents" id="myModalLabel">{% trans "Edit attached documents" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              
+                              <div class="col-md-12">
+                                <div class='table'>
+                                    <div class='no_error'>  
+                                            {{ upload_forms.management_form }}
+                                            {% for upload_form in upload_forms.forms %}
+                                                        <p class="upload_p">
+                                                            {% if upload_form.id.value %}
+                                                                <a href="{{ MEDIA_URL }}{{ upload_form.name.value }}">{{ upload_form.name.value|safe }}</a><span class="hidden">{{ upload_form.file }}{{ upload_form.name }}</span>{{ upload_form.id }}
+                                                            {% else %}
+                                                                {{ upload_form.file }}{{ upload_form.file.errors }}<span class="hidden">{{ upload_form.name }}</span>{{ upload_form.id }}
+                                                            {% endif %}
+                                                        </p>
+                                                    
+                                            {% endfor %}
+                                    </div>
+                                </div>
+                              </div>
+                           </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" onmousedown="close_proposal_attached_documents();" name="attached_documents_button" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                          
+                        </div>
+                      </div>
+                      </div>
+            </div> 
+            <div class="col-lg-8">
+
+                <h1 class="text-center"><span id="id_title">{% with title_dict|get_lang_form:LANGUAGE_CODE as title_form %}{{ title_form.title.value|new_or_none:"Title"|safe }}{% endwith %} *</span>
+                <a href="#" data-toggle="modal" data-target="#title_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+                </h1>  
+                
+                <div id="related_objects_title" class="alert alert-warning" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#related_objects_title').hide(1000)"><span aria-hidden="true">&times;</span></button>               
+              </div>  
+              <div id="language_error_title" class="alert alert-warning text-center" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#language_error_title').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {% trans "It seems that the inserted text is not in the correct language" %}
+                </div>         
+                            
+                    <div class="modal fade" id="title_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{% trans "Edit title" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="alert alert-warning text-center" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span>{% trans "The chosen language by default in the edit fields is " %}<strong><em>{{ LANGUAGE_CODE |upper }}</em></strong></span></div>  
+                              
+                              <div class="col-md-12">                
+                                <div>
+                                    <div class="panel with-nav-tabs panel-primary">
+                                        <div class="panel-heading">
+                                                <ul class="nav nav-tabs">
+                                                    {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                        {% if forloop.counter == 1 %}
+                                                            <li class="active">
+                                                        {% else %}
+                                                            <li>
+                                                        {% endif %}
+                                                        <a href="#tab{{ forloop.counter }}title" onmousedown="$(this).click();return false;" data-toggle="tab">{{ lang.0|upper }}</a></li>
+                                                        
+                                                    {% endfor %}
+                                                    <button onmousedown="$(this).click();" onclick="automatic_translation('#title_div');return false;" type="submit" name ="translation_button" class="btn btn-primary btn-lg right-floated">{% trans "Translate text" %}</button>
+                                                </ul>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="tab-content" id="title_div">
+                                                {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                    {% with title_dict|get_lang_form:lang.0 as title_form %}
+                                                        <div class="tab-pane fade in {% if forloop.counter == 1 %}active{% endif %}" id="tab{{ forloop.counter }}title">{{ title_form.title }}{{ title_form.title.errors }}</div>
+                                                    {% endwith %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" id="close_title" onmousedown="close_proposal_title('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                <p class="lead">{% trans "Summary" %} *</p>
+                <p><span id="id_summary">{% with summary_dict|get_lang_form:LANGUAGE_CODE as summary_form %}{{ summary_form.summary.value|new_or_none:""|safe }}{% endwith %}</span>
+                        <a href="#" data-toggle="modal" data-target="#summary_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                    </p>
+                    <div id="related_objects_summary" class="alert alert-warning" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#related_objects_summary').hide(1000)"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div id="language_error_summary" class="alert alert-warning text-center" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#language_error_summary').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {% trans "It seems that the inserted text is not in the correct language" %}
+                </div>     
+                    <div class="modal fade" id="summary_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-summary" id="myModalLabel">{% trans "Edit summary" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="alert alert-warning text-center" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span>{% trans "The chosen language by default in the edit fields is " %}<strong><em>{{ LANGUAGE_CODE |upper }}</em></strong></span></div> 
+                              
+                              <div class="col-md-12">                
+                                <div>
+                                    <div class="panel with-nav-tabs panel-primary">
+                                        <div class="panel-heading">
+                                                <ul class="nav nav-tabs">
+                                                    {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                        {% if forloop.counter == 1 %}
+                                                            <li class="active">
+                                                        {% else %}
+                                                            <li>
+                                                        {% endif %}
+                                                        <a href="#tab{{ forloop.counter }}summary" onmousedown="$(this).click();return false;" data-toggle="tab">{{ lang.0|upper }}</a></li>
+                                                        
+                                                    {% endfor %}
+                                                    <button onmousedown="$(this).click();" onclick="automatic_translation('#summary_div');return false;" type="submit" name ="translation_button" class="btn btn-primary btn-lg right-floated">{% trans "Translate text" %}</button>
+                                                </ul>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="tab-content" id="summary_div">
+                                                {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                    {% with summary_dict|get_lang_form:lang.0 as summary_form %}
+                                                        <div class="tab-pane fade in {% if forloop.counter == 1 %}active{% endif %}" id="tab{{ forloop.counter }}summary">{{ summary_form.summary }}{{ summary_form.summary.errors }}</div>
+                                                    {% endwith %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" id="close_summary" onmousedown="close_proposal_summary('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                
+                <hr>
+                
+                <p class="lead">{% trans "Necessity" %}</p>
+                <p><span id="id_necessity">{% with necessity_dict|get_lang_form:LANGUAGE_CODE as necessity_form %}{{ necessity_form.necessity.value|new_or_none:""|safe }}{% endwith %}</span>
+                        <a href="#" data-toggle="modal" data-target="#necessity_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                    </p>
+                    <div id="related_objects_necessity" class="alert alert-warning" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#related_objects_necessity').hide(1000)"><span aria-hidden="true">&times;</span></button>
+                </div>
+              <div id="language_error_necessity" class="alert alert-warning text-center" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#language_error_necessity').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {% trans "It seems that the inserted text is not in the correct language" %}
+             </div>      
+                    <div class="modal fade" id="necessity_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-necessity" id="myModalLabel">{% trans "Edit necessity" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="alert alert-warning text-center" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span>{% trans "The chosen language by default in the edit fields is " %}<strong><em>{{ LANGUAGE_CODE |upper }}</em></strong></span></div> 
+                              
+                              <div class="col-md-12">                
+                                <div>
+                                    <div class="panel with-nav-tabs panel-primary">
+                                        <div class="panel-heading">
+                                                <ul class="nav nav-tabs">
+                                                    {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                        {% if forloop.counter == 1 %}
+                                                            <li class="active">
+                                                        {% else %}
+                                                            <li>
+                                                        {% endif %}
+                                                        <a href="#tab{{ forloop.counter }}necessity" data-toggle="tab">{{ lang.0|upper }}</a></li>
+                                                        
+                                                    {% endfor %}
+                                                    <button onmousedown="$(this).click();" onclick="automatic_translation('#necessity_div');return false;" type="submit" name ="translation_button" class="btn btn-primary btn-lg right-floated">{% trans "Translate text" %}</button>
+                                                </ul>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="tab-content" id="necessity_div">
+                                                {% for lang in LANGUAGES|sort_by_default_language:LANGUAGE_CODE %}
+                                                    {% with necessity_dict|get_lang_form:lang.0 as necessity_form %}
+                                                        <div class="tab-pane fade in {% if forloop.counter == 1 %}active{% endif %}" id="tab{{ forloop.counter }}necessity">{{ necessity_form.necessity }}{{ necessity_form.necessity.errors }}</div>
+                                                    {% endwith %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <button type="button" id="close_necessity" onmousedown="close_proposal_necessity('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Save changes" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+		<hr>
+                <!-- Preview Image -->
+                <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'upload file text' %}" class="hovertext"><img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt=""></a>
+
+                <hr>
+                
+                
+                <div id="map_where" class="alert alert-info" role="alert" style="display: none;">
+                    <button type="button" class="close" onmousedown="$('#map_where').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <ul id="map_ul_id"></ul>
+                </div>      
+
+                                  {% leaflet_map "map" callback="load_map" %}
+            {{ coordinates_form }}
+                <hr>
+
+            </div>
+
+         <div class="form-group">
+              <div class="col-md-12 text-right">
+                <div id="dialog-confirm"></div>
+                <button type="submit" onmousedown="get_coordinates();return validate_language('{% trans 'It seems that the language is not correct in some inputs, do you want to continue?' %}');" name ="new_proposal_button" id="id_new_proposal_button" class="btn btn-primary btn-lg">{% trans "Create" %}</button>
+              </div>
+            </div>
+    </form>        
+</div>
+{% endblock %}
+{% block additional_scripts2 %}
+<script src="{{ STATIC_URL }}js/jquery.formset.js"></script>
+<script src="{{ STATIC_URL }}js/translations.js"></script>
+<script src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    var opentrad_code = {{ opentrad_code | js }};
+    var at_language_priority = {{ at_language_priority | js }};
+    var accepted_image_formats = Array();
+    {% for format in accepted_image_formats %}
+        accepted_image_formats.push("{{ format }}");
+    {% endfor %}
+    var global_map;
+    var layer_array = Array();
+    function load_map(map, options){
+        global_map = map;          
+        map.on('click', function(e) {var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);});
+
+        }
+
+
+</script>
+
+{% endblock %}

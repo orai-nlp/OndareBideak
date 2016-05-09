@@ -1,0 +1,116 @@
+.area_1{
+    background-color:Crimson !important;
+}
+.area_2{
+    background-color:SteelBlue ;
+}
+.area_3{
+    background-color:Wheat ;
+    color:black !important;
+}
+.area_4{
+    background-color:DarkGoldenRod;
+}
+.area_5{
+    background-color:green;
+}
+.area_6{
+    background-color:rgb(63, 163, 163) ;
+}
+.area_7{
+    background-color:rgba(182, 64, 182, 1);
+}
+.area_8{
+    background-color:yellow;
+    color:black;
+}
+.area_9{
+    background-color:gray;
+}
+.area_10{
+    background-color:DeepPink ;
+}
+.area_11{
+    background-color:LightSeaGreen;
+}
+.area_12{
+    background-color:Olive ;
+}
+
+a.area_1{
+    background-color:rgba(237, 20, 61, 0.2) !important;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+}
+a.area_2{
+    background-color:rgba(70, 130, 180, 0.2) !important;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+}
+a.area_3{
+    background-color:rgba(245, 222, 179, 0.2) !important ;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+    color:black !important;
+}
+a.area_4{
+    background-color:rgba(184, 134, 11, 0.2) !important;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+}
+a.area_5{
+    background-color:rgba(0, 128, 0, 0.2) !important;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+}
+a.area_6{
+    background-color:rgb(63, 163, 163) !important ;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+}
+a.area_7{
+    background-color:rgba(0, 0, 0, 0.2) !important;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+    color:black !important;
+}
+a.area_8{
+    background-color:rgba(255, 255, 0, 0.2) !important;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+    color:black;
+}
+a.area_9{
+    background-color:rgba(128, 128, 128, 0.2) !important;
+      border-radius: 25px;
+  padding-left: 10px;
+  padding: 10px;
+}
+a.area_10{
+    background-color:rgba(255, 20, 147, 0.2) !important ;
+    
+}
+a.area_11{
+    background-color:rgba(32, 178, 170, 0.2) !important;
+}
+a.area_12{
+    background-color:rgba(128, 128, 0, 0.2) !important ;
+}
+
+h4.area{
+  padding-left: 10px;
+  padding: 10px;
+}
+
+h2, h2 small{
+  color: black !important;
+}
+
