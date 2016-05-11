@@ -1,0 +1,5 @@
+{% if erakundeMota %}
+
+  <span id="id_area" class="list-group-item-text">{{ response.erakundeMota }}</span>
+      
+{% endif %}
