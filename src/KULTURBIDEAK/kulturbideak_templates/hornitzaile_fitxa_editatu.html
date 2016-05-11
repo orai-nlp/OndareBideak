@@ -1,49 +1,43 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% get_current_language as LANGUAGE_CODE %}
 {% load tags %}
 {% load leaflet_tags %}
+{% get_current_language as LANGUAGE_CODE %}
 {% block additional_scripts %}
-<link href="{{ STATIC_URL }}css/new_proposal.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/blog-post.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/areas.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/proposal.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/social-share-kit.css" rel="stylesheet">
 {% endblock %}
-{% block onload_scripts %}
-load_add_proposal_scripts();
-{% endblock %}
+
+
+
+
 {% block content %}
 
 <div class="container">
-    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" id="add_proposal_form">{% csrf_token %}
-        <h1 class="text-center">{% trans "Hornitzailea" %}</h1>
-        {{ template_name }}
-      	 <div class="row">
-           
-            <div id="proposal_information_id" class="alert alert-info text-center" role="alert">
-                <button type="button" class="close" onmousedown="$('#proposal_information_id').hide(1000)"><span aria-hidden="true">&times;</span></button>
-                <p><strong>{% trans "Ahalik eta informazio gehien betetzea komeni da" %}</strong></p>                
-            </div>
-            
-            <!-- Blog Post Content Column -->
-            <!--<div class="col-lg-8">-->
-       </div>
-       <hr>
+  
  
        <div class="row">
-            <div class="col-lg-2">  
+            <div class="col-lg-4">  
                 <div class="well info_box  icon_info">
-                    <h4><img src="{{ STATIC_URL }}/img/area.png"> {% trans "Arloa" %}*: 
-                       
-                            <a href="#" data-toggle="modal" data-target="#area_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                    <h4><img src="{{ STATIC_URL }}/img/area.png"> {% trans "Arloa" %}*:
+                       <span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>
+                       <a href="#" data-toggle="modal" data-target="#area_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
                                            
                     </h4>
-            
-               
+
                  	<h4><img src="{{ STATIC_URL }}/img/where.png"> {% trans "Kokapena" %}*:
-               		 <span id="id_where"></span>
+               		 <span id="id_where">{{hornitzailea.helbidea}}</span>
                         <a href="#" data-toggle="modal" data-target="#where_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
                    
-                </h4>
-                
+                	</h4>
+                	
+                	<h4><img src="{{ STATIC_URL }}/img/documents.png"> {% trans "Erantsitako Fitxategiak" %}*: 
+                            <span id="id_pic">{{hornitzailea.ikonoa}}</span>
+                           <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                     </h4>
                
                     
                 </div>
@@ -53,7 +47,9 @@ load_add_proposal_scripts();
                       <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <!--<button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            
                             <h4 class="modal-area" id="myModalLabel">{% trans "Editatu arloa" %}</h4>
                           </div>
                           <div class="modal-body">
@@ -66,12 +62,12 @@ load_add_proposal_scripts();
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
-                            <button type="button" onmousedown="close_proposal_area();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                            <button type="button" onmousedown="save_proposal_area();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
                           </div>
                         </div>
                       </div>
                     </div>
-               
+               	   
           
                 
                    <div class="modal fade" id="where_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -92,18 +88,57 @@ load_add_proposal_scripts();
                             </div>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
-                            <button type="button" id="close_where" onmousedown="close_proposal_where('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="button" id="close_where" onmousedown="save_where();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
                           </div>
                         </div>
                       </div>
                     </div>
-                
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                   <div class="modal fade" id="attached_documents_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+
+                        <form class="form-horizontal" action="#" method="POST" enctype="multipart/form-data" id="attached_documents_form" >{% csrf_token %}
+                        <fieldset>
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{% trans "Irudia Igo" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              
+                              <div class="col-md-12">
+                                <div class='table'>
+                                    <input id="hornitzaile_argazkia" class="imgform_image"  type="file" multiple="" name="hornitzaile_argazkia">
+                                </div>
+                              </div>
+                           </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="submit" name="attached_documents_button" class="btn btn-primary">{% trans "Aldaketak Gorde" %}</button>
+                          </div>
+                          </fieldset>
+                          </form>
+                        </div>
+                      </div>
+                      </div>
             </div> 
             <div class=""> <!-- col-lg-8-->
-
-                <h1 class="text-center"><span id="id_title"> Hornitzailearen Izena*</span>
-                <a href="#" data-toggle="modal" data-target="#title_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+				{% if hornitzailea.izena != "" %}
+					<h1 class="text-center"><span id="id_title"> {{hornitzailea.izena}}*</span>
+				{%else%}
+				     <h1 class="text-center"><span id="id_title"> Hornitzailearen Izena*</span>
+                {%endif%}
+                	<a href="#" data-toggle="modal" data-target="#title_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
                 </h1>  
                 
            
@@ -125,22 +160,18 @@ load_add_proposal_scripts();
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
-                            <button type="button" id="close_title" onmousedown="close_proposal_title('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                            <button type="button" id="close_title" onmousedown="save_title();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
                           </div>
                         </div>
                       </div>
                     </div>
 
                 <p class="lead">{% trans "Deskribapena" %} *</p>
-                <p><span id="id_summary"></span>
+                <p><span id="id_summary">{{hornitzailea.deskribapena}}</span>
                         <a href="#" data-toggle="modal" data-target="#summary_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
                     </p>
-                    <div id="related_objects_summary" class="alert alert-warning" role="alert" style="display: none;">
-                    <button type="button" class="close" onmousedown="$('#related_objects_summary').hide(1000)"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div id="language_error_summary" class="alert alert-warning text-center" role="alert" style="display: none;">
-                    <button type="button" class="close" onmousedown="$('#language_error_summary').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {% trans "It seems that the inserted text is not in the correct language" %}
-                </div>     
+                                
+                    
                     <div class="modal fade" id="summary_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
@@ -158,8 +189,8 @@ load_add_proposal_scripts();
                             </div>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Close" %}</button>
-                            <button type="button" id="close_summary" onmousedown="close_proposal_summary('{{ LANGUAGE_CODE }}');" class="btn btn-primary">{% trans "Save changes" %}</button>
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="button" id="close_summary" onmousedown="save_summary();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
                           </div>
                         </div>
                       </div>
@@ -167,34 +198,52 @@ load_add_proposal_scripts();
                 
                 <hr>
                 
-              
-		<hr>
-                <!-- Preview Image -->
-                <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'upload file text' %}" class="hovertext"><img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt=""></a>
+            
+				
+         <!-- Preview Image -->
+      
+        {% if hornitzailea.ikonoa == "" %}
+        	<a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+            </br>
+        	<a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'Igo Argazkia' %}" class="hovertext"><img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt=""></a>
+		 {%else %}
+		 <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+               </br> 
+			 <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'Igo Argazkia' %}" class="hovertext"> <img id="id_image" class="img-responsive" src="{{ hornitzailea.ikonoa }}" alt=""></a>
+        {%endif%}
+         <hr>
+                
+                
+        
+        <form action="{{BASE_URL}}/fitxa_gorde" method="post" class="form"  enctype="multipart/form-data">
+        	{% csrf_token %}
+            <input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
+			<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
+ 
+			{% leaflet_map "yourmap" callback="load_map" %}
+
 
                 <hr>
                 
-                
-                <div id="map_where" class="alert alert-info" role="alert" style="display: none;">
-                    <button type="button" class="close" onmousedown="$('#map_where').hide(1000)"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <ul id="map_ul_id"></ul>
-                </div>      
+   
 
-                                  {% leaflet_map "map" callback="load_map" %}
-            {{ coordinates_form }}
-                <hr>
 
-            </div>
-
+            
          <div class="form-group">
               <div class="col-md-12 text-right">
-                <div id="dialog-confirm"></div>
-                <button type="submit" onmousedown="get_coordinates();return validate_language('{% trans 'It seems that the language is not correct in some inputs, do you want to continue?' %}');" name ="new_proposal_button" id="id_new_proposal_button" class="btn btn-primary btn-lg">{% trans "Create" %}</button>
+                <div id="dialog-confirm" class="alert alert-info" role="alert">{{mezua_fitxa}}</div>
+                <button type="submit" name ="new_fitxa_button" id="id_fitxa_button" class="btn btn-primary btn-lg">{% trans "Sortu" %}</button>
               </div>
             </div>
-    </form>        
+            
+       </form>
+       
 </div>
 
-
+</div>
 {% endblock %}
+
+
+
 
 

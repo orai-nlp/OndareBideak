@@ -3,7 +3,17 @@
 {% block content %}
 {% load i18n %}
 {% load tags %}
+{% load leaflet_tags %}
 
+{% if hornitzailea %}
+{% block additional_scripts %}
+<link href="{{ STATIC_URL }}css/blog-post.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/areas.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/proposal.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/social-share-kit.css" rel="stylesheet">
+{% endblock %}
+{%endif%}
 <!--<p> Showing {{ page.object_list|length }} of {{ page.paginator.count }} Results on Page {{ page.number }} of {{ page.paginator.n\
 um_pages }}</p>-->
 <!--<p class="emaitzaInfo"> {{ items.count }} Kultur Item eta {{paths.count}} Ibilbide</p>-->
@@ -12,19 +22,116 @@ um_pages }}</p>-->
 
 
 <ul class="nav nav-tabs">
-  <li class="active"><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.paginator.count }})</a></li>
-  <li><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.paginator.count}}) </a></li>
+  {% if hornitzailea%}
+  		{% if z == 'h'%}
+  		<li  class="active"><a data-toggle="tab" href="#fitxa">Hornitzaile fitxa </a></li>
+  		<li><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.paginator.count }})</a></li>
+  		<li><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.paginator.count}}) </a></li>
+  		{% elif z == 'i' %}
+  		<li ><a data-toggle="tab" href="#fitxa">Hornitzaile fitxa </a></li>
+  		<li  class="active"><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.paginator.count }})</a></li>
+  		<li><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.paginator.count}}) </a></li>
+  		{% else %}
+  		<li><a data-toggle="tab" href="#fitxa">Hornitzaile fitxa </a></li>
+  		<li><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.paginator.count }})</a></li>
+  		<li class="active"><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.paginator.count}}) </a></li>
+  		{%endif%}
+  {% else%}
+  		{% if z == 'i'%}
+  		<li class="active"><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.paginator.count }})</a></li>
+  		<li><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.paginator.count}}) </a></li>
+  		{% else %}
+  		<li><a data-toggle="tab" href="#itemak">Kultur Itemak ({{ items.paginator.count }})</a></li>
+  		<li class="active"><a data-toggle="tab" href="#ibilbideak">Ibilbideak ({{paths.paginator.count}}) </a></li> 		
+  		{%endif%}
+  {%endif%}
 </ul>
 
 
 <div class="tab-content">
+	
+	{% if z == 'h'%}
+	<div id="fitxa" class="tab-pane fade in active">
+	{%else%}
+	<div id="fitxa" class="tab-pane fade">
+	{%endif%}
+
+		<div class="container">
+  
+ 
+      	 <div class="row">
+            <div class="col-lg-2">  
+                <div class="well info_box  icon_info">
+                    <h4><img src="{{ STATIC_URL }}/img/area.png"> <!--{% trans "Arloa" %}:-->
+                       <span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>
+                                           
+                    </h4>
+
+                 	<h4><img src="{{ STATIC_URL }}/img/where.png"> <!--{% trans "Kokapena" %}:-->
+               		 <span id="id_where">{{hornitzailea.helbidea}}</span>
+                       
+                	</h4>
+                	<!--
+                	<h4><img src="{{ STATIC_URL }}/img/documents.png"> {% trans "Erantsitako Fitxategiak" %}: 
+                            <span id="id_pic">{{hornitzailea.ikonoa}}</span>
+                            </h4>
+               		-->
+                    
+                </div>
+    
+            </div> 
+           	<div class="col-lg-6"> <!-- col-lg-8-->
+				{% if hornitzailea.izena != "" %}
+					<h1 class="text-center"><span id="id_title"> {{hornitzailea.izena}}</span>
+				{%else%}
+				     <h1 class="text-center"><span id="id_title"> Hornitzailearen Izena*</span>
+                {%endif%}
+                	 </h1>  
+               
+
+                <!--<p class="lead">{% trans "Deskribapena" %}</p>-->
+                <p><span id="id_summary">{{hornitzailea.deskribapena}}</span></p>
+                                                                        
+                <hr>
+		
+         		<!-- Preview Image -->
+      
+       			 {% if hornitzailea.ikonoa == "" %}
+        	
+					<img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt="">
+				 {%else %}
+		 
+					<img id="id_image" class="img-responsive" src="{{ hornitzailea.ikonoa }}" alt="">
+      			 {%endif%}
+        
+        		 <hr>
+                
+                
+        
+      			 <!-- GEOLOKALIZAZIOA -->
+ 				{% if hornitzailea.geoloc_longitude %}
+					{% leaflet_map "yourmap" callback="load_map" %}
+				{%endif%}
+
+	  			 <!-- END GEOLOKALIZAZIOA -->
+       
+			</div><!-- col-lg-8-->
+
+		</div><!--row-->
+	</div><!--container-->	
+</div><!--fitxa-->
+
+
+{% if z == 'i'%}
   <div id="itemak" class="tab-pane fade in active">
-  	
+{%else%}
+  <div id="itemak" class="tab-pane fade">
+{%endif%}	
   	<!-- PAGINATOR ITEMAK -->
   	<div class="pagination">
     <span class="step-links">
         {% if items.has_previous %}
-            <a href="?page={{ items.previous_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}">aurrekoak</a>
+            <a href="?page={{ items.previous_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=i">aurrekoak</a>
         {% endif %}
 
         <span class="current">
@@ -32,7 +139,7 @@ um_pages }}</p>-->
         </span>
 
         {% if items.has_next %}
-            <a href="?page={{ items.next_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}">hurrengoak</a>
+            <a href="?page={{ items.next_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=i">hurrengoak</a>
         {% endif %}
     </span>
 	</div>
@@ -113,15 +220,18 @@ um_pages }}</p>-->
 {% endfor %}
 
   </div> <!--itemak -->
-  
+  {% if z == 'p'%}
+  <div id="ibilbideak" class="tab-pane fade in active">
+  {%else%}
   <div id="ibilbideak" class="tab-pane fade">
+  {%endif%}
   	
   	<!-- PAGINATOR IBILBIDEAK-->
   	
   	<div class="pagination">
     <span class="step-links">
         {% if paths.has_previous %}
-            <a href="?page={{ paths.previous_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}">aurrekoak</a>
+            <a href="?page={{ paths.previous_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=p">aurrekoak</a>
         {% endif %}
 
         <span class="current">
@@ -129,7 +239,7 @@ um_pages }}</p>-->
         </span>
 
         {% if paths.has_next %}
-            <a href="?page={{ paths.next_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}">hurrengoak</a>
+            <a href="?page={{ paths.next_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=p">hurrengoak</a>
         {% endif %}
     </span>
 	</div>

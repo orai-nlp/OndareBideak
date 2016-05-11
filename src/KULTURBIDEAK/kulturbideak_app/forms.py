@@ -255,3 +255,37 @@ class CommentParentForm(forms.Form):
                                  })
     )
 
+###################
+##  UPLOAD FORM  ##
+###################
+class UploadForm(forms.Form):
+    
+    file=forms.FileField(
+         required=False,
+         widget=forms.FileInput(attrs={"class":"form-control",
+                                    "type":"file"
+                                  }))
+                                  
+
+    def clean_file(self):
+        image = self.cleaned_data.get('file',False)
+        if image:
+            if image._size > MAX_FILE_SIZE*1024*1024:
+                raise ValidationError(_("Image file too large ( > "+str(MAX_FILE_SIZE)+"mb )"))
+            return image
+        else:
+            return image
+
+
+class CoordinatesForm(forms.Form):
+
+    coordinates = forms.CharField(
+            label = _("coodinates"),
+            required = False,
+            widget=forms.HiddenInput(attrs={"type":"text", 
+                                    "class":"form-control",
+                                    "placeholder":_("Coordinates")
+                                 })
+    )
+    
+

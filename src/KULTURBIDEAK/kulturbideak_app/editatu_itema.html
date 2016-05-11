@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load leaflet_tags %}
 {% load i18n %}
 {% block content %}
 
@@ -16,14 +17,27 @@
  			   </a>
  		</div>
  		<div class="item_edukia">
- 			
- 			<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
- 			<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
- 			<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{hornitzailea}} </a></p>
- 			<p><b>{% trans "Eskubideak: " %}</b><a href="">{{eskubideak}} </a></p>
- 			<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
- 			<p><b>{% trans "Ikusi jatorrizkoa:" %}"</b><a title="{{viewAtSource}}" href="{{viewAtSource}}">Kulturbideak ez da kanpoko webguneen edukien arduradun egiten </a></p>
- 			
+ 			{% if item.edm_country%}
+ 				<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
+ 			{%endif%}
+ 			{% if item.dc_language%}
+ 				<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_provider%}
+ 				<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{item.edm_provider}} </a></p>
+ 			{%endif%}
+ 			{% if item.dc_creator%}
+ 				<p><b>{% trans "Sortzailea:" %}</b><a href="">{{item.dc_creator}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_rights%}
+ 				<p><b>{% trans "Eskubideak:" %}</b><a href="">{{eskubideak}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_year %}
+ 				<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_isshownat%}
+ 				<p><a title="{{viewAtSource}}" href="{{viewAtSource}}"><b>{% trans "Ikusi jatorrizkoa" %}</b></a></p>
+ 			{%endif%}
  		</div>
  		
  		
@@ -39,7 +53,17 @@
 		{{ itema.deskribapena.errors}}
 		<input type="hidden" id="id" value="{{id}}"/>
 		{{itema}}
-		<br><br>
+		<br>
+				
+		<!-- GEOLOKALIZAZIOA -->
+				
+		<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
+		<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
+            
+            
+		{% leaflet_map "yourmap" callback="load_map" %}
+		
+		<!-- END GEOLOKALIZAZIOA -->
      		
    		 <button class="btn btn-default" type="submit">
    		 Aldatu

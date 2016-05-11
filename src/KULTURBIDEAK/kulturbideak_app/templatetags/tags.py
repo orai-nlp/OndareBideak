@@ -30,6 +30,8 @@ def correct_language_tags(value):
     value=value.replace('</div>', ' ')
     value=value.replace('<div class=\"titulu_eu\">', ' ')
     value=value.replace('</div>',' ')
+    value=value.replace('<div class=\"titulu_lg\">', ' ')
+    value=value.replace('</div>',' ')
     return value
 
 

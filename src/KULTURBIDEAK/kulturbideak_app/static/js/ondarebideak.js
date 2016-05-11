@@ -521,7 +521,24 @@ function create_workspace_box(index,user_id){
     var item_id = document.getElementById("item_id_"+index).value;
     var titulua = document.getElementById("titulua_"+index).value;	
     var irudia = document.getElementById("irudia_"+index).value;
-   	
+    
+    //Titulua garbitu eta laburtu
+    titulua=titulua.replace('<div class=\"titulu_es\">', ' ');
+    titulua=titulua.replace('</div>', ' ');
+    titulua=titulua.replace('<div class=\"titulu_en\">', ' ');
+    titulua=titulua.replace('</div>', ' ');
+    titulua=titulua.replace('<div class=\"titulu_eu\">', ' ');
+    titulua=titulua.replace('</div>',' ');
+    titulua=titulua.replace('<div class=\"titulu_lg\">', ' ');
+    titulua=titulua.replace('</div>',' ');
+   
+    titulua_subs = titulua.substr(0, 20);  
+    titulua = titulua_subs + "...";
+    
+    
+    if (irudia == "" || irudia == "None"){
+    	irudia="/uploads/NoIrudiItem.png";
+   	}
     //Ondoren user id-aren arabera WS-id-a lortu
    	
     //var fk_workspace_id=user_id;  //EZ DAGO ONDO

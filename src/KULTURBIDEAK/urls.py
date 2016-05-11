@@ -52,6 +52,13 @@ from KULTURBIDEAK.kulturbideak_app.views import eguneko_itema_kendu
 from KULTURBIDEAK.kulturbideak_app.views import eguneko_itema_gehitu
 from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_fitxa_editatu
 from KULTURBIDEAK.kulturbideak_app.views import brandy
+from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_arloa
+from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_where
+from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_izena
+from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_deskribapena
+from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_kokalekua
+from KULTURBIDEAK.kulturbideak_app.views import ajax_hornitzaile_irudia_gorde
+from KULTURBIDEAK.kulturbideak_app.views import fitxa_gorde
 from django.contrib import admin
 
 #MAddalen
@@ -120,7 +127,17 @@ urlpatterns = patterns('',
     url(r'filtro_search',filtro_search),
     url(r'eguneko_itemak',eguneko_itemak),
     url(r'eguneko_itema_kendu',eguneko_itema_kendu),
-    url(r'hornitzaile_fitxa_editatu',hornitzaile_fitxa_editatu),    
+    url(r'hornitzaile_fitxa_editatu',hornitzaile_fitxa_editatu), 
+    url(r'ajax_edit_arloa',ajax_edit_arloa), 
+    url(r'ajax_edit_where',ajax_edit_where),
+    url(r'ajax_edit_izena',ajax_edit_izena), 
+    url(r'ajax_edit_deskribapena',ajax_edit_deskribapena), 
+    url(r'ajax_edit_kokalekua',ajax_edit_kokalekua), 
+    url(r'ajax_hornitzaile_irudia_gorde',ajax_hornitzaile_irudia_gorde), 
+    url(r'fitxa_gorde',fitxa_gorde), 
+    
+    
+            
     (r'^search/', include('haystack.urls')),
     
     #url(r'^rosetta/', include('rosetta.urls')),

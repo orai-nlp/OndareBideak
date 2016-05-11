@@ -192,6 +192,7 @@ def hornitzaile_fitxa_editatu(request):
     user_id=request.user.id
     hornitzaile =hornitzailea.objects.get(fk_user__id=user_id)
     return render_to_response('hornitzaile_fitxa_editatu.html',{'non':non,"hornitzailea":hornitzaile},context_instance=RequestContext(request))
+    #return render_to_response('proposal.html',{'non':non,"hornitzailea":hornitzaile},context_instance=RequestContext(request))
 
 def eguneko_itema_kendu(request):
     
@@ -1344,6 +1345,9 @@ def autocomplete(request):
 
 
 def cross_search(request):
+    
+    #Defektuz itemen orria erakusteko
+    z="i"
     # Helburu hizkuntza guztietan burutuko du bilaketa
     if(request.POST):
         hizkuntza=request.POST['hizkRadio']   
@@ -1352,6 +1356,8 @@ def cross_search(request):
     if(request.GET):
         hizkuntza=request.GET['hizkRadio']   
         galdera=request.GET['search_input']
+        #zein paginator den
+        z=request.GET['z']
   
     items=[]
     paths=[]
@@ -1423,17 +1429,20 @@ def cross_search(request):
     
     #,'paths':paths
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 
 def hornitzaile_search(request):
     # Hornitzaile jakin baten item eta ibilbide guztiak bilatuko dira
-    hornitzailea=request.GET['h']
+    hornitzaile_izena=request.GET['h']
+    
+    #zein paginator den
+    z=request.GET['z']
   
     galdera=""
     hizkuntza="eu"
     horniF=[]
-    horniF.append(hornitzailea)
+    horniF.append(hornitzaile_izena)
    
     items=[]
     paths=[]
@@ -1441,9 +1450,9 @@ def hornitzaile_search(request):
     search_models_paths = [path]
     
     #Hornitzaileak taula gehitzen ditugunean agian hau aldatuko da
-    hornitzaile_erab=User.objects.get(username=hornitzailea)
+    hornitzaile_erab=User.objects.get(username=hornitzaile_izena)
     
-    items = SearchQuerySet().all().filter(edm_provider=hornitzailea).models(*search_models_items)   
+    items = SearchQuerySet().all().filter(edm_provider=hornitzaile_izena).models(*search_models_items)   
     paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
 
     
@@ -1479,10 +1488,16 @@ def hornitzaile_search(request):
         paths = paginator.page(paginator.num_pages)
     
     
-    
+    #HORNITZAILEAREN FITXA 
+    user_id=request.user.id
+    hornitzaile = hornitzailea.objects.get(fk_user__id=user_id)
+    geoloc_longitude=0.0
+    geoloc_latitude=0.0
+    geoloc_longitude=hornitzaile.geoloc_longitude
+    geoloc_latitude=hornitzaile.geoloc_latitude
     
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 def filtro_search(request):
     
@@ -2942,101 +2957,13 @@ def erakutsi_item(request):
             id=request.GET['id']        
             item_tupla = item.objects.get(pk=id)
             
-    '''       
-    #HIZKUNTZA DESBERDINETAKO TITULUEN TRATAMENDUA   
-    titulua=item_tupla.dc_title
-    titulu_es=""
-    titulu_en=""
-    titulu_eu=""
-    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera
-    #<div class="titulu_es"> Distinción papal al movimiento cooperativo de Mondragón</div>
-    match_es = re.search('<div class=\"titulu_es\">(.*?)</div>', titulua)
-
-    if match_es:
-        titulu_es=match_es.group(0)
-        titulu_es=titulu_es.replace("<div class=\"titulu_es\">", " ")
-        titulu_es=titulu_es.replace("</div>", " ")
-    else:
-        titulu_es=""
-        
-    match_en = re.search('<div class=\"titulu_en\">(.*?)</div>', titulua)
-    if match_en:
-        titulu_en=match_es.group(0)
-        titulu_en=titulu_en.replace("<div class=\"titulu_en\">", " ")
-        titulu_en=titulu_en.replace("</div>", " ")
-    else:
-        titulu_en=""
-    
-    match_eu = re.search('<div class=\"titulu_eu\">(.*?)</div>', titulua)
-    if match_eu:
-        titulu_eu=match_eu.group(0)
-        titulu_eu=titulu_eu.replace("<div class=\"titulu_eu\">", " ")
-        titulu_eu=titulu_eu.replace("</div>", " ")
-    else:
-        titulu_eu=""
-    
-    #titulua= !!!erabaki defektuzkoa zein den eu,en,es
-    if titulu_eu:
-        titulua=titulu_eu
-    elif titulu_es:
-        titulua=titulu_es
-    else:
-        titulua=titulu_en
-    #DBko tituluak hizkuntza kontrola ez baldin badu
-    if titulua =="":
-        titulua=item_tupla.dc_title
-    '''
-            
-    '''
-    #HIZKUNTZA DESBERDINETAKO DESKRIBAPENEN TRATAMENDUA
-    deskribapena=item_tupla.dc_description
-    deskribapena_es=""
-    deskribapena_en=""
-    deskribapena_eu=""
-    #espresio erregularrak erabilita hizkuntza desberdinetako deskribapenak atera
-    match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena)
-
-    if match_es:
-        deskribapena_es=match_es.group(0)
-        deskribapena_es=deskribapena_es.replace("<div class=\"desc_es\">", " ")
-        deskribapena_es=deskribapena_es.replace("</div>", " ")
-    else:
-        deskribapena_es=""
-        
-    match_en = re.search('<div class=\"desc_en\">(.*?)</div>', deskribapena)
-    if match_en:
-        deskribapena_en=match_es.group(0)
-        deskribapena_en=deskribapena_en.replace("<div class=\"desc_en\">", " ")
-        deskribapena_en=deskribapena_en.replace("</div>", " ")
-    else:
-        deskribapena_en=""
-    
-    match_eu = re.search('<div class=\"desc_eu\">(.*?)</div>', deskribapena)
-    if match_eu:
-        deskribapena_eu=match_eu.group(0)
-        deskribapena_eu=deskribapena_eu.replace("<div class=\"desc_eu\">", " ")
-        deskribapena_eu=deskribapena_eu.replace("</div>", " ")
-    else:
-        deskribapena_eu=""
-    
-    #deskribapena= !!!erabaki defektuzkoa zein den eu,en,es
-    if deskribapena_eu:
-        deskribapena=deskribapena_eu
-    elif deskribapena_es:
-        deskribapena=deskribapena_es
-    else:
-        deskribapena=deskribapena_en
-    #DBko deskribapenak hizkuntza kontrolik ez badu
-    if deskribapena =="":
-        deskribapena=item_tupla.dc_description
-    
-    '''
+   
     herrialdea=item_tupla.edm_country
     hizkuntza=item_tupla.dc_language
     kategoria=item_tupla.dc_type
     eskubideak=item_tupla.edm_rights
     urtea=item_tupla.edm_year 
-    viewAtSource=item_tupla.uri
+    viewAtSource=item_tupla.edm_isshownat
     irudia=item_tupla.edm_object
     hornitzailea=item_tupla.edm_provider
     #hornitzailea=item_tupla.dc_creator
@@ -3261,6 +3188,8 @@ def botoa_kendu_item(request):
         return render_to_response('item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
 
+
+
 def editatu_itema(request):
      
     #Hasieran, Formularioa kargatzerakoan hemen'botoKopurua':botoKopurua sartuko da
@@ -3316,12 +3245,27 @@ def editatu_itema(request):
         dc_date=datetime.datetime.now()
                 
         edm_country="Euskal Herria"
+        
+        
+        if request.POST['latitude']:
+            latitude=request.POST['latitude']
+        else:
+            item_db=item.objects.get(id=item_id)
+            latitude=item_db.geoloc_latitude
+        if request.POST['longitude']:
+            longitude=request.POST['longitude']
+        else:
+            item_db=item.objects.get(id=item_id)
+            longitude=item_db.geoloc_longitude
        
         if(irudia_url!=""):
             #Irudia igo
             edm_object= str(item_id)+edm_object
-            handle_uploaded_file(request.FILES['irudia'],edm_object)        
-            item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
+            handle_uploaded_file(request.FILES['irudia'],edm_object)
+            #item.objects.filter(id=item_id).update(egunekoa = 0,proposatutakoa=1)         
+            #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
+            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
+            
             #Item-a duten Ibilbideko nodoen argazkia ALDATU. node TAULAN, fk_item_id ALDAGAIA =item_id
             irudia_update=MEDIA_URL+edm_object              
             node.objects.filter(fk_item_id=item_id).update(paths_thumbnail=irudia_update)
@@ -3330,15 +3274,16 @@ def editatu_itema(request):
             #Datu-basean irudi zaharra mantendu
             item_tupla = item.objects.get(pk=item_id)
             irudia_url=item_tupla.edm_object
-            item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
+            #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
+            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
    
         
-        item_berria.save()   
+        #item_berria.save()   
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
         #update_index.Command().handle(age=1)
-         
-        return render_to_response('base.html',{'mezua':"itema editatu da",'nondik':"editatu_itema",'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date},context_instance=RequestContext(request))
+   
+        return render_to_response('base.html',{'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date},context_instance=RequestContext(request))
     
     else:
         #Hasieran hemendik sartuko da eta Datu-basetik kargatuko dira itemaren datuak
@@ -3365,8 +3310,15 @@ def editatu_itema(request):
         irudia=item_tupla.edm_object
         #hornitzailea=item_tupla.edm_provider
         hornitzailea=item_tupla.dc_creator
+        
+        geoloc_longitude=item_tupla.geoloc_longitude
+        geoloc_latitude=item_tupla.geoloc_latitude
+        
+        non="itema_editatu" #Mapako baimenak kontrolatzeko erabiliko da hau
+       
+       
         itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'hizkuntza':hizkuntza})
-        return render_to_response('editatu_itema.html',{'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
+        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
    
 
 
@@ -3810,7 +3762,12 @@ def ajax_path_berria_gorde(request):
         #fileObject= request.GET.get('fileObject')
         #print fileObject
         ##
-        paths_thumbnail_url=MEDIA_URL+str(azken_id)+str(fk_usr_id)+paths_thumbnail
+        print "paths_thumbnail"
+        print paths_thumbnail
+        if paths_thumbnail =="":
+            paths_thumbnail_url="/uploads/NoIrudiItem.png"
+        else:
+            paths_thumbnail_url=MEDIA_URL+str(azken_id)+str(fk_usr_id)+paths_thumbnail
         #paths_thumbnail_url=MEDIA_URL+paths_thumbnail
      
         #Irudia igo
@@ -4003,7 +3960,189 @@ def ajax_path_node_eguneratu(request):
         
        
     return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+ 
+ 
+#################AJAX HORNITZAILE FITXA ##############
+'''
+def ajax_edit_proposal_area(request):
+    response_proposal = None
+    if request.GET:
+        area = request.GET.get('area')
+        form = ModalAreaForm({"area": area})
+        if form.is_valid():
+            proposal = Proposal.objects.get(id=int(request.GET.get('proposal_id')))
+            if not request.user.is_anonymous() and (request.user.profile.has_advanced_permissions() or proposal.is_author(request.user)):
+                response = proposal.set_area(area)
+                response_proposal = proposal
+        change_related_info('proposal','edit',proposal.id)
+            else:
+                response = None
+            return render_to_response("ajax/ajax_area_response.html",{"response": response,"proposal":response_proposal},context_instance=RequestContext(request))       
+        else:
+            response = form.errors.get("area")
+            return render_to_response("ajax/ajax_area_response.html",{"response": response,},context_instance=RequestContext(request.request))  
+'''
+
+def ajax_edit_arloa(request):
+   
+   
+    if request.GET:
+        area = request.GET.get('area')
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
+            
+            hornitzailea.objects.filter(fk_user__id=user_id).update(erakundeMota=area)
+            erakundeMota = area
+            response= "id_area"
+            return render_to_response("ajax/ajax_area_response.html",{"response": response,"erakundeMota":erakundeMota},context_instance=RequestContext(request))       
+         
+        else:
+            response = None
+            return render_to_response("ajax/ajax_area_response.html",{"response": response,},context_instance=RequestContext(request.request))  
+        
+            
+def ajax_edit_izena(request):
+   
+   
+    if request.GET:
+        izena = request.GET.get('izena')
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
+            
+            hornitzailea.objects.filter(fk_user__id=user_id).update(izena=izena)
+           
+            response= izena
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+         
+        else:
+            response = None
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+        
+def ajax_edit_deskribapena(request):
+   
+   
+    if request.GET:
+        deskribapena = request.GET.get('deskribapena')
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
+            
+            hornitzailea.objects.filter(fk_user__id=user_id).update(deskribapena=deskribapena)
+           
+            response= deskribapena
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+         
+        else:
+            response = None
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+        
+def ajax_edit_kokalekua (request):
+   
+   
+    if request.GET:
+        kokalekua = request.GET.get('kokalekua')
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
+            
+            hornitzailea.objects.filter(fk_user__id=user_id).update(helbidea=kokalekua)
+           
+            response= kokalekua
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+         
+        else:
+            response = None
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+
+
+
+
+       
+def ajax_edit_where(request):
     
+    if request.GET:
+        
+        where = request.GET.get("where")
+        
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
+            
+            hornitzailea.objects.filter(fk_user__id=user_id).update(helbidea=where)
+            response=where
+            
+            return render_to_response("ajax/ajax_response.html",{"response": response,},context_instance=RequestContext(request))       
+       
+        else:
+            response=""
+            return render_to_response("ajax/ajax_response.html",{"response": response,},context_instance=RequestContext(request))       
+  
+def fitxa_gorde(request):
+    
+    non="fitxaE"
+    
+    
+    user_id=request.user.id
+    
+    if request.POST['latitude']:
+        latitude=request.POST['latitude']
+    else:
+        horni_db=hornitzailea.objects.get(fk_user__id=user_id)
+        latitude=horni_db.geoloc_latitude
+    if request.POST['longitude']:
+        longitude=request.POST['longitude']
+    else:
+        horni_db=hornitzailea.objects.get(fk_user__id=user_id)
+        longitude=horni_db.geoloc_longitude
+    
+    if not request.user.is_anonymous():
+            
+        hornitzailea.objects.filter(fk_user__id=user_id).update(geoloc_longitude=longitude,geoloc_latitude=latitude)
+        mezua="Ondo sortu da fitxa"
+        
+    hornitzaile =hornitzailea.objects.get(fk_user__id=user_id)
+    return render_to_response('hornitzaile_fitxa_editatu.html',{'non':non,"hornitzailea":hornitzaile,'mezua_fitxa':mezua},context_instance=RequestContext(request))
+    
+                
+      
+def ajax_hornitzaile_irudia_gorde (request):
+
+   
+    print "ajax_hornitzaile_irudia_gorde"
+    print request.FILES
+    
+    user_id=request.user.id
+    if request.is_ajax() and request.method == 'POST':
+       
+        
+        #Irudirik igotzen ez denean errorea ez emateko beharrezko da baldintza hau jartzea
+        if(request.FILES):
+        
+            
+            fileObject= request.FILES.get('hornitzaile_argazkia')
+           
+            print fileObject
+           
+            username =request.user.username
+            fileName=str(username)+fileObject.name
+
+            print fileName
+            #handle_uploaded_file(fileObject,fileObject.name)
+            handle_uploaded_file(fileObject,fileName)
+            ikonoa="/uploads/"+fileName
+            hornitzailea.objects.filter(fk_user__id=user_id).update(ikonoa=ikonoa)
+            response=ikonoa
+    
+  
+    return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+       
+
+
+
+
+   
     
 def kulturBideak(request):
     #return HttpResponse("Kaixo, kulturBideak Webgunean zaude.")
@@ -4031,4 +4170,6 @@ def solr_erantzuna_lortu(request):
    # print {'erantzuna': erantzuna}
 
     return render_to_response('kulturBideak.html',{'erantzuna': erantzuna},context_instance=RequestContext(request))
+
+
 

@@ -26,7 +26,7 @@
 
 <div><h4 class="media-heading titulu-kolorea">{{momentukoPatha.dc_title}}</h4></div>
 
-{% qr_from_text pathqrUrl "s" %}
+{# qr_from_text pathqrUrl "s" #}
 
 <!-- BOTAZIO SISTEMA IBILBIDEA--> 
 
@@ -157,9 +157,11 @@
   	{% get_current_language as LANGUAGE_CODE %}
 	<h4 class="media-heading titulu-kolorea">  {{ LANGUAGE_CODE|choose_title_language:momentukoItema }}</h4>
     <!--<h4 class="media-heading titulu-kolorea">{{momentukoItema.dc_title}}</h4>-->
+    
+    		
     {{momentukoNodea.dc_description}}
   </div>
-  	{% qr_from_text itemqrUrl "s" %}
+  	{# qr_from_text itemqrUrl "s" #}
  </div>
   	
   	<!-- HURRENGOAK -->
@@ -224,7 +226,11 @@
   <div class="panel-heading"><b class="titulu-kolorea">Itemaren informazioa </b></div>
   <div class="panel-body comment more">
   	{% get_current_language as LANGUAGE_CODE %}
-  	{{ LANGUAGE_CODE|choose_description_language:momentukoItema }}
+  	{{ LANGUAGE_CODE|choose_description_language:momentukoItema |safe}}
+  	
+  	<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
+ 	<!--<div class="comment more">{{ LANGUAGE_CODE|choose_description_language:momentukoItema |safe}}</div>-->
+ 	
     <!--{{momentukoItema.dc_description}}-->
   </div>
   

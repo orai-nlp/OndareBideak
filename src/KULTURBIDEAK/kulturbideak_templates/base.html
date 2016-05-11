@@ -37,6 +37,7 @@ var erabiltzailea ="{{request.user.username}}";
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3.min.js"></script>
+
 <link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
 
 
@@ -71,10 +72,11 @@ var layer_array = Array();
 var LeafIcon = L.Icon.extend({});    
 var markers = [];
    
-{% if non == 'itema_gehitu'  %}
+{% if non == 'itema_gehitu' %}
+	
     function load_map(map, options)
     {
-        	
+       
         global_map=map;
            
         // zentratu mapa erabiltzaileak 
@@ -92,9 +94,61 @@ var markers = [];
 			
        		 
     }
+{% elif   non == 'itema_editatu'  %}
+	function load_map(map, options)
+    {
+       
+        global_map=map;
+           
+       
+		
+       
+        if(markers.length>0 || {{geoloc_latitude}} !=0.0)
+        {
+        	//Mapa zentratu
+			 map.panTo(new L.LatLng({{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}));
+               	
+         	//Geolokalizazio zaharra beste kolore batekin erakutsi
+         	var greenIcon = new LeafIcon({iconUrl: '{{STATIC_URL}}img/leaf-green.png'});
+         	L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}],{icon: greenIcon}).addTo(map).openPopup();              
+  		 	
+  		 }
+       
+        // maparen click eventoa 
+        map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);document.getElementById("latitude").value = e.latlng.lat;document.getElementById("longitude").value = e.latlng.lng;});
+			
+       		 
+    }
+    
+    
+ {% elif  non == 'fitxaE' %}
+	function load_map(map, options)
+    {
+       	
+        global_map=map;
+                  
+        if(markers.length>0 || {{hornitzailea.geoloc_latitude}} !=0.0)
+        {
+        	//Mapa zentratu
+			 map.panTo(new L.LatLng({{ hornitzailea.geoloc_latitude|correct_float_format }}, {{ hornitzailea.geoloc_longitude|correct_float_format }}));
+               	
+         	//Geolokalizazio zaharra beste kolore batekin erakutsi
+         	var greenIcon = new LeafIcon({iconUrl: '{{STATIC_URL}}img/leaf-green.png'});
+         	L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, {{ hornitzailea.geoloc_longitude|correct_float_format }}],{icon: greenIcon}).addTo(map).openPopup();              
+  		 	
+  		 }
+       
+        // maparen click eventoa 
+        map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);document.getElementById("latitude").value = e.latlng.lat;document.getElementById("longitude").value = e.latlng.lng;});
+			
+       		 
+    }
+  
+  
 {% else %}
    function load_map(map, options)
-   {        	
+   {    
+   	  	//Erakusteko bakarrik
    		map.panTo(new L.LatLng({{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}));
    		L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}]).addTo(map).openPopup();                
   		
@@ -103,6 +157,8 @@ var markers = [];
     
 </script>
 
+<!-- Ikerren sciptak, hornitzaileen fitxarako -->
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/scripts.js"></script>
 
 </head>
 
@@ -463,7 +519,7 @@ var markers = [];
 	 			<b>{% trans "Hornitzaileak" %} </b>
 	 			<br />
 	 			<br />
-	 			<p><a href="/hornitzaile_search?h=ekm">EuskoMedia</a></p>
+	 			<p><a href="/hornitzaile_search?h=ekm&z=h">EuskoMedia</a></p>
 	 		</div>
 	 		{%endif%}
 	 		{% if bilaketa_filtroak == 1%}
