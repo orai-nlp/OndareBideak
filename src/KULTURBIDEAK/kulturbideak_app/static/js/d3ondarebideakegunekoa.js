@@ -169,7 +169,9 @@ function update(source) {
             .attr('height', 1)
             .attr('patternContentUnits', 'objectBoundingBox')
             .append("svg:image")
-                .attr("xlink:xlink:href", function(d) { return (d.irudia);}) // "icon" is my image url. It comes from json too. The double xlink:xlink is a necessary hack (first "xlink:" is lost...).
+                .attr("xlink:xlink:href", function(d) { 
+console.log(d.irudia);
+return (d.irudia);}) // "icon" is my image url. It comes from json too. The double xlink:xlink is a necessary hack (first "xlink:" is lost...).
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("height", 1)

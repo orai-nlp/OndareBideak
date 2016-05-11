@@ -1,4 +1,4 @@
-# Django settings for basque_research project.
+# Django settings for ondarebideak project.
 import os, sys, socket
 BASEDIR = os.path.dirname(__file__)
 sys.path.insert(0, BASEDIR)
@@ -8,14 +8,15 @@ sys.path.insert(0, BASEDIR)
 SMTP_SERVER="localhost"
 DEFAULT_FROM_EMAIL='basqueresearch@elhuyar.com'
 DEFAULT_TO_EMAIL="i.manterola@elhuyar.com"
-BASE_URL = "http://basqueresearch.elh"
-
+#BASE_URL = "http://52.0.81.154/OndareBideak" # http://52.0.81.154/OndareBideak Ondoren, azkeneko domeinua jarri daiteke: www.ondarebideak.eus adibidez
+BASE_URL = "http://obprototipoa.elhuyar.eus"
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-   ('YourName', 'email.email@email.com'),
+    ('Iker', 'i.manterola@elhuyar.com'),
+    ('Maddalen', 'm.lopezdelacalle@elhuyar.com'),
 )
 
 HIZKUNTZAK={
@@ -32,14 +33,21 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = ()
 ####################################
 
+'''CACHES = {
+    'default': {
+    'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+    'LOCATION': 'basque_research_cache_table',
+}
+}'''
+
 #BASE_URL="http://10.0.0.164:8008"
 DATABASES = {
         'default': {
-            'ENGINE': '', #django.db.backends.mysql Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': '',                      # Or path to database file if using sqlite3.
+            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'kulturbideak_db',                      # Or path to database file if using sqlite3.
             # The following settings are not used with sqlite3:
-            'USER': '',
-            'PASSWORD': '',
+            'USER': 'dss2016', #dss2016    root
+            'PASSWORD': 'd552O1Gsql', #d552O1Gsql   d552O1G
             'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
             'PORT': '',                      # Set to empty string for default.
         },      
@@ -145,6 +153,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'django.core.context_processors.request',
   'django.core.context_processors.media',
   'django.core.context_processors.static',
+  'kulturbideak_app.context_processors.base_url',
+  #'kulturbideak_app.context_processors.media_root',
+
 
     ) # Optional
 
@@ -187,12 +198,14 @@ INSTALLED_APPS += (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'django.contrib.admin',
+    'django.contrib.admin',
     # Added.
     'haystack',
     'bootstrap3',
+    #'rosetta',
     'KULTURBIDEAK.kulturbideak_app',
     'leaflet',
+    'qrcode',
    
 
     #'south',
@@ -201,6 +214,7 @@ INSTALLED_APPS += (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+DEFAULT_EMAIL_SENDER = 'm.lopezdelacalle@elhuyar.com'
 
 #Mapa
 LEAFLET_CONFIG = {
@@ -213,15 +227,14 @@ LEAFLET_CONFIG = {
 }
 
 
-# Haystack
+# Maddalen- Haystack
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': ''
-        #'URL': 'http://127.0.0.1:8983/solr'
+        'URL': 'http://127.0.0.1:8975/solr'
         # ...or for multicore...
         # 'URL': 'http://127.0.0.1:8983/solr/mysite',
     },
 }
-# Haystack
+# Maddalen- Haystack
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
