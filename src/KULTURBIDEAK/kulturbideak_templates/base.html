@@ -3,6 +3,11 @@
 {% load i18n %}
 {# Load the tag library #}
 
+<!-- Google Font -->
+    <link href='http://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+
 
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
 {% load bootstrap3 %}
@@ -40,6 +45,11 @@ var erabiltzailea ="{{request.user.username}}";
 
 <link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
 
+   <!-- Style -->
+    <link href="{{STATIC_URL}}css/brandy/css/style.css" rel="stylesheet">
+
+    <!-- Responsive CSS -->
+    <link href="{{STATIC_URL}}css/brandy/css/responsive.css" rel="stylesheet">
 
 
 
@@ -194,110 +204,8 @@ var markers = [];
 	<!-- PAGE -->
 	<div  style="max-width:1210px;margin:0 auto;"><!--aldeetako margina -->
 			
-	
-		<!-- LOGINA  ZAHARRA-->
-<!--		
-		<div class="erabiltzaile-menua" >
-			{% if user.is_authenticated %}
-			
-			<div class="dropdown">
-  				
- 				 <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">{{request.user.username}} <b class="caret"></b></a>
-        
-				<ul class="dropdown-menu">
-    				<li><a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a></li>
-    				<li><a href="nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a></li>
-    				<li><a href="itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
-       				</li></a>
-      				
-    				<li role="separator" class="divider"></li>
-				    <li><a href="perfila_erakutsi">{% trans "Profila" %}</a></li>
-				    <li><a href="pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a></li>
-				    <li role="separator" class="divider"></li>
-				    <li><a href="irten">{% trans "Irten" %} <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-						
-					</li>
-  				</ul>
-			</div>
-
-			<a href="irten">{% trans "Irten" %}</a>
-			<span class="glyphicon glyphicon-log-out" aria-hidden="true"> 
-			</span>
-			{% else %}
-			<a href="erregistratu">{% trans "Erregistratu" %} </a>
-			|
-			<a href="logina">{% trans "Login" %} </a>
-			<span class="glyphicon glyphicon-log-in" aria-hidden="true"> 
-    	   	</span>
-    	   	{% endif %}
-		</div>
 		
--->
-		
-	<!-- END LOGINA  ZAHARRA-->
-	
-	<!-- HEADER  ZAHARRA-->
-		<!--
-	<div class="page-header headerra">
-		<a title="KulturBideak" href="http://www.kulturbideak.org/search">
- 			<h1>K<small>ultur</small>B<small>ideak</small></h1>			
-		</a>	
-		<div class="input-group">
-		<form action="/search" method="get" class="form">
-		{% csrf_token %}
-		
-			{% trans "Bilatu ..." as the_placeholder %}
-      		<input id="id_q" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="q">
-     		<span class="input-group-btn">
-       			<button class="btn btn-default" type="submit">
-       			   <span class="glyphicon glyphicon-search" aria-hidden="true"></span>	!
-       			 </button>
-       			
-       			
-      		</span>
-      		
-      		
-      	</form>
-      	
-   	</div>
-	</div>
-	-->
-	<!-- BUKATU HEADER  ZAHARRA-->
-	
-	<!-- HIZKUNTZAK-->
-	<!--
-    <div class="header-content">
-		
-		<div class="hizkuntzak_class" >
-			
-		
-			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">{% csrf_token %}
-                <input name="next" type="hidden" value="#" />
-                <input type="hidden" name="language" value="{{ lang.0 }}" />
-                {% get_current_language as LANGUAGE_CODE %}
-                <ul class="ulhizkuntzak">
-                {% for langa in LANGUAGES %}
-                    {% if forloop.last %}
-                        {% if langa.1 ==  LANGUAGE_CODE %}
-                           <li><a class="active" href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
-                        {% else %}
-                            <li><a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
-                        {% endif %}                    
-                    {% else %}
-                        {% if langa.1 == LANGUAGE_CODE %}
-                            <li><a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
-                        {% else %}
-                           <li> <a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a></li>
-                        {% endif %}                
-                    {% endif %}
-                {% endfor %}
-                </ul>
-            </form>  
-		</div>
-	</div>
-	-->
-	
-	<!--HEADER PROBA -->
+	<!--HEADER -->
 	
 	
     

@@ -54,6 +54,15 @@
     <!-- ondarebideak css-->
     <link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
 
+    <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
+    <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
+    <script>
+      var csrf_token = "{{ csrf_token }}";
+      var erabiltzailea ="{{request.user.username}}";
+    </script>
+    <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
+
+
 </head>
 
 <body>
@@ -100,7 +109,7 @@
 			      {% endif %}
 			      {% endfor %}
 			    </ul>
-
+			  </form>
 	                  <!--<a class="navbar-brand" href="#"><img src="{{STATIC_URL}}img/brandy/logo.png" alt=""></a>-->
 	                </div>
 
@@ -169,28 +178,28 @@
 				  <ul class="row count-down" style="list-style: none; list-style-position:inside;">                       
 				    <li class="col-md-3 col-sm-6" style="list-position">   
 				      <div style="visibility: visible; animation-delay: 1s; animation-name: fadeInUp;" class="single_service wow fadeInUp animated" data-wow-delay="1s">
-					<div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="itemak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(52, 170, 220); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">0</span>
+					<div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="itemak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(52, 170, 220); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">2610</span>
 					  <h2>Item</h2></a>					  
 					</div>
 				      </div>
 				    </li>
 				    <li class="col-md-3 col-sm-6">
 				      <div style="visibility: visible; animation-delay: 1s; animation-name: fadeInUp;" class="single_service wow fadeInUp animated" data-wow-delay="1s">
-					<div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="ibilbideak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(76, 217, 100); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">0</span>
+					<div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="ibilbideak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(76, 217, 100); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">20</span>
 					<h2>Ibilbide</h2></a>
 					</div>
 				      </div>				      
 				    </li>   
 				    <li class="col-md-3 col-sm-6">
                                       <div style="visibility: visible; animation-delay: 1s; animation-name: fadeInUp;" class="single_service wow fadeInUp animated" data-wow-delay="1s">
-                                        <div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="hornitzaileak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(255, 149, 0); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">0</span>
+                                        <div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="hornitzaileak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(255, 149, 0); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">5</span>
                                           <h2>Ondare Erakunde</h2></a>
                                         </div>
                                       </div>                                      
                                     </li>
 				    <li class="col-md-3 col-sm-6">
                                       <div style="visibility: visible; animation-delay: 1s; animation-name: fadeInUp;" class="single_service wow fadeInUp animated" data-wow-delay="1s">
-                                        <div style="display:inline;width:260px;height:260px;"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(255, 59, 48); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">0</span>
+                                        <div style="display:inline;width:260px;height:260px;"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(255, 59, 48); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">10</span>
                                           <h2>Erabiltzaile</h2>
                                         </div>
                                       </div>                                      
@@ -205,7 +214,7 @@
 				    <form action="/cross_search" method="post" class="navbar-form autocomplete-me">
 				      
 				      {% csrf_token %}
-				      <div class="input-group">
+				      <div class="input-group" style="width:97%;">
 					{% trans "Bilatu ..." as the_placeholder %}
 					<!-- id=id_q-->
 					{% if bilaketaGaldera%}

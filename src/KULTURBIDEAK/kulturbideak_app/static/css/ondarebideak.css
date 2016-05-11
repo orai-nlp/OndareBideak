@@ -232,6 +232,13 @@
 		text-align: left;
 		color: #31708f;
     }
+
+    #eguneko_itema img{
+	width:97%;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 5px;
+    }
     .content_div{
     	width: 65%;
     	min-height: 500px;
