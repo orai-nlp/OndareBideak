@@ -409,7 +409,7 @@ function update(source) {
             .attr("height", 15)
             .attr("width", 15)
             .on('click', function(d) { 
-                if (d.parent.name == "ROOT"){
+                if (d.parent.name == "ROOT" && nodes.length == 1){
                     alert("Nodoa hau ezin da ezabatu");
                     return;
                 } else {
@@ -427,11 +427,16 @@ function update(source) {
                             }  
                         }
                         update(root);
+                        for (var i=0;i<nodes.length;i++){
+                            if (nodes[i].id == d.id ){
+                                nodes.splice(i,1);
+                            }
+                        }
                     } else {
                         alert("Nodoa ez da ezabatu.");
                     }            
                 }
-            });   
+            });  
 
         //nodoari zirkulua gehitu
         nodeEnter.append("circle")
