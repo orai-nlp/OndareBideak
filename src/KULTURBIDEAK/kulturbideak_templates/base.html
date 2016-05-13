@@ -279,12 +279,12 @@ var markers = [];
       </li>
     </ul>
   
-    <div class="col-sm-3 col-md-3 bilatzailea-kutxa">
+    <div class="col-sm-3 col-md-3 bilatzailea-kutxa text-center">
 		<!--<form action="/search" method="get" class="navbar-form">-->
 		<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
 			
 		{% csrf_token %}
-			<div class="input-group">
+			<div class="input-group" style="width:97%;">
 			{% trans "Bilatu ..." as the_placeholder %}
 			<!-- id=id_q-->
 			{% if bilaketaGaldera%}
@@ -655,13 +655,13 @@ var markers = [];
 			
 			<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
 			{%if itemPaths %}
-			<div class=""><b>{% trans "Ze Ibilbidetan? " %} </b>
+			<div class="crossingPaths"><b>{% trans "Ze Ibilbidetan? " %} </b>
 			{% for node in itemPaths %}
 				{% if forloop.counter < 4 %}
 					<p><a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a></p>
 				{%endif%}
 			{%endfor%}
-			</br>
+			<!--</br>-->
 			{% if itemPaths|length  >= 1 %} <!-- ONDOREN >= 4 JARRI-->
 			<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
 			{%endif%}

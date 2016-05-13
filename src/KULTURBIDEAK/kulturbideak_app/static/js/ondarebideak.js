@@ -632,14 +632,25 @@ function add_workspace_box(box_id,text_value,image_value){
     var wsb_button = document.createElement("span");
     wsb_button.setAttribute("class","wsb_button");
     wsb_button.setAttribute("onclick","remove_me(this.parentNode,"+box_id+");");
-    wsb_button.appendChild(document.createTextNode("Ezabatu"));
+    wsb_button.setAttribute("title","Ezabatu");
+    var trashglyph = document.createElement("span");
+    trashglyph.setAttribute("class","glyphicon glyphicon-trash");
+    trashglyph.setAttribute("aria-hidden","true");
+    wsb_button.appendChild(trashglyph);
+    /*wsb_button.appendChild(document.createTextNode("Ezabatu"));*/
     ws_box.appendChild(wsb_button);
     
-    if (new RegExp("sortu_ibilbidea$").test(window.location.href) == true){
+    if ((new RegExp("sortu_ibilbidea$").test(window.location.href) == true) || (new RegExp("editatu_ibilbidea").test(window.location.href) == true)){
     	var wsb_button2 = document.createElement("span");
-	    wsb_button2.setAttribute("class","wsb_button");
-	    wsb_button2.setAttribute("onclick","add_me_to_the_SVG(this.parentNode,"+box_id+");");
-	    wsb_button2.appendChild(document.createTextNode("Arbelera"));
+	wsb_button2.setAttribute("class","wsb_button");
+	wsb_button2.setAttribute("onclick","add_me_to_the_SVG(this.parentNode,"+box_id+");");
+	wsb_button2.setAttribute("title","Arbelera");
+	/*wsb_button2.appendChild(document.createTextNode("Arbelera"));*/
+	var arrowglyph = document.createElement("span");
+	arrowglyph.setAttribute("class","glyphicon glyphicon-arrow-down");
+	arrowglyph.setAttribute("aria-hidden","true");
+	wsb_button2.appendChild(arrowglyph);
+
 	    ws_box.appendChild(wsb_button2);
     } else {  
     }
@@ -1123,7 +1134,8 @@ function update_path_on_db_answer(xmlHttp,path_id)
             if (path_id){ 
             
             	//ORAIN NODE TAULA EGUNERATU
-            	update_path_nodes(path_id);
+            	//update_path_nodes(path_id);
+		create_path_nodes(path_id);
             	
             	
 			}

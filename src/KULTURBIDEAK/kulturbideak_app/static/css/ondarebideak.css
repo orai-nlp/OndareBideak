@@ -73,7 +73,7 @@
     margin: 10px;
     padding: 10px;
     vertical-align: top;
-    width: 100px;
+    width: 95px;
 	}
    
 	.wsb_image {
@@ -86,7 +86,7 @@
 	}
    
     .wsb_title{
-    	display: block;
+    	display: inline-block;
         font-size: 10pt;
         pointer-events: none;
     }
@@ -96,9 +96,10 @@
         cursor: pointer;
         display: inline-block;
         visibility: hidden;
-        font-size: 8pt;
+        font-size: 11pt;
         font-weight: bold;
         float: right;
+	margin: 3px;
     }
 
     .ws_box:hover .wsb_button{
@@ -239,6 +240,14 @@
 	border-radius: 4px;
 	padding: 5px;
     }
+
+    .crossingPaths{
+	margin-top: 20px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+        padding: 5px;
+    }
+
     .content_div{
     	width: 65%;
     	min-height: 500px;

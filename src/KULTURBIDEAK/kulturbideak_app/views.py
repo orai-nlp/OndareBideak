@@ -68,7 +68,7 @@ from oaiharvestandstore_django import oaiharveststore
 import re
 import random
 
-
+nodeLoadError=""
 
 def randomword(length):
     return ''.join(random.choice(string.lowercase) for i in range(length))
@@ -84,7 +84,12 @@ def get_tree(el_node):
         for child_node_id in el_node.paths_next.split(","):
             
             #nodes = nodes + get_tree(node.objects.filter(fk_item_id=child_node_id, fk_path_id=el_node.fk_path_id)[0])
-            nodes = nodes + get_tree(node.objects.filter(fk_item_id__id=child_node_id, fk_path_id__id=el_node.fk_path_id.id)[0])
+            try:
+                nodes = nodes + get_tree(node.objects.filter(fk_item_id__id=child_node_id, fk_path_id__id=el_node.fk_path_id.id)[0])
+            except Exception as nodeLoadError:
+                print node.objects.filter(fk_item_id__id=child_node_id, fk_path_id__id=el_node.fk_path_id.id)
+                print child_node_id, el_node.fk_path_id.id
+                nodeLoadError="Node "+child_node_id+" could not be loaded"
     return nodes
 
 def brandy(request):
@@ -3838,7 +3843,8 @@ def ajax_path_eguneratu(request):
     #Haystack update_index EGIN!!!
     #update_index.Command().handle()
     
-    
+    # Ezabatu path-eko nodo guztiak
+    node.objects.filter(fk_path_id__id=path_id).delete()
 
     return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
 
