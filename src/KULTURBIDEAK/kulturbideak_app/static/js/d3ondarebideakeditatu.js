@@ -74,7 +74,7 @@ function sortu(data){
 	}
     }
     //dblclick funtzioa: klik bikoitza egitean narrazioa gehitzeko textarea eta botoia gaitu egiten dira.
-    function dblclick(d){
+    /*function dblclick(d){
 	document.getElementById("narra_textarea").innerHTML = d.narrazioa;
 	document.getElementById("narra_textarea").value = d.narrazioa;
 	document.getElementById("narra_textarea").disabled = false;
@@ -86,7 +86,19 @@ function sortu(data){
             document.getElementById("narra_textarea").value = " ";              
         };
 	
+    }*/
+    function dblclick(d){	
+	document.getElementById("narra_textarea").value = d.narrazioa;
+	$("#narrazio_modal").modal('show');
+	$('#narrazio_modal').on('shown', function() {
+            $("#narra_textarea").focus();
+	})
+	document.getElementById("narra_botoia").onclick = function () { 
+            d.narrazioa = document.getElementById("narra_textarea").value;                                                                 
+	    $("#narrazio_modal").modal('hide');
+        };
     }
+    
     //pan funtzioa:noaren posizioaren aldaketa
     function pan(unekoNodoa, direction) {
 	var speed = panSpeed;
