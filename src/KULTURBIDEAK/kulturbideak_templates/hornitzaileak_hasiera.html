@@ -6,43 +6,85 @@
 
 <!--HORNITZAILE GUZTIAK ERAKUTSI IKONOEKIN -->
 
-<p>ERAKUTSI HORNITZAILEAK</p>
 
-<div class="panel panel-default">
+<!--<div class="panel panel-default">-->
   <div class="panel-body">
   
    {% for hornitzaile in hornitzaileak %}
-	<div class="column">	
-		<div class="col-xs-6 col-md-3">
-    
-    <div class="thumbnail">
-	<!--
-			<a class="{% if not path.paths_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
-				{% if path.paths_thumbnail %}<img  src="{{path.paths_thumbnail}}">{% endif %}
-			</a>
-			
-			<div class="caption">
-				<input type="hidden" id="path_id_{{ forloop.counter }}" value="{{path.id}}"/>
-				 <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.dc_title}}"/>
-				 <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.paths_thumbnail}}"/>
-				 
-				<h5><a class="" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h5>    		
-    		<div class="btn-group" role="group" aria-label="...">
-       			<a class="btn btn-primary" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}">
-       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-       			</a>
-       		
-       		
-				</div>
-    		</div>
-		</div><!-- thumbnail -->
--->
-		</div>
-  </div>
-  {% empty %}
-	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
+	
+
+
+   <!-- Projects Row -->
+        <!--
+        <div class="row">
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+           
+        </div>
+       -->
+        <!-- /.row -->
+        
+        <!-- Project One -->
+        <div class="row">
+            <div class="col-md-7">
+                <a href="#">
+                    <img class="img-responsive" src="{{hornitzaile.ikonoa}}" ><!--src="http://placehold.it/700x300"-->
+                </a>
+            </div>
+            <div class="col-md-5">
+                <h3>{{hornitzaile.izena}}</h3>
+                <h4>{{hornitzaile.erakundeMota}}</h4>
+                <p>{{ hornitzaile.deskribapena|slice:"0:100" }}...</p>
+                <a class="btn btn-primary" href="hornitzailea_ikusi?id={{hornitzaile.fk_user.id}}">Ikusi Hornitzailea <span class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
 {% endfor %}
 
 </div>
-</div>
+       
+
+        <hr>
+
+        <!-- Pagination -->
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <ul class="pagination">
+                    <li>
+                        <a href="#">&laquo;</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">1</a>
+                    </li>
+                    <li>
+                        <a href="#">2</a>
+                    </li>
+                    <li>
+                        <a href="#">3</a>
+                    </li>
+                    <li>
+                        <a href="#">4</a>
+                    </li>
+                    <li>
+                        <a href="#">5</a>
+                    </li>
+                    <li>
+                        <a href="#">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+
+<!--</div>-->
  {% endblock %} 

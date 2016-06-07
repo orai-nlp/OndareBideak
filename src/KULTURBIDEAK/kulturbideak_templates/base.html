@@ -86,7 +86,7 @@ var markers = [];
 	
     function load_map(map, options)
     {
-       
+      
         global_map=map;
            
         // zentratu mapa erabiltzaileak 
@@ -131,10 +131,10 @@ var markers = [];
     }
     
     
- {% elif  non == 'fitxaE' %}
+ {% elif  non == 'fitxaE'  %}
 	function load_map(map, options)
     {
-       	
+       
         global_map=map;
                   
         if(markers.length>0 || {{hornitzailea.geoloc_latitude}} !=0.0)
@@ -153,11 +153,21 @@ var markers = [];
 			
        		 
     }
+   {% elif  non == 'fitxaI'  %}
+	function load_map(map, options)
+    {
+       
+       map.panTo(new L.LatLng({{ hornitzailea.geoloc_latitude|correct_float_format }}, {{ hornitzailea.geoloc_longitude|correct_float_format }}));
+   		L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, {{ hornitzailea.geoloc_longitude|correct_float_format }}]).addTo(map).openPopup();                
+  		
+       		 
+    }
   
   
 {% else %}
    function load_map(map, options)
    {    
+   		
    	  	//Erakusteko bakarrik
    		map.panTo(new L.LatLng({{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}));
    		L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}]).addTo(map).openPopup();                
@@ -610,6 +620,8 @@ var markers = [];
 			</div>
 
 			</div>
+			
+			{% leaflet_map "yourmap" callback="load_map" %}
 			{%endif%}
 			
 			{% block content %}

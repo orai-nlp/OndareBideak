@@ -54,31 +54,99 @@
     Autocomplete.prototype.show_results = function(data) {
       // Remove any existing results.
       $('.ac-results').remove()
-
+    
       var results = data.results || []
       var results_id = data.results_id || [] //mad
-      var results_wrapper = $('<div class="ac-results"></div>')
-      //var base_elem = $('<div class="result-wrapper"><a href="#" class="ac-result"></a></div>')
+      var results_img = data.results_img || [] //mad
+      var results_src = data.results_src || [] //mad
+      
+      
+      var pathname = window.location.pathname; // Returns path only
+	 
+      //alert(pathname);
 
-      if(results.length > 0) {
-        for(var res_offset in results) {
-          var base_elem = $('<div class="result-wrapper"><a href="/erakutsi_item?id='+results_id[res_offset]+'" class="ac-result"></a></div>')
-          var elem = base_elem.clone()
-          // Don't use .html(...) here, as you open yourself to XSS.
-          // Really, you should use some form of templating.
-          elem.find('.ac-result').text(results[res_offset])
-          results_wrapper.append(elem)
+      if(pathname != "/")
+      {
+      	//pathname==/cross_search ...
+      	var results_wrapper = $('<div class="ac-results"></div>')
+      	//var base_elem = $('<div class="result-wrapper"><a href="#" class="ac-result"></a></div>')
+
+      	if(results.length > 0) {
+        	for(var res_offset in results) {
+         
+         		 var base_elem = $('<div class="result-wrapper"><a href="/erakutsi_item?id='+results_id[res_offset]+'" class="ac-result"></a></div>')
+        		 var elem = base_elem.clone()
+         		 // Don't use .html(...) here, as you open yourself to XSS.
+          		 // Really, you should use some form of templating.
+         		 elem.find('.ac-result').text(results[res_offset])
+         		 results_wrapper.append(elem)
         
-        }
-      }
-      else {
-        var elem = base_elem.clone()
-        elem.text("No results found.")
-        results_wrapper.append(elem)
-      }
+        	}
+      	}
+     	else {
+       		var elem = base_elem.clone()
+        	elem.text("No results found.")
+       		results_wrapper.append(elem)
+     	}
       
 
-      this.query_box.after(results_wrapper)
+      	this.query_box.after(results_wrapper)
+     }
+     else
+    {
+    	
+    	//HASIERAKO PANTAILAN AUTOCOMPLETE EMAITZAK ERAKUTSI
+    	if(results.length > 0) 
+    	{
+    		
+    		for(var res_offset in results) 
+    		{
+    			var a_href="/erakutsi_item?id="+results_id[res_offset];
+    			
+    			var img_src=results_img[res_offset];
+    			if(!img_src)
+    			{
+    				img_src=" /uploads/NoIrudiItem.png ";
+    				
+    			}
+    			
+    			var h2_text=results_src[res_offset];
+    			
+    			var p_text=results[res_offset];
+    		
+    			//Elementuen id-ak sortu
+    			var div_id="auto"+res_offset;
+    			var img_id="img"+res_offset;
+    			var h2_id="h2"+res_offset;
+    			var p_id="p"+res_offset;
+    			var a_id="a"+res_offset;
+    			
+    			var div_emaitza= document.getElementById(div_id);
+    			
+    			var elemA=document.getElementById(a_id);
+    			elemA.setAttribute('href', a_href);
+    			
+    			var elemImg=document.getElementById(img_id);
+				elemImg.setAttribute('src', img_src);
+				
+				var elemH2=document.getElementById(h2_id);
+				elemH2.textContent = h2_text;
+				
+				var elemP=document.getElementById(p_id);
+				elemP.textContent = p_text;
+				
+				//div_emaitza.appendChild(elemImg);
+				
+    		}
+    	}
+    	else
+    	{
+    		
+    		var kk="else";
+    	}
+    	
+    }
+    
     }
 
     $(document).ready(function() {

@@ -26,7 +26,7 @@ from KULTURBIDEAK.kulturbideak_app.models import item
 from KULTURBIDEAK.kulturbideak_app.models import path
 from KULTURBIDEAK.kulturbideak_app.models import node
 from KULTURBIDEAK.kulturbideak_app.models import workspace_item
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from KULTURBIDEAK.kulturbideak_app.forms import *
 from KULTURBIDEAK.kulturbideak_app.models import *
 from haystack.management.commands import update_index
@@ -128,10 +128,19 @@ def hasiera(request):
         deskribapena=""
         irudia=""                    
         nodes = []     
-        
-       
+    
+    
+    #Kontadoreko kopuruak lortu datu-basetik
+    #Itemak
+    itemKop = item.objects.count()
+    #Ibilbideak
+    ibilbideKop = path.objects.count()   
+    #Hornitzaileak
+    hornitzaileKop = hornitzailea.objects.count()
+    #Erabiltzaileak
+    erabiltzaileKop = usr.objects.count()
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    return render_to_response('index_brandy.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+    return render_to_response('index_brandy.html',{'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
 
    
    
@@ -1308,14 +1317,20 @@ def ibilbideak_hasiera(request):
 
 def hornitzaileak_hasiera(request):
     print "hornitzaileak_hasiera"
-    hornitzaileak=[]
+    hornitzaileak=hornitzailea.objects.all()
     return render_to_response('hornitzaileak_hasiera.html',{'hornitzaileak':hornitzaileak},context_instance=RequestContext(request))
     
-
+def hornitzailea_ikusi(request):
    
+    non="fitxaI"
+    id=request.GET['id']
+    hornitzaile=hornitzailea.objects.get(fk_user__id=id)
+    print non
+    return render_to_response('hornitzailea_ikusi.html',{'non':non,'hornitzailea':hornitzaile},context_instance=RequestContext(request))
+    
 def autocomplete(request):
     
-    sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
+    sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:4]
     #suggestions = [result.item_id for result in sqs]
     
     #suggestions = [result.dc_title for result in sqs]
@@ -1330,17 +1345,30 @@ def autocomplete(request):
         #titulua = titulua.replace("</div>", " ")
         titulua = titulua.replace("<div class=\"titulu_eu\">", " ")
         #titulua = titulua.replace("</div>", " ")
-       
+        titulua = titulua.replace("<div class=\"titulu_lg\">", " ")
         suggestions.append(titulua)
     
     
-    print suggestions
+    #print suggestions
     suggestions_id = [result.item_id for result in sqs]
+    suggestions_img = [result.edm_object for result in sqs]
+    #suggestions_src = [result.edm_provider for result in sqs]
+    suggestions_src=[]
+    for result in sqs:
+        if result.edm_provider == "arrunta" or result.edm_provider == "Arrunta" :
+            src=result.dc_creator
+            suggestions_src.append(src)
+        else:
+            src=result.edm_provider
+            suggestions_src.append(src)
+    
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     the_data = json.dumps({
         'results': suggestions,
-        'results_id': suggestions_id
+        'results_id': suggestions_id,
+        'results_img':suggestions_img,
+        'results_src':suggestions_src
     })
     print the_data
     return HttpResponse(the_data, content_type='application/json')
@@ -2970,8 +2998,8 @@ def erakutsi_item(request):
     urtea=item_tupla.edm_year 
     viewAtSource=item_tupla.edm_isshownat
     irudia=item_tupla.edm_object
-    hornitzailea=item_tupla.edm_provider
-    #hornitzailea=item_tupla.dc_creator
+    #hornitzailea=item_tupla.edm_provider
+    hornitzailea=item_tupla.dc_creator
     geoloc_longitude=item_tupla.geoloc_longitude
     geoloc_latitude=item_tupla.geoloc_latitude
        
@@ -3240,9 +3268,6 @@ def editatu_itema(request):
             edm_language="en"
          
         
-        #dc_creator="Euskomedia" # ondoren logeatutako erabiltzailea jarri
-        #edm_provider="Euskomedia" # ondoren logeatutako erabiltzailea jarri
-        
         #username-a ez da errepikatzen datu-basean, beraz, id bezala erabili dezakegu 
         dc_creator= request.user.username # ondoren logeatutako erabiltzailea jarri
         edm_provider= request.user.username # ondoren logeatutako erabiltzailea jarri
@@ -3288,7 +3313,7 @@ def editatu_itema(request):
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
         #update_index.Command().handle(age=1)
    
-        return render_to_response('base.html',{'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date},context_instance=RequestContext(request))
+        return render_to_response('base.html',{'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
     
     else:
         #Hasieran hemendik sartuko da eta Datu-basetik kargatuko dira itemaren datuak
@@ -3387,17 +3412,22 @@ def itema_gehitu(request):
             edm_language="en"
          
         
-        #dc_creator="Euskomedia" # ondoren logeatutako erabiltzailea jarri
-        #edm_provider="Euskomedia" # ondoren logeatutako erabiltzailea jarri
-        
+        #DC_CREATOR Vs. EDM_PROVIDER       
         #username-a ez da errepikatzen datu-basean, beraz, id bezala erabili dezakegu 
-        dc_creator= request.user.username # ondoren logeatutako erabiltzailea jarri
+        dc_creator= request.user.username 
+        
         #BEGIRATU EA HORNITZAILEA DEN EDO EZ. EZ BADA:Arrunta balioa eman edm_providerri, bestela Hornitzailea
-        edm_provider= request.user.username # ondoren logeatutako erabiltzailea jarri
+        #erab_id=request.user.id         
+        if( User.objects.filter(id=request.user.id, groups__name='hornitzailea').exists()):
+            hornitzaile=hornitzailea.objects.get(fk_user=request.user)
+            edm_provider=hornitzaile.izena
+        else:
+            edm_provider= request.user.username 
+               
         #Gaurko data hartu
-        dc_date=datetime.datetime.now()
-                
+        dc_date=datetime.datetime.now()               
         edm_country="Euskal Herria"
+        
         if(irudia_url!=""):
             #Irudia igo
             edm_object=str(azken_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
@@ -3522,10 +3552,10 @@ def ajax_lortu_most_voted_paths(request):
 
 def ajax_lortu_eguneko_itema (request):
     
-   
-    eguneko_itema=item.objects.filter(egunekoa=1) 
+    #Irudirik ez duten itemak ez ditugu erakutsiko
+    eguneko_itemak=item.objects.filter(egunekoa=1).exclude(edm_object="")
   
-    return render_to_response('eguneko_itema.xml', {'items': eguneko_itema}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('eguneko_itema.xml', {'items': eguneko_itemak}, context_instance=RequestContext(request), mimetype='application/xml')
 
 def gorde_ibilbidea(request):
 

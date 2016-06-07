@@ -11,6 +11,9 @@
     .titulu-kolorea{
     	color: #31708f;
     }
+   .autocomplete_irudia{
+   		min-height: 229px; 	
+    }
    .bilaketaEmaitza{
 
 		/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
