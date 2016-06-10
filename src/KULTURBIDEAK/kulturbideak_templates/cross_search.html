@@ -249,6 +249,21 @@ um_pages }}</p>-->
 		<div class="col-xs-6 col-md-3">
     
     <div class="thumbnail">
+    	
+    		{% if request.user|has_group:'hornitzailea' %}
+    
+				{% if path.path_egunekoa == 0 %}	
+					<a class="btn btn-warning" type="button" onclick="egunekoaGehituEtabilaketaFiltratu_ibilb({{path.path_id}})" >				
+ 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					</a>
+				{%endif%}
+				{% if path.path_egunekoa == 1 %}	
+					<a class="btn btn-warning" type="button" onclick="egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >				
+ 						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+					</a>
+				{%endif%}
+			{%endif%}
+    	
 
 			<a class="bilaketaEmaitzaPath thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
 				{% if path.path_thumbnail %}<img src="{{path.path_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}

@@ -15,9 +15,13 @@
 			
 	
 		<div class="thumbnail">
-			
+			<!--
 			<a class="{% if not ibilbidea.paths_thumbnail %} bilaketaEmaitzaPath {% endif %} thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbidea.id}}" >
 				{% if ibilbidea.paths_thumbnail %}<img  alt="{{ibilbidea.dc_title}}" src="{{ibilbidea.paths_thumbnail}}">{% endif %}
+			</a>
+			-->
+			<a class="bilaketaEmaitzaPath thumbnail"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbidea.id}}" >
+				{% if ibilbidea.paths_thumbnail  %}<img src="{{ibilbidea.dc_title}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}
 			</a>
 			
 			<div class="caption">

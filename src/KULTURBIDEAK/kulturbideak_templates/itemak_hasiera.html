@@ -53,7 +53,7 @@
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 				 
-				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
+				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
 				{% if item.edm_provider %}	
 					<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
 				{%endif%}
