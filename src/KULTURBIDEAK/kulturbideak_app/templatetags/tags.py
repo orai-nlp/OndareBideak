@@ -76,10 +76,11 @@ def choose_title_language(interfaceLang, item):
         titulua=titulu_es
     else:
         titulua=titulu_en
-    #DBko tituluak hizkuntza kontrola ez baldin badu
+    #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
     if titulua =="":
         titulua=item.dc_title
-        
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
+        titulua=titulua.replace("</div>", " ")
         
     if interfaceLang == "eu":
          
