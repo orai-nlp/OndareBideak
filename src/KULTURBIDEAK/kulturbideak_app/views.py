@@ -2998,8 +2998,8 @@ def erakutsi_item(request):
     urtea=item_tupla.edm_year 
     viewAtSource=item_tupla.edm_isshownat
     irudia=item_tupla.edm_object
-    #hornitzailea=item_tupla.edm_provider
-    hornitzailea=item_tupla.dc_creator
+    hornitzailea=item_tupla.edm_provider
+    #hornitzailea=item_tupla.dc_creator
     geoloc_longitude=item_tupla.geoloc_longitude
     geoloc_latitude=item_tupla.geoloc_latitude
        
@@ -3012,9 +3012,15 @@ def erakutsi_item(request):
         
     #MORE LIKE THIS
     print "MORE LIKE THIS KALKULATZEN" 
-    mlt=[]   
+    mlt=[] 
+    #search_models_items=[item]
+    #mlt = SearchQuerySet().more_like_this(item_tupla)
     mlt = SearchQuerySet().more_like_this(item_tupla)
-    print "MORE LIKE THIS KALKULATZEN BUKATU DU"        
+    #print mlt.count()
+    print "MORE LIKE THIS KALKULATZEN BUKATU DU" 
+    mlt = mlt[:10]
+   
+          
     #print mlt.count() # 5        
     #print mlt[0].object.dc_title
         
