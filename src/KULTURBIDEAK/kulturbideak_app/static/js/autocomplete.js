@@ -65,7 +65,7 @@
 	 
       //alert(pathname);
 
-      if(pathname != "/")
+      if(pathname == "") // "/";
       {
       	//pathname==/cross_search ...
       	var results_wrapper = $('<div class="ac-results"></div>')
@@ -138,6 +138,8 @@
 				//div_emaitza.appendChild(elemImg);
 				
     		}
+	    var div_service = document.getElementById("SERVICE");
+	    div_service.setAttribute("style", "display:block;");
     	}
     	else
     	{

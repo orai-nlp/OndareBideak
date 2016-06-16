@@ -33,7 +33,7 @@
         
         <!-- Project One -->
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-2">
             	
             	<!-- Preview Image -->
       
@@ -48,12 +48,13 @@
       			 {%endif%}
               
             </div>
-            <div class="col-md-5">
+            <div class="col-md-9">
                 <h3>{{hornitzaile.izena}}</h3>
                 <h4>{{hornitzaile.erakundeMota}}</h4>
                 <p>{{ hornitzaile.deskribapena|slice:"0:100" }}...</p>
                 <a class="btn btn-primary" href="hornitzailea_ikusi?id={{hornitzaile.fk_user.id}}">Ikusi Hornitzailea <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
+	    <div class="col-md-1"></div>
         </div>
         <!-- /.row -->
 

@@ -334,6 +334,11 @@ var markers = [];
    	
    	
    	<!-- PROBA HASI -->  	
+
+
+   
+
+  
    	
    	
    	<!-- BIGARREN PROBA-->
@@ -425,6 +430,45 @@ var markers = [];
 	<!--PANTAILA EGITURA NAGUSIA-->
 	<div class="orria">
 		
+        <div id="SERVICE" class="container" style="display:none;">
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <div class="autocompleteItem single_service wow fadeInUp" id="auto0" >
+                        <a id="a0"><img class="autocomplete_irudia" id="img0"></a>
+                        <h2 id="h20"></h2>
+			<p id="p0"></p>
+
+                    </div>
+                </div>
+                <div class="col-md-3 text-center">
+                    <div class=" autocompleteItem single_service wow fadeInUp" id="auto1" >
+                        <a id="a1"><img class="autocomplete_irudia" id="img1"></a>
+			<h2 id="h21"></h2>
+                        <p id="p1"></p>
+
+                    </div>
+                </div>
+                <div class="col-md-3 text-center">
+                    <div class="autocompleteItem single_service wow fadeInUp" id="auto2" >
+                        <a id="a2"><img class="autocomplete_irudia" id="img2"></a>
+                        <h2 id="h22"></h2>
+                        <p id="p2"></p>
+
+                    </div>
+                </div>
+                <div class="col-md-3 text-center">
+                    <div class="autocompleteItem single_service wow fadeInUp" id="auto3" >
+		      <a id="a3"><img class="autocomplete_irudia" id="img3"></a>
+                        <h2 id="h23"></h2>
+                        <p id="p3"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
 		{% if non != "fitxaE" %}
 	 	<div class="eskuma_div" align="right" >
 	 		{% if bilaketa_filtroak != 1 or not bilaketa_filtroak%}
@@ -626,11 +670,11 @@ var markers = [];
 		</div>
 		{% if non != "fitxaE" %}
 		<div class="ezkerra_div" align="left">
-			<div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_itemak"><b>{% trans "Azkenako Itemak" %} </b></a></div>
+                      <div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_itemak"><b>{% trans "Azkeneko Itemak" %} </b></a></div>
+		      <div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_ibilbideak"><b>{% trans "Azkeneko Ibilbideak" %} </b></a></div>
+		      <div id="eguneko_ibilbidea"><a href="{{BASE_URL}}/eguneko_ibilbideak"><b>{% trans "Eguneko Ibilbideak" %} </b></a></div>
 			
 			<br />
-			<div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_ibilbideak"><b>{% trans "Azkeneko Ibilbideak" %} </b></a></div>
-			
 			<br />
 			{% if user.is_authenticated %}
 			<!-- nire_ibilbideak javascript bidez kargatzen da. Initialize() -> load_paths_list(user_id)-->	
@@ -660,8 +704,6 @@ var markers = [];
   					</div>
 				</div>
 				-->
-			
-			<div id="eguneko_ibilbidea"><a href="{{BASE_URL}}/eguneko_ibilbideak"><b>{% trans "Eguneko Ibilbideak" %} </b></a></div>
 			
 			
 			<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
