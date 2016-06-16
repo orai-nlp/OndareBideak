@@ -21,7 +21,7 @@ um_pages }}</p>-->
 
 
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs"  name="AdvOrBasicSearch">
   {% if hornitzailea%}
   		{% if z == 'h'%}
   		<li  class="active"><a data-toggle="tab" href="#fitxa">Hornitzaile fitxa </a></li>
@@ -47,8 +47,9 @@ um_pages }}</p>-->
   {%endif%}
 </ul>
 
+<input type="hidden" name="hornitzailea" id="hornitzailea" value="{{ hornitzailea.fk_user.username }}" />
 
-<div class="tab-content">
+<div class="tab-content" name="AdvOrBasicSearch2">
 	
 	{% if z == 'h'%}
 	<div id="fitxa" class="tab-pane fade in active">
@@ -130,8 +131,9 @@ um_pages }}</p>-->
   	<!-- PAGINATOR ITEMAK -->
   	<div class="pagination">
     <span class="step-links">
+    	
         {% if items.has_previous %}
-            <a href="?page={{ items.previous_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=i">aurrekoak</a>
+            <a href="?page={{ items.previous_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">aurrekoak</a>
         {% endif %}
 
         <span class="current">
@@ -139,7 +141,7 @@ um_pages }}</p>-->
         </span>
 
         {% if items.has_next %}
-            <a href="?page={{ items.next_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=i">hurrengoak</a>
+            <a href="?page={{ items.next_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">hurrengoak</a>
         {% endif %}
     </span>
 	</div>
@@ -231,7 +233,7 @@ um_pages }}</p>-->
   	<div class="pagination">
     <span class="step-links">
         {% if paths.has_previous %}
-            <a href="?page={{ paths.previous_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=p">aurrekoak</a>
+            <a href="?page={{ paths.previous_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">aurrekoak</a>
         {% endif %}
 
         <span class="current">
@@ -239,7 +241,7 @@ um_pages }}</p>-->
         </span>
 
         {% if paths.has_next %}
-            <a href="?page={{ paths.next_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=p">hurrengoak</a>
+            <a href="?page={{ paths.next_page_number}}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">hurrengoak</a>
         {% endif %}
     </span>
 	</div>

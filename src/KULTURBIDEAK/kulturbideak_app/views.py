@@ -98,21 +98,15 @@ def brandy(request):
  
 
 def hasiera(request):
-    #EGUNEKO IBILBIDEAREN PARAMETROAK BIDALI BEHAR DIRA HEMEN
-    #DB-an GALDERA EGIN EGUNEKO IBILBIDEA LORTZEKO
-    #egunekoIbilbidea = path.objects.get(egunekoa=1)
-   
+  
+    #DB-an GALDERA EGIN EGUNEKO IBILBIDEAK LORTZEKO
+    egunekoIbilbideak=[]
+    egunekoIbilbideak = path.objects.filter(egunekoa=1)
+    '''
     if(path.objects.filter(egunekoa=1)):
         
-        egunekoIbilbidea = path.objects.get(egunekoa=1)
-        #lortu path-aren ezaugarriak
-    
-        id=egunekoIbilbidea.id
-        titulua=egunekoIbilbidea.dc_title
-        gaia=egunekoIbilbidea.dc_subject
-        deskribapena=egunekoIbilbidea.dc_description
-        irudia=egunekoIbilbidea.paths_thumbnail
-             
+        egunekoIbilbideak = path.objects.filter(egunekoa=1)
+     
         #path hasierak hartu
         nodes = [] 
         erroak = node.objects.filter(fk_path_id__id=id,paths_start=1)        
@@ -128,7 +122,7 @@ def hasiera(request):
         deskribapena=""
         irudia=""                    
         nodes = []     
-    
+    '''
     
     #Kontadoreko kopuruak lortu datu-basetik
     #Itemak
@@ -140,7 +134,7 @@ def hasiera(request):
     #Erabiltzaileak
     erabiltzaileKop = usr.objects.count()
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    return render_to_response('index_brandy.html',{'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+    return render_to_response('index_brandy.html',{'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'egunekoIbilbideak':egunekoIbilbideak},context_instance=RequestContext(request))
 
    
    
@@ -198,6 +192,43 @@ def eguneko_itemak(request):
         
        
     return render_to_response('eguneko_itemak.html',{'itemak':itemak},context_instance=RequestContext(request))
+
+def azkeneko_itemak(request):
+    
+    azkenekoak=[]
+    azkenekoak=item.objects.order_by('-dc_date')[:5]
+
+    return render_to_response('azkeneko_itemak.html',{'azkenekoak':azkenekoak},context_instance=RequestContext(request))
+
+def azkeneko_ibilbideak(request):
+    
+    azkenekoak=[]
+    azkenekoak=path.objects.order_by('-creation_date')[:5]
+
+    return render_to_response('azkeneko_ibilbideak.html',{'azkenekoak':azkenekoak},context_instance=RequestContext(request))
+
+def eguneko_ibilbideak(request):
+    ibilbideak=[]
+    ibilbideak=path.objects.filter(egunekoa=1)
+    
+    paginator = Paginator(ibilbideak, 26)
+    
+   
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+ 
+    
+    page = request.GET.get('page')
+    try:
+        ibilbideak = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ibilbideak = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ibilbideak = paginator.page(paginator.num_pages)
+
+    return render_to_response('eguneko_ibilbideak.html',{'ibilbideak':ibilbideak},context_instance=RequestContext(request))
+
 
 def hornitzaile_fitxa_editatu(request):
     
@@ -298,8 +329,8 @@ def eguneko_itema_kendu(request):
             for h in horniF:
                 if(h=="EuskoMedia"):
                     horniEkm="EuskoMedia"
-                if(h=="arrunta"):
-                    horniArrunta="arrunta"
+                if(h=="herritarra"):
+                    horniArrunta="herritarra"
         
         motaT="ez"
         motaS="ez"
@@ -728,8 +759,8 @@ def eguneko_itema_kendu(request):
             paths = paginator.page(paginator.num_pages)
     
     
-    
-        return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+        z="i"
+        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     else:
         print "nondik ba?"
@@ -819,8 +850,8 @@ def eguneko_itema_gehitu(request):
             for h in horniF:
                 if(h=="EuskoMedia"):
                     horniEkm="EuskoMedia"
-                if(h=="arrunta"):
-                    horniArrunta="arrunta"
+                if(h=="herritarra"):
+                    horniArrunta="herritarra"
         
         motaT="ez"
         motaS="ez"
@@ -1249,8 +1280,1045 @@ def eguneko_itema_gehitu(request):
             paths = paginator.page(paginator.num_pages)
     
     
+        z="i"
+        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+
+    else:
+        print "nondik ba?"
+        
+        
+#EGUNEKO IBILBIDEA KUDEATZEKO BI FUNTZIO
+def eguneko_ibilbidea_gehitu(request):
     
-        return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+    path_id = request.GET.get('id')
+    nondik = request.GET.get('nondik')
+    
+    print "eguneko_itema_gehitu"
+    path.objects.filter(id=path_id).update(egunekoa = 1)   
+
+    #GURI ALDAKETAREN BERRI EMAN?    
+    mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko ibilbide hau gehitu du (id): "+str(path_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
+    send_mail('OndareBideak - Eguneko ibilbidetan aldaketak', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+    
+    if(nondik=="hasiera"):
+        paths=[]
+        paths=path.objects.order_by('-creation_date')
+        paginator = Paginator(paths, 26)
+    
+   
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+ 
+    
+        page = request.GET.get('page')
+        try:
+            paths = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paths = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paths = paginator.page(paginator.num_pages)
+    
+       
+        return render_to_response('ibilbideak_hasiera.html',{'paths':paths},context_instance=RequestContext(request))
+    elif(nondik=="bilaketa"):
+        print "bilaketa orritik"
+        # Helburu hizkuntza guztietan burutuko du bilaketa
+        hizkuntza=request.GET['hizkRadio']   
+        galdera=request.GET['search_input']
+    
+        #FILTROAK
+        hizkuntzakF=request.GET['hizkuntzakF']
+        hizkF=[] 
+        hornitzaileakF=request.GET['hornitzaileakF']
+        horniF=[]
+        motakF=request.GET['motakF']
+        motaF=[]
+        ordenakF=request.GET['ordenakF']
+        ordenaF=[]
+        lizentziakF=request.GET['lizentziakF']
+        lizentziaF=[]  
+        besteakF=request.GET['besteakF']
+        besteaF=[]
+    
+        items=[]
+        paths=[]
+        search_models_items = [item]
+        search_models_paths = [path]
+        bilaketa_filtroak=1
+    
+    
+        #FILTROAK PRESTATU
+        hEu="ez"
+        hEs="ez"
+        hEn="ez"
+        if hizkuntzakF != "":       
+            hizkF=hizkuntzakF.split(',')
+            for h in hizkF:
+                if(h=="eu"):
+                    hEu="eu"
+                if(h=="es"):
+                    hEs="es"
+                if(h=="en"):
+                    hEn="en"
+                
+        horniEkm="ez"
+        horniArrunta="ez"
+        if hornitzaileakF != "":       
+            horniF=hornitzaileakF.split(',')
+            for h in horniF:
+                if(h=="EuskoMedia"):
+                    horniEkm="EuskoMedia"
+                if(h=="herritarra"):
+                    horniArrunta="herritarra"
+        
+        motaT="ez"
+        motaS="ez"
+        motaV="ez"  
+        motaI="ez"  
+        if motakF != "":       
+            motaF=motakF.split(',')
+            for m in motaF:
+                if(m=="testua"):
+                    motaT="TEXT"
+                if(m=="audioa"):
+                    motaS="SOUND"
+                if(m=="bideoa"):
+                    motaV="VIDEO"
+                if(m=="irudia"):
+                    motaI="IMAGE"
+    
+        oData="ez"
+        oData2="ez"
+        oBoto="ez"
+        if ordenakF != "":       
+            ordenaF=ordenakF.split(',')
+            for o in ordenaF:
+                if(o=="data"):
+                    oData="data"
+                if(o=="dataAsc"):
+                    oData2="dataAsc"
+                if(o=="botoak"):
+                    Boto="botoak"
+    
+        lLibre="ez"
+        lCommons="ez"
+        lCopy="ez"
+        if lizentziakF !="":
+            lizentziaF=lizentziakF.split(',')
+            for l in lizentziaF:
+                if(l=="librea"):
+                    lLibre="librea"
+                if(l=="creativeCommons"):
+                    lCommons="creativeCommons"
+                if(l=="copyRight"):
+                    lCopy="copyRight"
+    
+    
+        bEgun="ez"
+        bProp="ez"
+        bWikify="ez"
+        bIrudiBai="ez"
+        bIrudiEz="ez"
+        if besteakF != "":       
+            besteaF=besteakF.split(',')
+            for b in besteaF:
+                if(b=="egunekoa"):
+                    bEgun="egunekoa"
+                if(b=="proposatutakoa"):
+                    bProp="proposatutakoa"
+                if(b=="wikifikatua"):
+                    bWikify="wikifikatua"
+                if(b=="irudiaDu"):
+                    bIrudiBai="irudiaDu"
+                if(b=="irudiaEzDu"):
+                    bIrudiEz="irudiaEzDu"
+    
+        #GALDERA BOTA
+        if hizkuntza == 'eu':
+            #ITEMS
+            #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
+            items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
+       
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+            #hornitzaile filtroa
+            if(hornitzaileakF != ""):
+                if(horniEkm=="ekm"):
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
+                else:
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
+            #Mota filtroa, edm_type=SOUND
+            if(motakF != ""):
+                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])
+            #Ordena Filtroa
+            bozkatuenak_item_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    #items = items.order_by('-dc_date')
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
+                if(oData2 == "dataAsc"):
+               
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+    
+                    items_ids=[]
+                    for itema in items:
+                        id = itema.item_id
+                        items_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
+            #Lizentziak filtroa
+            if lizentziakF !="":  
+                if  lLibre=="librea":
+                    items=items.filter(edm_rights='librea')
+                if lCommons=="creativeCommons":
+                    items=items.filter(edm_rights='creativeCommons')
+                if lCopy=="copyRight":
+                    items=items.filter(edm_rights='copyRight')                
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    items=items.filter(egunekoa=1)
+                if bProp == "proposatutakoa":
+                    items=items.filter(proposatutakoa=1)
+                if bWikify=="wikifikatua":
+                    items=items.filter(wikifikatua=1)
+                if bIrudiBai=="irudiaDu":                          
+                    items=items.filter(edm_object = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":              
+                    items=items.exclude(edm_object = Raw("[* TO *]"))
+                
+        
+            #PATHS
+            paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+            #hornitzaile filtroa TXUKUNDUUUU
+            if(hornitzaileakF != ""):
+           
+                if(horniEkm=="ekm"):
+                
+                    hornitzaileakF=hornitzaileakF+"ekm"
+                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
+                    hornitzaile_erab=User.objects.get(username='ekm')
+                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
+                else:      
+                        
+                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+       
+       
+            #Ordena Filtroa
+            bozkatuenak_path_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    paths = paths.order_by('-path_creation_date')
+                if(oData2 == "dataAsc"):
+                    paths = paths.order_by('path_creation_date')              
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
+    
+                    paths_ids=[]
+                    for patha in paths:
+                        id = patha.path_id
+                        paths_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+        
+       
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    paths=paths.filter(path_egunekoa=1)
+                if bProp == "proposatutakoa":
+                    paths=paths.filter(path_proposatutakoa=1)
+           
+                if bIrudiBai=="irudiaDu":             
+                    paths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                
+                    paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
+    
+                
+        elif hizkuntza == 'es':
+       
+            items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+            #hornitzaile filtroa
+            if(hornitzaileakF != ""):
+                if(horniEkm=="ekm"):
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
+                else:
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
+            #Mota filtroa, edm_type=SOUND
+            if(motakF != ""):
+                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+            #Ordena Filtroa
+            bozkatuenak_item_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    #items = items.order_by('-dc_date')
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
+                if(oData2 == "dataAsc"):             
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+    
+                    items_ids=[]
+                    for itema in items:
+                        id = itema.item_id
+                        items_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
+            #Lizentziak filtroa
+            if lizentziakF !="":  
+                if  lLibre=="librea":
+                    items=items.filter(edm_rights='librea')
+                if lCommons=="creativeCommons":
+                    items=items.filter(edm_rights='creativeCommons')
+                if lCopy=="copyRight":
+                    items=items.filter(edm_rights='copyRight')                
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    items=items.filter(egunekoa=1)
+                if bProp == "proposatutakoa":
+                    items=items.filter(proposatutakoa=1)
+                if bWikify=="wikifikatua":
+                    items=items.filter(wikifikatua=1)
+                if bIrudiBai=="irudiaDu":                        
+                    items=items.filter(edm_object = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                    #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                    items=items.exclude(edm_object = Raw("[* TO *]"))
+                #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
+        #...
+        
+            paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+            #hornitzaile filtroa TXUKUNDUUUU
+            if(hornitzaileakF != ""):
+ 
+                if(horniEkm=="ekm"):
+                
+                    hornitzaileakF=hornitzaileakF+"ekm"
+                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
+                    hornitzaile_erab=User.objects.get(username='ekm')
+                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
+                else:      
+                        
+                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+       
+      
+            #Ordena Filtroa
+            bozkatuenak_path_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    paths = paths.order_by('-path_creation_date')
+                if(oData2 == "dataAsc"):
+                    paths = paths.order_by('path_creation_date')              
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
+    
+                    paths_ids=[]
+                    for patha in paths:
+                        id = patha.path_id
+                        paths_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+        
+      
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    paths=paths.filter(path_egunekoa=1)
+                if bProp == "proposatutakoa":
+                    paths=paths.filter(path_proposatutakoa=1)
+           
+                if bIrudiBai=="irudiaDu":             
+                    aths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                    #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                    paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
+        elif hizkuntza == 'en':
+       
+            items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+        
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+            #hornitzaile filtroa
+            if(hornitzaileakF != ""):
+                if(horniEkm=="ekm"):
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
+                else:
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
+            #Mota filtroa, edm_type=SOUND
+            if(motakF != ""):
+                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+            #Ordena Filtroa
+            bozkatuenak_item_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    #items = items.order_by('-dc_date')
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
+                if(oData2 == "dataAsc"):
+                    print "DATA GORAKA"
+                    #items = items.order_by('-dc_date')
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+    
+                    items_ids=[]
+                    for itema in items:
+                        id = itema.item_id
+                        items_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
+            #Lizentziak filtroa
+            if lizentziakF !="":  
+                if  lLibre=="librea":
+                    items=items.filter(edm_rights='librea')
+                if lCommons=="creativeCommons":
+                    items=items.filter(edm_rights='creativeCommons')
+                if lCopy=="copyRight":
+                    items=items.filter(edm_rights='copyRight')                
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    items=items.filter(egunekoa=1)
+                if bProp == "proposatutakoa":
+                    items=items.filter(proposatutakoa=1)
+                if bWikify=="wikifikatua":
+                    items=items.filter(wikifikatua=1)
+                if bIrudiBai=="irudiaDu":             
+              
+                    items=items.filter(edm_object = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                    #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                    items=items.exclude(edm_object = Raw("[* TO *]"))
+                    #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
+        #...
+        
+            paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+            #hornitzaile filtroa TXUKUNDUUUU
+            if(hornitzaileakF != ""):
+           
+                if(horniEkm=="ekm"):
+                
+                    hornitzaileakF=hornitzaileakF+"ekm"
+                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
+                    hornitzaile_erab=User.objects.get(username='ekm')
+                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
+                else:      
+                        
+                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+       
+     
+            #Ordena Filtroa
+            bozkatuenak_path_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    paths = paths.order_by('-path_creation_date')
+                if(oData2 == "dataAsc"):
+                    paths = paths.order_by('path_creation_date')              
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
+    
+                    paths_ids=[]
+                    for patha in paths:
+                        id = patha.path_id
+                        paths_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+        
+      
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    paths=paths.filter(path_egunekoa=1)
+                if bProp == "proposatutakoa":
+                    paths=paths.filter(path_proposatutakoa=1)
+            
+                if bIrudiBai=="irudiaDu":             
+                    paths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                    #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                    paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
+    
+    
+    
+        #PAGINATOR ITEMS
+        paginator = Paginator(items, 26)    
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+        page = request.GET.get('page')
+        try:
+            items = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            items = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            items = paginator.page(paginator.num_pages)
+    
+        
+    
+        #PAGINATOR PATHS
+        paginator = Paginator(paths, 26)    
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+        page = request.GET.get('page')
+        try:
+            paths = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paths = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paths = paginator.page(paginator.num_pages)
+    
+    
+        z="p"
+        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+
+    else:
+        print "nondik ba?"
+
+def eguneko_ibilbidea_kendu(request):
+    
+    path_id = request.GET.get('id')
+    nondik = request.GET.get('nondik')
+    
+    
+    path.objects.filter(id=path_id).update(egunekoa = 0,proposatutakoa=1)   
+
+    #GURI ALDAKETAREN BERRI EMAN?
+    
+    mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko ibilbide hau kendu du (id): "+str(path_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
+    send_mail('OndareBideak - Eguneko ibilbideetan aldaketak', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+    
+    if(nondik=="hasiera"):
+        
+        '''
+        uri =randomword(10); 
+    
+        '''
+
+        paths=[]
+        paths=path.objects.filter(egunekoa=1)
+    
+        paginator = Paginator(paths, 26)
+    
+   
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+ 
+    
+        page = request.GET.get('page')
+        try:
+            paths = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paths = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paths = paginator.page(paginator.num_pages)
+    
+   
+       
+        return render_to_response('eguneko_ibilbideak.html',{'paths':paths},context_instance=RequestContext(request))
+    elif(nondik=="bilaketa"):
+        print "bilaketa orritik"
+        # Helburu hizkuntza guztietan burutuko du bilaketa
+        hizkuntza=request.GET['hizkRadio']   
+        galdera=request.GET['search_input']
+    
+        #FILTROAK
+        hizkuntzakF=request.GET['hizkuntzakF']
+        hizkF=[] 
+        hornitzaileakF=request.GET['hornitzaileakF']
+        horniF=[]
+        motakF=request.GET['motakF']
+        motaF=[]
+        ordenakF=request.GET['ordenakF']
+        ordenaF=[]
+        lizentziakF=request.GET['lizentziakF']
+        lizentziaF=[]  
+        besteakF=request.GET['besteakF']
+        besteaF=[]
+    
+        items=[]
+        paths=[]
+        search_models_items = [item]
+        search_models_paths = [path]
+        bilaketa_filtroak=1
+    
+    
+        #FILTROAK PRESTATU
+        hEu="ez"
+        hEs="ez"
+        hEn="ez"
+        if hizkuntzakF != "":       
+            hizkF=hizkuntzakF.split(',')
+            for h in hizkF:
+                if(h=="eu"):
+                    hEu="eu"
+                if(h=="es"):
+                    hEs="es"
+                if(h=="en"):
+                    hEn="en"
+                
+        horniEkm="ez"
+        horniArrunta="ez"
+        if hornitzaileakF != "":       
+            horniF=hornitzaileakF.split(',')
+            for h in horniF:
+                if(h=="EuskoMedia"):
+                    horniEkm="EuskoMedia"
+                if(h=="herritarra"):
+                    horniArrunta="herritarra"
+        
+        motaT="ez"
+        motaS="ez"
+        motaV="ez"  
+        motaI="ez"  
+        if motakF != "":       
+            motaF=motakF.split(',')
+            for m in motaF:
+                if(m=="testua"):
+                    motaT="TEXT"
+                if(m=="audioa"):
+                    motaS="SOUND"
+                if(m=="bideoa"):
+                    motaV="VIDEO"
+                if(m=="irudia"):
+                    motaI="IMAGE"
+    
+        oData="ez"
+        oData2="ez"
+        oBoto="ez"
+        if ordenakF != "":       
+            ordenaF=ordenakF.split(',')
+            for o in ordenaF:
+                if(o=="data"):
+                    oData="data"
+                if(o=="dataAsc"):
+                    oData2="dataAsc"
+                if(o=="botoak"):
+                    Boto="botoak"
+    
+        lLibre="ez"
+        lCommons="ez"
+        lCopy="ez"
+        if lizentziakF !="":
+            lizentziaF=lizentziakF.split(',')
+            for l in lizentziaF:
+                if(l=="librea"):
+                    lLibre="librea"
+                if(l=="creativeCommons"):
+                    lCommons="creativeCommons"
+                if(l=="copyRight"):
+                    lCopy="copyRight"
+    
+    
+        bEgun="ez"
+        bProp="ez"
+        bWikify="ez"
+        bIrudiBai="ez"
+        bIrudiEz="ez"
+        if besteakF != "":       
+            besteaF=besteakF.split(',')
+            for b in besteaF:
+                if(b=="egunekoa"):
+                    bEgun="egunekoa"
+                if(b=="proposatutakoa"):
+                    bProp="proposatutakoa"
+                if(b=="wikifikatua"):
+                    bWikify="wikifikatua"
+                if(b=="irudiaDu"):
+                    bIrudiBai="irudiaDu"
+                if(b=="irudiaEzDu"):
+                    bIrudiEz="irudiaEzDu"
+    
+        #GALDERA BOTA
+        if hizkuntza == 'eu':
+            #ITEMS
+            #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
+            items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
+       
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+            #hornitzaile filtroa
+            if(hornitzaileakF != ""):
+                if(horniEkm=="ekm"):
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
+                else:
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
+            #Mota filtroa, edm_type=SOUND
+            if(motakF != ""):
+                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])
+            #Ordena Filtroa
+            bozkatuenak_item_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    #items = items.order_by('-dc_date')
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
+                if(oData2 == "dataAsc"):
+               
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+    
+                    items_ids=[]
+                    for itema in items:
+                        id = itema.item_id
+                        items_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
+            #Lizentziak filtroa
+            if lizentziakF !="":  
+                if  lLibre=="librea":
+                    items=items.filter(edm_rights='librea')
+                if lCommons=="creativeCommons":
+                    items=items.filter(edm_rights='creativeCommons')
+                if lCopy=="copyRight":
+                    items=items.filter(edm_rights='copyRight')                
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    items=items.filter(egunekoa=1)
+                if bProp == "proposatutakoa":
+                    items=items.filter(proposatutakoa=1)
+                if bWikify=="wikifikatua":
+                    items=items.filter(wikifikatua=1)
+                if bIrudiBai=="irudiaDu":                          
+                    items=items.filter(edm_object = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":              
+                    items=items.exclude(edm_object = Raw("[* TO *]"))
+                
+        
+            #PATHS
+            paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+            #hornitzaile filtroa TXUKUNDUUUU
+            if(hornitzaileakF != ""):
+           
+                if(horniEkm=="ekm"):
+                
+                    hornitzaileakF=hornitzaileakF+"ekm"
+                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
+                    hornitzaile_erab=User.objects.get(username='ekm')
+                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
+                else:      
+                        
+                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+       
+       
+            #Ordena Filtroa
+            bozkatuenak_path_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    paths = paths.order_by('-path_creation_date')
+                if(oData2 == "dataAsc"):
+                    paths = paths.order_by('path_creation_date')              
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
+    
+                    paths_ids=[]
+                    for patha in paths:
+                        id = patha.path_id
+                        paths_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+        
+       
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    paths=paths.filter(path_egunekoa=1)
+                if bProp == "proposatutakoa":
+                    paths=paths.filter(path_proposatutakoa=1)
+           
+                if bIrudiBai=="irudiaDu":             
+                    paths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                
+                    paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
+    
+                
+        elif hizkuntza == 'es':
+       
+            items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+            #hornitzaile filtroa
+            if(hornitzaileakF != ""):
+                if(horniEkm=="ekm"):
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
+                else:
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
+            #Mota filtroa, edm_type=SOUND
+            if(motakF != ""):
+                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+            #Ordena Filtroa
+            bozkatuenak_item_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    #items = items.order_by('-dc_date')
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
+                if(oData2 == "dataAsc"):             
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+    
+                    items_ids=[]
+                    for itema in items:
+                        id = itema.item_id
+                        items_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
+            #Lizentziak filtroa
+            if lizentziakF !="":  
+                if  lLibre=="librea":
+                    items=items.filter(edm_rights='librea')
+                if lCommons=="creativeCommons":
+                    items=items.filter(edm_rights='creativeCommons')
+                if lCopy=="copyRight":
+                    items=items.filter(edm_rights='copyRight')                
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    items=items.filter(egunekoa=1)
+                if bProp == "proposatutakoa":
+                    items=items.filter(proposatutakoa=1)
+                if bWikify=="wikifikatua":
+                    items=items.filter(wikifikatua=1)
+                if bIrudiBai=="irudiaDu":                        
+                    items=items.filter(edm_object = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                    #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                    items=items.exclude(edm_object = Raw("[* TO *]"))
+                #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
+        #...
+        
+            paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+            #hornitzaile filtroa TXUKUNDUUUU
+            if(hornitzaileakF != ""):
+ 
+                if(horniEkm=="ekm"):
+                
+                    hornitzaileakF=hornitzaileakF+"ekm"
+                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
+                    hornitzaile_erab=User.objects.get(username='ekm')
+                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
+                else:      
+                        
+                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+       
+      
+            #Ordena Filtroa
+            bozkatuenak_path_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    paths = paths.order_by('-path_creation_date')
+                if(oData2 == "dataAsc"):
+                    paths = paths.order_by('path_creation_date')              
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
+    
+                    paths_ids=[]
+                    for patha in paths:
+                        id = patha.path_id
+                        paths_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+        
+      
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    paths=paths.filter(path_egunekoa=1)
+                if bProp == "proposatutakoa":
+                    paths=paths.filter(path_proposatutakoa=1)
+           
+                if bIrudiBai=="irudiaDu":             
+                    aths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                    #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                    paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
+        elif hizkuntza == 'en':
+       
+            items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+        
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+            #hornitzaile filtroa
+            if(hornitzaileakF != ""):
+                if(horniEkm=="ekm"):
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
+                else:
+                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
+            #Mota filtroa, edm_type=SOUND
+            if(motakF != ""):
+                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+            #Ordena Filtroa
+            bozkatuenak_item_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    #items = items.order_by('-dc_date')
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
+                if(oData2 == "dataAsc"):
+                    print "DATA GORAKA"
+                    #items = items.order_by('-dc_date')
+                    items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+    
+                    items_ids=[]
+                    for itema in items:
+                        id = itema.item_id
+                        items_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
+            #Lizentziak filtroa
+            if lizentziakF !="":  
+                if  lLibre=="librea":
+                    items=items.filter(edm_rights='librea')
+                if lCommons=="creativeCommons":
+                    items=items.filter(edm_rights='creativeCommons')
+                if lCopy=="copyRight":
+                    items=items.filter(edm_rights='copyRight')                
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    items=items.filter(egunekoa=1)
+                if bProp == "proposatutakoa":
+                    items=items.filter(proposatutakoa=1)
+                if bWikify=="wikifikatua":
+                    items=items.filter(wikifikatua=1)
+                if bIrudiBai=="irudiaDu":             
+              
+                    items=items.filter(edm_object = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                    #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                    items=items.exclude(edm_object = Raw("[* TO *]"))
+                    #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
+        #...
+        
+            paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+            #hizkuntza filtroa
+            if hizkuntzakF != "":       
+                paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
+            #hornitzaile filtroa TXUKUNDUUUU
+            if(hornitzaileakF != ""):
+           
+                if(horniEkm=="ekm"):
+                
+                    hornitzaileakF=hornitzaileakF+"ekm"
+                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
+                    hornitzaile_erab=User.objects.get(username='ekm')
+                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
+                else:      
+                        
+                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+       
+     
+            #Ordena Filtroa
+            bozkatuenak_path_zerrenda=[]
+            if(ordenakF != ""):            
+                if(oData == "data"):
+                    paths = paths.order_by('-path_creation_date')
+                if(oData2 == "dataAsc"):
+                    paths = paths.order_by('path_creation_date')              
+                if(oBoto == "botoak"):
+                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
+    
+                    paths_ids=[]
+                    for patha in paths:
+                        id = patha.path_id
+                        paths_ids.append(id)
+                    #Ordena mantentzen du??                        
+                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+        
+      
+            #Besteak filtroa
+            if (besteakF != ""):  
+                if bEgun=="egunekoa":
+                    paths=paths.filter(path_egunekoa=1)
+                if bProp == "proposatutakoa":
+                    paths=paths.filter(path_proposatutakoa=1)
+            
+                if bIrudiBai=="irudiaDu":             
+                    paths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                if bIrudiEz=="irudiaEzDu":
+                    #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
+                    paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
+    
+    
+    
+        #PAGINATOR ITEMS
+        paginator = Paginator(items, 26)    
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+        page = request.GET.get('page')
+        try:
+            items = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            items = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            items = paginator.page(paginator.num_pages)
+    
+        
+    
+        #PAGINATOR PATHS
+        paginator = Paginator(paths, 26)    
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+        page = request.GET.get('page')
+        try:
+            paths = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paths = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paths = paginator.page(paginator.num_pages)
+    
+    
+        z="p"
+        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     else:
         print "nondik ba?"
@@ -1355,7 +2423,7 @@ def autocomplete(request):
     #suggestions_src = [result.edm_provider for result in sqs]
     suggestions_src=[]
     for result in sqs:
-        if result.edm_provider == "arrunta" or result.edm_provider == "Arrunta" :
+        if result.edm_provider == "herritarra" or result.edm_provider == "Herritarra" :
             src=result.dc_creator
             suggestions_src.append(src)
         else:
@@ -1378,7 +2446,7 @@ def autocomplete(request):
 
 
 def cross_search(request):
-    
+    print "cross_search"
     #Defektuz itemen orria erakusteko
     z="i"
     # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -1459,8 +2527,6 @@ def cross_search(request):
     
     
     
-    
-    #,'paths':paths
     bilaketa_filtroak=1
     return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
@@ -1534,11 +2600,17 @@ def hornitzaile_search(request):
 
 def filtro_search(request):
     
+   
     # Helburu hizkuntza guztietan burutuko du bilaketa
     hizkuntza=request.GET['hizkRadio']   
     galdera=request.GET['search_input']
+    z=request.GET['z']
+    if 'hornitzailea' in request.GET:
+        hornitzaile_izena=request.GET['hornitzailea']
+    else:
+        hornitzaile_izena=""
     
-    #FILTROAK
+    
     hizkuntzakF=request.GET['hizkuntzakF']
     hizkF=[] 
     hornitzaileakF=request.GET['hornitzaileakF']
@@ -1563,9 +2635,12 @@ def filtro_search(request):
     hEu="ez"
     hEs="ez"
     hEn="ez"
-    if hizkuntzakF != "":       
+    if hizkuntzakF != "": 
         hizkF=hizkuntzakF.split(',')
+        print "split hizkuntzakF"
+        print hizkF
         for h in hizkF:
+            print h
             if(h=="eu"):
                 hEu="eu"
             if(h=="es"):
@@ -1580,8 +2655,8 @@ def filtro_search(request):
         for h in horniF:
             if(h=="EuskoMedia"):
                 horniEkm="EuskoMedia"
-            if(h=="arrunta"):
-                horniArrunta="arrunta"
+            if(h=="herritarra"):
+                horniArrunta="herritarra"
         
     motaT="ez"
     motaS="ez"
@@ -1730,7 +2805,7 @@ def filtro_search(request):
         if(hornitzaileakF != ""):
             
             '''
-            if(horniEkm=="arrunta"):
+            if(horniEkm=="herritarra"):
                 #Hornitzaileak diren erabiltzaileak hartu
                 paths = paths.exclude(path_fk_user_id__in=hornitzaile_erab)
             else:
@@ -1983,7 +3058,7 @@ def filtro_search(request):
         if(hornitzaileakF != ""):
             
             '''
-            if(horniEkm=="arrunta"):
+            if(horniEkm=="herritarra"):
                 #Hornitzaileak diren erabiltzaileak hartu
                 paths = paths.exclude(path_fk_user_id__in=hornitzaile_erab)
             else:
@@ -2072,8 +3147,12 @@ def filtro_search(request):
         paths = paginator.page(paginator.num_pages)
     
     
-    
-    return render_to_response('cross_search.html',{'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+    if hornitzaile_izena:
+       
+        hornitzaile = hornitzailea.objects.get(fk_user__username=hornitzaile_izena)
+        return render_to_response('cross_search.html',{'hornitzailea':hornitzaile,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkuntzakF':hizkF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
+    else:
+        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkuntzakF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
 
 def nabigazioa_hasi(request):
     
@@ -2155,8 +3234,9 @@ def nabigazioa_hasi(request):
         comment_form = CommentForm() 
         comment_parent_form = CommentParentForm()
         
-        
-        return render_to_response('nabigazio_item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        #Ezkerreko zutabea ez erakusteko
+        non="fitxaE"
+        return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
     
     return False
         
@@ -2776,11 +3856,15 @@ def db_erregistratu_erabiltzailea(cd):
             hornitzaile_izena=cd["honitzaile_izena"]
             mezua="Hornitzailearen izena:"+str(hornitzaile_izena)+".\n"+"Ondorengoa egin datu-basean: update auth_user_groups set group_id=3 where user_id="+str(erabiltzailea.id)+"\n"+"Bidali mezua hornitzaileari: "+str(erabiltzailea.email)
             send_mail('OndareBideak - Hornitzaile izateko eskaera', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+            
+            #Hornitzailearen fitxa (hutsa) sortuko dugu datu-basean
+            hornitzaile_fitxa=hornitzailea(fk_user=erabiltzailea,izena=hornitzaile_izena)
+            hornitzaile_fitxa.save()
             #group = Group.objects.get(name='hornitzailea') 
             #group.user_set.add(erabiltzailea)     
          
         #Hasieran beti 'arrunta' bezala erregistratu   
-        group = Group.objects.get(name='arrunta') 
+        group = Group.objects.get(name='herritarra') 
         group.user_set.add(erabiltzailea)     
             
        
@@ -3562,6 +4646,14 @@ def ajax_lortu_eguneko_itema (request):
     eguneko_itemak=item.objects.filter(egunekoa=1).exclude(edm_object="")
   
     return render_to_response('eguneko_itema.xml', {'items': eguneko_itemak}, context_instance=RequestContext(request), mimetype='application/xml')
+
+def ajax_lortu_eguneko_ibilbidea (request):
+    
+    #Irudirik ez duten itemak ez ditugu erakutsiko
+    eguneko_ibilbideak=path.objects.filter(egunekoa=1).exclude(paths_thumbnail="")
+  
+    return render_to_response('eguneko_ibilbidea.xml', {'paths': eguneko_ibilbideak}, context_instance=RequestContext(request), mimetype='application/xml')
+
 
 def gorde_ibilbidea(request):
 

@@ -243,6 +243,13 @@
 	border-radius: 4px;
 	padding: 5px;
     }
+    
+    #eguneko_ibilbidea img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 97%;
+}
 
     .crossingPaths{
 	margin-top: 20px;
@@ -469,4 +476,43 @@ circle .unselectedNode {
 #logoa {
     margin-top: -10px;
     width: 195px;
+}
+.btn-common {
+    border: 1px solid #0099ae;
+    color: #0099ae;
+    font-family: "Open Sans",sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 10px 25px;
+}
+
+.path-name h2 {
+    margin-bottom: 15px;
+    margin-top: 0;
+    /*color: #686868;*/
+    font-size: 24px;
+    font-family: "dosis"!important;
+    font-weight: 300;
+}
+.overflow {
+    overflow: hidden;
+}
+.path-info h3 {
+    font-size: 20px;
+    font-family: "dosis"!important;
+    font-weight: 300;
+}
+.path-info-description{
+	color: #000;
+    font-family: "Lato",sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+}
+.navbar-default li {
+    font-size: 14px;
+    padding: 0 15px 0 0;
+    color: #c03035;
+    text-decoration: none;
+     
 }

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+  <div class="panel-body">
+  
+   {% for azkenekoa in azkenekoak %}
+	
+        
+        <input type="hidden" id="item_id_{{ forloop.counter }}" value="{{azkenekoa.id}}"/>
+		<input type="hidden" id="titulua_{{ forloop.counter }}" value="{{azkenekoa.dc_title}}"/>
+		<input type="hidden" id="irudia_{{ forloop.counter }}" value="{{azkenekoa.edm_object}}"/>
+				 
+        
+        <!-- Project One -->
+        <div class="row">
+            <div class="col-md-7">
+            	
+            	<!-- Preview Image -->
+      
+       			 {% if azkenekoa.edm_object %} 			 	 
+       			 	 <a href="{{BASE_URL}}/erakutsi_item?id={{azkenekoa.id}}">
+                  		  <img id="imgPreview" id="imgPreview"class="img-responsive" src="{{azkenekoa.edm_object}}" ><!--src="http://placehold.it/700x300"-->
+                	</a>
+				{%else %}
+		 		 	<a href="{{BASE_URL}}/erakutsi_item?id={{azkenekoa.id}}">
+                   		 <img id="imgPreview" class="img-responsive" src="/uploads/NoIrudiItem.png"  alt=""><!--src="http://placehold.it/700x300"-->
+               		</a>
+      			 {%endif%}
+              
+            </div>
+            <div class="col-md-5">
+            	<h3>{{azkenekoa.dc_title}}</h3>
+                {% if azkenekoa.edm_provider %}	
+                	<h4>{{azkenekoa.edm_provider}}</h4>
+                {%endif%}
+                <p>{{ azkenekoa.dc_description|slice:"0:100" }}...</p>
+                <a class="btn btn-primary" href="{{BASE_URL}}/erakutsi_item?id={{azkenekoa.id}}">Ikusi Itema <span class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+        </div>
+
+
+        <hr>
+
+{% endfor %}
+
+</div>
+       
+
+        <hr>
+
+        <!-- Pagination -->
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <ul class="pagination">
+                    <li>
+                        <a href="#">&laquo;</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">1</a>
+                    </li>
+                    <li>
+                        <a href="#">2</a>
+                    </li>
+                    <li>
+                        <a href="#">3</a>
+                    </li>
+                    <li>
+                        <a href="#">4</a>
+                    </li>
+                    <li>
+                        <a href="#">5</a>
+                    </li>
+                    <li>
+                        <a href="#">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+
+<!--</div>-->
+ {% endblock %} 

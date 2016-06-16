@@ -60,6 +60,10 @@ from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_kokalekua
 from KULTURBIDEAK.kulturbideak_app.views import ajax_hornitzaile_irudia_gorde
 from KULTURBIDEAK.kulturbideak_app.views import fitxa_gorde
 from KULTURBIDEAK.kulturbideak_app.views import hornitzailea_ikusi
+from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_eguneko_ibilbidea
+from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbideak
+from KULTURBIDEAK.kulturbideak_app.views import azkeneko_itemak
+from KULTURBIDEAK.kulturbideak_app.views import azkeneko_ibilbideak
 from django.contrib import admin
 
 #MAddalen
@@ -137,6 +141,13 @@ urlpatterns = patterns('',
     url(r'ajax_hornitzaile_irudia_gorde',ajax_hornitzaile_irudia_gorde), 
     url(r'fitxa_gorde',fitxa_gorde),
     url(r'hornitzailea_ikusi',hornitzailea_ikusi),
+    url(r'ajax_lortu_eguneko_ibilbidea',ajax_lortu_eguneko_ibilbidea),
+    url(r'eguneko_ibilbideak',eguneko_ibilbideak),
+    url(r'azkeneko_itemak',azkeneko_itemak),
+    url(r'azkeneko_ibilbideak',azkeneko_ibilbideak),
+    
+    
+    
      
     
     

@@ -36,11 +36,18 @@
 		
 		{% if  item.id%}
 		<div class="thumbnail">
-			
-			{% if request.user|has_group:'hornitzailea' %}
-				<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >				
- 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				</a>
+			{% if user.is_authenticated %}
+				{% if request.user|has_group:'hornitzailea' %}
+					{% if path.egunekoa == 0 %}
+						<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >				
+ 							<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+						</a>
+					{% else %}
+						<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=hasiera" >				
+ 							<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+						</a>
+					{%endif%}
+				{%endif%}
 			{%endif%}
 			
 			<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >

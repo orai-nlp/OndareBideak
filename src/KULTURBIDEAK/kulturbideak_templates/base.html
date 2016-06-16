@@ -334,11 +334,6 @@ var markers = [];
    	
    	
    	<!-- PROBA HASI -->  	
-
-
-   
-
-  
    	
    	
    	<!-- BIGARREN PROBA-->
@@ -631,9 +626,11 @@ var markers = [];
 		</div>
 		{% if non != "fitxaE" %}
 		<div class="ezkerra_div" align="left">
-			<div><b>{% trans "Azkenak" %} </b></div>
+			<div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_itemak"><b>{% trans "Azkenako Itemak" %} </b></a></div>
 			
 			<br />
+			<div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_ibilbideak"><b>{% trans "Azkeneko Ibilbideak" %} </b></a></div>
+			
 			<br />
 			{% if user.is_authenticated %}
 			<!-- nire_ibilbideak javascript bidez kargatzen da. Initialize() -> load_paths_list(user_id)-->	
@@ -663,6 +660,8 @@ var markers = [];
   					</div>
 				</div>
 				-->
+			
+			<div id="eguneko_ibilbidea"><a href="{{BASE_URL}}/eguneko_ibilbideak"><b>{% trans "Eguneko Ibilbideak" %} </b></a></div>
 			
 			
 			<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
