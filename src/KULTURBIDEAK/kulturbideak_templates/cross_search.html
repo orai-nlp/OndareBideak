@@ -282,7 +282,7 @@ um_pages }}</p>-->
        				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
        			</a>
        		
-       			{% if user.username == path.path_fk_user_id %}
+       			{% if user.username == path.path_fk_user_id.username %}
 
 					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >				
  					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

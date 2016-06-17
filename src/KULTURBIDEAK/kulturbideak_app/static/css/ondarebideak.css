@@ -147,7 +147,7 @@
 	}
 	 #path_boxes_overview svg{
         width: 98%;
-        height: 400px;
+        height: 700px;
         display: block;
         padding-top: 5px;
         background: ;
@@ -364,6 +364,7 @@
     }
 	.laguntza {
 		color:  #9e8012;
+		font-family: "Dosis" !important;
 	}
 	.filtroak {
 		color:  #9e8012;
@@ -510,7 +511,7 @@ circle .unselectedNode {
     overflow: hidden;
 }
 .path-info h3 {
-    font-size: 20px;
+    font-size: 17px;
     font-family: "dosis"!important;
     font-weight: 300;
 }
@@ -521,10 +522,68 @@ circle .unselectedNode {
     font-weight: 300;
     line-height: 22px;
 }
+.item-info-description{
+	color: #000;
+    /*font-family: "Lato",sans-serif;*/
+    font-family: "dosis",sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+}
 .navbar-default li {
     font-size: 14px;
     padding: 0 15px 0 0;
     color: #c03035;
     text-decoration: none;
      
+}
+.ibilbide-irudia{
+	
+	height: 128px;
+    border-radius: 20%;
+    /*border: solid 1px #CCC;*/
+   
+}
+.ibilbide-panela{
+	
+ height: 550px;
+	
+}
+.autocomplete-galdera{
+	font-family: "dosis" !important;
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+.gehitu-botoia{
+	color: #0099ae;
+	
+}
+.eremu-str{
+	color: #0099ae !important;
+	
+}
+.antzekoTitulua{
+	font-family: "dosis" !important;
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 15px;
+    margin-top: 0;
+    alignment-adjust: center;
+	
+}
+p.uppercase {
+    text-transform: uppercase;
+    text-align: center;
+    font-family: "dosis" !important;
+    font-size: 24px;
+}
+.antzekoItemTitulua{
+ 	font-size: 17px;
+    font-family: "dosis"!important;
+    font-weight: 300;	
+    text-align: center;
+	
+	
 }

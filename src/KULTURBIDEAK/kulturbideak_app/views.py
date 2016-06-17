@@ -3353,8 +3353,15 @@ def autoplay_hasieratik(request):
 def nabigazio_item(request):
     
  
-    path_id=request.POST['path_id']
-    item_id=request.POST['item_id']
+    if request.GET:
+        #Ibilbideak.html-tik ikusi botoia sakatzean
+        path_id=request.GET['path_id']
+        item_id=request.GET['item_id']
+    
+    if request.POST:
+        #nabigazio item batetik hurrengora edota aurrekora pasatzean
+        path_id=request.POST['path_id']
+        item_id=request.POST['item_id']
     
     
     #print "path_id"
@@ -3658,8 +3665,10 @@ def botoa_eman_path(request):
     comment_form = CommentForm() 
     comment_parent_form = CommentParentForm()
  
-    
-    return render_to_response('nabigazio_item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    #Ezkerreko zutabea ez erakusteko
+    non="fitxaE"
+    #return render_to_response('nabigazio_item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 def botoa_kendu_path(request):
@@ -3731,7 +3740,10 @@ def botoa_kendu_path(request):
     comment_form = CommentForm() 
     comment_parent_form = CommentParentForm()
    
-    return render_to_response('nabigazio_item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+   
+    #Ezkerreko zutabea ez erakusteko
+    non="fitxaE"
+    return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 
@@ -4044,9 +4056,7 @@ def editatu_ibilbidea(request):
 
 
 def erakutsi_item(request):
-    
-    
-    
+     
     if request.POST:
         #KOMENTARIOA IDATZI DA
         id=request.POST['id']
@@ -4120,8 +4130,13 @@ def erakutsi_item(request):
     comment_form = CommentForm() 
     comment_parent_form = CommentParentForm()
     print "item.html deitu baino lehen"
+    
+    non="fitxaE"
 
-    return render_to_response('item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+    return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+
+
+
 
 def botoa_eman_item(request):
     
@@ -4213,7 +4228,8 @@ def botoa_eman_item(request):
         return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
-        return render_to_response('item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        non="fitxaE"
+        return render_to_response('item_berria.html',{"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
     
 def botoa_kendu_item(request):
@@ -4307,8 +4323,8 @@ def botoa_kendu_item(request):
         return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
-        
-        return render_to_response('item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        non="fitxaE"
+        return render_to_response('item_berria.html',{"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
 
 

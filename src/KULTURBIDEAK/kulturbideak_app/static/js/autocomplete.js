@@ -99,6 +99,8 @@
     	if(results.length > 0) 
     	{
     		
+    		
+    		
     		for(var res_offset in results) 
     		{
     			var a_href="/erakutsi_item?id="+results_id[res_offset];
@@ -138,8 +140,12 @@
 				//div_emaitza.appendChild(elemImg);
 				
     		}
-	    var div_service = document.getElementById("SERVICE");
-	    div_service.setAttribute("style", "display:block;");
+	  		 var div_service = document.getElementById("SERVICE");
+	   		 div_service.setAttribute("style", "display:block;");
+	    
+	    	
+	
+		
     	}
     	else
     	{
