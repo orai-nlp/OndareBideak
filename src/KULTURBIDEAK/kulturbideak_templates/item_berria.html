@@ -213,7 +213,7 @@
 		{% if item.proposatutakoa %}
 		<li>
 				<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-				Proposatutakoa
+				Adituek Proposatutakoa
 					
 		</li>
 		{%endif%}
@@ -230,16 +230,15 @@
 		</ul>
 		</div>
 		<div class="path-info overflow">
-			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
-			
 			{% if user.is_authenticated %}
-			
+			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
+						
   			<button class="btn btn-default gehitu-botoia" type="button" title="lan eremura gehitu" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
  				
  				{% trans "Gehitu" %}
  				<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
 			</button>
-			{%endif%}
+			
 			
 				<!--ikusi
 				<a class="btn btn-primary" type="button" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
@@ -273,7 +272,7 @@
  					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
 					</a>
 			{%endif%}
-			
+		{%endif%}  		
 		</div>
 		<div class="path-info overflow">
 			
