@@ -44,7 +44,7 @@ INSTALLED_APPS = ()
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'kulturbideak_db',                      # Or path to database file if using sqlite3.
+            'NAME': 'kulturbideak_db_probak',                      # Or path to database file if using sqlite3.
             # The following settings are not used with sqlite3:
             'USER': 'dss2016', #dss2016    root
             'PASSWORD': 'd552O1Gsql', #d552O1Gsql   d552O1G

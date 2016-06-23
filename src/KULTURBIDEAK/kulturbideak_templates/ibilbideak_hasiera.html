@@ -3,7 +3,7 @@
 {% load tags %}
 {% block content %}
 
-
+<link rel="stylesheet" href="{{STATIC_URL}}css/adituTag.css" type="text/css">
 
 <!-- EGUNEKOAK - BOZKATUENAK - AZKENAK -->	
 <div class="container">
@@ -86,9 +86,13 @@
     
     <div class="thumbnail col-xs-2 col-md-2">
 
-			<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
-				{% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}
-			</a>
+       <div class="side-corner-tag">
+         <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
+           {% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}                                   
+           <p><span>aditua</span></p>                      
+         </a>
+       </div>
+
 			
     </div>
     <div class=" col-xs-1 col-md-1"></div>
