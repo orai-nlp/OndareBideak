@@ -40,6 +40,9 @@
 			<span class="glyphicon glyphicon-play" aria-hidden="true"></span> 
     		AUTOPLAY
 			</a>
+			<a class="btn btn-common" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
+       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> IKUSI
+       			</a>
 		</div>
 		
 	</div>
@@ -105,13 +108,14 @@
 		</ul>
 		</div>
 		-->
+		{% if user.is_authenticated %}
 		<div class="path-info overflow">
 			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
-				<!--ikusi-->
+				<!--ikusi
 				<a class="btn btn-primary" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
        				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
        			</a>
-		
+				-->
 			{% if request.user|has_group:'hornitzailea' %}
 				<!--egunekoa bihurtu-->
 				{% if momentukoPatha.egunekoa == 0 %}	
@@ -133,13 +137,14 @@
 					<a class="btn btn-default" type="button" title="Editatu ibilbidea" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}" >				
  					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</a>
-					<!-- ezabatu -->
-					<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" href="{{BASE_URL}}/ezabatu_ibilbidea?id={{momentukoPatha.id}}" >				
+					<!-- ezabatu"-->
+					<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{momentukoPatha.id}})"  >				
  					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
 					</a>
 			{%endif%}
 			
 		</div>
+		{%endif%}
 		<!--
 		</br>
 		<div>
@@ -246,7 +251,7 @@
 
 
 <!-- COMMENTS-->
-<<div class="container">
+<div class="container">
 <div class="row">
 	<div class="col-md-1">
 	</div>

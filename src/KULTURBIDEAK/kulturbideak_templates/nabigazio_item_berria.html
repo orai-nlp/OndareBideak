@@ -25,13 +25,31 @@
 
 
 <div class="container">
+<div class="row">	
+	<div class="col-md-1">
+	</div>
+	
+	<div class="col-md-9">
+		<div class="path-name2 overflow titulu-kolorea"><a class="titulu-kolorea" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}"><h2 class="bold">{{momentukoPatha.dc_title}}</h2></a></div>
+	</div>
+	<div class="col-md-2">
+		
+		
+		
+	</div>
+</div>
+</div>
+
+<div class="container">
 <div class="row">
 	<div class="col-md-1">
 	</div>
 	<div class="col-md-3">
+		
 		<a class="img-responsive bilaketaEmaitza  thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >
 				<img  alt="{{momentukoItema.dc_title}}" src="{% if momentukoItema.edm_object %} {{momentukoItema.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 		</a>
+		
 		<div class="path-info overflow">
 			
 		<ul class="nav  navbar-default">
@@ -49,7 +67,54 @@
 		</li>
 		</ul>
 		</div>
+		<div class="path-info overflow">
+			<h3 class="titulu-kolorea">NABIGATU</h3>
+		</div>
+		<!--BOTOIAK HURRENGOAK -->
+		<table class="eskuma">
+  
+  		{% for hurrengoa in hurrengoak %}
+  		<tr class="spaceUnder">
+  			<th>
+  		<a>
+ 		 <button type="button" class="btn btn-common eskuma" onclick="nabigatu({{path_id}},{{hurrengoa.fk_item_id_id}})">
+			<span  aria-hidden="true"> 
+			
+			{%if hasieraBakarra == 1%}
+			<span class="glyphicon glyphicon-repeat" aria-hidden="true">  	</span>
+			{%else%}
+			<!--hemen hurrengoaren titulua jarri -->
+    		{{hurrengoa.dc_title}} 
+    		<span class="glyphicon glyphicon-forward" aria-hidden="true">  	</span>	   	
+    		</span> 
+    		{% endif %}
+		</button>
+		</a>
+		</th>
+		</tr> 
+		<br />
+		{% endfor %}
+		</table>
 		
+		<!--BOTOIAK AURREKOAK -->
+   		<table class="ezkerra">
+  		{% for aurrekoa in aurrekoak %}
+ 		<tr class="spaceUnder">
+  			<th>
+ 		 <button type="button" class="btn btn-common ezkerra" onclick="nabigatu({{path_id}},{{aurrekoa.fk_item_id_id}})">
+		<span  aria-hidden="true"> 
+			<span class="glyphicon glyphicon-backward" aria-hidden="true"> 
+    	   	</span>
+    	  
+    		{{aurrekoa.dc_title}}
+    	</span> 	
+		</button> 
+			</th>
+		</tr>
+		<br />
+		{% endfor %}
+		</table>
+	
 	</div>
 	<div class="col-md-6">
 		<div class="path-name overflow titulu-kolorea">
@@ -89,8 +154,7 @@
 			</ul>
 		</div>
 		
-		
-			
+					
 			<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
  		
  		<div class="path-info overflow ">
@@ -98,6 +162,19 @@
  					{{momentukoNodea.dc_description}}
  				
  			</div>
+		</div>
+		<div class="path-info overflow">
+			<button id="create_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modaloverview" >
+			<span  aria-hidden="true"> 
+				<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"> 
+       			</span> 
+    			HEMEN ZAUDE   
+    		</span> 	
+			</button> 
+			<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
+		<span class="glyphicon glyphicon-play" aria-hidden="true"></span> 
+    	AUTOPLAY
+		</a>
 		</div>
 		<div class="path-info overflow">
 			<h3 class="titulu-kolorea">EZAUGARRIAK</h3>
@@ -350,6 +427,7 @@
 
 
 <!-- GEOLOKALIZAZIOA -->
+<!--
 <div class="container">
 <div class="row">
 	<div class="col-md-1">
@@ -363,6 +441,16 @@
 	</div>	
 </div>
 </div>
+-->
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			&nbsp; &nbsp; <hr />
+	</div>
+	</div>
+</div>
+	
 <!-- END GEOLOKALIZAZIOA -->
 
 <!-- MLT -->	
@@ -504,122 +592,60 @@ se'>{% trans "Send comment" %}</button>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--IBILBIDEAREN TITULUA -->
-
-<div><h4 class="media-heading titulu-kolorea">{{momentukoPatha.dc_title}}</h4></div>
-
-{# qr_from_text pathqrUrl "s" #}
-
-<!-- BOTAZIO SISTEMA IBILBIDEA--> 
-
-  {% if user.is_authenticated %}
+<!-- IBILBIDEAREN MODALA -->
+
+
+<div class="modal fade" id="modaloverview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>Ibilbidearen mapa</h4>
+      </div>
+     
+      	 
+  	<div id="path_boxes_overview"></div>
+    <script>
+    var ibilbide_data = [];
+    var path_id = {{path_id}};
+    var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus/uploads/festivalCineDonostia.jpeg", "parent":'' };
+        ibilbide_data.push(root);
+    </script>
+    {% for node in path_nodeak%}
+    <script type="text/javascript">
+      var id="{{node.fk_item_id_id}}";//path_node[0];
+      var titulua="{{node.dc_title}}";//path_node[1];
+      var irudia="{{node.paths_thumbnail}}";//path_node[2];
+      if (irudia == " ")
+        {
+          irudia="/uploads/NoIrudiItem.png";
+        }
+
+      var aita_id="{{node.paths_prev}}";
+      //aita hutsa bada , root izango da bere aita
+      if (aita_id== ""){
+        aita_id = 0;
+      } 
+      var obj={id: id, name: titulua , irudia: irudia, parent:aita_id};
+      ibilbide_data.push(obj);
+
+    </script>
+    {% endfor%}
+    <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3ondarebideakoverview.js"></script>
   
-  	<div class="eskuma"><b class="laguntza eskuma">Ibilbidea gustoko duzu?</b></div>
-	<br />
-	<div class="btn-group eskuma" role="group" aria-label="...">
-	
-  	{% if botatuDuPath == 1 %}
-		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" disabled>
-			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
- 	
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="#" >
-			<b class="eskuma laguntza">{{botoKopuruaPath}}</b>
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" >
-			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
- 	
-		</a>
-	
-  	{%else%}
- 		 <a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" >
-			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
- 	
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="#">
-			<b class="eskuma laguntza">{{botoKopuruaPath}}</b>
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" disabled >
-			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
- 	
-		</a>
-	{%endif%}
+      	
+      	
+	 
+	  </div>
+	  
 	</div>
+</div> 
 
 
-  {%endif%}
-<br />
-<br />
+<!--
 
 <div class="panel panel-default">
-  <!-- Default panel contents -->
+ 
   <div class="panel-heading"><b class="titulu-kolorea">HEMEN ZAUDE </b></div>
   <div class="panel-body">
   	<div id="path_boxes_overview"></div>
@@ -655,66 +681,11 @@ se'>{% trans "Send comment" %}</button>
 
 <br />
 
-<!-- BOTAZIO SISTEMA ITEMAK--> 
+-->
 
-  {% if user.is_authenticated %}
-  	<div class="eskuma"><b class="laguntza eskuma">Kultur itema gustoko duzu?</b></div>
-  
-	<br />
-	<div class="btn-group eskuma" role="group" aria-label="...">
-	
-  	{% if botatuDuItem == 1 %}
-		<a class="btn btn-default eskuma" type="button"  href="{{BASE_URL}}/botoa_eman_item?id={{node_id}}" disabled>
-			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
- 	
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="#" >
-			<b class="eskuma laguntza">{{botoKopuruaItem}}</b>
-		</a>
-		<a class="btn btn-default eskuma" type="button"  href="{{BASE_URL}}/botoa_kendu_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}" >
-			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
- 	
-		</a>
-	
-  	{%else%}
- 		 <a class="btn btn-default eskuma" type="button"  href="{{BASE_URL}}/botoa_eman_item?id={{node_id}}&nondik=nabigazioa&path_id={{path_id}}">
-			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
- 	
-		</a>
-		<a class="btn btn-default eskuma " type="button" href="#">
-			<b class="eskuma laguntza">{{botoKopuruaItem}}</b>
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{node_id}}" disabled >
-			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
- 	
-		</a>
-	{%endif%}
-</div>
 
-  {%endif%}
-
-<br />
-<br />
-<div>
-<!--AUKERATUTAKO ITEMA ERAKUTSI -->
-<div class="media path_sarrera">
-  <div class="media-left">
-    <a href="#">
-      <img class="media-object" src="{{momentukoItema.edm_object}}" alt="{{momentukoItema.edm_object}}">
-    </a>
-  </div>
-  <div class="media-body">
-  	{% get_current_language as LANGUAGE_CODE %}
-	<h4 class="media-heading titulu-kolorea">  {{ LANGUAGE_CODE|choose_title_language:momentukoItema }}</h4>
-    <!--<h4 class="media-heading titulu-kolorea">{{momentukoItema.dc_title}}</h4>-->
-    
-    		
-    {{momentukoNodea.dc_description}}
-  </div>
-  	{# qr_from_text itemqrUrl "s" #}
- </div>
-  	
-  	<!-- HURRENGOAK -->
+ <!-- 	
+ 
   
  
   	<div>
@@ -730,7 +701,7 @@ se'>{% trans "Send comment" %}</button>
 			{%if hasieraBakarra == 1%}
 			<span class="glyphicon glyphicon-repeat" aria-hidden="true">  	</span>
 			{%else%}
-			<!--hemen hurrengoaren titulua jarri -->
+		
     		{{hurrengoa.dc_title}} 
     		<span class="glyphicon glyphicon-forward" aria-hidden="true">  	</span>	   	
     		</span> 
@@ -745,7 +716,7 @@ se'>{% trans "Send comment" %}</button>
   
   
   
-  <!-- AURREKOAK -->
+ 
    		<table class="ezkerra">
   		{% for aurrekoa in aurrekoak %}
  		<tr class="spaceUnder">
@@ -764,133 +735,9 @@ se'>{% trans "Send comment" %}</button>
 	{% endfor %}
 	</table>
   </div>
- </div> 
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading"><b class="titulu-kolorea">Itemaren informazioa </b></div>
-  <div class="panel-body comment more">
-  	{% get_current_language as LANGUAGE_CODE %}
-  	{{ LANGUAGE_CODE|choose_description_language:momentukoItema |safe}}
-  	
-  	<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
- 	<!--<div class="comment more">{{ LANGUAGE_CODE|choose_description_language:momentukoItema |safe}}</div>-->
- 	
-    <!--{{momentukoItema.dc_description}}-->
-  </div>
-  
-</div>
- 
- <div class="metadatuak">
-	  <b class="titulu-kolorea"></b>
-	  {% if momentukoItema.dc_subject %}
-      <b class="titulu-kolorea">Gaia: </b>{{momentukoItema.dc_subject}}&nbsp;
-      {% endif %}
-      {% if momentukoItema.edm_country %}
-      <b class="titulu-kolorea">Herrialdea: </b>{{momentukoItema.edm_country}}&nbsp;
-      {% endif %}   
-      {% if momentukoItema.dc_creator %}
-      <b class="titulu-kolorea">Hornitzailea: </b>{{momentukoItema.dc_creator}}&nbsp;
-      {% endif %} 
-      {% if momentukoItema.edm_rights %}
-      <b class="titulu-kolorea">Eskubideak: </b>{{momentukoItema.edm_rights}}&nbsp;
-      {% endif %} 
-
-</div>
+ -->
 
 
-
-
-<!-- COMMENTS-->
- {% if user.is_authenticated %}
- <!-- Comments Form -->
- <div class="well info_box">
- 	<h4>Leave a Comment:</h4>
-    <form class="form-horizontal" role="form" method="POST" action="nabigazio_item">{% csrf_token %}
-    	<input type="hidden" name="item_id" value="{{node_id}}">
-    	<input type="hidden" name="path_id" value="{{path_id}}">
-    	<fieldset>
-        <div class="form-group">
-        <!--<textarea class="form-control" rows="3"></textarea>-->
-        	{{ comment_form.comment }}
-            {{ comment_form.comment.errors }}
-         </div>
-         {% if user.is_authenticated %}
-         	<button name="submit_comment" type="submit" class="btn btn-primary">{% trans "Send comment" %}</button>
-         {% else %}
-         <button name="submit_comment" class="btn btn-primary" onclick='window.location.href="/?next="; return fal
-se'>{% trans "Send comment" %}</button>
-         {% endif %}
-         </fieldset>
-     </form>
-</div>
-{%endif%}
-<hr>
-
- <!-- Posted Comments -->
- 	<!-- Comment -->
-{% for comment in comments %}
-	<div class="media">
-    	<form class="form-horizontal" role="form" method="POST" action="nabigazio_item">{% csrf_token %}
-    		<input type="hidden" name="item_id" value="{{node_id}}">
-    		<input type="hidden" name="path_id" value="{{path_id}}">
-        	<fieldset>
-            	<a class="pull-left" href="#" >
-                	<!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ comment.author.genre.genre }}.png" alt="">-->
-                	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                </a>
-                <div class="media-body">                        
-                	<h4 class="media-heading">
-                    	<small>{{ comment.author.first_name }} {{ comment.author.last_name }}</small> - <small>{{ comment.date|date:"SHORT_DATE_FORMAT" }}</small>
-                    </h4>
-					{{ comment.comment|safe }}
-					{% if user.is_authenticated %} <!--Maddalen-->
-                    <p><a href="#" onclick="$('#comment_response_div_{{ comment.id }}').show(1000);return false;">{% trans "Respond" %}</a></p>
-                    {%endif%}
-                    <div id="comment_response_div_{{ comment.id }}" style="display:none">
-	                	<div class="form-group">
-                        	<!--<textarea class="form-control" rows="3"></textarea>-->
-                            {{ comment_parent_form.parent_id }}
-                            {{ comment_parent_form.comment }}
-                            {{ comment_parent_form.comment.errors }}
-                         </div>
-                         {% if user.is_authenticated %}
-                         	<button onclick="$('#comment_response_div_{{ comment.id }} input').val({{ comment.id }})" name="submit_comment_parent" type="submit" class="btn btn-primary">Submit</button>
-                            <button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">Close</button>
-                         {% else %}
-                         	<button name="submit_comment_parent" class="btn btn-primary" onclick='window.location.href="/?next="; return false'>Submit</button>
-                            <button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">Close</button>
-                         {% endif %}
-                                    
-                     </div>
-                     {% for subcomment in comment.get_subcomments %}
-                     	<div class="media">
-                        	<a class="pull-left" href="#">
-                            	<!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ subcomment.author.genre.genre }}.png" alt="">-->
-                           		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                            </a>
-                            <div class="media-body">
-								<h4 class="media-heading">
-                                	<small>{{ subcomment.author.first_name }} {{ subcomment.author.last_name }}</small> - <small>{{ subcomment.date|date:"SHORT_DATE_FORMAT" }}</small>
-                                
-                                </h4>
-                                {{ subcomment.comment|safe }}
-                            </div>
-                         </div>
-                     {% endfor %}
-                </div> <!-- ni -->
-              </fieldset>
-          </form>
-      </div>                                           
-{% endfor %}
-
-
-<!-- END COMMENTS-->
 
 
 

@@ -437,7 +437,7 @@ var markers = [];
                     <div class="autocompleteItem single_service wow fadeInUp" id="auto0" >
                         <a id="a0"><img class="autocomplete_irudia" id="img0"></a>
                         <h2 id="h20"></h2>
-			<p id="p0"></p>
+						<p id="p0"></p>
 
                     </div>
                 </div>
@@ -473,14 +473,16 @@ var markers = [];
 
 		{% if non != "fitxaE" %}
 	 	<div class="eskuma_div" align="right" >
+	 	<!--
 	 		{% if bilaketa_filtroak != 1 or not bilaketa_filtroak%}
-	 		<div class="hornitzaileak"> <!-- DBtik kargatu -->
+	 		<div class="hornitzaileak"> 
 	 			<b>{% trans "Hornitzaileak" %} </b>
 	 			<br />
 	 			<br />
 	 			<p><a href="/hornitzaile_search?h=ekm&z=h">EuskoMedia</a></p>
 	 		</div>
 	 		{%endif%}
+	 	-->
 	 		{% if bilaketa_filtroak == 1%}
 	 		
 	 		<div class="filtroak">
@@ -670,17 +672,17 @@ var markers = [];
 			
 			{% endblock content %}
 		</div>
+		<!--
 		{% if non != "fitxaE" %}
 		<div class="ezkerra_div" align="left">
-                      <div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_itemak"><b>{% trans "Azkeneko Itemak" %} </b></a></div>
-		      <div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_ibilbideak"><b>{% trans "Azkeneko Ibilbideak" %} </b></a></div>
-		      <div id="eguneko_ibilbidea"><a href="{{BASE_URL}}/eguneko_ibilbideak"><b>{% trans "Eguneko Ibilbideak" %} </b></a></div>
+             <div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_itemak"><b>{% trans "Azkeneko Itemak" %} </b></a></div>
+		     <div id="azkeneko_itema"><a href="{{BASE_URL}}/azkeneko_ibilbideak"><b>{% trans "Azkeneko Ibilbideak" %} </b></a></div>
+		     <div id="eguneko_ibilbidea"><a href="{{BASE_URL}}/eguneko_ibilbideak"><b>{% trans "Eguneko Ibilbideak" %} </b></a></div>
 			
 			<br />
 			<br />
 			{% if user.is_authenticated %}
-			<!-- nire_ibilbideak javascript bidez kargatzen da. Initialize() -> load_paths_list(user_id)-->	
-			<!--<div id="nire_ibilbideak"><b>{% trans "Nire Ibilbideak" %} </b></div>-->
+	
 			
 			{% endif %}
 			
@@ -688,27 +690,13 @@ var markers = [];
 			
 			<br />
 			<br />
-			{% if user.is_authenticated %}
-			<!-- nire_ibilbideak javascript bidez kargatzen da. Initialize() -> load_paths_list(user_id)-->	
-			<!--<div id="nire_ibilbideak"><b>{% trans "Nire Ibilbideak" %} </b></div>-->
-			
-			{% endif %}
+		
 			
 			<div id="eguneko_itema"><a href="{{BASE_URL}}/eguneko_itemak"><b>{% trans "Eguneko Itemak" %} </b></a></div>
 				
-				<!--
-				<div class="column">
-				<br />
-  					<div class="col-xs-6 col-md-12">
-    					<a class="thumbnail" href="#">
-						<img src="">
-						</a>
-  					</div>
-				</div>
-				-->
+	
 			
 			
-			<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
 			{%if itemPaths %}
 			<div class="crossingPaths"><b>{% trans "Ze Ibilbidetan? " %} </b>
 			{% for node in itemPaths %}
@@ -716,8 +704,8 @@ var markers = [];
 					<p><a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a></p>
 				{%endif%}
 			{%endfor%}
-			<!--</br>-->
-			{% if itemPaths|length  >= 1 %} <!-- ONDOREN >= 4 JARRI-->
+			
+			{% if itemPaths|length  >= 4 %} 
 			<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
 			{%endif%}
 			
@@ -731,6 +719,7 @@ var markers = [];
 			</div>
 		</div>
 		{%endif%}
+		-->
  	</div>	
 
 </div> <!-- END PAGE -->

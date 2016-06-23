@@ -3586,3 +3586,21 @@ $(document).ready(function(){
         $("#hideHiF").show();
     });
 });
+
+//Ibilbidea eta itema ezbatzeko funtzioak
+function deletePath(id){
+    var conf = confirm("Ziur zaude ibilbidea ezabatu nahi duzula?");
+    if(conf == true){
+        alert("Ados...ibilbidea ezabatuko da ");
+        var url = 'ezabatu_ibilbidea?id='+id;   	
+    	window.location.href=url;
+    }
+}
+function deleteItem(id){
+    var conf = confirm("Ziur zaude kultu itema ezabatu nahi duzula?");
+    if(conf == true){
+        alert("Ados...itema ezabatuko da ");
+        var url = 'ezabatu_itema?id='+id;   	
+    	window.location.href=url;
+    }
+}

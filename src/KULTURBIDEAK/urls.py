@@ -64,6 +64,10 @@ from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_eguneko_ibilbidea
 from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbideak
 from KULTURBIDEAK.kulturbideak_app.views import azkeneko_itemak
 from KULTURBIDEAK.kulturbideak_app.views import azkeneko_ibilbideak
+from KULTURBIDEAK.kulturbideak_app.views import ezabatu_ibilbidea
+from KULTURBIDEAK.kulturbideak_app.views import ezabatu_itema
+from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbidea_gehitu
+from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbidea_kendu
 from django.contrib import admin
 
 #MAddalen
@@ -145,12 +149,10 @@ urlpatterns = patterns('',
     url(r'eguneko_ibilbideak',eguneko_ibilbideak),
     url(r'azkeneko_itemak',azkeneko_itemak),
     url(r'azkeneko_ibilbideak',azkeneko_ibilbideak),
-    
-    
-    
-     
-    
-    
+    url(r'ezabatu_ibilbidea',ezabatu_ibilbidea),
+    url(r'ezabatu_itema',ezabatu_itema),
+    url(r'eguneko_ibilbidea_gehitu',eguneko_ibilbidea_gehitu),
+    url(r'eguneko_ibilbidea_kendu',eguneko_ibilbidea_kendu),
             
     (r'^search/', include('haystack.urls')),
     

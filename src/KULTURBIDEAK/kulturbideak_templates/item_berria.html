@@ -20,8 +20,16 @@
 	</div>
 	<div class="col-md-3">
 		<a class="img-responsive bilaketaEmaitza  thumbnail" href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" target="{% if item.edm_isshownby %}_blank{%endif%}" >
-				<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
+				{% if item.edm_object %}
+				<!--<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">-->
+					<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">
+				{%else%}
+					<iframe id="frame" src="{{item.edm_isshownby}}">
+					</iframe>
+				{% endif %}
+				
 		</a>
+		
 		<div class="path-info overflow">
 			
 		<ul class="nav  navbar-default">
@@ -202,7 +210,7 @@
 		-->
 		<li>
 			{% if item.edm_isshownat%}
- 				<a  class="eremu-str" title="{{viewAtSource}}" href="{{viewAtSource}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
+ 				<a  class="eremu-str" title="{{viewAtSource}}" href="{{viewAtSource}}" target="_blank"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
  			{%endif%}
  		</li>
 		</ul>
@@ -268,7 +276,7 @@
  					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</a>
 					<!-- ezabatu -->
-					<a class="btn btn-danger" type="button" title="itema ezabatu" href="{{BASE_URL}}/ezabatu_itema?id={{item.id}}" >				
+					<a class="btn btn-danger" type="button" title="itema ezabatu" onClick="deleteItem({{item.id}})" >				
  					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
 					</a>
 			{%endif%}

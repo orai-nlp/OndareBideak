@@ -13,24 +13,6 @@
    {% for hornitzaile in hornitzaileak %}
 	
 
-
-   <!-- Projects Row -->
-        <!--
-        <div class="row">
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-           
-        </div>
-       -->
-        <!-- /.row -->
-        
         <!-- Project One -->
         <div class="row">
             <div class="col-md-7">
@@ -42,17 +24,20 @@
                   		  <img id="imgPreview" id="imgPreview"class="img-responsive" src="{{hornitzaile.ikonoa}}" ><!--src="http://placehold.it/700x300"-->
                 	</a>
 				{%else %}
-		 		 	<a href="hornitzailea_ikusi?id={{hornitzaile.fk_user.id}}">
+		 		 	<!--<a href="hornitzailea_ikusi?id={{hornitzaile.fk_user.id}}">-->
+		 		 		<a href="/hornitzaile_search?h={{hornitzaile.fk_user.username}}&z=h">
+		 		 		
                    		 <img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}img/no_photo_small.jpg"  alt=""><!--src="http://placehold.it/700x300"-->
                		 </a>
       			 {%endif%}
               
             </div>
             <div class="col-md-5">
-                <h3>{{hornitzaile.izena}}</h3>
-                <h4>{{hornitzaile.erakundeMota}}</h4>
-                <p>{{ hornitzaile.deskribapena|slice:"0:100" }}...</p>
-                <a class="btn btn-primary" href="hornitzailea_ikusi?id={{hornitzaile.fk_user.id}}">Ikusi Hornitzailea <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <h3 class="uppercase">{{hornitzaile.izena}}</h3>
+                
+                <h4 class="mota"><span class=" glyphicon glyphicon-menu-right" aria-hidden="true"></span>{{hornitzaile.erakundeMota}}</h4>
+                <p class="letratipoa">{{ hornitzaile.deskribapena|slice:"0:100" }}...</p>
+                <a class="btn btn-common" href="/hornitzaile_search?h={{hornitzaile.fk_user.username}}&z=h">Ikusi Hornitzailea <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
         </div>
         <!-- /.row -->

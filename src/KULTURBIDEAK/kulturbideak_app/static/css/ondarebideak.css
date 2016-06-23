@@ -9,7 +9,7 @@
     	background-color: #d9edf7;
     }
     .titulu-kolorea{
-    	color: #31708f;
+    	color: #31708f!important;
     }
     .autocompleteItem{
         padding: 25px;
@@ -46,8 +46,9 @@
             margin-left: 0px;                                                                                                                
         } 
 	 .emaitzaInfo{
-		text-align: left;
+		text-align: right;
 		color:#337ab7;
+		font-family: "dosis" !important;
     }
 
 	
@@ -145,11 +146,12 @@
         resize: both;
        /* overflow: auto;*/
 	}
+	
 	 #path_boxes_overview svg{
         width: 98%;
         height: 700px;
         display: block;
-        padding-top: 5px;
+        padding-top: 20px;/* 5px*/
         background: ;
         resize: both;
     }
@@ -491,12 +493,13 @@ circle .unselectedNode {
     width: 195px;
 }
 .btn-common {
-    border: 1px solid #0099ae;
+    border: 0px solid #0099ae;/* 1px solid #0099ae;*/
     color: #0099ae;
     font-family: "Open Sans",sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 300;
-    padding: 10px 25px;
+    padding: 0px;/*7px 15px;*/
+    background:none;
 }
 
 .path-name h2 {
@@ -506,6 +509,14 @@ circle .unselectedNode {
     font-size: 24px;
     font-family: "dosis"!important;
     font-weight: 300;
+}
+.path-name2 h2 {
+    margin-bottom: 4px;
+    margin-top: 0;
+    /*color: #686868;*/
+    font-size: 30px;
+    font-family: "dosis"!important;
+    font-weight: 400;
 }
 .overflow {
     overflow: hidden;
@@ -560,6 +571,23 @@ circle .unselectedNode {
 	color: #0099ae;
 	
 }
+.ikusi-botoia{
+	color: #0099ae !important;
+	border: 1px solid #0099ae;
+	background:none;
+	
+}
+.gehitu-botoia{
+	color: #0099ae !important;
+	border: 1px solid #0099ae;
+	background:none;
+	
+}
+.egunekoa-botoia{
+	 color:#eea236;
+	 border: 1px solid #0099ae;
+	 background:none;
+}
 .eremu-str{
 	color: #0099ae !important;
 	
@@ -573,11 +601,43 @@ circle .unselectedNode {
     alignment-adjust: center;
 	
 }
+h3.uppercase {
+    text-transform: uppercase;
+    
+    font-family: "dosis" !important;
+    font-size: 24px;
+}
+h3.bilaketa{
+	
+	font-family: "dosis" !important;
+    font-size: 17px;
+    font-weight: 300;
+}
+h4.mota {
+       
+    font-family: "dosis" !important;
+    font-size: 19px;
+    font-weight: 200;
+    color: #c03035;
+}
 p.uppercase {
     text-transform: uppercase;
     text-align: center;
     font-family: "dosis" !important;
     font-size: 24px;
+}
+p.letratipoa{
+	font-family: "dosis" !important;
+}
+.center{
+	text-align: center;
+}
+h2.uppercase {
+    text-transform: uppercase;
+    text-align: center;
+    font-family: "dosis" !important;
+    font-size: 18px;
+    font-weight: 100;
 }
 .antzekoItemTitulua{
  	font-size: 17px;
@@ -586,4 +646,31 @@ p.uppercase {
     text-align: center;
 	
 	
+}
+
+#frame {
+    border: none;
+    -moz-transform: scale(0.8);
+    -moz-transform-origin: 31px 56px;
+    -o-transform: scale(0.8);
+    -o-transform-origin: 0 0;
+    -webkit-transform: scale(0.8);
+    -webkit-transform-origin: 0 0;
+    overflow: hidden!important;
+}
+
+.bilaketaTitulua{
+	font-family: "dosis" !important;
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 15px;
+    margin-top: 0;
+	color: #31708f !important;
+}
+.bilaketaEremua{
+	
+	color: #c03035;
+    font-size: 14px;
+    padding: 0 15px 0 0;
+    text-decoration: none;
 }

@@ -5,6 +5,56 @@
 {% load tags %}
 
 
+<!-- EGUNEKOAK - BOZKATUENAK - AZKENAK -->	
+<div class="container">
+<div class="row">
+	<div class="col-md-1">
+	</div>
+	
+
+    <div class="col-md-9">	
+		<!--<h2 class="titulu-kolorea antzekoTitulua">ANTZEKO ITEMAK</h2>-->	
+		
+			<div class="row">
+				
+				<div class="center col-md-4">
+						<a class=""  href="#" data-toggle="modal" data-target="#modalEgunekoak" >
+						<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiItem.png ">
+						</a>
+						<h2 class="uppercase">Egunekoak</h2>
+					
+				</div>
+				<div class=" center col-md-4">
+						<a class=""  href="#" data-toggle="modal" data-target="#modalBozkatuenak">
+						<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiItem.png ">
+						</a>
+						<h2 class="uppercase">Bozkatuenak</h2>
+					
+				</div>
+				<div class="center col-md-4">
+						<a class=""  href="#" data-toggle="modal" data-target="#modalAzkenak">
+						<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiItem.png ">
+						</a>
+						<h2 class="uppercase">Azkenekoak</h2>
+					
+				</div>				
+			</div>
+	
+	</div>	
+	<div class="col-md-2">
+	</div>
+	
+</div>
+</div>
+<!-- END EGUNEKOAK - BOZKATUENAK - AZKENAK -->
+
+
+
+<div class="container">
+<div class="row">
+	<div class="col-md-1">
+	</div>
+<div class="col-md-9">
 <div class="pagination">
     <span class="step-links">
         {% if itemak.has_previous %}
@@ -19,17 +69,18 @@
             <a href="?page={{ itemak.next_page_number }}">hurrengoak</a>
         {% endif %}
     </span>
+    <span class="emaitzaInfo"> -- {{itemak.paginator.count }} Item dataren arabera ordenatuta</span>
 </div>
 
-<p class="emaitzaInfo"> {{itemak.paginator.count }} Item dataren arabera ordenatuta</p>
 
+<!--
 <div class="panel panel-default">
   <div class="panel-body">
-  	
+  -->	
 
 	 {% for item in itemak %}
 	 	 
-	 
+	     		
 	 <div class="row">	
 		<!--<div class="col-xs-6 col-md-3">-->
 			
@@ -54,64 +105,189 @@
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 		 		 
-				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
+				<h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
 				{% if item.edm_provider %}	
-					<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
+					<span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea:" %} </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
 				{%endif%}
 				{% if item.dc_language %}
-					<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{item.dc_language}}</span><br />
 				{%endif%}
 				{% if item.edm_country %}
-					<p class="" id="herrialdea"><b>{% trans "Herrialdea:" %}</b>{{item.edm_country}}</p>
+					<span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea:" %}</span><span class="eremu-str">{{item.edm_country}}</span><br />
 				{%endif%}
 				{% if item.dc_creator %}
-					<p class="" id="sortzailea"><b>{% trans "Sortzailea:" %}</b>{{item.dc_creator}}</p>
+					<span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea:" %}<span class="eremu-str">{{item.dc_creator}}</span><br />
 				{%endif%}
 				{% if item.edm_type %}
-					<p class="" id="mota"><b>{% trans "Mota:" %}</b>{{item.edm_type}}</p>
+					<span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota:" %}<span class="eremu-str">{{item.edm_type}}</span><br />
 				{%endif%}
+				<h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
+				<!--<div class="btn-group" role="group" aria-label="...">-->
+				<a class="btn  btn-warning ikusi-botoia" type="button" title="Ikusi kultur itema" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}">
+       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+       			</a>
+       			
 				{% if user.is_authenticated %}
-					<div class="btn-group" role="group" aria-label="...">
-       				<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
+					
+       				<button class="btn gehitu-botoia" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
        					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
        				</button>
        				{% if user.username == item.edm_provider %}
 
-						<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >				
+						<a class="btn btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >				
  						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+						</a>
+						<!-- ezabatu -->
+						<a class="btn btn-danger" type="button" title="Itema ezabatu" onClick="deleteItem({{item.id}})" >				
+ 						<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
 						</a>
 						
 				{%endif%}
 
 				{% if request.user|has_group:'hornitzailea' %}
 					{% if item.egunekoa == 0  %}
-						<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >
+						<a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >
 						  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 						</a>
 					{%else%}
-						<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=hasiera" >
-                                                  <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                                                </a>
+						<a class="btn btn-warning egunekoa-botoia" title="Ezabatu eguneko itema" type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=hasiera" >
+                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                        </a>
 					{%endif%}	
 				{%endif%}
 
 
 
-				</div>
+			<!--</div>-->
 				{%endif%}
+				<hr />
     		</div>
+
 		<!--</div> <!-- thumbnail -->
 		{% endif %}
 		<!--</div>-->
+		
   </div>
+  
   {% empty %}
 	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
 	
 	
 {% endfor %}
+<!--
 </div>
 </div>
-	
+-->
+</div><!--column 9-->
+<div class="col-md-2">
+</div>
+</div><!-- row-->
+</div><!--container-->
+
+
+
+<!--Ventana modal-->
+
+<div class="modal fade" id="modalEgunekoak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Hauek dira adituek proposatutako eguneko Kultur itemak</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body">
+                    	
+                    		<div id="messages"></div>                                                       
+                            {% for item in eguneko_itemak %}							
+								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title}} </a></label><br/>				
+							{%endfor%}                      
+                            <br/>						
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
+                            </div>                            
+                            <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+ 
+
+<!--Fin Ventana modal-->
+
+
+<!--Ventana modal-->
+
+<div class="modal fade" id="modalBozkatuenak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Hauek dira bozka gehien jaso dituzten Kultur itemak</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body">
+                    	
+                    		<div id="messages"></div>                                                       
+                            {% for item in item_bozkatuenak %}							
+								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title}} </a></label><br/>				
+							{%endfor%}                      
+                            <br/>						
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
+                            </div>                            
+                            <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+ 
+
+<!--Fin Ventana modal-->
+
+<!--Ventana modal-->
+
+<div class="modal fade" id="modalAzkenak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Hauek dira erabiltzaileek sortutako azken Kultur itemak</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body">
+                    	
+                    		<div id="messages"></div>                                                       
+                            {% for item in azken_itemak %}							
+								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title}} </a></label><br/>				
+							{%endfor%}                      
+                            <br/>						
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
+                            </div>                            
+                            <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+ 
+
+<!--Fin Ventana modal-->
 
 
 {% endblock %} 

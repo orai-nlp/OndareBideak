@@ -163,8 +163,27 @@ def itemak_hasiera(request):
     ##if(item.objects.filter(proposatutakoa=1)):
         ##itemak=item.objects.filter(proposatutakoa=1)
         
+    #Egunekoak
+    eguneko_itemak=[]
+    eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+    #Azkenak
+    azken_itemak=[]
+    azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+    #Bozkatuenak
+    item_bozkatuenak=[]
+    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+    if bozkatuenak_item_zerrenda:
+        item_ids=[]
+        for bozkatuena in bozkatuenak_item_zerrenda:
+            id = bozkatuena.item.id
+            item_ids.append(id)
        
-    return render_to_response('itemak_hasiera.html',{'itemak':itemak},context_instance=RequestContext(request))
+        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+    non="fitxaE"  
+    return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
     
 def eguneko_itemak(request):
     itemak=[]
@@ -260,7 +279,7 @@ def eguneko_itema_kendu(request):
         '''
 
         itemak=[]
-        itemak=item.objects.filter(egunekoa=1)
+        itemak=item.objects.order_by('-edm_year')
     
         paginator = Paginator(itemak, 26)
     
@@ -278,9 +297,28 @@ def eguneko_itema_kendu(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             itemak = paginator.page(paginator.num_pages)
     
-   
+        #Egunekoak
+        eguneko_itemak=[]
+        eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_itemak=[]
+        azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+        #Bozkatuenak
+        item_bozkatuenak=[]
+        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+        if bozkatuenak_item_zerrenda:
+            item_ids=[]
+            for bozkatuena in bozkatuenak_item_zerrenda:
+                id = bozkatuena.item.id
+                item_ids.append(id)
        
-        return render_to_response('eguneko_itemak.html',{'itemak':itemak},context_instance=RequestContext(request))
+            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+        non="fitxaE"  
+        return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
+
     elif(nondik=="bilaketa"):
         print "bilaketa orritik"
         # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -801,7 +839,28 @@ def eguneko_itema_gehitu(request):
             itemak = paginator.page(paginator.num_pages)
     
        
-        return render_to_response('itemak_hasiera.html',{'itemak':itemak},context_instance=RequestContext(request))
+        #Egunekoak
+        eguneko_itemak=[]
+        eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_itemak=[]
+        azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+        #Bozkatuenak
+        item_bozkatuenak=[]
+        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+        if bozkatuenak_item_zerrenda:
+            item_ids=[]
+            for bozkatuena in bozkatuenak_item_zerrenda:
+                id = bozkatuena.item.id
+                item_ids.append(id)
+       
+            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+        non="fitxaE"  
+        return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
+
     elif(nondik=="bilaketa"):
         print "bilaketa orritik"
         # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -1318,9 +1377,32 @@ def eguneko_ibilbidea_gehitu(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             paths = paginator.page(paginator.num_pages)
+        
+        
+        #Egunekoak
+        eguneko_ibilbideak=[]
+        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_ibilbideak=[]
+        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+        #Bozkatuenak
+        ibilbide_bozkatuenak=[]
+        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+        if bozkatuenak_ibilbide_zerrenda:
+            path_ids=[]
+            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+                id = bozkatuena.path.id
+                path_ids.append(id)
+       
+            ibilbide_bozkatuenak=path.objects.filter(id__in=path_ids) 
+    
+        non="fitxaE"  
+    
     
        
-        return render_to_response('ibilbideak_hasiera.html',{'paths':paths},context_instance=RequestContext(request))
+        return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
     elif(nondik=="bilaketa"):
         print "bilaketa orritik"
         # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -1806,6 +1888,7 @@ def eguneko_ibilbidea_kendu(request):
     path_id = request.GET.get('id')
     nondik = request.GET.get('nondik')
     
+
     
     path.objects.filter(id=path_id).update(egunekoa = 0,proposatutakoa=1)   
 
@@ -1815,17 +1898,11 @@ def eguneko_ibilbidea_kendu(request):
     send_mail('OndareBideak - Eguneko ibilbideetan aldaketak', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
-        
-        '''
-        uri =randomword(10); 
-    
-        '''
-
+       
         paths=[]
-        paths=path.objects.filter(egunekoa=1)
-    
+        paths=path.objects.order_by('-creation_date')
         paginator = Paginator(paths, 26)
-    
+
    
         type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
  
@@ -1840,9 +1917,28 @@ def eguneko_ibilbidea_kendu(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             paths = paginator.page(paginator.num_pages)
     
-   
+        #Egunekoak
+        eguneko_ibilbideak=[]
+        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_ibilbideak=[]
+        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+        #Bozkatuenak
+        ibilbide_bozkatuenak=[]
+        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+        if bozkatuenak_ibilbide_zerrenda:
+            path_ids=[]
+            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+                id = bozkatuena.path.id
+                path_ids.append(id)
        
-        return render_to_response('eguneko_ibilbideak.html',{'paths':paths},context_instance=RequestContext(request))
+            ibilbide_bozkatuenak=path.objects.filter(id__in=path_ids) 
+    
+        non="fitxaE"  
+
+        return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
     elif(nondik=="bilaketa"):
         print "bilaketa orritik"
         # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -2349,9 +2445,28 @@ def ibilbideak_hasiera(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         paths = paginator.page(paginator.num_pages)
     
+    #Egunekoak
+    eguneko_ibilbideak=[]
+    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
     
+    #Azkenak
+    azken_ibilbideak=[]
+    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
     
-    return render_to_response('ibilbideak_hasiera.html',{'paths':paths},context_instance=RequestContext(request))
+    #Bozkatuenak
+    ibilbide_bozkatuenak=[]
+    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+    if bozkatuenak_ibilbide_zerrenda:
+        path_ids=[]
+        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+            id = bozkatuena.path.id
+            path_ids.append(id)
+       
+        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+    
+    non="fitxaE"  
+    
+    return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
 
     '''
     if(path.objects.filter(egunekoa=1)):
@@ -2551,6 +2666,7 @@ def hornitzaile_search(request):
     #Hornitzaileak taula gehitzen ditugunean agian hau aldatuko da
     hornitzaile_erab=User.objects.get(username=hornitzaile_izena)
     
+    #Itemak erabiltzaileekin lotzean hau aldatu
     items = SearchQuerySet().all().filter(edm_provider=hornitzaile_izena).models(*search_models_items)   
     paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
 
@@ -2588,8 +2704,9 @@ def hornitzaile_search(request):
     
     
     #HORNITZAILEAREN FITXA 
-    user_id=request.user.id
-    hornitzaile = hornitzailea.objects.get(fk_user__id=user_id)
+    #user_id=request.user.id
+    hornitzaile = hornitzailea.objects.get(fk_user__id=hornitzaile_erab.id)
+   
     geoloc_longitude=0.0
     geoloc_latitude=0.0
     geoloc_longitude=hornitzaile.geoloc_longitude
@@ -3345,9 +3462,14 @@ def autoplay_hasieratik(request):
         comments = momentukoPatha.get_comments()    
         comment_form = CommentForm() 
         comment_parent_form = CommentParentForm()
+        
+        #MORE LIKE THIS
+        mlt=[]    
+        mlt = SearchQuerySet().more_like_this(momentukoItema) 
+        mlt = mlt[:10]
       
         
-        return render_to_response('nabigazio_item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('nabigazio_item_berria.html',{"mlt":mlt,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
     
  
 def nabigazio_item(request):
@@ -3456,9 +3578,14 @@ def nabigazio_item(request):
     comments = momentukoPatha.get_comments()    
     comment_form = CommentForm() 
     comment_parent_form = CommentParentForm()
+    
+    #MORE LIKE THIS
+    mlt=[]    
+    mlt = SearchQuerySet().more_like_this(momentukoItema) 
+    mlt = mlt[:10]
  
     
-    return render_to_response('nabigazio_item_berria.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    return render_to_response('nabigazio_item_berria.html',{"mlt":mlt,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 def nabigatu(request):
      
@@ -3582,16 +3709,20 @@ def nabigatu(request):
     comment_form = CommentForm() 
     comment_parent_form = CommentParentForm()
  
-
+    #MORE LIKE THIS
+    mlt=[]    
+    mlt = SearchQuerySet().more_like_this(momentukoItema) 
+    mlt = mlt[:10]
+ 
     
     
     if(autoplay == 1):
         non="fitxaE"
-        return render_to_response('nabigazio_item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('nabigazio_item_berria.html',{"mlt":mlt,"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
         non="fitxaE"
-        return render_to_response('nabigazio_item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('nabigazio_item_berria.html',{"mlt":mlt,"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 def botoa_eman_path(request):
@@ -4013,8 +4144,35 @@ def db_pasahitza_aldatu(cd,request):
     return True
 
 ##### BUKATU LOGIN ETA ERREGISTRO FUNTZIOAkK #####  
- 
 
+def ezabatu_itema(request):
+    if 'id' in request.GET:
+        id=request.GET['id']
+        #Ibilbidea ezabatu
+        item.objects.filter(id=id).delete()
+        
+        #votes_item
+        votes_item.objects.filter(item__id=id).delete()
+        #itemComment
+        itemComment.objects.filter(itema__id=id).delete()
+        
+        return render_to_response('base.html',{'mezua':"Kultur Itema ezabatu da"},context_instance=RequestContext(request))
+    
+ 
+def ezabatu_ibilbidea(request):
+    if 'id' in request.GET:
+        id=request.GET['id']
+        #Ibilbidea ezabatu
+        path.objects.filter(id=id).delete()
+        
+        #votes_item
+        votes_path.objects.filter(path__id=id).delete()
+        #itemComment
+        pathComment.objects.filter(patha__id=id).delete()
+        
+        
+        return render_to_response('base.html',{'mezua':"Ibilbidea ezabatu da"},context_instance=RequestContext(request))
+    
 
 def editatu_ibilbidea(request):
     
@@ -4106,13 +4264,13 @@ def erakutsi_item(request):
         botoKopurua=item_tupla.get_votes()
         
     #MORE LIKE THIS
-    print "MORE LIKE THIS KALKULATZEN" 
+   #print "MORE LIKE THIS KALKULATZEN" 
     mlt=[] 
     #search_models_items=[item]
     #mlt = SearchQuerySet().more_like_this(item_tupla)
     mlt = SearchQuerySet().more_like_this(item_tupla)
     #print mlt.count()
-    print "MORE LIKE THIS KALKULATZEN BUKATU DU" 
+    #print "MORE LIKE THIS KALKULATZEN BUKATU DU" 
     mlt = mlt[:10]
    
           
@@ -4141,7 +4299,7 @@ def erakutsi_item(request):
 
 def botoa_eman_item(request):
     
-            
+    non="fitxaE"
     item_id=request.GET['id']
     nondik=""
     if 'nondik' in request.GET:
@@ -4169,8 +4327,12 @@ def botoa_eman_item(request):
             
     botoKopuruaItem=item_tupla.get_votes()
     
-    #MORE LIKE THIS      
-    mlt = SearchQuerySet().more_like_this(item_tupla)
+
+    #MORE LIKE THIS
+    mlt=[]    
+    mlt = SearchQuerySet().more_like_this(item_tupla) 
+    mlt = mlt[:10]
+      
     
     #QR-a sortzeko
     qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
@@ -4226,15 +4388,16 @@ def botoa_eman_item(request):
         
         
     
-        return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('nabigazio_item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
-        non="fitxaE"
-        return render_to_response('item_berria.html',{"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+      
+        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
     
 def botoa_kendu_item(request):
-
+    
+    non="fitxaE"
        
     item_id=request.GET['id']
     
@@ -4266,8 +4429,10 @@ def botoa_kendu_item(request):
             
     botoKopuruaItem=item_tupla.get_votes()
     
-    #MORE LIKE THIS      
-    mlt = SearchQuerySet().more_like_this(item_tupla)
+    #MORE LIKE THIS
+    mlt=[]    
+    mlt = SearchQuerySet().more_like_this(item_tupla) 
+    mlt = mlt[:10]
     
     #QR-a sortzeko
     qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
@@ -4321,11 +4486,11 @@ def botoa_kendu_item(request):
         botoKopuruaPath=momentukoIbilbidea.get_votes()
         botoKopuruaItem=momentukoItema.get_votes()
     
-        return render_to_response('nabigazio_item.html',{'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('nabigazio_item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
-        non="fitxaE"
-        return render_to_response('item_berria.html',{"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+     
+        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
 
 
