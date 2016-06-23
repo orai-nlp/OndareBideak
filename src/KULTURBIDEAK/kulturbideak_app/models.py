@@ -24,6 +24,7 @@ from django.db.models import Count
 #Primary key constraint name: PK_item 
 class item(models.Model):
     #id = models.IntegerField(primary_key=True) 
+    fk_ob_user = models.ForeignKey(User)
     uri = models.CharField(max_length=250, unique=True) #unique=tue beharrezkoa da, beste taula batzuk Fk bezala erabiltzen dute eta
     usfd_id = models.CharField(max_length=3000)
     dc_title = models.TextField()
@@ -543,6 +544,10 @@ class hornitzailea(models.Model):
     deskribapena = models.CharField(max_length=3000)
     erakundeMota = models.CharField(max_length=1000)
     ikonoa = models.CharField(max_length=1000)
+    argazkia = models.CharField(max_length=1000)
+    telefonoa = models.CharField(max_length=1000)
+    emaila = models.CharField(max_length=1000)
+    ordutegia = models.CharField(max_length=1000)
     helbidea = models.CharField(max_length=1000)
     geoloc_longitude = models.FloatField(null=True)
     geoloc_latitude = models.FloatField(null=True)
