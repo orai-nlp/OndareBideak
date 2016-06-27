@@ -28,7 +28,8 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     proposatutakoa = indexes.BooleanField(model_attr='proposatutakoa')
     egunekoa = indexes.BooleanField(model_attr='egunekoa')
     aberastua = indexes.BooleanField(model_attr='aberastua')
-    
+    #item_user_id = indexes.CharField(model_attr='fk_ob_user')
+    item_user_id =indexes.EdgeNgramField(use_template=True,template_name='search/indexes/kulturbideak_app/item_user.txt')
     # We add this for autocomplete.
     #content_auto = indexes.EdgeNgramField(model_attr='content')
     content_auto = indexes.EdgeNgramField(model_attr='dc_title')
@@ -95,7 +96,8 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
 class pathIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True , template_name='search/indexes/kulturbideak_app/path_text.txt')
     path_id = indexes.CharField(model_attr='id')
-    path_fk_user_id = indexes.CharField(model_attr='fk_user_id')
+    #path_fk_user_id = indexes.CharField(model_attr='fk_user_id')
+    path_fk_user_id =indexes.EdgeNgramField(use_template=True,template_name='search/indexes/kulturbideak_app/path_user.txt')  
     path_uri = indexes.CharField(model_attr='uri')
     path_dc_title = indexes.CharField(model_attr='dc_title')
     path_dc_subject = indexes.CharField(model_attr='dc_subject')

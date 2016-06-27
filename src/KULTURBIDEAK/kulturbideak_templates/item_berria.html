@@ -82,7 +82,7 @@
 				<!-- itemak erabiiltzailearekin lotutakoan hau aldatu, username erakutsi-->
 				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 				
-					{{item.dc_creator}}   &nbsp;  {{item.edm_provider}} 
+					{{item.fk_ob_user.username}}
 			</li>
 			</ul>
 		</div>
@@ -269,7 +269,9 @@
 			
 			{%endif%}
 			<!-- Baldintza hau aldatu datu-basean itemak erabiltzailearekin lotutakoan -->
-			{% if user.username == item.edm_provider %}
+			
+       		{% if user.id == item.fk_ob_user.id %}
+			
 
 					<!--editatu-->
 					<a class="btn btn-default" type="button" title="itema editatu" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >
@@ -345,7 +347,7 @@
   
 	</div>
 </div>
-</div>
+</div> <!--container-->
 
 
 

@@ -19,21 +19,26 @@
 				
 				<div class="center col-md-4">
 						<a class=""  href="#" data-toggle="modal" data-target="#modalEgunekoak" >
-						<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">
+						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">-->
+						<span style="font-size:2em;color: #eea236" class="glyphicon glyphicon-star" aria-hidden="true"></span>
 						</a>
 						<h2 class="uppercase">Egunekoak</h2>
 					
 				</div>
 				<div class=" center col-md-4">
 						<a class=""  href="#" data-toggle="modal" data-target="#modalBozkatuenak">
-						<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">
+						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">-->
+						<span style="font-size:2em;color: #c03035" class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+						
 						</a>
 						<h2 class="uppercase">Bozkatuenak</h2>
 					
 				</div>
 				<div class="center col-md-4">
 						<a class=""  href="#" data-toggle="modal" data-target="#modalAzkenak">
-						<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">
+						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">-->
+						<span style="font-size:2em;color:  #0099ae" class="glyphicon glyphicon-time" aria-hidden="true"></span>
+						
 						</a>
 						<h2 class="uppercase">Azkenekoak</h2>
 					
@@ -47,8 +52,21 @@
 </div>
 </div>
 <!-- END EGUNEKOAK - BOZKATUENAK - AZKENAK -->
+<div class="container">
+<div class="row">
+	<div class="col-md-12">
+		&nbsp;&nbsp;
+		</div>
+</div>
+</div>
 
-
+<div class="container">
+<div class="row">
+	<div class="col-md-12">
+	<h2 class="titulu-kolorea antzekoTitulua">IBILBIDE GUZTIAK ({{paths.paginator.count }})</h2>
+	</div>
+</div>
+</div>
 
 <div class="container">
 <div class="row">
@@ -70,15 +88,10 @@
         {% endif %}
     </span>
     
-    <span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>
+    <!--<span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
 </div>
 
 
-
-
-
-<div class="panel panel-default">
-  <div class="panel-body">
   
    {% for path in paths %}
 	<div class="row ezkmarg0">	
@@ -101,9 +114,21 @@
 				 <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.dc_title}}"/>
 				 <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.paths_thumbnail}}"/>
 				 
-				<h2><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h2>    		
-    		<div class="btn-group" role="group" aria-label="...">
-       			<a class="btn btn-primary" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}">
+				
+    			<h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h5>    		
+    			{% if path.language %}
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{path.language}}</span><br />
+				{% else %}
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">-</span><br />
+						
+				{%endif%}
+				{% if path.dc_subject %}
+					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">{{path.dc_subject}}</span><br />
+				{% else %}
+					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">-</span><br />
+						
+				{%endif%}
+       			<a class="btn  btn-primary ikusi-botoia" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}">
        				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
        			</a>
        		
@@ -129,7 +154,7 @@
 				{%endif%}
 			{%endif%}
 
-				</div>
+				
     		</div>
 		<!--</div><!-- thumbnail -->
 
@@ -139,8 +164,25 @@
 	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
 {% endfor %}
 
+<div class="pagination">
+    <span class="step-links">
+        {% if paths.has_previous %}
+            <a href="?page={{ paths.previous_page_number }}">aurrekoak</a>
+        {% endif %}
+
+        <span class="current">
+            {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik.
+        </span>
+
+        {% if paths.has_next %}
+            <a href="?page={{ paths.next_page_number }}">hurrengoak</a>
+        {% endif %}
+    </span>
+    
+    <!--<span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
 </div>
-</div>
+
+
 </div><!--column 9-->
 <div class="col-md-2">
 </div>

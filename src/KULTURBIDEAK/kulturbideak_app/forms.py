@@ -207,7 +207,7 @@ class ItemEditatuForm(Form):
     """Item bat editatzeko formularioa kargatzen du"""
     titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("titulua"),"type":"text", "class":"form-control"}))
     #  sortzailea: logeatuta dagoen erabiltzailea
-    deskribapena=CharField(max_length=150,required=True, widget=TextInput(attrs={"placeholder":_("deskribapena"),"type":"text", "class":"form-control"}))
+    deskribapena=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("deskribapena"),"type":"text", "class":"form-control"}))
     # date : momentukoa
     gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
     eskubideak=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("eskubideak"),"type":"text", "class":"form-control"}))

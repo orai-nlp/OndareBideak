@@ -2648,8 +2648,10 @@ def cross_search(request):
 
 def hornitzaile_search(request):
     # Hornitzaile jakin baten item eta ibilbide guztiak bilatuko dira
+    #username
     hornitzaile_izena=request.GET['h']
-    
+    #Erab id
+    hornitzaile_id=request.GET['h_id']
     #zein paginator den
     z=request.GET['z']
   
@@ -2667,8 +2669,10 @@ def hornitzaile_search(request):
     hornitzaile_erab=User.objects.get(username=hornitzaile_izena)
     
     #Itemak erabiltzaileekin lotzean hau aldatu
-    items = SearchQuerySet().all().filter(edm_provider=hornitzaile_izena).models(*search_models_items)   
-    paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
+    #items = SearchQuerySet().all().filter(fk_ob_user__id=hornitzaile_id).models(*search_models_items) 
+    items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+    #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
+    paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)
 
     
   
@@ -4497,20 +4501,27 @@ def botoa_kendu_item(request):
 
 def editatu_itema(request):
      
+    print "editatu itema"
     #Hasieran, Formularioa kargatzerakoan hemen'botoKopurua':botoKopurua sartuko da
     if 'id' in request.GET: 
         
         item_id=request.GET['id']
-           
+    
+        
     itema=ItemEditatuForm(request.POST, request.FILES)
     
     #Editatu botoia sakatzerakoan hemendik sartuko da eta POST bidez bidaliko dira datuak
     if itema.is_valid():
+        print "IS VALID"
+        erabiltzailea=request.user
+        irudi_izena_random =randomword(10);
         
-        azken_id = item.objects.latest('id').id
-        azken_id += 1
+        #azken_id = item.objects.latest('id').id
+        #azken_id += 1
         item_id=request.POST['hidden_Item_id']
-     
+        print "item_id"
+        print item_id 
+        
         dc_title=request.POST['titulua']
         uri="uri_"+ str(item_id)
         dc_description=request.POST['deskribapena']
@@ -4521,7 +4532,9 @@ def editatu_itema(request):
         if(request.FILES):
         
             edm_object=request.FILES['irudia'].name
-            irudia_url=MEDIA_URL+ str(item_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
+            print "irudia"
+            print edm_object
+            irudia_url=MEDIA_URL+ str(irudi_izena_random)+edm_object #izen berekoak gainidatzi egingo dira bestela
       
         dc_language=request.POST['hizkuntza']
         edm_language=request.POST['hizkuntza']
@@ -4545,7 +4558,7 @@ def editatu_itema(request):
         edm_provider= request.user.username # ondoren logeatutako erabiltzailea jarri
         #Gaurko data hartu
         dc_date=datetime.datetime.now()
-                
+        edm_year=datetime.datetime.now()
         edm_country="Euskal Herria"
         
         
@@ -4562,7 +4575,7 @@ def editatu_itema(request):
        
         if(irudia_url!=""):
             #Irudia igo
-            edm_object= str(item_id)+edm_object
+            edm_object= str(irudi_izena_random)+edm_object
             handle_uploaded_file(request.FILES['irudia'],edm_object)
             #item.objects.filter(id=item_id).update(egunekoa = 0,proposatutakoa=1)         
             #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
@@ -4577,18 +4590,22 @@ def editatu_itema(request):
             item_tupla = item.objects.get(pk=item_id)
             irudia_url=item_tupla.edm_object
             #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
-            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+            item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,edm_year=edm_year,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
    
         
         #item_berria.save()   
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
         #update_index.Command().handle(age=1)
-   
-        return render_to_response('base.html',{'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
+        non="fitxaE"
+        item_obj=item.objects.get(id=item_id)
+        return render_to_response('base.html',{'non':non,'item':item_obj,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
+    
+        #return render_to_response('base.html',{'non':non,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
     
     else:
         #Hasieran hemendik sartuko da eta Datu-basetik kargatuko dira itemaren datuak
+        print "hasiera editatu"
         item_tupla = item.objects.get(pk=item_id)
         titulua=item_tupla.dc_title
         deskribapena=item_tupla.dc_description
@@ -4633,21 +4650,51 @@ def handle_uploaded_file(f,izena):
 
 def nire_itemak_erakutsi(request):
     
-    #userID=request.POST['user_id']
     userName=request.user.username
-    itemak = item.objects.filter(dc_creator=userName)
-  
-    return render_to_response('nire_itemak.html',{'itemak':itemak},context_instance=RequestContext(request))
+    userID=request.user.id
+    itemak=[]
+    itemak = item.objects.filter(fk_ob_user__id=userID).order_by('-edm_year')
+    #PAGINATOR
+    paginator = Paginator(itemak, 26)
+
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+     
+    page = request.GET.get('page')
+    try:
+        itemak = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        itemak = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        itemak = paginator.page(paginator.num_pages)
+    non="fitxaE"
+    return render_to_response('nire_itemak.html',{'non':non,'itemak':itemak},context_instance=RequestContext(request))
    
 
 
 def nire_ibilbideak_erakutsi(request):
     
     userID=request.user.id
-    #userName=request.user.username
-    ibilbideak = path.objects.filter(fk_user_id=userID)
+    ibilbideak=[]
+    ibilbideak = path.objects.filter(fk_user_id__id=userID).order_by('-creation_date')
         
-    return render_to_response('nire_ibilbideak.html',{'ibilbideak':ibilbideak},context_instance=RequestContext(request))
+    #PAGINATOR
+    paginator = Paginator(ibilbideak, 26)
+
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+     
+    page = request.GET.get('page')
+    try:
+        ibilbideak = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ibilbideak = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ibilbideak = paginator.page(paginator.num_pages)
+    non="fitxaE"
+    return render_to_response('nire_ibilbideak.html',{'non':non,'paths':ibilbideak},context_instance=RequestContext(request))
    
    
 def itema_gehitu(request):
@@ -4656,11 +4703,12 @@ def itema_gehitu(request):
     
     if itema.is_valid():
         #Datu-basean item-a gehitu
-        
-        azken_id = item.objects.latest('id').id
-        azken_id += 1
+        irudi_izena_random =randomword(10); 
+        #azken_id = item.objects.latest('id').id
+        #azken_id += 1
+        erabiltzailea=request.user
         dc_title=request.POST['titulua']
-        uri="uri_"+ str(azken_id)
+        uri="uri_"+ str(irudi_izena_random)
         dc_description=request.POST['deskribapena']
         dc_subject=request.POST['gaia']
         dc_rights=request.POST['eskubideak']
@@ -4668,7 +4716,7 @@ def itema_gehitu(request):
         irudia_url=""
         if(request.FILES):
             edm_object=request.FILES['irudia'].name
-            irudia_url=MEDIA_URL+str(azken_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
+            irudia_url=MEDIA_URL+str(irudi_izena_random)+edm_object #izen berekoak gainidatzi egingo dira bestela
       
         dc_language=request.POST['hizkuntza']
         edm_language=request.POST['hizkuntza']
@@ -4688,21 +4736,23 @@ def itema_gehitu(request):
         #username-a ez da errepikatzen datu-basean, beraz, id bezala erabili dezakegu 
         dc_creator= request.user.username 
         
-        #BEGIRATU EA HORNITZAILEA DEN EDO EZ. EZ BADA:Arrunta balioa eman edm_providerri, bestela Hornitzailea
+        #BEGIRATU EA HORNITZAILEA DEN EDO EZ. EZ BADA:Herritarra balioa eman edm_providerri, bestela Hornitzailea
         #erab_id=request.user.id         
         if( User.objects.filter(id=request.user.id, groups__name='hornitzailea').exists()):
             hornitzaile=hornitzailea.objects.get(fk_user=request.user)
             edm_provider=hornitzaile.izena
         else:
-            edm_provider= request.user.username 
-               
+            edm_provider= "herritarra"
+        
+     
         #Gaurko data hartu
-        dc_date=datetime.datetime.now()               
+        dc_date=datetime.datetime.now()  
+        edm_year=datetime.datetime.now()  
         edm_country="Euskal Herria"
         
         if(irudia_url!=""):
             #Irudia igo
-            edm_object=str(azken_id)+edm_object #izen berekoak gainidatzi egingo dira bestela
+            edm_object=str(irudi_izena_random)+edm_object #izen berekoak gainidatzi egingo dira bestela
             handle_uploaded_file(request.FILES['irudia'],edm_object)
         
         latitude=0.0
@@ -4712,7 +4762,7 @@ def itema_gehitu(request):
         if request.POST['longitude']:
             longitude=request.POST['longitude']
    
-        item_berria = item(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+        item_berria = item(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,edm_year=edm_year,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
         item_berria.save()   
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala

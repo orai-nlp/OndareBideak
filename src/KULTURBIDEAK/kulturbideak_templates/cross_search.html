@@ -195,22 +195,23 @@ um_pages }}</p>-->
 					<p class="" id="mota"><b>{% trans "Mota:" %}</b>{{item.edm_type}}</p>
 				{%endif%}
 				{% if user.is_authenticated %}
-					<div class="btn-group" role="group" aria-label="...">
-       				<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
+				
+       				<button class="btn gehitu-botoia" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
        					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
        				</button>
-       				{% if user.username == item.edm_provider %}
+       			
+       				{% if user.id == item.item_user_id|to_int %}
 
-						<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >				
+						<a class="btn btn-primary" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >				
  						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 						</a>
-  					{%else%}
-					<button class="btn btn-default" type="button" action="editatu_itema" disabled>
- 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					</button>
-				{%endif%}
+  						<!-- ezabatu -->
+						<a class="btn btn-danger" type="button" title="Itema ezabatu" onClick="deleteItem({{item.item_id}})" >				
+ 						<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+						</a>
+					{%endif%}
 				
-				</div>
+			
 				{%endif%}
     		</div>
 		</div> <!-- thumbnail -->
