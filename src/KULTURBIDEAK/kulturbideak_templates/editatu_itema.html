@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 {% load leaflet_tags %}
+{% load tags %}
 {% load i18n %}
 {% block content %}
 
 <div class="itema_gehitu">
 	<div class="panel panel-info">
 	<div class="panel-heading">
-		<h1 class="panel-title">{{titulua}}</h1>
+	  {% get_current_language as LANGUAGE_CODE %}
+		<h1 class="panel-title"> {{ LANGUAGE_CODE|choose_title_language:item}}</h1>
 	</div>
 	<div class="panel-body">
     
    	 	<div class="col-xs-6 col-md-3" align="center">
    			 <a href="#" class="thumbnail">
      		 <!--<img alt="Item has not thumbnail image" src="http://paths.sheffield.ac.uk/pathsui/europeana/static/img/no_img.png">-->
-	 			 <img alt="{{titulua}}" src="{{irudia}}">
+	 			 <img alt="{{ LANGUAGE_CODE|choose_title_language:item}}" src="{{irudia}}">
  			   </a>
  		</div>
  		<div class="item_edukia">

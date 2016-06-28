@@ -182,7 +182,7 @@ um_pages }}</p>-->
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 				 
-				<h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
+				<h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
                                 {% if item.edm_provider %}
                                         <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea:" %} </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
                                 {%endif%}
@@ -291,7 +291,7 @@ um_pages }}</p>-->
 	    <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.path_thumbnail}}"/>
 	   
 	    <h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id=\
-"path.dc_title">{{path.dc_title}}</a></h5>
+"path.path_dc_title">{{path.path_dc_title}}</a></h5>
             {% if path.language %}
             <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{path.language}}</span><br />
             {% else %}
