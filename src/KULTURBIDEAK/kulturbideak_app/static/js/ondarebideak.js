@@ -1250,7 +1250,7 @@ function update_path_on_db_answer(xmlHttp,path_id)
             
             	//ORAIN NODE TAULA EGUNERATU
             	//update_path_nodes(path_id);
-		create_path_nodes(path_id);
+				create_path_nodes(path_id);
             	
             	
 			}

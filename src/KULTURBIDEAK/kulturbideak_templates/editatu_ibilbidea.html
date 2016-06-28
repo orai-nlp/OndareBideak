@@ -1,9 +1,118 @@
 {% extends "base.html" %}
-
+{% load tags%}
 {% load i18n %}
 
 
 {% block content %}
+
+
+
+<div class="container">
+<div class="row">
+	<div class="col-md-1">
+	</div>
+	<div class="col-md-3">
+		{% if momentukoPatha.paths_thumbnail %}
+			<img class="img-responsive ibilbide-irudia" alt="" src="{{momentukoPatha.paths_thumbnail}}">
+		{% else %}
+			<img class="img-responsive" src="/uploads/NoIrudiBide.png">
+		{% endif %}
+		<div class="path-info overflow">
+		<ul class="nav navbar-nav navbar-default">
+		{% if momentukoPatha.proposatutakoa %}
+		<li>
+				<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+				Proposatutakoa
+					
+		</li>
+		{%endif%}
+		{% if momentukoPatha.egunekoa %}
+		<li>
+				<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+				Egunekoa
+					
+		</li>
+		{%endif%}
+		</ul>
+		</div>
+		
+		
+	</div>
+	<div class="col-md-6">
+		<div class="path-name overflow titulu-kolorea">
+			<h2 class="bold">{{momentukoPatha.dc_title}} </h2>
+			<ul class="nav navbar-nav navbar-default">
+			<li>
+				<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+				
+					{{momentukoPatha.creation_date}}
+			</li>
+			<li>
+				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+				
+					{{momentukoPatha.fk_user_id.username}}
+			</li>
+			<li>
+				<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+					{{momentukoPatha.language}}	
+			</li>
+			{% if momentukoPatha.dc_subject %}
+			<li>
+			<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+			{{momentukoPatha.dc_subject}}		
+			</li>
+			{%endif%}
+			</ul>
+		</div>
+		<div class="path-info overflow ">
+			
+			
+			<p class="path-info-description">{{momentukoPatha.dc_description}}	</p>		
+		</div>
+		
+		{% if user.is_authenticated %}
+		<div class="path-info overflow">
+			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
+				
+			{% if request.user|has_group:'hornitzailea' %}
+				<!--egunekoa bihurtu-->
+				{% if momentukoPatha.egunekoa == 0 %}	
+					<a class="btn btn-warning" type="button" title="Eguneko ibilbide bihurtu" onclick="egunekoaGehituEditatutik({{momentukoPatha.id}})" >				
+ 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					</a>
+				{%endif%}
+				{% if momentukoPatha.egunekoa == 1 %}	
+					<a class="btn btn-warning" type="button" title="Eguneko ibilbidea ezabatu" onclick="egunekoaKenduEditatutik({{momentukoPatha.id}})" >				
+ 						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+					</a>
+					
+				{%endif%}
+			
+			{%endif%}
+			{% if user.username == momentukoPatha.fk_user_id.username %}
+
+				
+					<!-- ezabatu"-->
+					<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{momentukoPatha.id}})"  >				
+ 					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+					</a>
+			{%endif%}
+			
+		</div>
+		{%endif%}
+		
+	</div>
+	<div class="col-md-2">
+
+	</div>
+</div>
+</div>
+
+
+
+
+
+<!-- sjfhksjahdf
 
 <div class="panel panel-info ibilbide-panela">
 	<div class="panel-heading">
@@ -26,7 +135,7 @@
  	 </div>
 	
 </div>
-
+-->
 <!-- 
 path_box-era elementu bat sartzeko:
 pb_new_element(elementu_id,testua,irudiaren_urla);

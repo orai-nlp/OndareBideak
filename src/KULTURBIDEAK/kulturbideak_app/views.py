@@ -4214,7 +4214,7 @@ def editatu_ibilbidea(request):
             
     
     
-    return render_to_response('editatu_ibilbidea.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+    return render_to_response('editatu_ibilbidea.html',{'momentukoPatha':ibilbidea,'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
 
 
 
@@ -4511,7 +4511,8 @@ def editatu_itema(request):
     itema=ItemEditatuForm(request.POST, request.FILES)
     
     #Editatu botoia sakatzerakoan hemendik sartuko da eta POST bidez bidaliko dira datuak
-    if itema.is_valid():
+    #if itema.is_valid():
+    if request.POST:
         print "IS VALID"
         erabiltzailea=request.user
         irudi_izena_random =randomword(10);
