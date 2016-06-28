@@ -1034,63 +1034,44 @@ function create_path_on_db_answer(xmlHttp)
 
 function create_path_nodes(path_id)
 {
-
     var json = [];
-	if (root.children.length>-1){
-		for (var i=0;i<root.children.length;i++){	
-	   	var obj={id: root.children[i].id, name: root.children[i].name , irudia: root.children[i].irudia , narrazioa: root.children[i].narrazioa ,  parent:root.children[i].parent.id , children:root.children[i].children};
-	   	json.push(obj);
-	   	   	if (root.children[i].children == undefined){
-	   	   	} else if (root.children[i].children.length>-1){
-	   	   		for (var b=0;b<root.children[i].children.length;b++){
-	   		   	var obj2={id: root.children[i].children[b].id, name: root.children[i].children[b].name , narrazioa: root.children[i].children[b].narrazioa , irudia: root.children[i].children[b].irudia, parent:root.children[i].children[b].parent.id,children:root.children[i].children[b].children};
-	   	   		json.push(obj2);
-	   	   			if (root.children[i].children[b].children == undefined){
-	   	   			} else if (root.children[i].children[b].children.length>-1){
-	   	   				for (var c=0;c<root.children[i].children[b].children.length;c++){
-			   		   	var obj3={id: root.children[i].children[b].children[c].id, name: root.children[i].children[b].children[c].name , narrazioa: root.children[i].children[b].children[c].narrazioa , irudia: root.children[i].children[b].children[c].irudia, parent:root.children[i].children[b].children[c].parent.id,children:root.children[i].children[b].children[c].children};
-	   	   				json.push(obj3);
-	   	   					if (root.children[i].children[b].children[c].children == undefined){
-	   	   					} else if (root.children[i].children[b].children[c].children.length>-1){
-	   	   						for (var d=0;d<root.children[i].children[b].children[c].children.length;d++){
-	   	   							var obj4={id: root.children[i].children[b].children[c].children[d].id, name: root.children[i].children[b].children[c].children[d].name , narrazioa: root.children[i].children[b].children[c].children[d].narrazioa , irudia: root.children[i].children[b].children[c].children[d].irudia, parent:root.children[i].children[b].children[c].children[d].parent.id,children:root.children[i].children[b].children[c].children[d].children};
-	   	   							json.push(obj4);
-	   	   						}
-	   	   					}
-	   	   				}
-	   	   			}//if (root.children[i].children[b].children.length>-1){
-
-	   	   		}//for (var b=0;b<root.children[i].children.length;b++){
-	    	} else {
-
-	    	}//if (root.children[i].children.length>-1){
-		}//for (var i=0;i<root.children.length;i++){
-	} else {
-	}//if (root.children.length>-1){  
-
-	//for bat semeak zein diren jakiteko eta semeen array-a string batean bihurtzen du..
-
-	for (var i=0;i<json.length;i++){
-		if (json[i].children == undefined){
-		} else {
-			var zenbat = json[i].children.length;
-			for (var z=0;z<zenbat;z++){
-				json[i].children.push(json[i].children[z].id);
-			}
-			json[i].children.splice(0,zenbat);
-		}
+    if (root.children.length>-1){
+	var toprocess=new Array();
+	toprocess.push.apply(toprocess,root.children);
+	while (toprocess.length>0){	
+	    var currentN = toprocess.shift();
+	    var obj={id: currentN.id, name: currentN.name , irudia: currentN.irudia , narrazioa: currentN.narrazioa ,  parent:currentN.parent.id , children:currentN.children};
+	    json.push(obj);
+	    if (currentN.children != null && typeof currentN.children == 'object')
+	    {
+		toprocess.push.apply(toprocess,currentN.children);
+	    }
 	}
+    }//if (root.children.length>-1){  
+
+    //for bat semeak zein diren jakiteko eta semeen array-a string batean bihurtzen du..
+    
+    for (var i=0;i<json.length;i++){
+	if (json[i].children == undefined){
+	} else {
+	    var zenbat = json[i].children.length;
+	    for (var z=0;z<zenbat;z++){
+		json[i].children.push(json[i].children[z].id);
+	    }
+	    json[i].children.splice(0,zenbat);
+	}
+    }
 	//console.log(json);
 
-	//NODE BAKOITZEKO
-	start_loader("loader");
-	//Erroak
-	for(var i = 0; i < json.length; i++) {
-		if (json[i].parent.id == 0){
-			paths_starts.push(json[i]);
-		}
-		
+    //NODE BAKOITZEKO
+    start_loader("loader");
+    //Erroak
+    for(var i = 0; i < json.length; i++) {
+	if (json[i].parent.id == 0){
+	    paths_starts.push(json[i]);
 	}
+	
+    }
 	//Erroak
 	var nodes = paths_starts;
 	for(var i = 0; i < json.length; i++) {
@@ -1126,6 +1107,7 @@ function create_path_nodes(path_id)
 
 	stop_loader("loader");           
 }
+
 
 
 function create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start)

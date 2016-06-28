@@ -55,7 +55,7 @@ def choose_title_language(interfaceLang, item):
         
     match_en = re.search('<div class=\"titulu_en\">(.*?)</div>', titulua)
     if match_en:
-        titulu_en=match_es.group(0)
+        titulu_en=match_en.group(0)
         titulu_en=titulu_en.replace("<div class=\"titulu_en\">", " ")
         titulu_en=titulu_en.replace("</div>", " ")
     else:
