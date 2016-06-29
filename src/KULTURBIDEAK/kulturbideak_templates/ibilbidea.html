@@ -119,19 +119,19 @@
 			{% if request.user|has_group:'hornitzailea' %}
 				<!--egunekoa bihurtu-->
 				{% if momentukoPatha.egunekoa == 0 %}	
-					<a class="btn btn-warning" type="button" title="Eguneko ibilbide bihurtu" onclick="egunekoaGehituEtabilaketaFiltratu_ibilb({{momentukoPatha.id}})" >				
- 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-					</a>
+				    <a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbide bihurtu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{momentukoPatha.id}}&nondik=ikusi" >
+				  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				     </a>
 				{%endif%}
 				{% if momentukoPatha.egunekoa == 1 %}	
-					<a class="btn btn-warning" type="button" title="Eguneko ibilbidea ezabatu" onclick="egunekoaKenduEtabilaketaFiltratu_ibilb({{momentukoPatha.id}})" >				
- 						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-					</a>
+				    <a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbidea ezabatu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{momentukoPatha.id}}&nondik=ikusi" >
+				      <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+				      </a>
 					
 				{%endif%}
 			
 			{%endif%}
-			{% if user.username == momentukoPatha.fk_user_id.username %}
+			{% if user.id == momentukoPatha.fk_user_id.id %}
 
 					<!--editatu-->
 					<a class="btn btn-default" type="button" title="Editatu ibilbidea" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}" >				
@@ -223,7 +223,7 @@
       var id="{{node.fk_item_id_id}}";//path_node[0];
       var titulua="{{node.dc_title}}";//path_node[1];
       var irudia="{{node.paths_thumbnail}}";//path_node[2];
-      if (irudia == " ")
+      if (!irudia || irudia === "")
         {
           irudia="/uploads/NoIrudiItem.png";
         }

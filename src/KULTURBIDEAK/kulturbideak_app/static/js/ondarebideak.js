@@ -923,14 +923,15 @@ $('#formEguneratu').submit(function(e) {
                     data        : formdata ? formdata : form.serialize(),
                     contentType : false,
                     processData : false,
+		    dataType	: 'html',
 
-                    success: function(response) {
+                    success: function(data,status,xhr) { //response
                         if(response != 'error') {
                             //$('#messages').addClass('alert alert-success').text(response);
                             // OP requested to close the modal
-                            
+                            var response = $(data+" p").text();
                             //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK,HIZK
-                           update_path_on_db(path_id);
+                           update_path_on_db(path_id,response);
                            
                            //$('#myModal').modal('hide');
                         } else {
@@ -1173,14 +1174,14 @@ function create_path_node_answer(xmlHttp)
  * 
  */
 
-function update_path_on_db(path_id)
+function update_path_on_db(path_id,paths_thumbnail_name)
 {
 	
 	var dc_title = document.getElementById("path_titulua").value;
 	var dc_description = document.getElementById("path_desk").value;
 	var dc_subject = document.getElementById("path_gaia").value;
-	var paths_thumbnail = document.getElementById("file2");
-	var paths_thumbnail_name=paths_thumbnail.value;	
+	//var paths_thumbnail = document.getElementById("file2");
+	//var paths_thumbnail_name=paths_thumbnail.value;	
 	var hizkuntza =document.getElementById("hizkuntza").value;
 	
 	
@@ -1199,7 +1200,7 @@ function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,pa
 {
 	var csrftoken = getCookie('csrftoken');
 	var xmlHttp = createXmlHttpRequestObject();
-	
+	alert(paths_thumbnail_name);
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
 		
 		$.ajaxSetup({

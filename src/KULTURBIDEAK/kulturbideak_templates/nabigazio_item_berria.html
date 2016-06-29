@@ -616,7 +616,7 @@ se'>{% trans "Send comment" %}</button>
       var id="{{node.fk_item_id_id}}";//path_node[0];
       var titulua="{{node.dc_title}}";//path_node[1];
       var irudia="{{node.paths_thumbnail}}";//path_node[2];
-      if (irudia == " ")
+      if (!irudia || irudia === "")
         {
           irudia="/uploads/NoIrudiItem.png";
         }

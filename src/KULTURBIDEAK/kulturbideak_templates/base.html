@@ -472,6 +472,10 @@ var markers = [];
 
 
 		{% if non != "fitxaE" %}
+	        {% if non != "erakutsi_item" %}
+	        {% if non != "itema_editatu" %}
+
+
 	 	<div class="eskuma_div" align="right" >
 	 	<!--
 	 		{% if bilaketa_filtroak != 1 or not bilaketa_filtroak%}
@@ -617,7 +621,8 @@ var markers = [];
 			{%endif%}
 	 	</div>	
 	 	{%endif%}
-		
+		{%endif%}<!-- not non erakutsi item -->
+		{%endif%}
 		<div class="content_div" align="center">
 			{% if mezua %}
 				

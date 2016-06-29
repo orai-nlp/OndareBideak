@@ -256,14 +256,14 @@
 			{% if request.user|has_group:'hornitzailea' %}
 				<!--egunekoa bihurtu-->
 				{% if item.egunekoa == 0 %}	
-					<a class="btn btn-warning" type="button" title="Eguneko item bihurtu" onclick="egunekoaGehituEtabilaketaFiltratu({{item.id}})" >				
- 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-					</a>
+				 <a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=ikusi" >
+				   <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				   </a>
 				{%endif%}
 				{% if item.egunekoa == 1 %}	
-					<a class="btn btn-warning" type="button" title="Eguneko item ezabatu" onclick="egunekoaKenduEtabilaketaFiltratu({{item.id}})" >				
- 						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-					</a>
+				 <a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=ikusi" >
+				   <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+				   </a>
 					
 				{%endif%}
 			
@@ -389,7 +389,9 @@
 					
 					<div class="caption">
 					<p class="uppercase">{{antzekoa.edm_provider}}</p>
+					{% if antzekoa.dc_title%}
 					<p class="antzekoItemTitulua">{{ antzekoa.dc_title|correct_language_tags }}</p>
+					{%endif%}
 					</div>
 					</div>
 				</div>

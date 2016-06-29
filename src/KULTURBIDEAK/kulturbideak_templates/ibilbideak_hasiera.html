@@ -99,12 +99,22 @@
     
     <div class="thumbnail col-xs-2 col-md-2">
 
+      {% if path.fk_user_id.id|hornitzailea_da %}
        <div class="side-corner-tag">
          <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
            {% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}                                   
            <p><span>aditua</span></p>                      
          </a>
        </div>
+       {% else %}
+        <div class="">
+         <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
+           {% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}                                   
+                            
+         </a>
+       </div>
+	{%endif%}
+	
 
 			
     </div>

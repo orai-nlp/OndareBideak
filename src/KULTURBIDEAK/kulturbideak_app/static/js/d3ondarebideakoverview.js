@@ -35,10 +35,17 @@ var divWidth = divWidth-(divWidth*0.04);
 var divHeight = d3.select('#path_boxes_overview').style('height').substr(0,d3.select('#path_boxes_overview').style('height').length-2);
 var divHeight = divHeight-(divHeight*0.1);
 
+var margintop = 20;
+var modal= document.getElementById('modaloverview');
+if (modal != null)
+{
+    margintop=200;
+}
 //Maddalen: top:20 zegoen lehen, baina modalean ondo ikusteko aldatu dut
-var margin = {top: 200, right: 120, bottom: 20, left: 120},
+var margin = {top: margintop, right: 120, bottom: 20, left: 120},
     width = divWidth - margin.right - margin.left,
-    height = divHeight - margin.top - margin.bottom;
+    //height = divHeight - margin.top - margin.bottom;
+    height = divHeight - 50 - 20;
     
     var i = 0;
     var duration = 750;

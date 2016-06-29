@@ -3,8 +3,20 @@ from django import template
 from settings import *
 import re
 
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import User, Group
 register = template.Library()
+
+
+
+@register.filter(name='hornitzailea_da')
+def hornitzailea_da(path_user_id):
+   
+    path_user_id_int=int(path_user_id)
+    erabiltzailea=User.objects.get(id=path_user_id_int)
+    
+    hornitzaileGroup = Group.objects.get(name='hornitzailea')
+    return True if hornitzaileGroup in erabiltzailea.groups.all() else False
+
 
 
 @register.filter(name='has_group')

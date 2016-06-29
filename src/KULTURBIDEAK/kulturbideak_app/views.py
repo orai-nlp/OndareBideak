@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.template import RequestContext, loader
@@ -801,7 +801,62 @@ def eguneko_itema_kendu(request):
         return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     else:
-        print "nondik ba?"
+        print "nondik ba? ikus"
+        item_tupla = item.objects.get(pk=item_id)
+            
+   
+        herrialdea=item_tupla.edm_country
+        hizkuntza=item_tupla.dc_language
+        kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.edm_rights
+        urtea=item_tupla.edm_year 
+        viewAtSource=item_tupla.edm_isshownat
+        irudia=item_tupla.edm_object
+        hornitzailea=item_tupla.edm_provider
+        #hornitzailea=item_tupla.dc_creator
+        geoloc_longitude=item_tupla.geoloc_longitude
+        geoloc_latitude=item_tupla.geoloc_latitude
+       
+        
+        botatuDu=0
+        botoKopurua=0
+        if(votes_item.objects.filter(item=item_id,user_id=request.user.id)):
+            botatuDu=1   
+            botoKopurua=item_tupla.get_votes()
+        
+        #MORE LIKE THIS
+        #print "MORE LIKE THIS KALKULATZEN" 
+        mlt=[] 
+        #search_models_items=[item]
+        #mlt = SearchQuerySet().more_like_this(item_tupla)
+        mlt = SearchQuerySet().more_like_this(item_tupla)
+        #print mlt.count()
+        #print "MORE LIKE THIS KALKULATZEN BUKATU DU" 
+        mlt = mlt[:10]
+   
+          
+        #print mlt.count() # 5        
+        #print mlt[0].object.dc_title
+        
+        #QR-a sortzeko
+        qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=item_tupla)
+        
+        #LORTU ITEMAREN KOMENTARIOAK
+        comments = item_tupla.get_comments()
+      
+        comment_form = CommentForm() 
+        comment_parent_form = CommentParentForm()
+        print "item.html deitu baino lehen"
+    
+        non="erakutsi_item"
+        print "erakutsi_item"
+        print item_tupla
+        
+        return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+
         
         
        
@@ -1343,7 +1398,61 @@ def eguneko_itema_gehitu(request):
         return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     else:
-        print "nondik ba?"
+        print "nondik ba? ikusi"
+        item_tupla = item.objects.get(pk=item_id)
+            
+   
+        herrialdea=item_tupla.edm_country
+        hizkuntza=item_tupla.dc_language
+        kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.edm_rights
+        urtea=item_tupla.edm_year 
+        viewAtSource=item_tupla.edm_isshownat
+        irudia=item_tupla.edm_object
+        hornitzailea=item_tupla.edm_provider
+        #hornitzailea=item_tupla.dc_creator
+        geoloc_longitude=item_tupla.geoloc_longitude
+        geoloc_latitude=item_tupla.geoloc_latitude
+       
+        
+        botatuDu=0
+        botoKopurua=0
+        if(votes_item.objects.filter(item=item_id,user_id=request.user.id)):
+            botatuDu=1   
+            botoKopurua=item_tupla.get_votes()
+        
+        #MORE LIKE THIS
+        #print "MORE LIKE THIS KALKULATZEN" 
+        mlt=[] 
+        #search_models_items=[item]
+        #mlt = SearchQuerySet().more_like_this(item_tupla)
+        mlt = SearchQuerySet().more_like_this(item_tupla)
+        #print mlt.count()
+        #print "MORE LIKE THIS KALKULATZEN BUKATU DU" 
+        mlt = mlt[:10]
+   
+          
+        #print mlt.count() # 5        
+        #print mlt[0].object.dc_title
+        
+        #QR-a sortzeko
+        qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=item_tupla)
+        
+        #LORTU ITEMAREN KOMENTARIOAK
+        comments = item_tupla.get_comments()
+      
+        comment_form = CommentForm() 
+        comment_parent_form = CommentParentForm()
+        print "item.html deitu baino lehen"
+    
+        non="erakutsi_item"
+        
+        
+        return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+
         
         
 #EGUNEKO IBILBIDEA KUDEATZEKO BI FUNTZIO
@@ -1882,7 +1991,85 @@ def eguneko_ibilbidea_gehitu(request):
 
     else:
         print "nondik ba?"
-
+        print "nondik ba? ikusi"
+        momentukoPatha=path.objects.get(id=path_id)
+        
+        #Ibilbidearen Hasierak hartu
+        hasieraNodoak= node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)
+    
+        
+        #Hasierako nodo bat lortu
+        momentukoNodea = node.objects.filter(fk_path_id=momentukoPatha, paths_start=1)[0]
+        item_id=momentukoNodea.fk_item_id.id
+        
+        hurrengoak=momentukoNodea.paths_next
+        aurrekoak=momentukoNodea.paths_prev
+    
+        hurrengoak_list=[]
+        hasieraBakarra=0
+        #node taulatik "hurrengoak" tuplak hartu 
+        if(hurrengoak != ""):
+            hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
+        elif(hasieraNodoak.count()==1):
+          
+            hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
+            hasieraBakarra=1
+        else:
+            hasieraBakarra=0       
+            hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
+            
+    
+        hurrengoak=node.objects.filter(fk_path_id=momentukoPatha,fk_item_id__in=hurrengoak_list)
+    
+        aurrekoak_list=[]
+        #node taulatik "aurrekoak" tuplak hartu
+        if(aurrekoak != ""):
+            aurrekoak_list=map(lambda x: int(x),aurrekoak.split(","))
+    
+        aurrekoak=node.objects.filter(fk_path_id=momentukoPatha, fk_item_id__in=aurrekoak_list)
+    
+        #DB-an GALDERA EGIN MOMENTUKO ITEMA LORTZEKO
+        momentukoItema = item.objects.get(id=item_id)  
+    
+        #path hasierak hartu
+        nodes = [] 
+        erroak = node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)
+        for erroa in erroak:
+            nodes = nodes + get_tree(erroa)
+        
+        
+        botatuDuPath=0
+        botatuDuItem=0
+        if not request.user.is_anonymous():
+            if(votes_path.objects.filter(path=momentukoPatha,user=request.user)):
+                botatuDuPath=1           
+            if(votes_item.objects.filter(item=momentukoItema,user=request.user)):
+                botatuDuItem=1
+   
+        #Momentuko Ibilbidea lortu
+        momentukoIbilbidea=path.objects.get(id=path_id)
+    
+        botoKopuruaPath=momentukoIbilbidea.get_votes()
+        botoKopuruaItem=momentukoItema.get_votes()
+    
+        autoplay=0
+        
+        #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
+        pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=momentukoItema)
+        
+        #LORTU IBILBIDEAREN KOMENTARIOAK
+        comments = momentukoPatha.get_comments()    
+        comment_form = CommentForm() 
+        comment_parent_form = CommentParentForm()
+        
+        #Ezkerreko zutabea ez erakusteko
+        non="fitxaE"
+        return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    
 def eguneko_ibilbidea_kendu(request):
     
     path_id = request.GET.get('id')
@@ -2418,7 +2605,85 @@ def eguneko_ibilbidea_kendu(request):
 
     else:
         print "nondik ba?"
+        print "nondik ba? ikusi"
+        momentukoPatha=path.objects.get(id=path_id)
         
+        #Ibilbidearen Hasierak hartu
+        hasieraNodoak= node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)
+    
+        
+        #Hasierako nodo bat lortu
+        momentukoNodea = node.objects.filter(fk_path_id=momentukoPatha, paths_start=1)[0]
+        item_id=momentukoNodea.fk_item_id.id
+        
+        hurrengoak=momentukoNodea.paths_next
+        aurrekoak=momentukoNodea.paths_prev
+    
+        hurrengoak_list=[]
+        hasieraBakarra=0
+        #node taulatik "hurrengoak" tuplak hartu 
+        if(hurrengoak != ""):
+            hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
+        elif(hasieraNodoak.count()==1):
+          
+            hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
+            hasieraBakarra=1
+        else:
+            hasieraBakarra=0       
+            hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
+            
+    
+        hurrengoak=node.objects.filter(fk_path_id=momentukoPatha,fk_item_id__in=hurrengoak_list)
+    
+        aurrekoak_list=[]
+        #node taulatik "aurrekoak" tuplak hartu
+        if(aurrekoak != ""):
+            aurrekoak_list=map(lambda x: int(x),aurrekoak.split(","))
+    
+        aurrekoak=node.objects.filter(fk_path_id=momentukoPatha, fk_item_id__in=aurrekoak_list)
+    
+        #DB-an GALDERA EGIN MOMENTUKO ITEMA LORTZEKO
+        momentukoItema = item.objects.get(id=item_id)  
+    
+        #path hasierak hartu
+        nodes = [] 
+        erroak = node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)
+        for erroa in erroak:
+            nodes = nodes + get_tree(erroa)
+        
+        
+        botatuDuPath=0
+        botatuDuItem=0
+        if not request.user.is_anonymous():
+            if(votes_path.objects.filter(path=momentukoPatha,user=request.user)):
+                botatuDuPath=1           
+            if(votes_item.objects.filter(item=momentukoItema,user=request.user)):
+                botatuDuItem=1
+   
+        #Momentuko Ibilbidea lortu
+        momentukoIbilbidea=path.objects.get(id=path_id)
+    
+        botoKopuruaPath=momentukoIbilbidea.get_votes()
+        botoKopuruaItem=momentukoItema.get_votes()
+    
+        autoplay=0
+        
+        #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
+        pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=momentukoItema)
+        
+        #LORTU IBILBIDEAREN KOMENTARIOAK
+        comments = momentukoPatha.get_comments()    
+        comment_form = CommentForm() 
+        comment_parent_form = CommentParentForm()
+        
+        #Ezkerreko zutabea ez erakusteko
+        non="fitxaE"
+        return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+     
         
 
      
@@ -3472,8 +3737,8 @@ def autoplay_hasieratik(request):
         mlt = SearchQuerySet().more_like_this(momentukoItema) 
         mlt = mlt[:10]
       
-        
-        return render_to_response('nabigazio_item_berria.html',{"mlt":mlt,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        non="fitxaE"
+        return render_to_response('nabigazio_item_berria.html',{'non':non,"mlt":mlt,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
     
  
 def nabigazio_item(request):
@@ -3588,8 +3853,8 @@ def nabigazio_item(request):
     mlt = SearchQuerySet().more_like_this(momentukoItema) 
     mlt = mlt[:10]
  
-    
-    return render_to_response('nabigazio_item_berria.html',{"mlt":mlt,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    non="fitxaE"
+    return render_to_response('nabigazio_item_berria.html',{'non':non,"mlt":mlt,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 def nabigatu(request):
      
@@ -4294,7 +4559,7 @@ def erakutsi_item(request):
     comment_parent_form = CommentParentForm()
     print "item.html deitu baino lehen"
     
-    non="fitxaE"
+    non="erakutsi_item"
 
     return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
@@ -4395,7 +4660,7 @@ def botoa_eman_item(request):
         return render_to_response('nabigazio_item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
-      
+        non="erakutsi_item"
         return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
     
@@ -4493,7 +4758,7 @@ def botoa_kendu_item(request):
         return render_to_response('nabigazio_item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
-     
+        non="erakutsi_item"
         return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
 
@@ -4873,7 +5138,7 @@ def ajax_lortu_most_voted_paths(request):
     
     return render_to_response('ibilbide_bozkatuenak.xml', {'paths': path_bozkatuenak}, context_instance=RequestContext(request), mimetype='application/xml')
 
-def ajax_lortu_eguneko_itema (request):
+def ajax_lortu_eguneko_itema(request):
     
     #Irudirik ez duten itemak ez ditugu erakutsiko
     eguneko_itemak=item.objects.filter(egunekoa=1).exclude(edm_object="")
@@ -5019,8 +5284,8 @@ def ajax_path_irudia_gorde (request):
             else:
                 azken_id =1
             user_id =request.user.id
-            fileName=str(user_id)+fileObject.name
-            fileName=str(azken_id)+fileName
+            fname, fext = os.path.splitext(fileObject.name)
+            fileName='path_img_'+str(user_id)+'_'+randomword(5)+fext
             
             #fileName=str(azken_id)+fileObject.name   
             print fileName
@@ -5043,9 +5308,11 @@ def ajax_path_irudia_eguneratu (request):
     print request.POST
     #print request.POST.FILES
     print request.GET
-    
+
+    fileName='1';
+
     if request.is_ajax() and request.method == 'POST':
-       
+    
         #Irudirik igotzen ez denean errorea ez emateko beharrezko da baldintza hau jartzea
         if(request.FILES):
         
@@ -5054,18 +5321,22 @@ def ajax_path_irudia_eguneratu (request):
             #irudiari id-a gehitzeko
             path_id=request.POST.get('path_id_h')
             user_id=request.user.id
+            fname, fext = os.path.splitext(fileObject.name)
+            fileName='path_img_'+str(user_id)+'_'+randomword(5)+fext
+
+            print 'ajax_path_irudia_eguneratu   -- '+fileName
             #fileName=str(path_id)+str(user_id)+fileObject.name
-            fileName=str(user_id)+fileObject.name
-           
+            #fileName=str(user_id)+fileObject.name
+            
            
     
 
             #handle_uploaded_file(fileObject,fileObject.name)
             handle_uploaded_file(fileObject,fileName)
-            request_answer = path_id
+            #request_answer = path_id
     
-    request_answer = 1    
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+            request_answer = fileName
+    return render_to_response('request_answer.html', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
 
 
 def ajax_path_irudia_gorde_proba (request):
@@ -5183,7 +5454,7 @@ def ajax_path_eguneratu(request):
     else:  
         
         #paths_thumbnail_url=MEDIA_URL+str(path_id)+str(fk_usr_id)+paths_thumbnail     
-        paths_thumbnail_url=MEDIA_URL+str(fk_usr_id)+paths_thumbnail
+        paths_thumbnail_url=MEDIA_URL+paths_thumbnail
      
   
       

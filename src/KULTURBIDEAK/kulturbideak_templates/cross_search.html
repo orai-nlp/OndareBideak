@@ -181,8 +181,9 @@ um_pages }}</p>-->
 				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.item_id}}"/>
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
-				 
+				 {% if item.dc_title %}
 				<h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
+				{%endif%}
                                 {% if item.edm_provider %}
                                         <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea:" %} </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
                                 {%endif%}
@@ -200,7 +201,7 @@ um_pages }}</p>-->
                                 {%endif%}
                                 <h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
                                 <!--<div class="btn-group" role="group" aria-label="...">-->
-                                <a class="btn  btn-primary ikusi-botoia" type="button" title="Ikusi kultur itema" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}">
+                                <a class="btn  btn-primary ikusi-botoia" type="button" title="Ikusi kultur itema" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}">
                                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 				</a>
 
@@ -209,24 +210,24 @@ um_pages }}</p>-->
                                 <button class="btn gehitu-botoia" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                 </button>
-                                {% if user.id == item.fk_ob_user.id %}
+                                {% if user.id == item.item_user_id|to_int%}
 
-                                                <a class="btn btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >
+                                                <a class="btn btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >
                                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                                 </a>
                                                 <!-- ezabatu -->
-                                                <a class="btn btn-danger" type="button" title="Itema ezabatu" onClick="deleteItem({{item.id}})" >
+                                                <a class="btn btn-danger" type="button" title="Itema ezabatu" onClick="deleteItem({{item.item_id}})" >
                                                 <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
                                                 </a>
 
                                 {%endif%}
 				{% if request.user|has_group:'hornitzailea' %}
 					{% if item.egunekoa == 0  %}
-						<a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >
+						<a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.item_id}})" >
                                                   <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                                                 </a>
 					{%else%}
-                                                <a class="btn btn-warning egunekoa-botoia" title="Ezabatu eguneko itema" type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=hasiera" >
+                                                <a class="btn btn-warning egunekoa-botoia" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu({{item.item_id}})" >
 						  <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 						</a>
 					{%endif%}
@@ -274,13 +275,22 @@ um_pages }}</p>-->
           <!--<div class="col-xs-6 col-md-3">-->
 
 	  <div class="thumbnail col-xs-2 col-md-2">
-
+	    {% if path.path_fk_user_id|hornitzailea_da %}
 	    <div class="side-corner-tag">
               <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
 		{% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}
 		<p><span>aditua</span></p>
               </a>
 	    </div>
+	    {%else%}
+	    <div class="">
+              <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
+                {% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">
+{% endif %}
+              </a>
+            </div>
+
+	    {%endif%}
 	  </div>
 
 	  <div class=" col-xs-1 col-md-1"></div>
@@ -290,7 +300,7 @@ um_pages }}</p>-->
 	    <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.path_dc_title}}"/>
 	    <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.path_thumbnail}}"/>
 	   
-	    <h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id=\
+	    <h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" id=\
 "path.path_dc_title">{{path.path_dc_title}}</a></h5>
             {% if path.language %}
             <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{path.language}}</span><br />
@@ -304,28 +314,27 @@ um_pages }}</p>-->
             <span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">-</span><br />
 	    
             {%endif%}
-            <a class="btn  btn-primary ikusi-botoia" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}">
+            <a class="btn  btn-primary ikusi-botoia" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}">
               <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
             </a>
 
-            {% if user.username == path.fk_user_id.username %}
-
-            <a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.id}}" >
+            {% if user.id == path.path_fk_user_id|to_int%}
+            <a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </a>
             <!-- ezabatu"-->
-            <a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.id}})" >
+            <a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.path_id}})" >
               <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
             </a>
             {%endif%}
 
 	    {% if request.user|has_group:'hornitzailea' %}
-            {% if path.egunekoa == 0  %}
-            <a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{path.id}}&nondik=hasiera" >
+            {% if path.path_egunekoa == 0  %}
+            <a class="btn btn-warning" type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu_ibilb({{path.path_id}})" >
               <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
             </a>
             {%else%}
-            <a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{path.id}}&nondik=hasiera" >
+            <a class="btn btn-warning" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >
               <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
             </a>
             {%endif%}
