@@ -1,4 +1,4 @@
-{% if object.dc_language == "eu"%}
+{% if object.language == "eu"%}
 {{ object.dc_title }}
 {{ object.dc_subject }}
 {{ object.dc_description }}

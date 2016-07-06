@@ -10,6 +10,75 @@ var paths_starts = [];
 var connections = [];
 
 
+
+//Maddalen: Nodoen titulutik etiketak garbitu eta Moztu 
+function tituluaGarbituMoztu (titulua){
+	
+		
+	var tituluaJat=titulua.replace(/&lt;/g, "<");
+	tituluaJat=tituluaJat.replace(/&gt;/g, ">");
+	tituluaJat=tituluaJat.replace(/&quot;/g, "");
+
+	
+	titulua=tituluaJat;
+    var titulu_es="";
+    var titulu_en="";
+    var titulu_eu="";
+   
+    //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    var myRegexpES = new RegExp("<div class=titulu_es>(.*?)</div>");
+    //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
+    var match_es = myRegexpES.exec(titulua);
+   
+    if (match_es){   	
+        titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
+       }
+    else{
+        titulu_es="";
+       }
+    
+    var myRegexpEN = new RegExp("<div class=titulu_en>(.*?)</div>");
+    var match_en = myRegexpES.exec(titulua);     
+    if (match_en){
+        titulu_en=match_en[1];
+       }
+    else{
+        titulu_en="";
+   	}
+ 
+ 	var myRegexpEU = new RegExp("<div class=titulu_eu>(.*?)</div>");
+    var match_eu = myRegexpEU.exec(titulua);  
+    if (match_eu){
+        titulu_eu=match_eu[1];
+       }
+    else{
+        titulu_eu="";
+    }
+  
+    //titulua= !!!erabaki defektuzkoa zein den eu,en,es
+    if (titulu_eu){
+        titulua=titulu_eu;
+     }
+    else if (titulu_es){
+        titulua=titulu_es;
+       }
+    else{
+        titulua=titulu_en;
+       }
+   
+    //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
+    if (titulua ==""){
+        titulua=tituluaJat;
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ");
+        titulua=titulua.replace("</div>", " ");
+        
+        
+    }
+  
+	return titulua.substr(0,25)+"...";
+}
+
+
 function initialize(){
 	
 	//raphael martxan jartzeko
@@ -547,7 +616,7 @@ function add_me_to_the_SVG(element,item_id){
 if (document.getElementById("path_boxes").children[0].children[0].innerHTML == "Created with Raphaël 2.1.2"){
 	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
 	if (data.length == 0){
-			var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus/uploads/festivalCineDonostia.jpeg", "parent":'' }
+			var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus/uploads/festivalCineDonostia.jpeg", "parent":'' };
 			data.push(root);
 	}
 	var id = element.id.substring(7,element.id.length);
@@ -647,8 +716,9 @@ function create_workspace_box(index,user_id){
     titulua=titulua.replace('<div class=\"titulu_lg\">', ' ');
     titulua=titulua.replace('</div>',' ');
    
-    titulua_subs = titulua.substr(0, 20);  
-    titulua = titulua_subs + "...";
+   	//Titulua laburtu?
+    //titulua_subs = titulua.substr(0, 20);  
+    //titulua = titulua_subs + "...";
     
     
     if (irudia == "" || irudia == "None"){
@@ -739,6 +809,7 @@ function add_workspace_box(box_id,text_value,image_value){
     ws_box.setAttribute("id","ws_box_" + box_id);
     //ws_box.setAttribute("id", box_id); //aldaketa
     ws_box.setAttribute("class","ws_box");
+    ws_box.setAttribute("title",text_value); //onMouseOver titulu osoa erakusteko
     ws_box.setAttribute("draggable","true");
     ws_box.addEventListener('dragstart',drag);
     ws_box.addEventListener('dragenter',wsb_handleDragEnter);
@@ -776,6 +847,10 @@ function add_workspace_box(box_id,text_value,image_value){
 
     var wsb_title = document.createElement("span");
     wsb_title.setAttribute("class","wsb_title");
+   
+    //Titulua Garbitu eta Laburtu
+    text_value = tituluaGarbituMoztu(text_value);  
+   
     wsb_title.appendChild(document.createTextNode(text_value));
     ws_box.appendChild(wsb_title);
 
@@ -880,14 +955,15 @@ $('#form2').submit(function(e) {
                     data        : formdata ? formdata : form.serialize(),
                     contentType : false,
                     processData : false,
-
-                    success: function(response) {
+					dataType	: 'html',
+					
+                    success: function(data,status,xhr)  {
                         if(response != 'error') {
                             //$('#messages').addClass('alert alert-success').text(response);
                             // OP requested to close the modal
-                            
+                            var response = $(data+" p").text();
                             //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK
-                           create_path_on_db();
+                           create_path_on_db(response);
                            
                            //$('#myModal').modal('hide');
                         } else {
@@ -923,7 +999,7 @@ $('#formEguneratu').submit(function(e) {
                     data        : formdata ? formdata : form.serialize(),
                     contentType : false,
                     processData : false,
-		    dataType	: 'html',
+		    		dataType	: 'html',
 
                     success: function(data,status,xhr) { //response
                         if(response != 'error') {
@@ -951,14 +1027,14 @@ $('#formEguneratu').submit(function(e) {
  */
 
 
-function create_path_on_db()
+function create_path_on_db(paths_thumbnail_name)
 {
 		
 	var dc_title = document.getElementById("path_titulua").value;
 	var dc_description = document.getElementById("path_desk").value;
 	var dc_subject = document.getElementById("path_gaia").value;
-	var paths_thumbnail = document.getElementById("file2");
-	var paths_thumbnail_name=paths_thumbnail.value;
+	//var paths_thumbnail = document.getElementById("file2");
+	//var paths_thumbnail_name=paths_thumbnail.value;
 	var hizkuntza =document.getElementById("hizkuntza").value;
 	
 	//alert(paths_thumbnail_name);
@@ -1078,7 +1154,7 @@ function create_path_nodes(path_id)
 	for(var i = 0; i < json.length; i++) {
 		var item_id= json[i].id;
 		var uri="uri_"+json[i].id;
-		var dc_source="Euskomedia";
+		var dc_source="";
 		//var dc_description="desc";
 		var type ="argazkia";
 		var paths_thumbnail=json[i].irudia;
@@ -1108,7 +1184,6 @@ function create_path_nodes(path_id)
 
 	stop_loader("loader");           
 }
-
 
 
 function create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start)
@@ -1200,7 +1275,7 @@ function update_path_on_db_request(path_id,dc_title,dc_subject,dc_description,pa
 {
 	var csrftoken = getCookie('csrftoken');
 	var xmlHttp = createXmlHttpRequestObject();
-	alert(paths_thumbnail_name);
+	//alert(paths_thumbnail_name);
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
 		
 		$.ajaxSetup({

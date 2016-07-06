@@ -236,8 +236,10 @@
                     <div class="panel-body">
                     	
                     		<div id="messages"></div>                                                       
-                            {% for item in eguneko_itemak %}							
-								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title}} </a></label><br/>				
+                            {% for item in eguneko_itemak %}
+                            	{% if item.dc_title%}								
+								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>				
+								{%endif%}
 							{%endfor%}                      
                             <br/>						
                             <div class="modal-footer">
@@ -271,8 +273,10 @@
                     <div class="panel-body">
                     	
                     		<div id="messages"></div>                                                       
-                            {% for item in item_bozkatuenak %}							
-								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title}} </a></label><br/>				
+                            {% for item in item_bozkatuenak %}	
+                            	{% if item.dc_title%}							
+								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>				
+								{%endif%}
 							{%endfor%}                      
                             <br/>						
                             <div class="modal-footer">
@@ -305,8 +309,10 @@
                     <div class="panel-body">
                     	
                     		<div id="messages"></div>                                                       
-                            {% for item in azken_itemak %}							
-								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title}} </a></label><br/>				
+                            {% for item in azken_itemak %}
+                            	{% if item.dc_title%}					
+								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>
+								{%endif%}				
 							{%endfor%}                      
                             <br/>						
                             <div class="modal-footer">

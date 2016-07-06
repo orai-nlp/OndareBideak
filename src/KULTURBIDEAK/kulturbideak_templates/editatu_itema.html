@@ -5,50 +5,6 @@
 {% block content %}
 
 <div class="itema_gehitu">
-<!--
-	<div class="panel panel-info">
-	<div class="panel-heading">
-	  {% get_current_language as LANGUAGE_CODE %}
-		<h1 class="panel-title"> {{ LANGUAGE_CODE|choose_title_language:item}}</h1>
-	</div>
-	<div class="panel-body">
-    
-   	 	<div class="col-xs-6 col-md-3" align="center">
-   			 <a href="#" class="thumbnail">
-
-	 			 <img alt="{{ LANGUAGE_CODE|choose_title_language:item}}" src="{{irudia}}">
- 			   </a>
- 		</div>
- 		<div class="item_edukia">
- 			{% if item.edm_country%}
- 				<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
- 			{%endif%}
- 			{% if item.dc_language%}
- 				<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
- 			{%endif%}
- 			{% if item.edm_provider%}
- 				<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{item.edm_provider}} </a></p>
- 			{%endif%}
- 			{% if item.dc_creator%}
- 				<p><b>{% trans "Sortzailea:" %}</b><a href="">{{item.dc_creator}} </a></p>
- 			{%endif%}
- 			{% if item.edm_rights%}
- 				<p><b>{% trans "Eskubideak:" %}</b><a href="">{{eskubideak}} </a></p>
- 			{%endif%}
- 			{% if item.edm_year %}
- 				<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
- 			{%endif%}
- 			{% if item.edm_isshownat%}
- 				<p><a title="{{viewAtSource}}" href="{{viewAtSource}}"><b>{% trans "Ikusi jatorrizkoa" %}</b></a></p>
- 			{%endif%}
- 		</div>
- 		
- 		
- 	 </div>
-
-	
-</div>
--->
 
 
 <div class="container">
@@ -60,9 +16,12 @@
       {% if item.edm_object %}
       <!--<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">-->
       <img  alt="{{item.dc_title}}" src="{{item.edm_object}}">
-      {%else%}
-      <iframe id="frame" src="{{item.edm_isshownby}}">
-	</iframe>
+      {%elif item.edm_isshownby%}
+     
+     	 <iframe id="frame" src="{{item.edm_isshownby}}">
+	 	 </iframe>
+	   {%else%}
+	   		<img  alt="{{item.dc_title}}" src="/uploads/NoIrudiItem.png">
       {% endif %}
       
       </a>
@@ -275,7 +234,48 @@
 	{%endif%}
 	</ul>
       </div>
-    
+    <div class="path-info overflow">
+			{% if user.is_authenticated %}
+			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
+						
+  			<button class="btn btn-default gehitu-botoia" type="button" title="lan eremura gehitu" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
+ 				
+ 				{% trans "Gehitu" %}
+ 				<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+			</button>
+			
+			
+				<!--ikusi-->
+				<a class="btn btn-primary" type="button" href="{{BASE_URL}}/erakutsi_item?id={{id}}">
+       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+       			</a>
+				
+			{% if request.user|has_group:'hornitzailea' %}
+				<!--egunekoa bihurtu-->
+				{% if item.egunekoa == 0 %}	
+				 <a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=editatu" >
+				   <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				   </a>
+				{%endif%}
+				{% if item.egunekoa == 1 %}	
+				 <a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=editatu" >
+				   <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+				   </a>
+					
+				{%endif%}
+			
+			{%endif%}
+		
+			
+       		{% if user.id == item.fk_ob_user.id %}
+			
+					<!-- ezabatu -->
+					<a class="btn btn-danger" type="button" title="itema ezabatu" onClick="deleteItem({{id}})" >				
+ 					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+					</a>
+			{%endif%}
+		{%endif%}  		
+		</div>
     <div class="path-info overflow">
       
       <!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->

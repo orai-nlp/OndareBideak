@@ -1,4 +1,4 @@
-{% if object.dc_language == "en" or object.dc_language == "eng"%}
+{% if object.language == "en" %}
 {{ object.dc_title }}
 {{ object.dc_subject }}
 {{ object.dc_description }}

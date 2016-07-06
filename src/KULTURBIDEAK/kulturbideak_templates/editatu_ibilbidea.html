@@ -70,28 +70,33 @@
 			<p class="path-info-description">{{momentukoPatha.dc_description}}	</p>		
 		</div>
 		
+		
 		{% if user.is_authenticated %}
 		<div class="path-info overflow">
 			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
+				<!--ikusi-->
+				<a class="btn btn-primary" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{momentukoPatha.id}}">
+       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+       			</a>
 				
 			{% if request.user|has_group:'hornitzailea' %}
 				<!--egunekoa bihurtu-->
 				{% if momentukoPatha.egunekoa == 0 %}	
-					<a class="btn btn-warning" type="button" title="Eguneko ibilbide bihurtu" onclick="egunekoaGehituEditatutik({{momentukoPatha.id}})" >				
- 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-					</a>
+				    <a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbide bihurtu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{momentukoPatha.id}}&nondik=editatu" >
+				  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				     </a>
 				{%endif%}
 				{% if momentukoPatha.egunekoa == 1 %}	
-					<a class="btn btn-warning" type="button" title="Eguneko ibilbidea ezabatu" onclick="egunekoaKenduEditatutik({{momentukoPatha.id}})" >				
- 						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-					</a>
+				    <a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbidea ezabatu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{momentukoPatha.id}}&nondik=editatu" >
+				      <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+				      </a>
 					
 				{%endif%}
 			
 			{%endif%}
-			{% if user.username == momentukoPatha.fk_user_id.username %}
+			{% if user.id == momentukoPatha.fk_user_id.id %}
 
-				
+					
 					<!-- ezabatu"-->
 					<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{momentukoPatha.id}})"  >				
  					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>

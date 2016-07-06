@@ -107,6 +107,164 @@ var svg = d3.select("#path_boxes_overview").append("svg")
 
     } 
             
+//Maddalen: Nodoen titulutik etiketak garbitzen dituen funtzioa
+
+function tituluaGarbitu (titulua){
+	
+		
+	var tituluaJat=titulua.replace(/&lt;/g, "<");
+	tituluaJat=tituluaJat.replace(/&gt;/g, ">");
+	tituluaJat=tituluaJat.replace(/&quot;/g, "");
+
+	
+	titulua=tituluaJat;
+    var titulu_es="";
+    var titulu_en="";
+    var titulu_eu="";
+   
+    //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    var myRegexpES = new RegExp("<div class=titulu_es>(.*?)</div>");
+    //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
+    var match_es = myRegexpES.exec(titulua);
+   
+    if (match_es){   	
+        titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
+       }
+    else{
+        titulu_es="";
+       }
+    
+    var myRegexpEN = new RegExp("<div class=titulu_en>(.*?)</div>");
+    var match_en = myRegexpES.exec(titulua);     
+    if (match_en){
+        titulu_en=match_en[1];
+       }
+    else{
+        titulu_en="";
+   	}
+ 
+ 	var myRegexpEU = new RegExp("<div class=titulu_eu>(.*?)</div>");
+    var match_eu = myRegexpEU.exec(titulua);  
+    if (match_eu){
+        titulu_eu=match_eu[1];
+       }
+    else{
+        titulu_eu="";
+    }
+  
+    //titulua= !!!erabaki defektuzkoa zein den eu,en,es
+    if (titulu_eu){
+        titulua=titulu_eu;
+     }
+    else if (titulu_es){
+        titulua=titulu_es;
+       }
+    else{
+        titulua=titulu_en;
+       }
+   
+    //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
+    if (titulua ==""){
+        titulua=tituluaJat;
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ");
+        titulua=titulua.replace("</div>", " ");
+        
+        
+    }
+    
+	return titulua;
+}
+
+//Maddalen: Nodoen titulutik etiketak garbitu eta Moztu 
+
+function tituluaGarbituMoztu (titulua){
+	
+		
+	var tituluaJat=titulua.replace(/&lt;/g, "<");
+	tituluaJat=tituluaJat.replace(/&gt;/g, ">");
+	tituluaJat=tituluaJat.replace(/&quot;/g, "");
+
+	
+	titulua=tituluaJat;
+    var titulu_es="";
+    var titulu_en="";
+    var titulu_eu="";
+   
+    //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    var myRegexpES = new RegExp("<div class=titulu_es>(.*?)</div>");
+    //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
+    var match_es = myRegexpES.exec(titulua);
+   
+    if (match_es){   	
+        titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
+       }
+    else{
+        titulu_es="";
+       }
+    
+    var myRegexpEN = new RegExp("<div class=titulu_en>(.*?)</div>");
+    var match_en = myRegexpES.exec(titulua);     
+    if (match_en){
+        titulu_en=match_en[1];
+       }
+    else{
+        titulu_en="";
+   	}
+ 
+ 	var myRegexpEU = new RegExp("<div class=titulu_eu>(.*?)</div>");
+    var match_eu = myRegexpEU.exec(titulua);  
+    if (match_eu){
+        titulu_eu=match_eu[1];
+       }
+    else{
+        titulu_eu="";
+    }
+  
+    //titulua= !!!erabaki defektuzkoa zein den eu,en,es
+    if (titulu_eu){
+        titulua=titulu_eu;
+     }
+    else if (titulu_es){
+        titulua=titulu_es;
+       }
+    else{
+        titulua=titulu_en;
+       }
+   
+    //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
+    if (titulua ==""){
+        titulua=tituluaJat;
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ");
+        titulua=titulua.replace("</div>", " ");
+        
+        
+    }
+  
+	return titulua.substr(0,14)+"...";
+}
+
+
+
+/*
+    if interfaceLang == "eu":
+         
+        if titulu_eu != "":
+            return titulu_eu          
+        else:        
+            return titulua
+    if interfaceLang == "es":
+        if titulu_es != "":
+            return titulu_es          
+        else:        
+            return titulua
+                
+    if interfaceLang == "en":
+         
+        if titulu_en != "":
+            return titulu_en          
+        else:        
+            return titulua
+	*/
 
 //Root da zuhaitzaren aita
 
@@ -148,14 +306,19 @@ function update(source) {
       //nabigatu?path_id='+path_id+'&item_id='+node_id+'&autoplay=0'
         .attr("xlink:href", function(d) {
      return "/nabigatu?path_id="+path_id+"&item_id="+d.id; })
-      .on('click', click);    
+      .on('click', click);
+      
 
+  //Nodoen Gainean Sagua jarritakoan Nodoaren Titulu osoa erakutsiko da        
+	nodeEnter.append("svg:title").text(function(d) {
+                return tituluaGarbitu(d.name);  });
+  
   //Borobila sortu
   var radio = 30;
 
   nodeEnter.append("circle")
     .attr("id",function(d) {
-     return 'nodo: '+d.name; })
+     return 'nodo: '+tituluaGarbitu(d.name); }) //Maddalen
     .attr("class", "aukeratuta")
     .attr("r", function(d){
             return 15;
@@ -209,7 +372,7 @@ function update(source) {
     })
       .attr("text-anchor", function(d) { 
           return d.children || d._children ? "end" : "start"; })
-      .text(function(d) { return d.name; })
+      .text(function(d) { return tituluaGarbituMoztu(d.name);}) //Maddalen
       .style("fill-opacity", 1);
 
         var nodeUpdate = node.transition()

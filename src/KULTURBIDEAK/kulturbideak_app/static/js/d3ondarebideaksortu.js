@@ -497,7 +497,8 @@ function update(source) {
             .attr("text-anchor", function(d) { 
                 return d.children || d._children ? "end" : "start"; })
             .text(function(d) { 
-                var name = d.name.substring(0,10)+"...";
+                //var name = d.name.substring(0,10)+"..."; //Nodoen tituluak mozten dira hemen
+                var name = d.name;
                 return name; })
             .style("fill-opacity", 1);
 

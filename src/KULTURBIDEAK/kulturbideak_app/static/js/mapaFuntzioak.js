@@ -6,7 +6,7 @@ var global_map;
     {% if non == 'itema_gehitu'  %}
         function load_map(map, options)
         {
-        	
+        	alert("load map itema_gehitu");
             global_map=map;
            
              // zentratu mapa erabiltzaileak 
@@ -24,9 +24,13 @@ var global_map;
 			
        		 
        	}
+ 
     {% else %}
+    	
         function load_map(map, options)
         {        	
+        		alert("load map");
+        		alert(geoloc_latitude);
            		map.panTo(new L.LatLng({{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}));
            		L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}]).addTo(map).openPopup();                
   		

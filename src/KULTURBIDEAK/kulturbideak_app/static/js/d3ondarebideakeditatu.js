@@ -5,8 +5,147 @@ var data = ibilbide_data;
 //zuhaitzaren arraya hasieratu
 var treeData = [];
 
+
+//Maddalen: Nodoen titulutik etiketak garbitzen dituen funtzioa
+
+function tituluaGarbitu (titulua){
+	
+		
+	var tituluaJat=titulua.replace(/&lt;/g, "<");
+	tituluaJat=tituluaJat.replace(/&gt;/g, ">");
+	tituluaJat=tituluaJat.replace(/&quot;/g, "");
+
+	
+	titulua=tituluaJat;
+    var titulu_es="";
+    var titulu_en="";
+    var titulu_eu="";
+   
+    //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    var myRegexpES = new RegExp("<div class=titulu_es>(.*?)</div>");
+    //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
+    var match_es = myRegexpES.exec(titulua);
+   
+    if (match_es){   	
+        titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
+       }
+    else{
+        titulu_es="";
+       }
+    
+    var myRegexpEN = new RegExp("<div class=titulu_en>(.*?)</div>");
+    var match_en = myRegexpES.exec(titulua);     
+    if (match_en){
+        titulu_en=match_en[1];
+       }
+    else{
+        titulu_en="";
+   	}
+ 
+ 	var myRegexpEU = new RegExp("<div class=titulu_eu>(.*?)</div>");
+    var match_eu = myRegexpEU.exec(titulua);  
+    if (match_eu){
+        titulu_eu=match_eu[1];
+       }
+    else{
+        titulu_eu="";
+    }
+  
+    //titulua= !!!erabaki defektuzkoa zein den eu,en,es
+    if (titulu_eu){
+        titulua=titulu_eu;
+     }
+    else if (titulu_es){
+        titulua=titulu_es;
+       }
+    else{
+        titulua=titulu_en;
+       }
+   
+    //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
+    if (titulua ==""){
+        titulua=tituluaJat;
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ");
+        titulua=titulua.replace("</div>", " ");
+        
+        
+    }
+    
+	return titulua;
+}
+
+//Maddalen: Nodoen titulutik etiketak garbitu eta Moztu 
+
+function tituluaGarbituMoztu (titulua){
+	
+		
+	var tituluaJat=titulua.replace(/&lt;/g, "<");
+	tituluaJat=tituluaJat.replace(/&gt;/g, ">");
+	tituluaJat=tituluaJat.replace(/&quot;/g, "");
+
+	
+	titulua=tituluaJat;
+    var titulu_es="";
+    var titulu_en="";
+    var titulu_eu="";
+   
+    //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    var myRegexpES = new RegExp("<div class=titulu_es>(.*?)</div>");
+    //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
+    var match_es = myRegexpES.exec(titulua);
+   
+    if (match_es){   	
+        titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
+       }
+    else{
+        titulu_es="";
+       }
+    
+    var myRegexpEN = new RegExp("<div class=titulu_en>(.*?)</div>");
+    var match_en = myRegexpES.exec(titulua);     
+    if (match_en){
+        titulu_en=match_en[1];
+       }
+    else{
+        titulu_en="";
+   	}
+ 
+ 	var myRegexpEU = new RegExp("<div class=titulu_eu>(.*?)</div>");
+    var match_eu = myRegexpEU.exec(titulua);  
+    if (match_eu){
+        titulu_eu=match_eu[1];
+       }
+    else{
+        titulu_eu="";
+    }
+  
+    //titulua= !!!erabaki defektuzkoa zein den eu,en,es
+    if (titulu_eu){
+        titulua=titulu_eu;
+     }
+    else if (titulu_es){
+        titulua=titulu_es;
+       }
+    else{
+        titulua=titulu_en;
+       }
+   
+    //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
+    if (titulua ==""){
+        titulua=tituluaJat;
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ");
+        titulua=titulua.replace("</div>", " ");
+        
+        
+    }
+  
+	return titulua.substr(0,14)+"...";
+}
+
+
 //lehen aldiz margotzea.
 sortu(data);
+
 
 function sortu(data){
 
@@ -92,7 +231,7 @@ function sortu(data){
 	$("#narrazio_modal").modal('show');
 	$('#narrazio_modal').on('shown', function() {
             $("#narra_textarea").focus();
-	})
+	});
 	document.getElementById("narra_botoia").onclick = function () { 
             d.narrazioa = document.getElementById("narra_textarea").value;                                                                 
 	    $("#narrazio_modal").modal('hide');
@@ -322,7 +461,7 @@ function sortu(data){
                     selectedNode.children.push(draggingNode);
                     selectedNode.parent.children.push(selectedNode);
 		    for (var c= 0;c<draggingNode.children;c++){
-			var index3 = draggingNode.children[i].children.indexOf(selectedNode)
+			var index3 = draggingNode.children[i].children.indexOf(selectedNode);
 			if (index > -1) {
 			    draggingNode.children[i].children.splice(index, 1);
 			}
@@ -447,10 +586,14 @@ function sortu(data){
                 }
             });   
 	
+	  	//Nodoen Gainean Sagua jarritakoan Nodoaren Titulu osoa erakutsiko da        
+		nodeEnter.append("svg:title").text(function(d) {
+                return tituluaGarbitu(d.name);  });
+		
         //nodoari zirkulua gehitu
         nodeEnter.append("circle")
             .attr("id",function(d) {
-                return 'nodo: '+d.name; })
+                return 'nodo: '+tituluaGarbitu(d.name);  })
             .attr("class", "aukeratuta")
             .attr("r", function(d){
                 if (nodes.length>=10){
@@ -493,7 +636,8 @@ function sortu(data){
             .attr("text-anchor", function(d) { 
                 return d.children || d._children ? "end" : "start"; })
             .text(function(d) { 
-                var name = d.name.substring(0,10)+"...";
+                //var name = d.name.substring(0,10)+"...";
+                var name = tituluaGarbituMoztu(d.name);
                 return name; })
             .style("fill-opacity", 1);
 	

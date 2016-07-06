@@ -800,8 +800,8 @@ def eguneko_itema_kendu(request):
         z="i"
         return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
-    else:
-        print "nondik ba? ikus"
+    elif nondik =="ikusi":
+     
         item_tupla = item.objects.get(pk=item_id)
             
    
@@ -849,15 +849,49 @@ def eguneko_itema_kendu(request):
       
         comment_form = CommentForm() 
         comment_parent_form = CommentParentForm()
-        print "item.html deitu baino lehen"
+
     
         non="erakutsi_item"
-        print "erakutsi_item"
-        print item_tupla
+
         
         return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
+    else:
         
+        #editatu
+        item_tupla = item.objects.get(pk=item_id)
+        titulua=item_tupla.dc_title
+        deskribapena=item_tupla.dc_description
+        gaia=item_tupla.dc_subject
+        herrialdea=item_tupla.edm_country
+        hizkuntza=item_tupla.dc_language
+        if(hizkuntza=="eu"):
+            hizkuntza=1
+            hizk="eu"
+        elif(hizkuntza=="es"):
+            hizkuntza=2
+            hizk="es"
+        else:
+            hizkuntza=3
+            hizk="en"
+            
+        kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.edm_rights
+        urtea=item_tupla.dc_date 
+        viewAtSource=item_tupla.uri
+        irudia=item_tupla.edm_object
+        #hornitzailea=item_tupla.edm_provider
+        hornitzailea=item_tupla.dc_creator
+        
+        geoloc_longitude=item_tupla.geoloc_longitude
+        geoloc_latitude=item_tupla.geoloc_latitude
+        
+        non="itema_editatu" #Mapako baimenak kontrolatzeko erabiliko da hau
+       
+       
+        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'hizkuntza':hizkuntza})
+        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
+   
         
        
 
@@ -1397,7 +1431,7 @@ def eguneko_itema_gehitu(request):
         z="i"
         return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
-    else:
+    elif nondik =="ikusi":
         print "nondik ba? ikusi"
         item_tupla = item.objects.get(pk=item_id)
             
@@ -1452,7 +1486,42 @@ def eguneko_itema_gehitu(request):
         
         
         return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
-
+    else:
+        
+        #editatu
+        item_tupla = item.objects.get(pk=item_id)
+        titulua=item_tupla.dc_title
+        deskribapena=item_tupla.dc_description
+        gaia=item_tupla.dc_subject
+        herrialdea=item_tupla.edm_country
+        hizkuntza=item_tupla.dc_language
+        if(hizkuntza=="eu"):
+            hizkuntza=1
+            hizk="eu"
+        elif(hizkuntza=="es"):
+            hizkuntza=2
+            hizk="es"
+        else:
+            hizkuntza=3
+            hizk="en"
+            
+        kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.edm_rights
+        urtea=item_tupla.dc_date 
+        viewAtSource=item_tupla.uri
+        irudia=item_tupla.edm_object
+        #hornitzailea=item_tupla.edm_provider
+        hornitzailea=item_tupla.dc_creator
+        
+        geoloc_longitude=item_tupla.geoloc_longitude
+        geoloc_latitude=item_tupla.geoloc_latitude
+        
+        non="itema_editatu" #Mapako baimenak kontrolatzeko erabiliko da hau
+       
+       
+        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'hizkuntza':hizkuntza})
+        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
+   
         
         
 #EGUNEKO IBILBIDEA KUDEATZEKO BI FUNTZIO
@@ -1461,7 +1530,6 @@ def eguneko_ibilbidea_gehitu(request):
     path_id = request.GET.get('id')
     nondik = request.GET.get('nondik')
     
-    print "eguneko_itema_gehitu"
     path.objects.filter(id=path_id).update(egunekoa = 1)   
 
     #GURI ALDAKETAREN BERRI EMAN?    
@@ -1989,7 +2057,7 @@ def eguneko_ibilbidea_gehitu(request):
         z="p"
         return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
-    else:
+    elif(nondik=="ikusi"):
         print "nondik ba?"
         print "nondik ba? ikusi"
         momentukoPatha=path.objects.get(id=path_id)
@@ -2069,7 +2137,26 @@ def eguneko_ibilbidea_gehitu(request):
         #Ezkerreko zutabea ez erakusteko
         non="fitxaE"
         return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    else:
+        #Editatu
+            
+        #lortu path-aren ezaugarriak
+        ibilbidea = path.objects.get(id=path_id)
+        titulua=ibilbidea.dc_title
+        gaia=ibilbidea.dc_subject
+        deskribapena=ibilbidea.dc_description
+        irudia=ibilbidea.paths_thumbnail
+      
+        #path hasierak hartu
+        nodes = [] 
+        erroak = node.objects.filter(fk_path_id=ibilbidea,paths_start=1)
+        for erroa in erroak:
+            nodes = nodes + get_tree(erroa)
+       
     
+    
+    return render_to_response('editatu_ibilbidea.html',{'momentukoPatha':ibilbidea,'path_id':path_id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+
 def eguneko_ibilbidea_kendu(request):
     
     path_id = request.GET.get('id')
@@ -2603,7 +2690,7 @@ def eguneko_ibilbidea_kendu(request):
         z="p"
         return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
-    else:
+    elif (nondik=="ikusi"):
         print "nondik ba?"
         print "nondik ba? ikusi"
         momentukoPatha=path.objects.get(id=path_id)
@@ -2683,7 +2770,27 @@ def eguneko_ibilbidea_kendu(request):
         #Ezkerreko zutabea ez erakusteko
         non="fitxaE"
         return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
-     
+    
+    else:
+    #Editatu
+            
+        #lortu path-aren ezaugarriak
+        ibilbidea = path.objects.get(id=path_id)
+        titulua=ibilbidea.dc_title
+        gaia=ibilbidea.dc_subject
+        deskribapena=ibilbidea.dc_description
+        irudia=ibilbidea.paths_thumbnail
+      
+        #path hasierak hartu
+        nodes = [] 
+        erroak = node.objects.filter(fk_path_id=ibilbidea,paths_start=1)
+        for erroa in erroak:
+            nodes = nodes + get_tree(erroa)
+       
+    
+    
+    return render_to_response('editatu_ibilbidea.html',{'momentukoPatha':ibilbidea,'path_id':path_id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+
         
 
      
@@ -4533,7 +4640,7 @@ def erakutsi_item(request):
         botoKopurua=item_tupla.get_votes()
         
     #MORE LIKE THIS
-   #print "MORE LIKE THIS KALKULATZEN" 
+    #print "MORE LIKE THIS KALKULATZEN" 
     mlt=[] 
     #search_models_items=[item]
     #mlt = SearchQuerySet().more_like_this(item_tupla)
@@ -4795,12 +4902,14 @@ def editatu_itema(request):
         dc_rights=request.POST['eskubideak']
         edm_rights=request.POST['eskubideak']
         irudia_url=""
+        user_id=request.user.id
         if(request.FILES):
         
-            edm_object=request.FILES['irudia'].name
-            print "irudia"
-            print edm_object
-            irudia_url=MEDIA_URL+ str(irudi_izena_random)+edm_object #izen berekoak gainidatzi egingo dira bestela
+            #edm_object=request.FILES['irudia'].name 
+            fileObject= request.FILES.get('irudia')
+            fname, fext = os.path.splitext(fileObject.name)
+            fileName='item_img_'+str(user_id)+'_'+randomword(5)+fext
+            irudia_url=MEDIA_URL+str(fileName)#izen berekoak gainidatzi egingo dira bestela
       
         dc_language=request.POST['hizkuntza']
         edm_language=request.POST['hizkuntza']
@@ -4841,7 +4950,7 @@ def editatu_itema(request):
        
         if(irudia_url!=""):
             #Irudia igo
-            edm_object= str(irudi_izena_random)+edm_object
+            edm_object= fileName
             handle_uploaded_file(request.FILES['irudia'],edm_object)
             #item.objects.filter(id=item_id).update(egunekoa = 0,proposatutakoa=1)         
             #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
@@ -4980,9 +5089,13 @@ def itema_gehitu(request):
         dc_rights=request.POST['eskubideak']
         edm_rights=request.POST['eskubideak']
         irudia_url=""
+        user_id=request.user.id
         if(request.FILES):
-            edm_object=request.FILES['irudia'].name
-            irudia_url=MEDIA_URL+str(irudi_izena_random)+edm_object #izen berekoak gainidatzi egingo dira bestela
+            #edm_object=request.FILES['irudia'].name 
+            fileObject= request.FILES.get('irudia')
+            fname, fext = os.path.splitext(fileObject.name)
+            fileName='item_img_'+str(user_id)+'_'+randomword(5)+fext
+            irudia_url=MEDIA_URL+str(fileName)#izen berekoak gainidatzi egingo dira bestela
       
         dc_language=request.POST['hizkuntza']
         edm_language=request.POST['hizkuntza']
@@ -5018,7 +5131,7 @@ def itema_gehitu(request):
         
         if(irudia_url!=""):
             #Irudia igo
-            edm_object=str(irudi_izena_random)+edm_object #izen berekoak gainidatzi egingo dira bestela
+            edm_object=fileName #izen berekoak gainidatzi egingo dira bestela
             handle_uploaded_file(request.FILES['irudia'],edm_object)
         
         latitude=0.0
@@ -5265,7 +5378,8 @@ def ajax_path_irudia_gorde (request):
     print request.FILES
     #print request.POST.FILES
     #print request.GET
-    
+    fileName='1'
+
     if request.is_ajax() and request.method == 'POST':
        
         
@@ -5291,16 +5405,16 @@ def ajax_path_irudia_gorde (request):
             print fileName
             #handle_uploaded_file(fileObject,fileObject.name)
             handle_uploaded_file(fileObject,fileName)
-            request_answer = azken_id
+            request_answer = fileName
     
-    request_answer = 1    
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+
+    return render_to_response('request_answer.html', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
 
 
 def ajax_path_irudia_eguneratu (request):
 
     #KONPONTZEKO
-    request_answer= 0
+    request_answer= 1
     
     #import pdb
     #pdb.set_trace()
@@ -5309,7 +5423,7 @@ def ajax_path_irudia_eguneratu (request):
     #print request.POST.FILES
     print request.GET
 
-    fileName='1';
+    fileName='1'
 
     if request.is_ajax() and request.method == 'POST':
     
@@ -5370,7 +5484,7 @@ def ajax_path_irudia_gorde_proba (request):
 
 def ajax_path_berria_gorde(request):
     
-    request_answer= 0
+    request_answer= 1
   
     if request.is_ajax() and request.method == 'POST':
         
@@ -5401,11 +5515,12 @@ def ajax_path_berria_gorde(request):
         ##
         print "paths_thumbnail"
         print paths_thumbnail
-        if paths_thumbnail =="":
+        if paths_thumbnail =="" or paths_thumbnail =="0":
             paths_thumbnail_url="/uploads/NoIrudiItem.png"
         else:
-            paths_thumbnail_url=MEDIA_URL+str(azken_id)+str(fk_usr_id)+paths_thumbnail
-        #paths_thumbnail_url=MEDIA_URL+paths_thumbnail
+            #paths_thumbnail_url=MEDIA_URL+str(azken_id)+str(fk_usr_id)+paths_thumbnail
+            paths_thumbnail_url=MEDIA_URL+paths_thumbnail
+       
      
         #Irudia igo
         #handle_uploaded_file(request.FILES['irudia'],edm_object)
@@ -5446,7 +5561,7 @@ def ajax_path_eguneratu(request):
     
     
     #erabiltzaileak ibilbidearen irudia eguneratu ez baldin badu zaharra hartu
-    if paths_thumbnail=='':
+    if paths_thumbnail=='' or paths_thumbnail =="1":
                 
         patha=path.objects.get(id=path_id)      
         paths_thumbnail_url=patha.paths_thumbnail 
@@ -5501,7 +5616,10 @@ def ajax_path_node_gorde(request):
         
         uri=request.POST.get('uri')
         dc_source=request.POST.get('dc_source')
-        dc_title=request.POST.get('dc_title')     
+        #dc_source=request.user.username # ??
+        dc_source=itema.dc_source # ??
+        dc_title=request.POST.get('dc_title')    #titulua moztuta dator
+        dc_title=itema.dc_title #titulu osoa hartzeko
         dc_description=request.POST.get('dc_description')
         type=request.POST.get('type')
         paths_thumbnail = request.POST.get('paths_thumbnail')
