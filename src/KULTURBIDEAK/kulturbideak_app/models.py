@@ -18,7 +18,10 @@ from django.db.models import Count
 #https://docs.djangoproject.com/en/1.8/topics/db/models/#field-types
 
 
-
+class lizentzia(models.Model):
+    izena=models.TextField()
+    url=models.TextField()
+    ikonoa=models.TextField()
 
 #Desciption: Information on resources imported from Alinari and Europeana, corresponding to the EDM specification.
 #Primary key constraint name: PK_item 
@@ -76,6 +79,7 @@ class item(models.Model):
     geoloc_longitude = models.FloatField(null=True)
     geoloc_latitude = models.FloatField(null=True)
     aberastua = models.BooleanField(default=False)
+    ob_language=models.TextField()
     # idxfti=models.TSVectorField('dc_title')
     #objects = ProposalManager()
     

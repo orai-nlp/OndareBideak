@@ -3,7 +3,11 @@
 	{% for item in items %}
 		<item>
 	    	<id>{{ item.fk_item_id_id }}</id>
+	    	{% if item.dc_title %}
 	    	<titulua>{{ item.dc_title }}</titulua>
+	    	{%else%}
+	    	<titulua>none</titulua>
+	    	{%endif%}
 	    	<irudia>{{ item.paths_thumbnail }}</irudia>
     	</item>
     {% endfor %}

@@ -66,7 +66,7 @@
         display: block;
         height: 0;
         border: 1px solid #808080;
-        background: #e7e7e7;
+        background: #eeeeee;
         opacity: 0;
         -webkit-transition: height 1s,opacity 1s ease-in-out;
         transition: height 1s,opacity 1s ease-in-out;
@@ -90,6 +90,7 @@
     padding: 10px;
     vertical-align: top;
     width: 95px;
+    
 	}
    
 	.wsb_image {
@@ -99,6 +100,10 @@
     margin-right: 10px;
     pointer-events: none;
     width: 50px;
+    border-style: solid;
+    border-width: 1.5px;
+    /*border-color: orange lightblue blue yellow;*/
+    border-color: #31708f;
 	}
    
     .wsb_title{
@@ -115,7 +120,7 @@
         font-size: 11pt;
         font-weight: bold;
         float: right;
-	margin: 3px;
+	    margin: 3px;
     }
 
     .ws_box:hover .wsb_button{
@@ -551,10 +556,18 @@ circle .unselectedNode {
 .ibilbide-irudia{
 	
 	height: 128px;
-    border-radius: 20%;
+    border-radius: 0%;
     /*border: solid 1px #CCC;*/
    
 }
+.hornitzaile-irudia{
+	
+	height: 150px;
+
+    border: solid 1px #CCC;
+   
+}
+
 .ibilbide-panela{
 	
  height: 550px;
@@ -620,6 +633,18 @@ h4.mota {
     font-weight: 200;
     color: #c03035;
 }
+h4.mota2 {
+       
+    font-family: "dosis" !important;
+    font-size: 19px;
+    font-weight: 200;
+    /*color: #c03035;*/
+}
+h1.dosis{
+	font-family: "dosis" !important;
+    font-size: 24px;
+}
+
 p.uppercase {
     text-transform: uppercase;
     text-align: center;

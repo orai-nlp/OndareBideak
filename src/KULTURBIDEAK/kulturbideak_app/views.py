@@ -320,7 +320,7 @@ def eguneko_itema_kendu(request):
         return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
 
     elif(nondik=="bilaketa"):
-        print "bilaketa orritik"
+       
         # Helburu hizkuntza guztietan burutuko du bilaketa
         hizkuntza=request.GET['hizkRadio']   
         galdera=request.GET['search_input']
@@ -864,24 +864,97 @@ def eguneko_itema_kendu(request):
         deskribapena=item_tupla.dc_description
         gaia=item_tupla.dc_subject
         herrialdea=item_tupla.edm_country
-        hizkuntza=item_tupla.dc_language
-        if(hizkuntza=="eu"):
-            hizkuntza=1
-            hizk="eu"
-        elif(hizkuntza=="es"):
-            hizkuntza=2
-            hizk="es"
+      
+        data=item_tupla.dc_date
+        
+       
+        mota=item_tupla.edm_type
+        if("TEXT" in mota):
+            print "bai, TEXT da"
+            mota=1
+            mot="TEXT"
+        elif("VIDEO" in mota):
+            mota=2
+            mot="VIDEO"
+        elif("IMAGE" in mota):
+            mota=3
+            mot="IMAGE"
         else:
-            hizkuntza=3
-            hizk="en"
+            #SOUND
+            mota=4
+            mot="SOUND"
+ 
+        lizentzia=item_tupla.edm_rights
+        if("http://creativecommons.org/publicdomain/mark/1.0/" in lizentzia):
+        
+            lizentzia=1
+            liz="Public Domain Mark"
+        elif("http://www.europeana.eu/rights/out-of-copyright-non-commercial/" in lizentzia):
+            lizentzia=2
+            liz="Out of copyright - non commercial re-use"
+        elif("http://creativecommons.org/publicdomain/zero/1.0/" in lizentzia):
+            lizentzia=3
+            liz="CC0"
+        elif("http://creativecommons.org/licenses/by/4.0" in lizentzia):
+            lizentzia=4
+            liz="CC-BY"
+        elif("http://creativecommons.org/licenses/by-sa/4.0/" in lizentzia):
+            lizentzia=5
+            liz="CC-BY-SA"
+        elif("http://creativecommons.org/licenses/by-nd/4.0/" in lizentzia):
+            lizentzia=6
+            liz="CC-BY-ND"
+        elif("http://creativecommons.org/licenses/by-nc/4.0/" in lizentzia):
+            lizentzia=7
+            liz="CC-BY-NC" 
+        elif("http://creativecommons.org/licenses/by-nc-sa/4.0/" in lizentzia):
+            lizentzia=8
+            liz="CC-BY-NC-SA"
+        elif("http://creativecommons.org/licenses/by-nc-nd/4.0/" in lizentzia):
+            lizentzia=9
+            liz="CC-BY-NC-ND"
+        elif("http://www.europeana.eu/rights/rr-f/" in lizentzia):
+            lizentzia=10
+            liz="Rights Reserved - Free Access"
+        elif("http://www.europeana.eu/rights/rr-p/" in lizentzia):
+            lizentzia=11
+            liz="Rights Reserved - Paid Access"
+        elif("http://www.europeana.eu/rights/orphan-work-eu/" in lizentzia):
+            lizentzia=12
+            liz="Orphan Work"           
+        else:
+            #http://www.europeana.eu/rights/unknown/
+            lizentzia=13
+            liz="Unknown"
+            
+        ob_language=item_tupla.ob_language
+        if('eu' in ob_language):
+            eu=True
+        else:
+            eu=False
+        if('es' in ob_language):
+            es=True
+        else:
+            es=False
+        if('en' in ob_language):
+            en=True
+        else:
+            en=False
+        
+        #kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.dc_rights
             
         kategoria=item_tupla.dc_type
         eskubideak=item_tupla.edm_rights
         urtea=item_tupla.dc_date 
-        viewAtSource=item_tupla.uri
+        viewAtSource=item_tupla.edm_isshownat
         irudia=item_tupla.edm_object
-        #hornitzailea=item_tupla.edm_provider
-        hornitzailea=item_tupla.dc_creator
+        hornitzailea=item_tupla.edm_provider
+        sortzailea=item_tupla.dc_creator
+        gaia = item_tupla.dc_subject
+        herrialdea =item_tupla.edm_country
+        jatorrizkoa =item_tupla.edm_isshownat
+        irudia=item_tupla.edm_object
         
         geoloc_longitude=item_tupla.geoloc_longitude
         geoloc_latitude=item_tupla.geoloc_latitude
@@ -889,9 +962,11 @@ def eguneko_itema_kendu(request):
         non="itema_editatu" #Mapako baimenak kontrolatzeko erabiliko da hau
        
        
-        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'hizkuntza':hizkuntza})
-        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
-   
+        #itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'eu':eu, 'es':es, 'en':en, 'data':data,'mota':mota,'lizentzia':lizentzia,'herrialdea':herrialdea})
+        #return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':ob_language,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
+        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'mota':mota, 'herrialdea':herrialdea , 'jatorrizkoa': jatorrizkoa, 'sortzailea':sortzailea,'gaia':gaia, 'lizentzia':lizentzia, 'data':data,'eu':eu,'es':es,'en':en})
+        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'viewAtSource':viewAtSource,'mota':mot,'liz':liz},context_instance=RequestContext(request))
+
         
        
 
@@ -899,8 +974,7 @@ def eguneko_itema_gehitu(request):
     
     item_id = request.GET.get('id')
     nondik = request.GET.get('nondik')
-    
-    print "eguneko_itema_gehitu"
+
     item.objects.filter(id=item_id).update(egunekoa = 1)   
 
     #GURI ALDAKETAREN BERRI EMAN?
@@ -1494,6 +1568,7 @@ def eguneko_itema_gehitu(request):
         deskribapena=item_tupla.dc_description
         gaia=item_tupla.dc_subject
         herrialdea=item_tupla.edm_country
+        data=item_tupla.dc_date
         hizkuntza=item_tupla.dc_language
         if(hizkuntza=="eu"):
             hizkuntza=1
@@ -1504,14 +1579,92 @@ def eguneko_itema_gehitu(request):
         else:
             hizkuntza=3
             hizk="en"
+        
+        mota=item_tupla.edm_type
+        if("TEXT" in mota):
+            print "bai, TEXT da"
+            mota=1
+            mot="TEXT"
+        elif("VIDEO" in mota):
+            mota=2
+            mot="VIDEO"
+        elif("IMAGE" in mota):
+            mota=3
+            mot="IMAGE"
+        else:
+            #SOUND
+            mota=4
+            mot="SOUND"
+ 
+        lizentzia=item_tupla.edm_rights
+        if("http://creativecommons.org/publicdomain/mark/1.0/" in lizentzia):
+        
+            lizentzia=1
+            liz="Public Domain Mark"
+        elif("http://www.europeana.eu/rights/out-of-copyright-non-commercial/" in lizentzia):
+            lizentzia=2
+            liz="Out of copyright - non commercial re-use"
+        elif("http://creativecommons.org/publicdomain/zero/1.0/" in lizentzia):
+            lizentzia=3
+            liz="CC0"
+        elif("http://creativecommons.org/licenses/by/4.0" in lizentzia):
+            lizentzia=4
+            liz="CC-BY"
+        elif("http://creativecommons.org/licenses/by-sa/4.0/" in lizentzia):
+            lizentzia=5
+            liz="CC-BY-SA"
+        elif("http://creativecommons.org/licenses/by-nd/4.0/" in lizentzia):
+            lizentzia=6
+            liz="CC-BY-ND"
+        elif("http://creativecommons.org/licenses/by-nc/4.0/" in lizentzia):
+            lizentzia=7
+            liz="CC-BY-NC" 
+        elif("http://creativecommons.org/licenses/by-nc-sa/4.0/" in lizentzia):
+            lizentzia=8
+            liz="CC-BY-NC-SA"
+        elif("http://creativecommons.org/licenses/by-nc-nd/4.0/" in lizentzia):
+            lizentzia=9
+            liz="CC-BY-NC-ND"
+        elif("http://www.europeana.eu/rights/rr-f/" in lizentzia):
+            lizentzia=10
+            liz="Rights Reserved - Free Access"
+        elif("http://www.europeana.eu/rights/rr-p/" in lizentzia):
+            lizentzia=11
+            liz="Rights Reserved - Paid Access"
+        elif("http://www.europeana.eu/rights/orphan-work-eu/" in lizentzia):
+            lizentzia=12
+            liz="Orphan Work"           
+        else:
+            #http://www.europeana.eu/rights/unknown/
+            lizentzia=13
+            liz="Unknown"
             
-        kategoria=item_tupla.dc_type
-        eskubideak=item_tupla.edm_rights
+        ob_language=item_tupla.ob_language
+        if('eu' in ob_language):
+            eu=True
+        else:
+            eu=False
+        if('es' in ob_language):
+            es=True
+        else:
+            es=False
+        if('en' in ob_language):
+            en=True
+        else:
+            en=False
+        
+        
+          
+        #kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.dc_rights
         urtea=item_tupla.dc_date 
-        viewAtSource=item_tupla.uri
+        viewAtSource=item_tupla.edm_isshownat
+        hornitzailea=item_tupla.edm_provider
+        sortzailea=item_tupla.dc_creator
+        gaia = item_tupla.dc_subject
+        herrialdea =item_tupla.edm_country
+        jatorrizkoa =item_tupla.edm_isshownat
         irudia=item_tupla.edm_object
-        #hornitzailea=item_tupla.edm_provider
-        hornitzailea=item_tupla.dc_creator
         
         geoloc_longitude=item_tupla.geoloc_longitude
         geoloc_latitude=item_tupla.geoloc_latitude
@@ -1519,9 +1672,11 @@ def eguneko_itema_gehitu(request):
         non="itema_editatu" #Mapako baimenak kontrolatzeko erabiliko da hau
        
        
-        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'hizkuntza':hizkuntza})
-        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
-   
+        #itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'hizkuntza':hizkuntza})
+        #return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
+        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'mota':mota, 'herrialdea':herrialdea , 'jatorrizkoa': jatorrizkoa, 'sortzailea':sortzailea,'gaia':gaia, 'lizentzia':lizentzia, 'data':data,'eu':eu,'es':es,'en':en})
+        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'viewAtSource':viewAtSource,'mota':mot,'liz':liz},context_instance=RequestContext(request))
+
         
         
 #EGUNEKO IBILBIDEA KUDEATZEKO BI FUNTZIO
@@ -4768,7 +4923,7 @@ def botoa_eman_item(request):
 
     else:
         non="erakutsi_item"
-        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
     
 def botoa_kendu_item(request):
@@ -4869,11 +5024,8 @@ def botoa_kendu_item(request):
         return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
 
-
-
 def editatu_itema(request):
      
-    print "editatu itema"
     #Hasieran, Formularioa kargatzerakoan hemen'botoKopurua':botoKopurua sartuko da
     if 'id' in request.GET: 
         
@@ -4892,15 +5044,20 @@ def editatu_itema(request):
         #azken_id = item.objects.latest('id').id
         #azken_id += 1
         item_id=request.POST['hidden_Item_id']
-        print "item_id"
-        print item_id 
+       
         
         dc_title=request.POST['titulua']
-        uri="uri_"+ str(item_id)
+        dc_creator=request.POST['sortzailea']
+        #uri="uri_"+ str(item_id)
         dc_description=request.POST['deskribapena']
         dc_subject=request.POST['gaia']
         dc_rights=request.POST['eskubideak']
-        edm_rights=request.POST['eskubideak']
+        edm_rights=request.POST['lizentzia']
+        edm_country=request.POST['herrialdea']
+        edm_type =request.POST['mota']
+        edm_isshownat=request.POST['jatorrizkoa']
+        dc_date=request.POST['data']
+        
         irudia_url=""
         user_id=request.user.id
         if(request.FILES):
@@ -4910,13 +5067,11 @@ def editatu_itema(request):
             fname, fext = os.path.splitext(fileObject.name)
             fileName='item_img_'+str(user_id)+'_'+randomword(5)+fext
             irudia_url=MEDIA_URL+str(fileName)#izen berekoak gainidatzi egingo dira bestela
-      
+        
+        '''
+        #HIZKUNZA 
         dc_language=request.POST['hizkuntza']
-        edm_language=request.POST['hizkuntza']
-        
-        
-        
-       
+
         if(dc_language=="1"):
             dc_language="eu"
             edm_language="eu"
@@ -4926,15 +5081,111 @@ def editatu_itema(request):
         else:
             dc_language="en"
             edm_language="en"
-         
+        '''
+        #Hizkuntza kontrola
+        if 'eu' in request.POST:
+            ob_language="eu"
+        if 'es' in request.POST:
+            ob_language=ob_language +" es"
+        if 'en' in request.POST:
+            ob_language=ob_language +" en"
         
+        
+        '''
+        AMAIA:    
+            edm:type eremuan bost balore besterik ezin dira eman eta letra larriz: "​TEXT, IMAGE, SOUND, VIDEO, 3D"
+            dc:type eremuan berriz, librea da, printzipioz, nahiz eta komenigarria izan bertan agertzen diren datua "vocabulario controlado" batetik hartzea. 
+
+            Nik edm:type erakutsiko nuke. Bertan agertzen den informazioa normalizatua egon beharko luke. Hutsik baldin badago eta dc:type ordea beteta, 
+            dc:type-koa edm:type-n erakutsi, bai, letra txikiz. Ez dago ondo baina erabiltzaileei ez zaie inporta. Hala ere, guretzat argi izan behar dugu eta 
+            ez nahasi edm eta dc, batez ere Europeanara jo nahiko bagenu edm izango bailitzake erabili beharreko eremua. Ez dakit irtenbide hau egokia den (nahastearena diot,...). 
+        
+        '''
+        #MOTA
+        if(edm_type=="1"):
+            edm_type="TEXT"        
+        elif(edm_type=="2"):
+            edm_type="VIDEO"           
+        elif(edm_type=="3"):
+            edm_type="IMAGE"       
+        elif(edm_type=="3"):
+            edm_type="SOUND"           
+        else:
+            edm_type="3D"
+            
+            
+        '''
+        
+        Public Domain Mark    <edm:rights rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/
+Out of copyright - non commercial re-use    <edm:rights rdf:resource="http://www.europeana.eu/rights/out-of-copyright-non-commercial/"/>
+CC0    <edm:rights rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/"/>
+CC-BY    <edm:rights rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+CC-BY-SA    <edm:rights rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/"/>
+CC-BY-ND    <edm:rights rdf:resource="http://creativecommons.org/licenses/by-nd/4.0/"/>
+CC-BY-NC    <edm:rights rdf:resource="http://creativecommons.org/licenses/by-nc/4.0/"/>
+CC-BY-NC-SA    <edm:rights rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+CC-BY-NC-ND    <edm:rights rdf:resource="http://creativecommons.org/licenses/by-nc-nd/4.0/"/>
+Rights Reserved - Free Access    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+Rights Reserved - Paid Access    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-p/"/>
+Orphan Work    <edm:rights rdf:resource="http://www.europeana.eu/rights/orphan-work-eu/"/>
+Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
+        '''
+        #LIZENTZIA
+        if(edm_rights=="1"):
+            #Public Domain Mark
+            edm_rights="http://creativecommons.org/publicdomain/mark/1.0/"  
+        elif(edm_rights=="2"):
+            #Out of copyright - non commercial re-use
+            edm_rights="http://www.europeana.eu/rights/out-of-copyright-non-commercial/"
+        elif(edm_rights=="3"):
+            #CC0
+            edm_rights="http://creativecommons.org/publicdomain/zero/1.0/"
+        elif(edm_rights=="4"):
+            #CC-BY 
+            edm_rights="http://creativecommons.org/licenses/by/4.0/"
+        elif(edm_rights=="5"):
+            #CC-BY-SA 
+            edm_rights="http://creativecommons.org/licenses/by-sa/4.0/"
+        elif(edm_rights=="6"):
+            #CC-BY-ND
+            edm_rights="http://creativecommons.org/licenses/by-nd/4.0/"
+        elif(edm_rights=="7"):
+            #CC-BY-NC
+            edm_rights="http://creativecommons.org/licenses/by-nc/4.0/"
+        elif(edm_rights=="8"):
+            #CC-BY-NC-SA
+            edm_rights="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+        elif(edm_rights=="9"):
+            #CC-BY-NC-ND
+            edm_rights="http://creativecommons.org/licenses/by-nc-nd/4.0/"
+        elif(edm_rights=="10"):
+            #Rights Reserved - Free Access 
+            edm_rights="http://www.europeana.eu/rights/rr-f/"
+        elif(edm_rights=="11"):
+            #Rights Reserved - Paid Access
+            edm_rights="http://www.europeana.eu/rights/rr-p/"
+        elif(edm_rights=="12"):
+            #Unknown
+            edm_rights="http://www.europeana.eu/rights/orphan-work-eu/"
+        else:
+            #Unknown
+            edm_rights="http://www.europeana.eu/rights/unknown/"
         #username-a ez da errepikatzen datu-basean, beraz, id bezala erabili dezakegu 
-        dc_creator= request.user.username # ondoren logeatutako erabiltzailea jarri
-        edm_provider= request.user.username # ondoren logeatutako erabiltzailea jarri
-        #Gaurko data hartu
-        dc_date=datetime.datetime.now()
-        edm_year=datetime.datetime.now()
-        edm_country="Euskal Herria"
+        #dc_creator= request.user.username # ondoren logeatutako erabiltzailea jarri
+        if dc_creator =="":
+            dc_creator="herritarra"
+        
+        item_db=item.objects.get(id=item_id)
+        edm_provider= item_db.edm_provider
+        uri =item_db.uri
+        edm_year=item_db.edm_year
+        #Gaurko data hartu (??)
+        #dc_date=datetime.datetime.now()
+        #edm_year=datetime.datetime.now()
+        #dc_date=item_db.dc_date
+        #edm_year=item_db.edm_year
+        
+       
         
         
         if request.POST['latitude']:
@@ -4954,7 +5205,7 @@ def editatu_itema(request):
             handle_uploaded_file(request.FILES['irudia'],edm_object)
             #item.objects.filter(id=item_id).update(egunekoa = 0,proposatutakoa=1)         
             #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
-            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
+            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,ob_language=ob_language, edm_language=ob_language,edm_object=irudia_url,edm_country=edm_country)
             
             #Item-a duten Ibilbideko nodoen argazkia ALDATU. node TAULAN, fk_item_id ALDAGAIA =item_id
             irudia_update=MEDIA_URL+edm_object              
@@ -4965,7 +5216,7 @@ def editatu_itema(request):
             item_tupla = item.objects.get(pk=item_id)
             irudia_url=item_tupla.edm_object
             #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
-            item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,edm_year=edm_year,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+            item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
    
         
         #item_berria.save()   
@@ -4974,18 +5225,19 @@ def editatu_itema(request):
         #update_index.Command().handle(age=1)
         non="fitxaE"
         item_obj=item.objects.get(id=item_id)
-        return render_to_response('base.html',{'non':non,'item':item_obj,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
+        return render_to_response('base.html',{'non':non,'item':item_obj,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':ob_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
     
         #return render_to_response('base.html',{'non':non,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
     
     else:
         #Hasieran hemendik sartuko da eta Datu-basetik kargatuko dira itemaren datuak
-        print "hasiera editatu"
         item_tupla = item.objects.get(pk=item_id)
         titulua=item_tupla.dc_title
         deskribapena=item_tupla.dc_description
         gaia=item_tupla.dc_subject
         herrialdea=item_tupla.edm_country
+        data=item_tupla.dc_date
+
         hizkuntza=item_tupla.dc_language
         if(hizkuntza=="eu"):
             hizkuntza=1
@@ -4997,23 +5249,99 @@ def editatu_itema(request):
             hizkuntza=3
             hizk="en"
             
-        kategoria=item_tupla.dc_type
-        eskubideak=item_tupla.edm_rights
+        mota=item_tupla.edm_type
+        if("TEXT" in mota):
+            print "bai, TEXT da"
+            mota=1
+            mot="TEXT"
+        elif("VIDEO" in mota):
+            mota=2
+            mot="VIDEO"
+        elif("IMAGE" in mota):
+            mota=3
+            mot="IMAGE"
+        else:
+            #SOUND
+            mota=4
+            mot="SOUND"
+ 
+        lizentzia=item_tupla.edm_rights
+        if("http://creativecommons.org/publicdomain/mark/1.0/" in lizentzia):
+        
+            lizentzia=1
+            liz="Public Domain Mark"
+        elif("http://www.europeana.eu/rights/out-of-copyright-non-commercial/" in lizentzia):
+            lizentzia=2
+            liz="Out of copyright - non commercial re-use"
+        elif("http://creativecommons.org/publicdomain/zero/1.0/" in lizentzia):
+            lizentzia=3
+            liz="CC0"
+        elif("http://creativecommons.org/licenses/by/4.0" in lizentzia):
+            lizentzia=4
+            liz="CC-BY"
+        elif("http://creativecommons.org/licenses/by-sa/4.0/" in lizentzia):
+            lizentzia=5
+            liz="CC-BY-SA"
+        elif("http://creativecommons.org/licenses/by-nd/4.0/" in lizentzia):
+            lizentzia=6
+            liz="CC-BY-ND"
+        elif("http://creativecommons.org/licenses/by-nc/4.0/" in lizentzia):
+            lizentzia=7
+            liz="CC-BY-NC" 
+        elif("http://creativecommons.org/licenses/by-nc-sa/4.0/" in lizentzia):
+            lizentzia=8
+            liz="CC-BY-NC-SA"
+        elif("http://creativecommons.org/licenses/by-nc-nd/4.0/" in lizentzia):
+            lizentzia=9
+            liz="CC-BY-NC-ND"
+        elif("http://www.europeana.eu/rights/rr-f/" in lizentzia):
+            lizentzia=10
+            liz="Rights Reserved - Free Access"
+        elif("http://www.europeana.eu/rights/rr-p/" in lizentzia):
+            lizentzia=11
+            liz="Rights Reserved - Paid Access"
+        elif("http://www.europeana.eu/rights/orphan-work-eu/" in lizentzia):
+            lizentzia=12
+            liz="Orphan Work"           
+        else:
+            #http://www.europeana.eu/rights/unknown/
+            lizentzia=13
+            liz="Unknown"
+            
+        ob_language=item_tupla.ob_language
+        if('eu' in ob_language):
+            eu=True
+        else:
+            eu=False
+        if('es' in ob_language):
+            es=True
+        else:
+            es=False
+        if('en' in ob_language):
+            en=True
+        else:
+            en=False
+        
+        #kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.dc_rights
+        
         urtea=item_tupla.dc_date 
-        viewAtSource=item_tupla.uri
+        viewAtSource=item_tupla.edm_isshownat
+        hornitzailea=item_tupla.edm_provider
+        sortzailea=item_tupla.dc_creator
+        gaia = item_tupla.dc_subject
+        herrialdea =item_tupla.edm_country
+        jatorrizkoa =item_tupla.edm_isshownat
         irudia=item_tupla.edm_object
-        #hornitzailea=item_tupla.edm_provider
-        hornitzailea=item_tupla.dc_creator
         
         geoloc_longitude=item_tupla.geoloc_longitude
         geoloc_latitude=item_tupla.geoloc_latitude
         
         non="itema_editatu" #Mapako baimenak kontrolatzeko erabiliko da hau
        
-       
-        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'hizkuntza':hizkuntza})
-        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
-   
+        
+        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'mota':mota, 'herrialdea':herrialdea , 'jatorrizkoa': jatorrizkoa, 'sortzailea':sortzailea,'gaia':gaia, 'lizentzia':lizentzia, 'data':data,'eu':eu,'es':es,'en':en})
+        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource,'mota':mot,'liz':liz},context_instance=RequestContext(request))
 
 
 def handle_uploaded_file(f,izena):
@@ -5028,7 +5356,7 @@ def nire_itemak_erakutsi(request):
     userName=request.user.username
     userID=request.user.id
     itemak=[]
-    itemak = item.objects.filter(fk_ob_user__id=userID).order_by('-edm_year')
+    itemak = item.objects.filter(fk_ob_user__id=userID).order_by('-dc_date')
     #PAGINATOR
     paginator = Paginator(itemak, 26)
 
@@ -5079,15 +5407,17 @@ def itema_gehitu(request):
     if itema.is_valid():
         #Datu-basean item-a gehitu
         irudi_izena_random =randomword(10); 
-        #azken_id = item.objects.latest('id').id
-        #azken_id += 1
         erabiltzailea=request.user
         dc_title=request.POST['titulua']
-        uri="uri_"+ str(irudi_izena_random)
+        dc_creator=request.POST['sortzailea']
+        uri="uri_interface_"+ str(irudi_izena_random)
         dc_description=request.POST['deskribapena']
         dc_subject=request.POST['gaia']
+        edm_country=request.POST['herrialdea']
+        edm_isshownat=request.POST['jatorrizkoa']
         dc_rights=request.POST['eskubideak']
-        edm_rights=request.POST['eskubideak']
+        edm_rights=request.POST['lizentzia']
+        dc_date=request.POST['data']
         irudia_url=""
         user_id=request.user.id
         if(request.FILES):
@@ -5097,9 +5427,9 @@ def itema_gehitu(request):
             fileName='item_img_'+str(user_id)+'_'+randomword(5)+fext
             irudia_url=MEDIA_URL+str(fileName)#izen berekoak gainidatzi egingo dira bestela
       
-        dc_language=request.POST['hizkuntza']
-        edm_language=request.POST['hizkuntza']
-       
+        #dc_language=request.POST['hizkuntza']
+        #edm_language=request.POST['hizkuntza']
+        '''
         if(dc_language=="1"):
             dc_language="eu"
             edm_language="eu"
@@ -5109,13 +5439,80 @@ def itema_gehitu(request):
         else:
             dc_language="en"
             edm_language="en"
+        '''
+        #Hizkuntza kontrola
+        if request.POST['eu']:
+            ob_language="eu"
+        if request.POST['es']:
+            ob_language=ob_language +" es"
+        if request.POST['en']:
+            ob_language=ob_language +" en"
+        
+   
+        edm_type=request.POST['mota']
+        if(edm_type=="4"):
+            edm_type="SOUND"        
+        elif(edm_type=="2"):
+            edm_type="VIDEO"         
+        elif(edm_type=="3"):
+            edm_type="IMAGE"
+           
+        elif(edm_type=="5"):
+            edm_type="3D"        
+        else:
+            edm_type="TEXT"
          
-        
+           
+        #LIZENTZIA
+        if(edm_rights=="1"):
+            #Public Domain Mark
+            edm_rights="http://creativecommons.org/publicdomain/mark/1.0/"  
+        elif(edm_rights=="2"):
+            #Out of copyright - non commercial re-use
+            edm_rights="http://www.europeana.eu/rights/out-of-copyright-non-commercial/"
+        elif(edm_rights=="3"):
+            #CC0
+            edm_rights="http://creativecommons.org/publicdomain/zero/1.0/"
+        elif(edm_rights=="4"):
+            #CC-BY 
+            edm_rights="http://creativecommons.org/licenses/by/4.0/"
+        elif(edm_rights=="5"):
+            #CC-BY-SA 
+            edm_rights="http://creativecommons.org/licenses/by-sa/4.0/"
+        elif(edm_rights=="6"):
+            #CC-BY-ND
+            edm_rights="http://creativecommons.org/licenses/by-nd/4.0/"
+        elif(edm_rights=="7"):
+            #CC-BY-NC
+            edm_rights="http://creativecommons.org/licenses/by-nc/4.0/"
+        elif(edm_rights=="8"):
+            #CC-BY-NC-SA
+            edm_rights="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+        elif(edm_rights=="9"):
+            #CC-BY-NC-ND
+            edm_rights="http://creativecommons.org/licenses/by-nc-nd/4.0/"
+        elif(edm_rights=="10"):
+            #Rights Reserved - Free Access 
+            edm_rights="http://www.europeana.eu/rights/rr-f/"
+        elif(edm_rights=="11"):
+            #Rights Reserved - Paid Access
+            edm_rights="http://www.europeana.eu/rights/rr-p/"
+        elif(edm_rights=="12"):
+            #Unknown
+            edm_rights="http://www.europeana.eu/rights/orphan-work-eu/"
+        else:
+            #Unknown
+            edm_rights="http://www.europeana.eu/rights/unknown/"   
+           
+             
         #DC_CREATOR Vs. EDM_PROVIDER       
-        #username-a ez da errepikatzen datu-basean, beraz, id bezala erabili dezakegu 
-        dc_creator= request.user.username 
+        #dc_creator= request.user.username 
+        #objektu digitalaren sortzailearen izena ipini, bestela balio lehenetsi bezala 'Herritarra' agertuko da
+        if dc_creator == "":
+            dc_creator="herritarra"
         
-        #BEGIRATU EA HORNITZAILEA DEN EDO EZ. EZ BADA:Herritarra balioa eman edm_providerri, bestela Hornitzailea
+        
+        #BEGIRATU EA HORNITZAILEA DEN EDO EZ. EZ BADA:herritarra balioa eman edm_providerri, bestela Hornitzailearen izena
         #erab_id=request.user.id         
         if( User.objects.filter(id=request.user.id, groups__name='hornitzailea').exists()):
             hornitzaile=hornitzailea.objects.get(fk_user=request.user)
@@ -5125,9 +5522,9 @@ def itema_gehitu(request):
         
      
         #Gaurko data hartu
-        dc_date=datetime.datetime.now()  
-        edm_year=datetime.datetime.now()  
-        edm_country="Euskal Herria"
+        #dc_date=datetime.datetime.now()  
+        #edm_year=datetime.datetime.now()  
+       
         
         if(irudia_url!=""):
             #Irudia igo
@@ -5141,7 +5538,7 @@ def itema_gehitu(request):
         if request.POST['longitude']:
             longitude=request.POST['longitude']
    
-        item_berria = item(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,edm_year=edm_year,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+        item_berria = item(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_date=dc_date,edm_year=dc_date,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,ob_language=ob_language, edm_language=ob_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
         item_berria.save()   
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
@@ -5756,8 +6153,63 @@ def ajax_edit_arloa(request):
         else:
             response = None
             return render_to_response("ajax/ajax_area_response.html",{"response": response,},context_instance=RequestContext(request.request))  
-        
+
+def ajax_edit_telefonoa(request):
+   
+   
+    if request.GET:
+        telefonoa = request.GET.get('telefonoa')
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
             
+            hornitzailea.objects.filter(fk_user__id=user_id).update(telefonoa=telefonoa)
+          
+            response= telefonoa
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+         
+        else:
+            response = None
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+              
+def ajax_edit_emaila(request):
+   
+   
+    if request.GET:
+        emaila = request.GET.get('emaila')
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
+            
+            hornitzailea.objects.filter(fk_user__id=user_id).update(emaila=emaila)
+          
+            response= emaila
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+         
+        else:
+            response = None
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+              
+def ajax_edit_ordutegia(request):
+   
+   
+    if request.GET:
+        ordutegia = request.GET.get('ordutegia')
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
+            
+            hornitzailea.objects.filter(fk_user__id=user_id).update(ordutegia=ordutegia)
+          
+            response= ordutegia
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+         
+        else:
+            response = None
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+              
+  
+
 def ajax_edit_izena(request):
    
    
@@ -5882,8 +6334,9 @@ def ajax_hornitzaile_irudia_gorde (request):
             print fileObject
            
             username =request.user.username
-            fileName=str(username)+fileObject.name
-
+            user_id=request.user.id
+            fileName="hornitzaile_ikonoa_img_"+str(user_id)+fileObject.name
+          
             print fileName
             #handle_uploaded_file(fileObject,fileObject.name)
             handle_uploaded_file(fileObject,fileName)
@@ -5896,7 +6349,39 @@ def ajax_hornitzaile_irudia_gorde (request):
        
 
 
+def ajax_hornitzaile_argazkia_gorde (request):
 
+   
+
+    print request.FILES
+    
+    user_id=request.user.id
+    if request.is_ajax() and request.method == 'POST':
+       
+        
+        #Irudirik igotzen ez denean errorea ez emateko beharrezko da baldintza hau jartzea
+        if(request.FILES):
+        
+            
+            fileObject= request.FILES.get('hornitzaile_argazkia2')
+           
+            print fileObject
+           
+            username =request.user.username
+            user_id=request.user.id
+            
+            fileName="hornitzaile_argazkia_img_"+str(user_id)+fileObject.name
+
+            print fileName
+            #handle_uploaded_file(fileObject,fileObject.name)
+            handle_uploaded_file(fileObject,fileName)
+            ikonoa="/uploads/"+fileName
+            hornitzailea.objects.filter(fk_user__id=user_id).update(argazkia=ikonoa)
+            response=ikonoa
+    
+  
+    return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+       
 
    
     

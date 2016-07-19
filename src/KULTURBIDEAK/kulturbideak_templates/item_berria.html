@@ -103,19 +103,6 @@
 		<ul class="nav  navbar-default">
 		<li>
 				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-				Sortzailea:&nbsp;
-				<span class="eremu-str">
-				{% if item.dc_creator%}
- 					{{item.dc_creator}}
- 				{%else%}
- 				 -
-				{% endif %}
- 				</span>
-					
-		</li>
-		
-		<li>
-				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 				Hornitzailea:&nbsp;
 				<span class="eremu-str">
 				{% if item.edm_provider%}
@@ -129,24 +116,22 @@
 		</li>
 		<li>
 				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+				Sortzailea:&nbsp;
+				<span class="eremu-str">
+				{% if item.dc_creator%}
+ 					{{item.dc_creator}}
+ 				{%else%}
+ 				 -
+				{% endif %}
+ 				</span>
+					
+		</li>	
+		<li>
+				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 				Gaia:&nbsp;
 				<span class="eremu-str">
 				{% if item.dc_subject%}
  					{{item.dc_subject}}
- 				{%else%}
- 				 -
-				{% endif %}
-				</span>
- 		
-					
-		</li>
-		<li>
-				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-				Hizkuntza:&nbsp;
-				<span class="eremu-str">
-				{% if item.dc_language %}
- 					{{item.edm_language}}
- 					{{item.dc_language}}
  				{%else%}
  				 -
 				{% endif %}
@@ -171,8 +156,8 @@
 				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 				Data:&nbsp;
 				<span class="eremu-str">
-				{% if item.edm_year %}
- 					{{item.edm_year }}
+				{% if item.dc_date %}
+ 					{{item.dc_date }}
  				{%else%}
  				 -
 				{% endif %}
@@ -193,6 +178,19 @@
  		
 					
 		</li>
+		<li>
+				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+				Hizkuntza:&nbsp;
+				<span class="eremu-str">
+				{% if item.ob_language %}
+ 					{{item.ob_language}}
+ 				{%else%}
+ 				 -
+				{% endif %}
+				</span>
+ 		
+					
+		</li>		
 		<!--
 		<li>
 				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
@@ -352,19 +350,50 @@
 
 
 <!-- GEOLOKALIZAZIOA -->
+{% if geoloc_longitude %}
+	
+	<!-- Espazioa sartzeko-->
+	<div class="container">
+	<div class="row">
+	<div class="col-md-1">
+	</div>
+    <div class="col-md-10">	
+		&nbsp;&nbsp;
+	</div>
+	<div class="col-md-1">	
+	</div>	
+	</div>
+
+</div>
 <div class="container">
 <div class="row">
 	<div class="col-md-1">
 	</div>
     <div class="col-md-10">	
- 		{% if geoloc_longitude %}
+ 	
 			{% leaflet_map "yourmap" callback="load_map" %}
-		{%endif%}
+		
 	</div>
 	<div class="col-md-1">
+		
 	</div>	
 </div>
 </div>
+
+<!-- Espazioa sartzeko-->
+	<div class="container">
+	<div class="row">
+	<div class="col-md-1">
+	</div>
+    <div class="col-md-10">	
+		&nbsp;&nbsp;
+	</div>
+	<div class="col-md-1">	
+	</div>	
+	</div>
+
+</div>
+{%endif%}
 <!-- END GEOLOKALIZAZIOA -->
 
 <!-- MLT -->	

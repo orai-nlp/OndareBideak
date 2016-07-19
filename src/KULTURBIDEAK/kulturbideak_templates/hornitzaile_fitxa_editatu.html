@@ -22,21 +22,51 @@
        <div class="row">
             <div class="col-lg-4">  
                 <div class="well info_box  icon_info">
-                    <h4><img src="{{ STATIC_URL }}/img/area.png"> {% trans "Arloa" %}*:
-                       <span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>
-                       <a href="#" data-toggle="modal" data-target="#area_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
-                                           
+                    
+                     <h4 class="mota2"><span style="font-size:1.5em;color: #337ab7" class="glyphicon glyphicon-tag" aria-hidden="true"></span>                   
+                       {% trans "Arloa" %}*:<span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>                                        
+                    	 <a href="#" data-toggle="modal" data-target="#area_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                     	    
                     </h4>
 
-                 	<h4><img src="{{ STATIC_URL }}/img/where.png"> {% trans "Kokapena" %}*:
+                 	<h4 class="mota2"><span style="font-size:1.5em;color: #337ab7" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+					 {% trans "Kokapena" %}*:
                		 <span id="id_where">{{hornitzailea.helbidea}}</span>
                         <a href="#" data-toggle="modal" data-target="#where_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
                    
                 	</h4>
                 	
-                	<h4><img src="{{ STATIC_URL }}/img/documents.png"> {% trans "Erantsitako Fitxategiak" %}*: 
-                            <span id="id_pic">{{hornitzailea.ikonoa}}</span>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #337ab7" class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
+						{% trans "Telefonoa" %}*:
+               		 <span id="id_telefonoa2" class="list-group-item-text">{{hornitzailea.telefonoa}}</span>
+                       <a href="#" data-toggle="modal" data-target="#telefonoa_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                     	  
+                	</h4>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #337ab7" class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+						{% trans "Posta Elektronikoa" %}*:
+               		 <span id="id_emaila2" class="list-group-item-text" >{{hornitzailea.emaila}}</span>
+                        <a href="#" data-toggle="modal" data-target="#emaila_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                     	 
+                	</h4>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #337ab7" class="glyphicon glyphicon-time" aria-hidden="true"></span>
+						{% trans "Ordutegia" %}*:
+               		 <span id="id_ordutegia2" class="list-group-item-text">{{hornitzailea.ordutegia}}</span>
+                       <a href="#" data-toggle="modal" data-target="#ordutegia_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                     	 
+                	</h4>
+
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #337ab7" class="glyphicon glyphicon-file" aria-hidden="true"></span>
+						 {% trans "Erantsitako Fitxategiak" %}*: 
+						 	<br />
+							{% trans "Ikonoa" %}*:
+							<span id="id_pic">{{hornitzailea.ikonoa}}</span>
                            <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                     		<br />
+                     		<br />
+							{% trans "Argazkia" %}*:
+                     		<span id="id_pic2">{{hornitzailea.argazkia}}</span>
+                           <a href="#" data-toggle="modal" data-target="#attached_documents_argazkia_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
+                     
                      </h4>
                
                     
@@ -68,7 +98,80 @@
                       </div>
                     </div>
                	   
-          
+          		<div class="modal fade" id="telefonoa_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <!--<button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            
+                            <h4 class="modal-telefonoa" id="myModalLabel">{% trans "Editatu telefonoa" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="col-md-12">
+									<input id="id_telefonoa" class="form-control" type="text" placeholder="Telefonoa" name="telefonoa">
+								</div>
+                              
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="button" onmousedown="save_proposal_telefonoa();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+               	   
+               	   <div class="modal fade" id="emaila_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <!--<button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            
+                            <h4 class="modal-emaila" id="myModalLabel">{% trans "Editatu posta elektronikoa" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="col-md-12">
+									<input id="id_emaila" class="form-control" type="text" placeholder="Posta elektronikoa" name="emaila">
+								</div>
+                              
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="button" onmousedown="save_proposal_emaila();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                
+                	<div class="modal fade" id="ordutegia_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <!--<button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            
+                            <h4 class="modal-ordutegia" id="myModalLabel">{% trans "Editatu ordutegia" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="col-md-12">
+									<input id="id_ordutegia" class="form-control" type="text" placeholder="Ordutegia" name="ordutegia">
+								</div>
+                              
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="button" onmousedown="save_proposal_ordutegia();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 
                    <div class="modal fade" id="where_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog modal-lg" role="document">
@@ -131,7 +234,39 @@
                         </div>
                       </div>
                       </div>
+                      
+                        <div class="modal fade" id="attached_documents_argazkia_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      	<div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+
+                        <form class="form-horizontal" action="#" method="POST" enctype="multipart/form-data" id="attached_documents_argazkia_form" >{% csrf_token %}
+                        <fieldset>
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-arg" id="myModalLabel">{% trans "Irudia Igo" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              
+                              <div class="col-md-12">
+                                <div class='table'>
+                                    <input id="hornitzaile_argazkia2" class="imgform_image"  type="file" multiple="" name="hornitzaile_argazkia2">
+                                </div>
+                              </div>
+                           </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="submit" name="attached_documents_argazkia_button" class="btn btn-primary">{% trans "Aldaketak Gorde" %}</button>
+                          </div>
+                          </fieldset>
+                          </form>
+                        </div>
+                      </div>
+                      </div>
             </div> 
+            
+            
             <div class=""> <!-- col-lg-8-->
 				{% if hornitzailea.izena != "" %}
 					<h1 class="text-center"><span id="id_title"> {{hornitzailea.izena}}*</span>
@@ -201,7 +336,7 @@
             
 				
          <!-- Preview Image -->
-      
+        <p class="lead">{% trans "Ikonoa" %} *</p>
         {% if hornitzailea.ikonoa == "" %}
         	<a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
             </br>
@@ -213,7 +348,21 @@
         {%endif%}
          <hr>
                 
-                
+          <!-- Preview Argazkia -->
+       <p class="lead">{% trans "Argazkia" %} *</p>
+        {% if hornitzailea.argazkia == "" %}
+        	 
+		 	<a href="#" data-toggle="modal" data-target="#attached_documents_argazkia_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+            </br>
+        	<a href="#" data-toggle="modal" data-target="#attached_documents_argazkia_modal" aria-hidden="true" title="{% trans 'Igo Argazkia' %}" class="hovertext"><img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt=""></a>
+		 
+		 {%else %}
+		 		<a href="#" data-toggle="modal" data-target="#attached_documents_argazkia_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+               </br> 
+			 <a href="#" data-toggle="modal" data-target="#attached_documents_argazkia_modal" aria-hidden="true" title="{% trans 'Igo Argazkia' %}" class="hovertext"> <img id="id_image2" class="img-responsive" src="{{ hornitzailea.argazkia }}" alt=""></a>
+       
+		 {%endif%}
+         <hr>
         
         <form action="{{BASE_URL}}/fitxa_gorde" method="post" class="form"  enctype="multipart/form-data">
         	{% csrf_token %}

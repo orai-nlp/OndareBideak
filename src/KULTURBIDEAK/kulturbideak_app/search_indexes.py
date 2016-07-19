@@ -28,6 +28,7 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     proposatutakoa = indexes.BooleanField(model_attr='proposatutakoa')
     egunekoa = indexes.BooleanField(model_attr='egunekoa')
     aberastua = indexes.BooleanField(model_attr='aberastua')
+    ob_language = indexes.CharField(model_attr='ob_language')
     #item_user_id = indexes.CharField(model_attr='fk_ob_user')
     item_user_id =indexes.EdgeNgramField(use_template=True,template_name='search/indexes/kulturbideak_app/item_user.txt')
     # We add this for autocomplete.

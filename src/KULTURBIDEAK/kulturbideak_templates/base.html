@@ -649,9 +649,11 @@ var markers = [];
 						{% if item.edm_object %}
 							<!--<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">-->
 							<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">
-						{%else%}
+						{%elif item.edm_isshownby%}
 							<iframe id="frame" src="{{item.edm_isshownby}}">
 							</iframe>
+						{%else %}
+							<img  alt="ez du irudirik" src="/uploads/NoIrudiItem.png">
 						{% endif %}
 				
 						</a>
@@ -697,15 +699,14 @@ var markers = [];
 								</li>
 								<li>
 								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-								{% if item.edm_year %}
-								{{item.edm_year}}
+								{% if item.dc_date %}
+								{{item.dc_date}}
 								{%else%}
 								   -
 								{% endif %}
 								</li>
 		
 								<li>
-								<!-- itemak erabiiltzailearekin lotutakoan hau aldatu, username erakutsi-->
 								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 				
 								{{item.fk_ob_user.username}}
@@ -770,8 +771,8 @@ var markers = [];
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 							Hizkuntza:&nbsp;
 							<span class="eremu-str">
-							{% if item.dc_language %}
- 								{{item.dc_language}}
+							{% if item.ob_language %}
+ 								{{item.ob_language}}
  							{%else%}
  								 -
 							{% endif %}
@@ -796,8 +797,8 @@ var markers = [];
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 							Data:&nbsp;
 							<span class="eremu-str">
-							{% if item.edm_year %}
-			 					{{item.edm_year }}
+							{% if item.dc_date %}
+			 					{{item.dc_date }}
 			 				{%else%}
 			 				 -
 							{% endif %}

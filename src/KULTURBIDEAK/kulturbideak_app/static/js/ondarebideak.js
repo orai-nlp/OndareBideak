@@ -564,7 +564,7 @@ function load_ws_answer(xmlHttp){
 				//irudia hutsa baldin bada, defektuzkoa pasa
 				if (irudia =="None")
 				{
-					irudia="/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png";
+					irudia="/uploads/NoIrudiItem.png";
 				}
 				add_workspace_box(id,titulua,irudia);
 			}                                 
@@ -843,6 +843,7 @@ function add_workspace_box(box_id,text_value,image_value){
     var wsb_image = document.createElement("img");
     wsb_image.setAttribute("class","wsb_image");
     wsb_image.setAttribute("src",image_value);
+    //wsb_image.setAttribute("title",text_value);
     ws_box.appendChild(wsb_image);
 
     var wsb_title = document.createElement("span");

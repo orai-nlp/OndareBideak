@@ -141,9 +141,8 @@
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 	  Hizkuntza:&nbsp;
 	  <span class="eremu-str">
-	    {% if item.dc_language %}
-	    {{item.edm_language}}
-	    {{item.dc_language}}
+	    {% if item.ob_language %}
+	    {{item.ob_language}}
 	    {%else%}
 	     -
 	    {% endif %}
@@ -168,8 +167,8 @@
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 	  Data:&nbsp;
 	  <span class="eremu-str">
-	    {% if item.edm_year %}
-	    {{item.edm_year }}
+	    {% if item.dc_date %}
+	    {{item.dc_date }}
 	    {%else%}
 	     -
 	    {% endif %}
@@ -190,21 +189,6 @@
 	  
 	  
 	  </li>
-	<!--
-	    <li>
-	      <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	      Lizentzia:&nbsp;
-	      <span class="eremu-str">
-		{% if item.edm_rights %}
-		{{item.edm_rights}}
-		{%else%}
-		 -
-		{% endif %}
-		</span>
-	      
-	      
-	      </li>
-	    -->
 	<li>
 	  {% if item.edm_isshownat%}
 	  <a  class="eremu-str" title="{{viewAtSource}}" href="{{viewAtSource}}" target="_blank"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
@@ -315,12 +299,60 @@
 		{% csrf_token %}
 		{{ itema.titulua.errors}}
 		{{ itema.deskribapena.errors}}
-		<input type="hidden" id="id" value="{{id}}"/>
-		{{itema}}
-		<br>
-				
+		<input type="hidden" id="id" value="{{id}}">
+		<!-- FORMULARIOA -->
+		<!--{{itema}}-->
+		<input id="id_hidden_Item_id" type="hidden" name="hidden_Item_id" value="{{id}}">
+		
+		<label for="id_titulua">Titulua:</label>
+		{{itema.titulua}}
+		
+		<label for="id_deskribapena">Deskribapena:</label>
+		{{itema.deskribapena}}
+		
+		<label for="id_sortzailea">Sortzailea:</label>
+		{{itema.sortzailea}}
+		
+		<label for="id_gaia">Gaia:</label>
+		{{itema.gaia}}
+		
+		<label for="id_herrialdea">Herrialdea:</label>
+		{{itema.herrialdea}}
+		
+		<label for="id_data">Data:</label>
+		<br />
+		{{itema.data}}
+		<br />
+
+		<label for="id_jatorrizkoa">Jatorrizkoa:</label>
+		{{itema.jatorrizkoa}}
+		
+		<label for="id_eskubideak">Eskubideak:</label>
+		{{itema.eskubideak}}
+		
+		<label for="id_lizentzia">Lizentzia:</label>
+		{{itema.lizentzia}}
+		<br />
+		
+		<label for="id_mota">Mota:</label>
+		{{itema.mota}}
+		<br />
+		
+		<label for="id_irudia">Irudia:</label>
+		{{itema.irudia}}
+		<br />
+		
+		<label for="id_hizkuntzak">Hizkuntzak:</label>
+		<br />
+		eu{{itema.eu}}
+		es{{itema.es}}
+		en{{itema.en}}
+		
+		<br/>
+		<br/>
 		<!-- GEOLOKALIZAZIOA -->
-				
+		<label for="id_hizkuntzak">Geolokalizazioa:</label>
+
 		<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
 		<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
             

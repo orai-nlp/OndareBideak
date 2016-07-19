@@ -63,49 +63,58 @@ um_pages }}</p>-->
   
  
       	 <div class="row">
-            <div class="col-lg-2">  
+            <div class="col-lg-3">  
                 <div class="well info_box  icon_info">
-                    <h4><img src="{{ STATIC_URL }}/img/area.png"> <!--{% trans "Arloa" %}:-->
-                       <span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>
-                                           
+                    <h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-tag" aria-hidden="true"></span>                   
+                      <span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>                                        
                     </h4>
-
-                 	<h4><img src="{{ STATIC_URL }}/img/where.png"> <!--{% trans "Kokapena" %}:-->
+                 	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+						
                		 <span id="id_where">{{hornitzailea.helbidea}}</span>
                        
                 	</h4>
-                	<!--
-                	<h4><img src="{{ STATIC_URL }}/img/documents.png"> {% trans "Erantsitako Fitxategiak" %}: 
-                            <span id="id_pic">{{hornitzailea.ikonoa}}</span>
-                            </h4>
-               		-->
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
+						
+               		 <span id="id_telefonoa">{{hornitzailea.telefonoa}}</span>
+                       
+                	</h4>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+						
+               		 <span id="id_emaila">{{hornitzailea.emaila}}</span>
+                       
+                	</h4>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-time" aria-hidden="true"></span>
+						
+               		 <span id="id_emaila">{{hornitzailea.ordutegia}}</span>
+                       
+                	</h4>
                     
                 </div>
     
             </div> 
            	<div class="col-lg-6"> <!-- col-lg-8-->
 				{% if hornitzailea.izena != "" %}
-					<h1 class="text-center"><span id="id_title"> {{hornitzailea.izena}}</span>
+					<h1 class=" dosis text-center"><span id="id_title"> {{hornitzailea.izena}}</span>
 				{%else%}
-				     <h1 class="text-center"><span id="id_title"> Hornitzailearen Izena*</span>
+				     <h1 class="dosis text-center"><span id="id_title"> Hornitzailearen Izena*</span>
                 {%endif%}
                 	 </h1>  
                
 
                 <!--<p class="lead">{% trans "Deskribapena" %}</p>-->
-                <p><span id="id_summary">{{hornitzailea.deskribapena}}</span></p>
+                <p class="letratipoa"><span  id="id_summary">{{hornitzailea.deskribapena}}</span></p>
                                                                         
                 <hr>
 		
          		<!-- Preview Image -->
       
-       			 {% if hornitzailea.ikonoa == "" %}
-        	
-					<img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt="">
-				 {%else %}
-		 
-					<img id="id_image" class="img-responsive" src="{{ hornitzailea.ikonoa }}" alt="">
-      			 {%endif%}
+       			 {% if hornitzailea.argazkia %}
+        				<img id="id_image" class="hornitzaile-irudia" src="{{ hornitzailea.argazkia }}" alt="">
+      			
+					 {%else %}
+		 				<img id="imgPreview" class="hornitzaile-irudia" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt="">
+				
+					 {%endif%}
         
         		 <hr>
                 
@@ -187,15 +196,18 @@ um_pages }}</p>-->
                                 {% if item.edm_provider %}
                                         <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea:" %} </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
                                 {%endif%}
-                                {% if item.dc_language %}
-                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{item.dc_language}}</span><br />
+                                {% if item.dc_creator %}
+                                        <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea:" %}<span class="eremu-str">{{item.dc_creator}}</span><br />
+                                {%endif%}
+                                {% if item.dc_subject %}
+                                        <span class="bilaketaEremua" id="gaia"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}<span class="eremu-str">{{item.dc_subject}}</span><br />
                                 {%endif%}
                                 {% if item.edm_country %}
                                         <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea:" %}</span><span class="eremu-str">{{item.edm_country}}</span><br />
                                 {%endif%}
-                                {% if item.dc_creator %}
-                                        <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea:" %}<span class="eremu-str">{{item.dc_creator}}</span><br />
-                                {%endif%}
+                                {% if item.ob_language %}
+                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{item.ob_language}}</span><br />
+                                {%endif%}                              
                                 {% if item.edm_type %}
                                         <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota:" %}<span class="eremu-str">{{item.edm_type}}</span><br />
                                 {%endif%}

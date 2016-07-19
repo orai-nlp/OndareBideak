@@ -662,6 +662,92 @@ function save_proposal_area(){
     });
 }
 
+function save_proposal_telefonoa(){
+	
+    var telefonoa = $("#id_telefonoa").val();
+   
+   	alert(telefonoa);
+    $.ajax({
+          url: '/ajax_edit_telefonoa',
+          async: false,
+          data: {telefonoa:telefonoa},
+          dataType:'html',
+          success : function(data, status, xhr){
+            var response=data;
+           
+            if (response != ""){
+            	$('#id_telefonoa2').text(data);
+            	$('#id_telefonoa').text(data);
+                $("#telefonoa_modal").modal('hide');
+                //$("#id_arloa").html(response); //BEGIRATU HAU, html kodea ordezkatzen du
+                }
+            else{
+                
+                $("#telefonoa_modal").modal('hide');
+            }
+            
+         }   
+          
+    });
+}
+
+function save_proposal_emaila(){
+	
+    var emaila = $("#id_emaila").val();
+   
+   	alert(emaila);
+    $.ajax({
+          url: '/ajax_edit_emaila',
+          async: false,
+          data: {emaila:emaila},
+          dataType:'html',
+          success : function(data, status, xhr){
+            var response=data;
+           
+            if (response != ""){
+            	$('#id_emaila2').text(data);
+            	$('#id_emaila').text(data);
+                $("#emaila_modal").modal('hide');
+                
+                }
+            else{
+                
+                $("#emaila_modal").modal('hide');
+            }
+            
+         }   
+          
+    });
+}
+
+function save_proposal_ordutegia(){
+	
+    var ordutegia = $("#id_ordutegia").val();
+   
+    $.ajax({
+          url: '/ajax_edit_ordutegia',
+          async: false,
+          data: {ordutegia:ordutegia},
+          dataType:'html',
+          success : function(data, status, xhr){
+            var response=data;
+           
+            if (response != ""){
+            	$('#id_ordutegia2').text(data);
+            	$('#id_ordutegia').text(data);
+                $("#ordutegia_modal").modal('hide');
+                
+                }
+            else{
+                
+                $("#ordutegia_modal").modal('hide');
+            }
+            
+         }   
+          
+    });
+}
+
 function save_proposal_cost(proposal_id){
 
     var cost = $("#id_modal_cost").val();
@@ -789,6 +875,45 @@ $('#attached_documents_form').submit(function(e) {
             });
    
 });
+
+$(document).ready(function(){
+$('#attached_documents_argazkia_form').submit(function(e) {
+
+   var form = $(this);      
+   var formdata = false;
+   if(window.FormData){
+     formdata = new FormData(form[0]);
+                   
+     }
+
+   var formAction = form.attr('action');
+
+                $.ajax({
+                    type        : 'POST',
+                    url         : '../ajax_hornitzaile_argazkia_gorde',
+                    cache       : false,
+                    data        : formdata ? formdata : form.serialize(),
+                    contentType : false,
+                    processData : false,
+
+                    success: function(response) {
+                        if(response != 'error') {
+                        	
+                        	 $('img#id_image2').attr('src', response); //ikusten den irudia
+                        	 $('#id_pic2').text(response); //pantailaren ezkerrekoa
+                        	 $('#hornitzaile_argazkia2').text(response); //modal
+                        	 
+                             $("#attached_documents_argazkia_modal").modal('hide');
+                        } else {
+                            $('#messages').addClass('alert alert-danger').text(response);
+                        }
+                    }
+                });
+                e.preventDefault();
+            });
+   
+});
+
 
 
 

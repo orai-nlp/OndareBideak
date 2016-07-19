@@ -15,6 +15,30 @@ HIZKUNTZA_CHOICES = (
     (3, 'Ingelesa'),
 )
 
+MOTA_CHOICES = (
+    (1, 'TEXT'),
+    (2, 'VIDEO'),   
+    (3, 'IMAGE'),
+    (4, 'SOUND'),
+    (5, '3D'),
+)
+
+LIZENTZIA_CHOICES = (
+    (1, 'Public Domain Mark'),
+    (2, 'Out of copyright - non commercial re-use'),   
+    (3, 'CC0'),
+    (4, 'CC-BY'),
+    (5, 'CC-BY-SA'),
+    (6, 'CC-BY-ND'),
+    (7, 'CC-BY-NC'),
+    (8, 'CC-BY-NC-SA'),
+    (9, 'CC-BY-NC-ND'),
+    (10, 'Rights Reserved - Free Access'),
+    (11, 'Rights Reserved - Paid Access'),
+    (12, 'Orphan Work'),
+    (13, 'Unknown'),
+)
+
 #def get_initial_language():
     
 #       return HIZKUNTZA_CHOICES[2]
@@ -192,14 +216,41 @@ class ChangePasswordForm(forms.Form):
 class ItemGehituForm(Form):
     """Item berri bat gehitzeko formularioa kargatzen du"""
     titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("titulua"),"type":"text", "class":"form-control"}))
-    #  sortzailea: logeatuta dagoen erabiltzailea
     deskribapena=CharField(max_length=1500,required=True, widget=TextInput(attrs={"placeholder":_("deskribapena"),"type":"text", "class":"form-control"}))
+    sortzailea=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("objektu digitalaren sortzailearen izena ipini, bestela balio lehenetsi bezala 'Herritarra' agertuko da"),"type":"text", "class":"form-control"}))
     # date : momentukoa
     gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
-    eskubideak=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("eskubideak"),"type":"text", "class":"form-control"}))
+    herrialdea=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("herrialdea"),"type":"text", "class":"form-control"}))
+    data = DateField(required=False,widget=TextInput(attrs={"placeholder":_("data")}))
+    jatorrizkoa=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Jatorrizko Url-a"),"type":"text", "class":"form-control"}))
+    eskubideak=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("Objektuaren eskubideen inguruko egin beharreko azalpenak edo kontutan hartu beharreko xehetasunak. Testu librea."),"type":"text", "class":"form-control"}))
+    lizentzia=ChoiceField(required=False,  choices=LIZENTZIA_CHOICES)
+    mota=ChoiceField(required=False,  choices=MOTA_CHOICES)
     irudia=ImageField(max_length=32,required=False)
-    hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
-    
+    #hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
+
+    eu = forms.BooleanField(
+        label = _("eu"),
+        required = False,
+        widget=forms.CheckboxInput(attrs={"type":"check", 
+                                "placeholder":_("Euskera")
+                                })
+    )
+    es = forms.BooleanField(
+        label = _("es"),
+        required = False,
+        widget=forms.CheckboxInput(attrs={"type":"check", 
+                                "placeholder":_("Gaztelania")
+                                })
+    )
+    en = forms.BooleanField(
+        label = _("en"),
+        required = False,
+        widget=forms.CheckboxInput(attrs={"type":"check", 
+                                "placeholder":_("Ingelesa")
+                                })
+    )
+
     
     
     
@@ -208,13 +259,39 @@ class ItemEditatuForm(Form):
     titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("titulua"),"type":"text", "class":"form-control"}))
     #  sortzailea: logeatuta dagoen erabiltzailea
     deskribapena=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("deskribapena"),"type":"text", "class":"form-control"}))
+    sortzailea=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("objektu digitalaren sortzailearen izena ipini, bestela balio lehenetsi bezala 'Herritarra' agertuko da"),"type":"text", "class":"form-control"}))
     # date : momentukoa
     gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
-    eskubideak=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("eskubideak"),"type":"text", "class":"form-control"}))
+    herrialdea=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("herrialdea"),"type":"text", "class":"form-control"}))
+    data = DateField(required=False,widget=TextInput(attrs={"placeholder":_("data")}))
+    mota=ChoiceField(required=False,  choices=MOTA_CHOICES)
+    jatorrizkoa=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Jatorrizko Url-a"),"type":"text", "class":"form-control"}))  
+    eskubideak=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("Objektuaren eskubideen inguruko egin beharreko azalpenak edo kontutan hartu beharreko xehetasunak. Testu librea."),"type":"text", "class":"form-control"}))
+    lizentzia=ChoiceField(required=False,  choices=LIZENTZIA_CHOICES)
     irudia=ImageField(max_length=32,required=False)
-    hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
+    #hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
     hidden_Item_id = CharField(label='reset',max_length=256, widget=forms.HiddenInput())
-    
+    eu = forms.BooleanField(
+        label = _("eu"),
+        required = False,
+        widget=forms.CheckboxInput(attrs={"type":"check", 
+                                "placeholder":_("Euskera")
+                                })
+    )
+    es = forms.BooleanField(
+        label = _("es"),
+        required = False,
+        widget=forms.CheckboxInput(attrs={"type":"check", 
+                                "placeholder":_("Gaztelania")
+                                })
+    )
+    en = forms.BooleanField(
+        label = _("en"),
+        required = False,
+        widget=forms.CheckboxInput(attrs={"type":"check", 
+                                "placeholder":_("Ingelesa")
+                                })
+    )
     
     
     

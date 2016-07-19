@@ -29,20 +29,29 @@ um_pages }}</p>-->
       	 <div class="row">
             <div class="col-lg-2">  
                 <div class="well info_box  icon_info">
-                    <h4><img src="{{ STATIC_URL }}/img/area.png"> <!--{% trans "Arloa" %}:-->
-                       <span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>
-                                           
+                     <h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-tag" aria-hidden="true"></span>                   
+                      <span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>                                        
                     </h4>
-
-                 	<h4><img src="{{ STATIC_URL }}/img/where.png"> <!--{% trans "Kokapena" %}:-->
+                 	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+						
                		 <span id="id_where">{{hornitzailea.helbidea}}</span>
                        
                 	</h4>
-                	<!--
-                	<h4><img src="{{ STATIC_URL }}/img/documents.png"> {% trans "Erantsitako Fitxategiak" %}: 
-                            <span id="id_pic">{{hornitzailea.ikonoa}}</span>
-                            </h4>
-               		-->
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
+						
+               		 <span id="id_telefonoa">{{hornitzailea.telefonoa}}</span>
+                       
+                	</h4>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+						
+               		 <span id="id_emaila">{{hornitzailea.emaila}}</span>
+                       
+                	</h4>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-time" aria-hidden="true"></span>
+						
+               		 <span id="id_emaila">{{hornitzailea.ordutegia}}</span>
+                       
+                	</h4>
                     
                 </div>
     
@@ -63,13 +72,13 @@ um_pages }}</p>-->
 		
          		<!-- Preview Image -->
       
-       			 {% if hornitzailea.ikonoa == "" %}
-        	
-					<img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt="">
-				 {%else %}
-		 
-					<img id="id_image" class="img-responsive" src="{{ hornitzailea.ikonoa }}" alt="">
-      			 {%endif%}
+       			 {% if hornitzailea.argazkia %}
+        				<img id="id_image"  class="hornitzaile-irudia"src="{{ hornitzailea.argazkia }}" alt="">
+      			
+					 {%else %}
+					 <img id="imgPreview" class="hornitzaile-irudia" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt="">
+				
+					 {%endif%}
         
         		 <hr>
                 
