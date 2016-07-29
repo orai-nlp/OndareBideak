@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load leaflet_tags %}
+{% load i18n %}
+{% block content %}
+
+<div class="itema_gehitu">
+	<div class="panel panel-info">
+	<div class="panel-heading">
+		<h1 class="panel-title">{{titulua}}</h1>
+	</div>
+	<div class="panel-body">
+    
+   	 	<div class="col-xs-6 col-md-3" align="center">
+   			 <a href="#" class="thumbnail">
+     		 <!--<img alt="Item has not thumbnail image" src="http://paths.sheffield.ac.uk/pathsui/europeana/static/img/no_img.png">-->
+	 			 <img alt="{{titulua}}" src="{{irudia}}">
+ 			   </a>
+ 		</div>
+ 		<div class="item_edukia">
+ 			{% if item.edm_country%}
+ 				<p><b>{% trans "Herrialdea:" %} </b><a href="">{{herrialdea}} </a></p>
+ 			{%endif%}
+ 			{% if item.dc_language%}
+ 				<p><b>{% trans "Hizkuntza:" %}</b><a href="">{{hizkuntza}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_provider%}
+ 				<p><b>{% trans "Hornitzailea:" %}</b><a href="">{{item.edm_provider}} </a></p>
+ 			{%endif%}
+ 			{% if item.dc_creator%}
+ 				<p><b>{% trans "Sortzailea:" %}</b><a href="">{{item.dc_creator}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_rights%}
+ 				<p><b>{% trans "Eskubideak:" %}</b><a href="">{{eskubideak}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_year %}
+ 				<p><b>{% trans "Urtea:" %}</b><a href="">{{urtea}} </a></p>
+ 			{%endif%}
+ 			{% if item.edm_isshownat%}
+ 				<p><a title="{{viewAtSource}}" href="{{viewAtSource}}"><b>{% trans "Ikusi jatorrizkoa" %}</b></a></p>
+ 			{%endif%}
+ 		</div>
+ 		
+ 		
+ 	 </div>
+	
+</div>
+
+	
+	
+	<form action="{{BASE_URL}}/editatu_itema" method="post" class="form"  enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ itema.titulua.errors}}
+		{{ itema.deskribapena.errors}}
+		<input type="hidden" id="id" value="{{id}}"/>
+		{{itema}}
+		<br>
+				
+		<!-- GEOLOKALIZAZIOA -->
+				
+		<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
+		<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
+            
+            
+		{% leaflet_map "yourmap" callback="load_map" %}
+		
+		<!-- END GEOLOKALIZAZIOA -->
+     		
+   		 <button class="btn btn-default" name="aldatu" type="submit">
+   		 Aldatu
+  		  </button>
+       			
+       			
+      		
+      	
+      	</form>
+
+</div>
+{% endblock %} 
