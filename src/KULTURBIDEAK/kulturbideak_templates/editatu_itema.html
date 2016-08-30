@@ -31,7 +31,7 @@
       <ul class="nav  navbar-default">
 	<li>
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  Lizentzia:&nbsp;
+	  {% trans "Lizentzia" %}:&nbsp;
 	  <span class="eremu-str">
 	    {% if item.edm_rights%}
 	    {{item.edm_rights}}
@@ -96,11 +96,11 @@
 	</div>
       </div>
     <div class="path-info overflow">
-      <h3 class="titulu-kolorea">EZAUGARRIAK</h3>
+      <h3 class="titulu-kolorea">{% trans "EZAUGARRIAK" %}</h3>
       <ul class="nav  navbar-default">
 	<li>
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  Sortzailea:&nbsp;
+	  {% trans "Sortzailea" %}:&nbsp;
 	  <span class="eremu-str">
 	    {% if item.dc_creator%}
 	    {{item.dc_creator}}
@@ -113,7 +113,7 @@
 	
 	<li>
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  Hornitzailea:&nbsp;
+	  {% trans "Hornitzailea" %}:&nbsp;
 	  <span class="eremu-str">
 	    {% if item.edm_provider%}
 	    {{item.edm_provider}}
@@ -126,7 +126,7 @@
 	  </li>
 	<li>
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  Gaia:&nbsp;
+	  {% trans "Gaia" %}:&nbsp;
 	  <span class="eremu-str">
 	    {% if item.dc_subject%}
 	    {{item.dc_subject}}
@@ -139,7 +139,7 @@
 	  </li>
 	<li>
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  Hizkuntza:&nbsp;
+	  {% trans "Hizkuntza" %}:&nbsp;
 	  <span class="eremu-str">
 	    {% if item.ob_language %}
 	    {{item.ob_language}}
@@ -152,7 +152,7 @@
 	  </li>
 	<li>
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  Herrialdea:&nbsp;
+	  {% trans "Herrialdea" %}:&nbsp;
 	  <span class="eremu-str">
 	    {% if item.edm_country %}
 	    {{item.edm_country }}
@@ -165,7 +165,7 @@
 	  </li>
 	<li>
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  Data:&nbsp;
+	  {% trans "Data" %}:&nbsp;
 	  <span class="eremu-str">
 	    {% if item.dc_date %}
 	    {{item.dc_date }}
@@ -178,7 +178,7 @@
 	  </li>
 	<li>
 	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  Mota:&nbsp;
+	  {% trans "Mota" %}:&nbsp;
 	  <span class="eremu-str">
 	    {% if item.edm_type %}
 	    {{item.edm_type }}
@@ -197,19 +197,19 @@
 	</ul>
       </div>
     <div class="path-info overflow">
-      <h3 class="titulu-kolorea">Bestelako informazioa</h3>
+      <h3 class="titulu-kolorea">{% trans "Bestelako informazioa" %}</h3>
       <ul class="nav navbar-nav navbar-default">
 	{% if item.proposatutakoa %}
 	<li>
 	  <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-	  Adituek Proposatutakoa
+	  {% trans "Adituek Proposatutakoa" %}
 	  
 	  </li>
 	{%endif%}
 	{% if item.egunekoa %}
 	<li>
 	  <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-	  Egunekoa
+	  {% trans "Egunekoa" %}
 	  
 	  </li>
 	{%endif%}
@@ -220,7 +220,7 @@
       </div>
     <div class="path-info overflow">
 			{% if user.is_authenticated %}
-			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
+			<h3 class="titulu-kolorea">{% trans "Kudeaketa Aukerak" %}</h3>
 						
   			<button class="btn btn-default gehitu-botoia" type="button" title="lan eremura gehitu" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
  				
@@ -265,7 +265,7 @@
       <!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
       {%if itemPaths %}
       <!-- class="crossingPaths"-->
-      <div class=""><h3 class="titulu-kolorea">Ze ibilbidetan? ({{itemPaths.count}})</h3>
+      <div class=""><h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} ({{itemPaths.count}})</h3>
 	{% for node in itemPaths %}
 	{% if forloop.counter < 4 %}
 				<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
@@ -278,7 +278,7 @@
 	  
 	  </div>
       {% else %}
-      <h3 class="titulu-kolorea">Ze ibilbidetan? &nbsp; - </h3>
+      <h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; - </h3>
       {%endif%}
       </div>
     </div>
@@ -304,45 +304,45 @@
 		<!--{{itema}}-->
 		<input id="id_hidden_Item_id" type="hidden" name="hidden_Item_id" value="{{id}}">
 		
-		<label for="id_titulua">Titulua:</label>
+		<label for="id_titulua">{% trans "Titulua" %}:</label>
 		{{itema.titulua}}
 		
-		<label for="id_deskribapena">Deskribapena:</label>
+		<label for="id_deskribapena">{% trans "Deskribapena:</label>
 		{{itema.deskribapena}}
 		
-		<label for="id_sortzailea">Sortzailea:</label>
+		<label for="id_sortzailea">{% trans "Sortzailea" %}:</label>
 		{{itema.sortzailea}}
 		
-		<label for="id_gaia">Gaia:</label>
+		<label for="id_gaia">{% trans "Gaia" %}:</label>
 		{{itema.gaia}}
 		
-		<label for="id_herrialdea">Herrialdea:</label>
+		<label for="id_herrialdea">{% trans "Herrialdea" %}:</label>
 		{{itema.herrialdea}}
 		
-		<label for="id_data">Data:</label>
+		<label for="id_data">{% trans "Data" %}:</label>
 		<br />
 		{{itema.data}}
 		<br />
 
-		<label for="id_jatorrizkoa">Jatorrizkoa:</label>
+		<label for="id_jatorrizkoa">{% trans "Jatorrizkoa" %}:</label>
 		{{itema.jatorrizkoa}}
 		
-		<label for="id_eskubideak">Eskubideak:</label>
+		<label for="id_eskubideak">{% trans "Eskubideak" %}:</label>
 		{{itema.eskubideak}}
 		
-		<label for="id_lizentzia">Lizentzia:</label>
+		<label for="id_lizentzia">{% trans "Lizentzia" %}:</label>
 		{{itema.lizentzia}}
 		<br />
 		
-		<label for="id_mota">Mota:</label>
+		<label for="id_mota">{% trans "Mota" %}:</label>
 		{{itema.mota}}
 		<br />
 		
-		<label for="id_irudia">Irudia:</label>
+		<label for="id_irudia">{% trans "Irudia" %}:</label>
 		{{itema.irudia}}
 		<br />
 		
-		<label for="id_hizkuntzak">Hizkuntzak:</label>
+		<label for="id_hizkuntzak">{% trans "Hizkuntzak" %}:</label>
 		<br />
 		eu{{itema.eu}}
 		es{{itema.es}}
@@ -351,7 +351,7 @@
 		<br/>
 		<br/>
 		<!-- GEOLOKALIZAZIOA -->
-		<label for="id_hizkuntzak">Geolokalizazioa:</label>
+		<label for="id_hizkuntzak">{% trans "Geolokalizazioa" %}:</label>
 
 		<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
 		<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />

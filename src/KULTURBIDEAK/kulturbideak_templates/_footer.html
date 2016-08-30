@@ -1,0 +1,44 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+<style>
+	.footer-ul {
+		list-style: none;		
+		width:100%;
+	}
+	.footer-ul li{
+		display:inline-block;
+		margin: 4px 30px;
+	}
+	.bordertopFooter {
+		background: #ffffff;
+		color: #7d7d7d;
+		font-size: 13px;
+		font-weight: 400;
+		padding-top: 10px;
+		line-height: 18px;
+		border-top: 1px solid #C8C8C8;
+	}
+
+</style>
+
+<div id="footer" class="row bordertopFooter">
+	<div class="col-md-1"></div>
+	<div class="col-md-10 blankContainer">
+		<ul class="footer-ul">
+			<li>
+				Ondarebideak is free software licensed under GPL v3.
+			</li>
+			<li>
+				<a href="http://github.com/Elhuyar/Ondarebideak"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Github</a>
+			</li>
+			<li>
+				<a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a> : <a href="mailto:OndareBideak@elhuyar.com" target="_blank">ondarebideak@elhuyar.com</a>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-1"></div>
+</div>
+

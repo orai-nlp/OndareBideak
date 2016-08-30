@@ -743,3 +743,17 @@ h2.uppercase {
 .modal-dialog{
 	width:75%;
 }
+
+/* mapa geografikoarentzako estiloak*/
+#geo_map{
+	margin: 20px 0px;	
+}
+#yourmap{
+	border-radius:10px;
+}
+
+/* Sare sozialen atala*/
+.share_titulu{
+	width:100%;
+	margin: 10px 0px;	
+}
