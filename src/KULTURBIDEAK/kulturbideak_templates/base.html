@@ -113,7 +113,7 @@ var markers = [];
        
 		
        
-        if(markers.length>0 || {{geoloc_latitude}} !=0.0)
+        if(markers.length>0 || {{ geoloc_latitude }} !=0.0)
         {
         	//Mapa zentratu
 			 map.panTo(new L.LatLng({{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude|correct_float_format }}));
@@ -272,19 +272,19 @@ var markers = [];
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
       <li><a href="itemak_hasiera">
-         ITEMAK
+         {% trans "ITEMAK" %}
          </a>
       </li>
       <li>
       	<a href="ibilbideak_hasiera">
-      		IBILBIDEAK
+      		{% trans "IBILBIDEAK" %}
       	</a>
       </li>
       <li>
       		
       	<a href="hornitzaileak_hasiera">
       		<span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span>
-      		HORNITZAILEAK
+      		{% trans "HORNITZAILEAK" %}
       	</a>
       </li>
     </ul>
@@ -663,7 +663,7 @@ var markers = [];
 							<ul class="nav  navbar-default">
 								<li>
 									<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-									Lizentzia:&nbsp;
+									{% trans "Lizentzia" %}:&nbsp;
 									<span class="eremu-str">
 									{% if item.edm_rights%}
  										{{item.edm_rights}}
@@ -726,11 +726,11 @@ var markers = [];
  						</div>
 					</div>
 					<div class="path-info overflow">
-						<h3 class="titulu-kolorea">EZAUGARRIAK</h3>
+						<h3 class="titulu-kolorea">{% trans "EZAUGARRIAK" %}</h3>
 						<ul class="nav  navbar-default">
 							<li>
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-							Sortzailea:&nbsp;
+							{% trans "Sortzailea" %}:&nbsp;
 							<span class="eremu-str">
 								{% if item.dc_creator%}
  									{{item.dc_creator}}
@@ -743,7 +743,7 @@ var markers = [];
 		
 							<li>
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-								Hornitzailea:&nbsp;
+								{% trans "Hornitzailea" %}:&nbsp;
 							<span class="eremu-str">
 							{% if item.edm_provider%}
  								{{item.edm_provider}}
@@ -756,7 +756,7 @@ var markers = [];
 							</li>
 							<li>
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-							Gaia:&nbsp;
+							{% trans "Gaia" %}:&nbsp;
 							<span class="eremu-str">
 							{% if item.dc_subject%}
  								{{item.dc_subject}}
@@ -769,7 +769,7 @@ var markers = [];
 							</li>
 							<li>
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-							Hizkuntza:&nbsp;
+							{% trans "Hizkuntza" %}:&nbsp;
 							<span class="eremu-str">
 							{% if item.ob_language %}
  								{{item.ob_language}}
@@ -782,7 +782,7 @@ var markers = [];
 							</li>
 							<li>
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-							Herrialdea:&nbsp;
+							{% trans "Herrialdea" %}:&nbsp;
 							<span class="eremu-str">
 							{% if item.edm_country %}
 			 					{{item.edm_country }}
@@ -795,7 +795,7 @@ var markers = [];
 							</li>
 							<li>
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-							Data:&nbsp;
+							{% trans "Data" %}:&nbsp;
 							<span class="eremu-str">
 							{% if item.dc_date %}
 			 					{{item.dc_date }}
@@ -808,7 +808,7 @@ var markers = [];
 							</li>
 							<li>
 								<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-								Mota:&nbsp;
+								{% trans "Mota" %}:&nbsp;
 								<span class="eremu-str">
 								{% if item.edm_type %}
 				 					{{item.edm_type }}
@@ -895,7 +895,7 @@ var markers = [];
 			
 			
 			{%if itemPaths %}
-			<div class="crossingPaths"><b>{% trans "Ze Ibilbidetan? " %} </b>
+			<div class="crossingPaths"><b>{% trans "Ze Ibilbidetan?" %} </b>
 			{% for node in itemPaths %}
 				{% if forloop.counter < 4 %}
 					<p><a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a></p>

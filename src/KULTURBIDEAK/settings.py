@@ -19,13 +19,6 @@ ADMINS = (
     ('Maddalen', 'm.lopezdelacalle@elhuyar.com'),
 )
 
-HIZKUNTZAK={
-1:['eu','Euskara'],
-2:['es','Gaztelera'],
-3:['en','Ingelesa'],
-#4:['fr','Frantsesa']
-}
-
 MANAGERS = ADMINS
 
 ALLOWED_HOSTS = ['*']
@@ -80,8 +73,7 @@ LANGUAGES = (
     ('eu', 'eu'), 
     ('es', 'es'),
     ('en', 'en'),
-    #('fr', 'fr'),
-       
+    ('fr', 'fr'),
 )
 
 SITE_ID = 1

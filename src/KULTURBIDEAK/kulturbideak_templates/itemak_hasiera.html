@@ -125,21 +125,21 @@
 		  
 		  <h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
 		  {% if item.edm_provider %}	
-		  <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea:" %} </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
+		  <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
 		  {%endif%}
 		  {% if item.dc_language %}
-		  <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{item.dc_language}}</span><br />
+		  <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{item.dc_language}}</span><br />
 		  {%endif%}
 		  {% if item.edm_country %}
-		  <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea:" %}</span><span class="eremu-str">{{item.edm_country}}</span><br />
+		  <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="eremu-str">{{item.edm_country}}</span><br />
 		  {%endif%}
 		  {% if item.dc_creator %}
-		  <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea:" %}<span class="eremu-str">{{item.dc_creator}}</span><br />
+		  <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea" %}: <span class="eremu-str">{{item.dc_creator}}</span><br />
 		    {%endif%}
 		    {% if item.edm_type %}
-		    <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota:" %}<span class="eremu-str">{{item.edm_type}}</span><br />
+		    <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="eremu-str">{{item.edm_type}}</span><br />
 		      {%endif%}
-		      <h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
+		      <h3 class="titulu-kolorea bilaketa">{% trans "Kudeaketa Aukerak" %}</h3>
 		      <!--<div class="btn-group" role="group" aria-label="...">-->
 		      <a class="btn  btn-primary ikusi-botoia" type="button" title="Ikusi kultur itema" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}">
        			<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
@@ -196,15 +196,15 @@
 <div class="pagination">
     <span class="step-links">
         {% if itemak.has_previous %}
-            <a href="?page={{ itemak.previous_page_number }}">aurrekoak</a>
+            <a href="?page={{ itemak.previous_page_number }}">{% trans "aurrekoak" %}</a>
         {% endif %}
 
         <span class="current">
-            {{ itemak.number }}.orrialdea {{ itemak.paginator.num_pages }}tik.
+            {{ itemak.number }}{% trans ".orrialdea" %} {{ itemak.paginator.num_pages }}{% trans "tik" %}.
         </span>
 
         {% if itemak.has_next %}
-            <a href="?page={{ itemak.next_page_number }}">hurrengoak</a>
+            <a href="?page={{ itemak.next_page_number }}">{% trans "hurrengoak" %}</a>
         {% endif %}
     </span>
   <!--  <span class="emaitzaInfo"> -- {{itemak.paginator.count }} Item dataren arabera ordenatuta</span> -->
@@ -280,7 +280,7 @@
 							{%endfor%}                      
                             <br/>						
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
+                                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>                                
                             </div>                            
                             <p><br/></p>                    
                     </div>                       

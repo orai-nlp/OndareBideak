@@ -109,15 +109,15 @@
 				 			
 				<h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h5>    		
     			{% if path.language %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{path.language}}</span><br />
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{path.language}}</span><br />
 				{% else %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">-</span><br />
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">-</span><br />
 						
 				{%endif%}
 				{% if path.dc_subject %}
-					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">{{path.dc_subject}}</span><br />
+					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: </span><span class="eremu-str">{{path.dc_subject}}</span><br />
 				{% else %}
-					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">-</span><br />
+					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: </span><span class="eremu-str">-</span><br />
 						
 				{%endif%}
     			
@@ -160,15 +160,15 @@
 <div class="pagination">
     <span class="step-links">
         {% if paths.has_previous %}
-            <a href="?page={{ paths.previous_page_number }}">aurrekoak</a>
+            <a href="?page={{ paths.previous_page_number }}">{% trans "aurrekoak" %}</a>
         {% endif %}
 
         <span class="current">
-            {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik.
+            {{ paths.number }}{% trans ".orrialdea" %} {{ paths.paginator.num_pages }}{% trans "tik." %}
         </span>
 
         {% if paths.has_next %}
-            <a href="?page={{ paths.next_page_number }}">hurrengoak</a>
+            <a href="?page={{ paths.next_page_number }}">{% trans "hurrengoak" %}</a>
         {% endif %}
     </span>
     

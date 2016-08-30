@@ -8,6 +8,10 @@
     font-weight: 900;
 } 
  
+.side-corner-tag p{
+ 	margin: 0px;
+ }
+ 
 .side-corner-tag p span {
     position: absolute;
     display: inline-block;

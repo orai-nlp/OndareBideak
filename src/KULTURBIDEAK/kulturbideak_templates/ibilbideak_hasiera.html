@@ -5,304 +5,277 @@
 
 <link rel="stylesheet" href="{{STATIC_URL}}css/adituTag.css" type="text/css">
 
-<!-- EGUNEKOAK - BOZKATUENAK - AZKENAK -->	
+<!-- EGUNEKOAK - BOZKATUENAK - AZKENAK -->
 <div class="container">
-<div class="row">
-	<div class="col-md-1">
-	</div>
-	
+	<div class="row">
+		<div class="col-md-1"></div>
 
-    <div class="col-md-9">	
-		<!--<h2 class="titulu-kolorea antzekoTitulua">ANTZEKO ITEMAK</h2>-->	
-		
+		<div class="col-md-9">
+			<!--<h2 class="titulu-kolorea antzekoTitulua">ANTZEKO ITEMAK</h2>-->
+
 			<div class="row">
-				
+
 				<div class="center col-md-4">
-						<a class=""  href="#" data-toggle="modal" data-target="#modalEgunekoak" >
-						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">-->
-						<span style="font-size:2em;color: #eea236" class="glyphicon glyphicon-star" aria-hidden="true"></span>
-						</a>
-						<h2 class="uppercase">Egunekoak</h2>
-					
+					<a class=""  href="#" data-toggle="modal" data-target="#modalEgunekoak" > <!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">--> <span style="font-size:2em;color: #eea236" class="glyphicon glyphicon-star" aria-hidden="true"></span> </a>
+					<h2 class="uppercase">{% trans "Egunekoak" %}</h2>
+
 				</div>
 				<div class=" center col-md-4">
-						<a class=""  href="#" data-toggle="modal" data-target="#modalBozkatuenak">
-						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">-->
-						<span style="font-size:2em;color: #c03035" class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-						
-						</a>
-						<h2 class="uppercase">Bozkatuenak</h2>
-					
+					<a class=""  href="#" data-toggle="modal" data-target="#modalBozkatuenak"> <!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">--> <span style="font-size:2em;color: #c03035" class="glyphicon glyphicon-heart" aria-hidden="true"></span> </a>
+					<h2 class="uppercase">{% trans "Bozkatuenak" %}</h2>
+
 				</div>
 				<div class="center col-md-4">
-						<a class=""  href="#" data-toggle="modal" data-target="#modalAzkenak">
-						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">-->
-						<span style="font-size:2em;color:  #0099ae" class="glyphicon glyphicon-time" aria-hidden="true"></span>
-						
-						</a>
-						<h2 class="uppercase">Azkenekoak</h2>
-					
-				</div>				
+					<a class=""  href="#" data-toggle="modal" data-target="#modalAzkenak"> <!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiBide.png ">--> <span style="font-size:2em;color:  #0099ae" class="glyphicon glyphicon-time" aria-hidden="true"></span> </a>
+					<h2 class="uppercase">{% trans "Azkenekoak" %}</h2>
+
+				</div>
 			</div>
-	
-	</div>	
-	<div class="col-md-2">
+
+		</div>
+		<div class="col-md-2"></div>
+
 	</div>
-	
-</div>
 </div>
 <!-- END EGUNEKOAK - BOZKATUENAK - AZKENAK -->
 <div class="container">
-<div class="row">
-	<div class="col-md-12">
-		&nbsp;&nbsp;
+	<div class="row">
+		<div class="col-md-12">
+			&nbsp;&nbsp;
 		</div>
-</div>
+	</div>
 </div>
 
 <div class="container">
-<div class="row">
-	<div class="col-md-12">
-	<h2 class="titulu-kolorea antzekoTitulua">IBILBIDE GUZTIAK ({{paths.paginator.count }})</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<h2 class="titulu-kolorea antzekoTitulua">{% trans "IBILBIDE GUZTIAK" %} ({{paths.paginator.count }})</h2>
+		</div>
 	</div>
-</div>
 </div>
 
 <div class="container">
-<div class="row">
-	<div class="col-md-1">
-	</div>
-<div class="col-md-9">
-<div class="pagination">
-    <span class="step-links">
-        {% if paths.has_previous %}
-            <a href="?page={{ paths.previous_page_number }}">aurrekoak</a>
-        {% endif %}
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-9">
+			<div class="pagination">
+				<span class="step-links"> {% if paths.has_previous %} <a href="?page={{ paths.previous_page_number }}">aurrekoak</a> {% endif %} <span class="current"> {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik. </span> {% if paths.has_next %} <a href="?page={{ paths.next_page_number }}">hurrengoak</a> {% endif %} </span>
 
-        <span class="current">
-            {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik.
-        </span>
+				<!--<span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
+			</div>
 
-        {% if paths.has_next %}
-            <a href="?page={{ paths.next_page_number }}">hurrengoak</a>
-        {% endif %}
-    </span>
-    
-    <!--<span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
-</div>
+			{% for path in paths %}
+			<div class="row ezkmarg0">
+				<!--<div class="col-xs-6 col-md-3">-->
 
+				<div class="thumbnail col-xs-2 col-md-2 clear">
+					<!--<div class="stretchy-wrapper">
+						<div class="thumbnail_container">
+						-->
+							{% if path.fk_user_id.id|hornitzailea_da %}
+							<div class="side-corner-tag">
+								<p>
+									<span>{% trans "Aditua" %}</span>
+								</p>
+							<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" > {% if path.paths_thumbnail %}<img class="ob_thumbnail" src="{{path.paths_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">{% endif %}
+							</a>			
+							</div>
+							{%else%}
+							<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" > {% if path.paths_thumbnail %}<img class="ob_thumbnail" src="{{path.paths_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">{% endif %}</a>
+							{%endif%}
+							
+					<!--	</div>
+					</div>-->
 
-  
-   {% for path in paths %}
-	<div class="row ezkmarg0">	
-		<!--<div class="col-xs-6 col-md-3">-->
-    
-    <div class="thumbnail col-xs-2 col-md-2">
+				</div>
+				<div class=" col-xs-1 col-md-1"></div>
+				<div class="caption  col-xs-9 col-md-9">
+					<input type="hidden" id="path_id_{{ forloop.counter }}" value="{{path.id}}"/>
+					<input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.dc_title}}"/>
+					<input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.paths_thumbnail}}"/>
 
-      {% if path.fk_user_id.id|hornitzailea_da %}
-       <div class="side-corner-tag">
-         <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
-           {% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}                                   
-           <p><span>aditua</span></p>                      
-         </a>
-       </div>
-       {% else %}
-        <div class="">
-         <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
-           {% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}                                   
-                            
-         </a>
-       </div>
-	{%endif%}
-	
+					<h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h5>
+					{% if path.language %}
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{path.language}}</span>
+					<br />
+					{% else %}
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">-</span>
+					<br />
 
-			
-    </div>
-    <div class=" col-xs-1 col-md-1"></div>
-			<div class="caption  col-xs-9 col-md-9">
-				<input type="hidden" id="path_id_{{ forloop.counter }}" value="{{path.id}}"/>
-				 <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.dc_title}}"/>
-				 <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.paths_thumbnail}}"/>
-				 
-				
-    			<h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h5>    		
-    			{% if path.language %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{path.language}}</span><br />
-				{% else %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">-</span><br />
-						
-				{%endif%}
-				{% if path.dc_subject %}
-					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">{{path.dc_subject}}</span><br />
-				{% else %}
-					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">-</span><br />
-						
-				{%endif%}
-       			<a class="btn  btn-primary ikusi-botoia" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}">
-       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-       			</a>
-       		
-       			{% if user.username == path.fk_user_id.username %}
+					{%endif%}
+					{% if path.dc_subject %}
+					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}:</span><span class="eremu-str">{{path.dc_subject}}</span>
+					<br />
+					{% else %}
+					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}:</span><span class="eremu-str">-</span>
+					<br />
 
-					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.id}}" >				
- 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					</a> 
-					 <!-- ezabatu"-->
-					<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.id}})"  >				
- 					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-					</a>				
-			{%endif%}
-			{% if request.user|has_group:'hornitzailea' %}
-        			{% if path.egunekoa == 0  %}
-                                        <a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{path.id}}&nondik=hasiera" >
-                                          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                        </a>
-                      {%else%}
-                                        <a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{path.id}}&nondik=hasiera" >
-                                          <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                                        </a>
-				{%endif%}
-			{%endif%}
+					{%endif%}
+					<a class="btn  btn-primary ikusi-botoia" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}"> <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> </a>
 
-				
-    		</div>
-		<!--</div><!-- thumbnail -->
+					{% if user.username == path.fk_user_id.username %}
 
-		<!--</div>-->
-  </div>
-  {% empty %}
-	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
-{% endfor %}
+					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.id}}" > <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+					<!-- ezabatu"-->
+					<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.id}})"  > <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
+					{%endif%}
+					{% if request.user|has_group:'hornitzailea' %}
+					{% if path.egunekoa == 0  %}
+					<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{path.id}}&nondik=hasiera" > <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </a>
+					{%else%}
+					<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{path.id}}&nondik=hasiera" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> </a>
+					{%endif%}
+					{%endif%}
+
+				</div>
+				<!--</div><!-- thumbnail -->
+
+				<!--</div>-->
+			</div>
+			{% empty %}
+			<p>
+				{% trans "Ez da erantzunik aurkitu." %}
+			</p>
+			{% endfor %}
 
 <div class="pagination">
     <span class="step-links">
         {% if paths.has_previous %}
-            <a href="?page={{ paths.previous_page_number }}">aurrekoak</a>
+            <a href="?page={{ paths.previous_page_number }}">{% trans "aurrekoak" %}</a>
         {% endif %}
 
         <span class="current">
-            {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik.
-        </span>
+            {{ paths.number }}{% trans ".orrialdea" %} {{ paths.paginator.num_pages }}{% trans "tik." %}
+	    </span>
 
         {% if paths.has_next %}
-            <a href="?page={{ paths.next_page_number }}">hurrengoak</a>
+            <a href="?page={{ paths.next_page_number }}">{% trans "hurrengoak" %}</a>
         {% endif %}
     </span>
-    
-    <!--<span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
+
+   <!-- <span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
 </div>
 
-
-</div><!--column 9-->
-<div class="col-md-2">
-</div>
-</div><!-- row-->
+		</div><!--column 9-->
+		<div class="col-md-2"></div>
+	</div><!-- row-->
 </div><!--container-->
-
-
 
 <!--Ventana modal-->
 
 <div class="modal fade" id="modalEgunekoak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">         
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4>Hauek dira adituek proposatutako eguneko Ibilbideak</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">               
-                    <div class="panel-body">
-                    	
-                    		<div id="messages"></div>                                                       
-                            {% for ibilbide in eguneko_ibilbideak %}							
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>				
-							{%endfor%}                      
-                            <br/>						
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
-                            </div>                            
-                            <p><br/></p>                    
-                    </div>                       
-                </div>
-            </div>
-            
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4>Hauek dira adituek proposatutako eguneko Ibilbideak</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="panel-body">
+
+						<div id="messages"></div>
+						{% for ibilbide in eguneko_ibilbideak %}
+						<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label>
+						<br/>
+						{%endfor%}
+						<br/>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								{% trans "Atera" %}
+							</button>
+						</div>
+						<p>
+							<br/>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 </div>
 
- 
-
 <!--Fin Ventana modal-->
-
 
 <!--Ventana modal-->
 
 <div class="modal fade" id="modalBozkatuenak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">         
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4>Hauek dira bozka gehien jaso dituzten Ibilbideak</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">               
-                    <div class="panel-body">
-                    	
-                    		<div id="messages"></div>                                                       
-                            {% for ibilbide in ibilbide_bozkatuenak %}							
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>				
-							{%endfor%}                      
-                            <br/>						
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
-                            </div>                            
-                            <p><br/></p>                    
-                    </div>                       
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4>Hauek dira bozka gehien jaso dituzten Ibilbideak</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="panel-body">
 
- 
+						<div id="messages"></div>
+						{% for ibilbide in ibilbide_bozkatuenak %}
+						<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label>
+						<br/>
+						{%endfor%}
+						<br/>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								{% trans "Atera" %}
+							</button>
+						</div>
+						<p>
+							<br/>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
 
 <!--Fin Ventana modal-->
 
 <!--Ventana modal-->
 
 <div class="modal fade" id="modalAzkenak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">         
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4>Hauek dira erabiltzaileek sortutako azken Ibilbideak</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">               
-                    <div class="panel-body">
-                    	
-                    		<div id="messages"></div>                                                       
-                            {% for ibilbide in azken_ibilbideak %}							
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>				
-							{%endfor%}                      
-                            <br/>						
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
-                            </div>                            
-                            <p><br/></p>                    
-                    </div>                       
-                </div>
-            </div>
-            
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4>Hauek dira erabiltzaileek sortutako azken Ibilbideak</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="panel-body">
+
+						<div id="messages"></div>
+						{% for ibilbide in azken_ibilbideak %}
+						<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label>
+						<br/>
+						{%endfor%}
+						<br/>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								{% trans "Atera" %}
+							</button>
+						</div>
+						<p>
+							<br/>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 </div>
 
- 
+<!--Fin Ventana modal-->
 
-<!--Fin Ventana modal-->	
-
-
-{% endblock %} 
+{% endblock %}

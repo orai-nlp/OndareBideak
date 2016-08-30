@@ -23,6 +23,13 @@
    #SERVICE {
        padding-top:30px !important;
    }
+   #item_img{
+   	margin:0% 0% 5px 20%;
+   }
+   #license_info, #nabigMenu_titulu{
+   	margin:0% 0% 0% 20%;
+   }
+
    .bilaketaEmaitza{
 
 		/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
@@ -50,8 +57,10 @@
 		color:#337ab7;
 		font-family: "dosis" !important;
     }
-
-	
+    img.ob_thumbnail{
+    	width:120px !important;
+    	height:120px !important;
+    }
     #workspace{
         position:fixed;
         width: 80%;
@@ -391,6 +400,35 @@
 	.ezkerra{
 	float:left;
 	}
+	#nabigMenu_botoiak {
+		border: 1px solid lightgrey;
+		border-radius:10px;
+	}
+	.clear:after {
+		clear: both;
+	    content: "";
+    	display: table;
+	}
+	#nabigMenu_botoiak ul{
+		width:50%;
+		padding:2px;		
+		list-style-type:none;
+	}
+	#nabigMenu_botoiak ul li{
+		border: 1px solid lightgrey;
+		border-radius:10px;
+	}
+	#nabigMenu_botoiak .eskuma button{	
+		margin:2px 0px 2px 0px;				
+		width:100%;
+		text-align:right;	
+	}
+	#nabigMenu_botoiak .ezkerra button{	
+		margin:2px 0px 2px 0px;				
+		width:100%;
+		text-align:left;
+	}
+	
 	.aurkezpena{}
 	.path_sarrera{
 		overflow:hidden;
@@ -698,4 +736,10 @@ h2.uppercase {
     font-size: 14px;
     padding: 0 15px 0 0;
     text-decoration: none;
+}
+
+
+/* custom modal dialog styles*/
+.modal-dialog{
+	width:75%;
 }

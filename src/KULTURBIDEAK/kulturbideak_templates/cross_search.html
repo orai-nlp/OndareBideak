@@ -194,22 +194,22 @@ um_pages }}</p>-->
 				<h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
 				{%endif%}
                                 {% if item.edm_provider %}
-                                        <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea:" %} </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
+                                        <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
                                 {%endif%}
                                 {% if item.dc_creator %}
-                                        <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea:" %}<span class="eremu-str">{{item.dc_creator}}</span><br />
+                                        <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea" %}: <span class="eremu-str">{{item.dc_creator}}</span><br />
                                 {%endif%}
                                 {% if item.dc_subject %}
-                                        <span class="bilaketaEremua" id="gaia"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}<span class="eremu-str">{{item.dc_subject}}</span><br />
+                                        <span class="bilaketaEremua" id="gaia"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: <span class="eremu-str">{{item.dc_subject}}</span><br />
                                 {%endif%}
                                 {% if item.edm_country %}
-                                        <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea:" %}</span><span class="eremu-str">{{item.edm_country}}</span><br />
+                                        <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="eremu-str">{{item.edm_country}}</span><br />
                                 {%endif%}
                                 {% if item.ob_language %}
-                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{item.ob_language}}</span><br />
+                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{item.ob_language}}</span><br />
                                 {%endif%}                              
                                 {% if item.edm_type %}
-                                        <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota:" %}<span class="eremu-str">{{item.edm_type}}</span><br />
+                                        <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="eremu-str">{{item.edm_type}}</span><br />
                                 {%endif%}
                                 <h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
                                 <!--<div class="btn-group" role="group" aria-label="...">-->

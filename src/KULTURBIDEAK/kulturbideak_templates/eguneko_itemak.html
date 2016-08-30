@@ -54,19 +54,19 @@
 				 
 				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
 				{% if item.edm_provider %}	
-					<p class="" id="hornitzailea"><b> {% trans "Hornitzailea:" %} </b> {{item.edm_provider}}</p>
+					<p class="" id="hornitzailea"><b> {% trans "Hornitzailea" %}: </b>{{item.edm_provider}}</p>
 				{%endif%}
 				{% if item.dc_language %}
-					<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
+					<p class="" id="hizkuntza"><b> {% trans "Hizkuntza" %}: </b>{{item.dc_language}}</p>
 				{%endif%}
 				{% if item.edm_country %}
-					<p class="" id="herrialdea"><b>{% trans "Herrialdea:" %}</b>{{item.edm_country}}</p>
+					<p class="" id="herrialdea"><b>{% trans "Herrialdea" %}: </b>{{item.edm_country}}</p>
 				{%endif%}
 				{% if item.dc_creator %}
-					<p class="" id="sortzailea"><b>{% trans "Sortzailea:" %}</b>{{item.dc_creator}}</p>
+					<p class="" id="sortzailea"><b>{% trans "Sortzailea" %}: </b>{{item.dc_creator}}</p>
 				{%endif%}
 				{% if item.edm_type %}
-					<p class="" id="mota"><b>{% trans "Mota:" %}</b>{{item.edm_type}}</p>
+					<p class="" id="mota"><b>{% trans "Mota" %}: </b>{{item.edm_type}}</p>
 				{%endif%}
 				{% if user.is_authenticated %}
 					<div class="btn-group" role="group" aria-label="...">
