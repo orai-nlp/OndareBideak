@@ -60,14 +60,14 @@
 			<div id="nabigMenu_titulu" class="path-info overflow">
 				<h3 class="titulu-kolorea">{% trans "NABIGATU" %}</h3>
 			</div>
-			
-			<div id="nabigMenu_botoiak">
+
+			<div id="nabigMenu_botoiak" class="clearfix">
 				<!--BOTOIAK AURREKOAK -->
 				<ul class="ezkerra">
 					{% for aurrekoa in aurrekoak %}
-					<li>
+					<li class="clearfix">
 						<button type="button" class="btn btn-common ezkerra" onclick="nabigatu({{path_id}},{{aurrekoa.fk_item_id_id}})">
-							<span  aria-hidden="true"> <span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> {{aurrekoa.dc_title}} </span>
+							<span  aria-hidden="true" title="{{aurrekoa.dc_title}}"> <span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> {{aurrekoa.dc_title}} </span>
 						</button>
 					</li>
 					{% endfor %}
@@ -75,9 +75,12 @@
 				<!--BOTOIAK HURRENGOAK -->
 				<ul class="eskuma">
 					{% for hurrengoa in hurrengoak %}
-					<li>
+					<li class="clearfix">
 						<button type="button" class="btn btn-common eskuma" onclick="nabigatu({{path_id}},{{hurrengoa.fk_item_id_id}})">
-							<span  aria-hidden="true"> {%if hasieraBakarra == 1%} <span class="glyphicon glyphicon-repeat" aria-hidden="true"> </span> {%else%} <!--hemen hurrengoaren titulua jarri --> {{hurrengoa.dc_title}} <span class="glyphicon glyphicon-forward" aria-hidden="true"> </span> </span>
+							{%if hasieraBakarra == 1%}
+							<span  aria-hidden="true"> <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></span>
+							{%else%}
+							<span  aria-hidden="true" title="{{hurrengoa.dc_title}}"> {{hurrengoa.dc_title}} <span class="glyphicon glyphicon-forward" aria-hidden="true"> </span> </span>
 							{% endif %}
 						</button>
 					</li>
@@ -133,9 +136,9 @@
 			</div>
 			<div class="path-info overflow">
 				<button id="create_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modaloverview" >
-					<span  aria-hidden="true"> <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"> </span> HEMEN ZAUDE </span>
+					<span  aria-hidden="true"> <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"> </span> {% trans "HEMEN ZAUDE" %} </span>
 				</button>
-				<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> AUTOPLAY </a>
+				<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> {% trans "AUTOPLAY" %} </a>
 			</div>
 			<div class="path-info overflow">
 				<h3 class="titulu-kolorea">{% trans "EZAUGARRIAK" %}</h3>
@@ -233,68 +236,7 @@
 					</li>
 				</ul>
 			</div>
-			<!--
-			<div class="path-info overflow">
-			<h3 class="titulu-kolorea">Bestelako informazioa</h3>
-			<ul class="nav navbar-nav navbar-default">
-			{% if item.proposatutakoa %}
-			<li>
-			<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-			Adituek Proposatutakoa
 
-			</li>
-			{%endif%}
-			{% if item.egunekoa %}
-			<li>
-			<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-			Egunekoa
-
-			</li>
-			{%endif%}
-			{% if not item.egunekoa and not item.proposatutakoa%}
-			- - -
-			{%endif%}
-			</ul>
-			</div>
-			<div class="path-info overflow">
-			{% if user.is_authenticated %}
-			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
-
-			<button class="btn btn-default gehitu-botoia" type="button" title="lan eremura gehitu" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
-
-			{% trans "Gehitu" %}
-			<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-			</button>
-
-			{% if request.user|has_group:'hornitzailea' %}
-
-			{% if item.egunekoa == 0 %}
-			<a class="btn btn-warning" type="button" title="Eguneko item bihurtu" onclick="egunekoaGehituEtabilaketaFiltratu({{item.id}})" >
-			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-			</a>
-			{%endif%}
-			{% if item.egunekoa == 1 %}
-			<a class="btn btn-warning" type="button" title="Eguneko item ezabatu" onclick="egunekoaKenduEtabilaketaFiltratu({{item.id}})" >
-			<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-			</a>
-
-			{%endif%}
-
-			{%endif%}
-
-			{% if user.username == item.edm_provider %}
-
-			<a class="btn btn-default" type="button" title="itema editatu" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >
-			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-			</a>
-
-			<a class="btn btn-danger" type="button" title="itema ezabatu" href="{{BASE_URL}}/ezabatu_itema?id={{item.id}}" >
-			<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-			</a>
-			{%endif%}
-			{%endif%}
-			</div>
-			-->
 			<div class="path-info overflow">
 
 				<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
@@ -326,7 +268,6 @@
 				<a class="titulu-kolorea eskuma" type="button" href="#">{% trans "Kultur itema gustoko duzu?" %}</a>
 			</div>
 
-			<br />
 			<div class="btn-group eskuma" role="group" aria-label="...">
 
 				{% if botatuDuItem == 1 %}
@@ -340,26 +281,12 @@
 				<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{node_id}}" disabled > <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> </a>
 				{%endif%}
 			</div>
-			
-			
 
 			{%endif%}
-			
-			<div class="share_titulu eskuma">
-				<a class="titulu-kolorea eskuma" type="button" href="#">{% trans "Konpartitu" %}!</a>
-			</div>
-						
-			<div class="text-center">
-				<div class="ssk-xs ssk-group ssk-round ssk-count">
-					<a class="ssk ssk-facebook" href=""> </a>
-					<a class="ssk ssk-twitter" href=""> </a>
-					<a class="ssk ssk-google-plus" href=""> </a>
-					<a class="ssk ssk-email" href=""></a>
 
-				</div>			
-			<!--{% qr_from_mail "m.lopezdelacalle@elhuyar.com" "s" %}-->
-			</div>	
-			
+			<!-- social network sharing buttons -->
+			{% include "_sharing.html"%}			
+
 		</div>
 	</div>
 </div>
@@ -392,7 +319,7 @@
 
 <!-- END GEOLOKALIZAZIOA -->
 
-<!-- MLT -->	
+<!-- MLT -->
 {% include "_similar_items.html" %}
 <!-- END MLT-->
 
@@ -457,7 +384,5 @@
 
 	</div>
 </div>
-
-
 
 {% endblock %}

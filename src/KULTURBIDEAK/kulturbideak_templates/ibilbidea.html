@@ -5,352 +5,237 @@
 {% load tags%}
 {% block content %}
 
-
 <div class="container">
-<div class="row">
-	<div class="col-md-1">
-	</div>
-	<div class="col-md-3">
-		{% if momentukoPatha.paths_thumbnail %}
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-3">
+			{% if momentukoPatha.paths_thumbnail %}
 			<img class="img-responsive ibilbide-irudia" alt="" src="{{momentukoPatha.paths_thumbnail}}">
-		{% else %}
+			{% else %}
 			<img class="img-responsive" src="/uploads/NoIrudiBide.png">
-		{% endif %}
-		<div class="path-info overflow">
-		<ul class="nav navbar-nav navbar-default">
-		{% if momentukoPatha.proposatutakoa %}
-		<li>
-				<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-				Proposatutakoa
-					
-		</li>
-		{%endif%}
-		{% if momentukoPatha.egunekoa %}
-		<li>
-				<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-				Egunekoa
-					
-		</li>
-		{%endif%}
-		</ul>
+			{% endif %}
+			<div class="path-info overflow">
+				<ul class="nav navbar-nav navbar-default">
+					{% if momentukoPatha.proposatutakoa %}
+					<li>
+						<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+						Proposatutakoa
+
+					</li>
+					{%endif%}
+					{% if momentukoPatha.egunekoa %}
+					<li>
+						<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+						Egunekoa
+
+					</li>
+					{%endif%}
+				</ul>
+			</div>
+			<br />
+			<div>
+				<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> AUTOPLAY </a>
+				<a class="btn btn-common" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}"> <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> IKUSI </a>
+			</div>
+
 		</div>
-		<br />
-		<div>
-			<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
-			<span class="glyphicon glyphicon-play" aria-hidden="true"></span> 
-    		AUTOPLAY
-			</a>
-			<a class="btn btn-common" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
-       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> IKUSI
-       			</a>
-		</div>
-		
-	</div>
-	<div class="col-md-6">
-		<div class="path-name overflow titulu-kolorea">
-			<h2 class="bold">{{momentukoPatha.dc_title}} </h2>
+		<div class="col-md-6">
+			<div class="path-name overflow titulu-kolorea">
+				<h2 class="bold">{{momentukoPatha.dc_title}} </h2>
+				<ul class="nav navbar-nav navbar-default">
+					<li>
+						<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+
+						{{momentukoPatha.creation_date}}
+					</li>
+					<li>
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+
+						{{momentukoPatha.fk_user_id.username}}
+					</li>
+					<li>
+						<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+						{{momentukoPatha.language}}
+					</li>
+					{% if momentukoPatha.dc_subject %}
+					<li>
+						<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+						{{momentukoPatha.dc_subject}}
+					</li>
+					{%endif%}
+				</ul>
+			</div>
+			<div class="path-info overflow ">
+				<!--<h3 class="titulu-kolorea">Ibilbidearen deskribapena</h3>-->
+
+				<p class="path-info-description">
+					{{momentukoPatha.dc_description}}
+				</p>
+			</div>
+			<!--
+			<div class="path-info overflow">
+			<h3 class="titulu-kolorea">Bestelako informazioa</h3>
 			<ul class="nav navbar-nav navbar-default">
+			{% if momentukoPatha.proposatutakoa %}
 			<li>
-				<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-				
-					{{momentukoPatha.creation_date}}
+			<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+			Proposatutakoa
+
 			</li>
+			{%endif%}
+			{% if momentukoPatha.egunekoa %}
 			<li>
-				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-				
-					{{momentukoPatha.fk_user_id.username}}
+			<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+			Egunekoa
+
 			</li>
+			{%endif%}
 			<li>
-				<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
-					{{momentukoPatha.language}}	
+			<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+			{{momentukoPatha.language}}
 			</li>
 			{% if momentukoPatha.dc_subject %}
 			<li>
 			<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-			{{momentukoPatha.dc_subject}}		
+			{{momentukoPatha.dc_subject}}
 			</li>
 			{%endif%}
 			</ul>
-		</div>
-		<div class="path-info overflow ">
-			<!--<h3 class="titulu-kolorea">Ibilbidearen deskribapena</h3>-->
-			
-			<p class="path-info-description">{{momentukoPatha.dc_description}}	</p>		
-		</div>
-		<!--
-		<div class="path-info overflow">
-			<h3 class="titulu-kolorea">Bestelako informazioa</h3>
-		<ul class="nav navbar-nav navbar-default">
-		{% if momentukoPatha.proposatutakoa %}
-		<li>
-				<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-				Proposatutakoa
-					
-		</li>
-		{%endif%}
-		{% if momentukoPatha.egunekoa %}
-		<li>
-				<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-				Egunekoa
-					
-		</li>
-		{%endif%}
-		<li>
-		<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
-		{{momentukoPatha.language}}	
-		</li>
-		{% if momentukoPatha.dc_subject %}
-		<li>
-		<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-		{{momentukoPatha.dc_subject}}		
-		</li>
-		{%endif%}
-		</ul>
-		</div>
-		-->
-		{% if user.is_authenticated %}
-		<div class="path-info overflow">
-			<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
+			</div>
+			-->
+			{% if user.is_authenticated %}
+			<div class="path-info overflow">
+				<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
 				<!--ikusi
 				<a class="btn btn-primary" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
-       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-       			</a>
+				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+				</a>
 				-->
-			{% if request.user|has_group:'hornitzailea' %}
+				{% if request.user|has_group:'hornitzailea' %}
 				<!--egunekoa bihurtu-->
-				{% if momentukoPatha.egunekoa == 0 %}	
-				    <a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbide bihurtu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{momentukoPatha.id}}&nondik=ikusi" >
-				  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				     </a>
+				{% if momentukoPatha.egunekoa == 0 %}
+				<a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbide bihurtu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{momentukoPatha.id}}&nondik=ikusi" > <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </a>
 				{%endif%}
-				{% if momentukoPatha.egunekoa == 1 %}	
-				    <a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbidea ezabatu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{momentukoPatha.id}}&nondik=ikusi" >
-				      <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-				      </a>
-					
-				{%endif%}
-			
-			{%endif%}
-			{% if user.id == momentukoPatha.fk_user_id.id %}
+				{% if momentukoPatha.egunekoa == 1 %}
+				<a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbidea ezabatu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{momentukoPatha.id}}&nondik=ikusi" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> </a>
 
-					<!--editatu-->
-					<a class="btn btn-default" type="button" title="Editatu ibilbidea" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}" >				
- 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					</a>
-					<!-- ezabatu"-->
-					<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{momentukoPatha.id}})"  >				
- 					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-					</a>
+				{%endif%}
+
+				{%endif%}
+				{% if user.id == momentukoPatha.fk_user_id.id %}
+
+				<!--editatu-->
+				<a class="btn btn-default" type="button" title="Editatu ibilbidea" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}" > <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+				<!-- ezabatu"-->
+				<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{momentukoPatha.id}})"  > <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
+				{%endif%}
+
+			</div>
 			{%endif%}
-			
-		</div>
-		{%endif%}
-		<!--
-		</br>
-		<div>
+			<!--
+			</br>
+			<div>
 			<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
-			<span class="glyphicon glyphicon-play" aria-hidden="true"></span> 
-    		AUTOPLAY
+			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+			AUTOPLAY
 			</a>
+			</div>
+			-->
 		</div>
-	-->
-	</div>
-	<div class="col-md-2">
-		<!-- BOTAZIO SISTEMA IBILBIDEA--> 
+		<div class="col-md-2">
+			<!-- BOTAZIO SISTEMA IBILBIDEA-->
 
-  {% if user.is_authenticated %}
-  
-  	<div class="eskuma"><a class="titulu-kolorea eskuma" href="#" type="button">Ibilbidea gustoko duzu?</a></div>
-	<br />
-	<div class="btn-group eskuma" role="group" aria-label="...">
-	
-  	{% if botatuDuPath == 1 %}
-		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" disabled>
-			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
- 	
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="#" >
-			<b class="eskuma titulu-kolorea">{{botoKopuruaPath}}</b>
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" >
-			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
- 	
-		</a>
-	
-  	{%else%}
- 		 <a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" >
-			<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
- 	
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="#">
-			<b class="eskuma titulu-kolorea">{{botoKopuruaPath}}</b>
-		</a>
-		<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" disabled >
-			<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
- 	
-		</a>
-	{%endif%}
-	</div>
+			{% if user.is_authenticated %}
 
+			<div class="eskuma">
+				<a class="titulu-kolorea eskuma" href="#" type="button">Ibilbidea gustoko duzu?</a>
+			</div>
+			<br />
+			<div class="btn-group eskuma" role="group" aria-label="...">
 
-  {%endif%}
+				{% if botatuDuPath == 1 %}
+				<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" disabled> <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> </a>
+				<a class="btn btn-default eskuma" type="button" href="#" > <b class="eskuma titulu-kolorea">{{botoKopuruaPath}}</b> </a>
+				<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" > <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> </a>
+
+				{%else%}
+				<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" > <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> </a>
+				<a class="btn btn-default eskuma" type="button" href="#"> <b class="eskuma titulu-kolorea">{{botoKopuruaPath}}</b> </a>
+				<a class="btn btn-default eskuma" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" disabled > <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> </a>
+				{%endif%}
+			</div>
+
+			{%endif%}
+
+			<!-- social network sharing buttons -->
+			{% include "_sharing.html"%}
+
+		</div>
 	</div>
 </div>
-</div>
-
 
 <br />
 
 <div class="container">
-<div class="row">
-	<div class="col-md-1">
+	<div class="row">
+		<div class="col-md-1"></div>
+
+		<div class="col-md-10">
+			<div class="panel panel-default ibilbide-panela">
+
+				<!--<div class="panel-heading"><b class="titulu-kolorea">HEMEN ZAUDE </b></div>-->
+				<div class="panel-body">
+					<div id="path_boxes_overview"></div>
+					<script>
+						var ibilbide_data = [];
+						var path_id = {{path_id}};
+						var root = {
+							"id" : 0,
+							"name" : "ROOT",
+							"irudia" : "http://obprototipoa.elhuyar.eus/uploads/festivalCineDonostia.jpeg",
+							"parent" : ''
+						}
+						ibilbide_data.push(root);
+					</script>
+					{% for node in path_nodeak%}
+					<script type="text/javascript">
+						var id = "{{node.fk_item_id_id}}";
+						//path_node[0];
+						var titulua = "{{node.dc_title}}";
+						//path_node[1];
+						var irudia = "{{node.paths_thumbnail}}";
+						//path_node[2];
+						if (!irudia || irudia === "") {
+							irudia = "/uploads/NoIrudiItem.png";
+						}
+
+						var aita_id = "{{node.paths_prev}}";
+						//aita hutsa bada , root izango da bere aita
+						if (aita_id == "") {
+							aita_id = 0;
+						}
+						var obj = {
+							id : id,
+							name : titulua,
+							irudia : irudia,
+							parent : aita_id
+						};
+						ibilbide_data.push(obj);
+
+					</script>
+					{% endfor%}
+					<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3ondarebideakoverview.js"></script>
+				</div>
+			</div
+
+			<div class="col-md-1"></div>
+
+		</div>
 	</div>
 
-<div class="col-md-10">
-	<div class="panel panel-default ibilbide-panela">
-  
- 	<!--<div class="panel-heading"><b class="titulu-kolorea">HEMEN ZAUDE </b></div>-->
- 	 <div class="panel-body">
-  	<div id="path_boxes_overview"></div>
-    <script>
-    var ibilbide_data = [];
-    var path_id = {{path_id}};
-    var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus/uploads/festivalCineDonostia.jpeg", "parent":'' }
-        ibilbide_data.push(root);
-    </script>
-    {% for node in path_nodeak%}
-    <script type="text/javascript">
-      var id="{{node.fk_item_id_id}}";//path_node[0];
-      var titulua="{{node.dc_title}}";//path_node[1];
-      var irudia="{{node.paths_thumbnail}}";//path_node[2];
-      if (!irudia || irudia === "")
-        {
-          irudia="/uploads/NoIrudiItem.png";
-        }
+	<!-- COMMENTS-->
+{% include "_comments.html" %}
+	<!-- END COMMENTS-->
 
-      var aita_id="{{node.paths_prev}}";
-      //aita hutsa bada , root izango da bere aita
-      if (aita_id== ""){
-        aita_id = 0;
-      } 
-      var obj={id: id, name: titulua , irudia: irudia, parent:aita_id};
-      ibilbide_data.push(obj);
-
-    </script>
-    {% endfor%}
-    <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3ondarebideakoverview.js"></script>
-	</div>
-</div
-
-
-<div class="col-md-1"></div>
-
-</div>
-</div>
-
-
-
-<!-- COMMENTS-->
-<div class="container">
-<div class="row">
-	<div class="col-md-1">
-	</div>
-	
-
-    <div class="col-md-10">	
- {% if user.is_authenticated %}
- 
- <!-- Comments Form -->
- <div class="well info_box">
- 	<h4>Leave a Comment:</h4>
-    <form class="form-horizontal" role="form" method="POST" action="nabigazio_item">{% csrf_token %}
-    	<input type="hidden" name="item_id" value="{{node_id}}">
-    	<input type="hidden" name="path_id" value="{{path_id}}">
-    	<fieldset>
-        <div class="form-group">
-        <!--<textarea class="form-control" rows="3"></textarea>-->
-        	{{ comment_form.comment }}
-            {{ comment_form.comment.errors }}
-         </div>
-         {% if user.is_authenticated %}
-         	<button name="submit_comment" type="submit" class="btn btn-primary">{% trans "Send comment" %}</button>
-         {% else %}
-         <button name="submit_comment" class="btn btn-primary" onclick='window.location.href="/?next="; return fal
-se'>{% trans "Send comment" %}</button>
-         {% endif %}
-         </fieldset>
-     </form>
-	</div>
-{%endif%}
-<hr>
-
- <!-- Posted Comments -->
- 	<!-- Comment -->
-{% for comment in comments %}
-	<div class="media">
-    	<form class="form-horizontal" role="form" method="POST" action="nabigazio_item">{% csrf_token %}
-    		<input type="hidden" name="item_id" value="{{node_id}}">
-    		<input type="hidden" name="path_id" value="{{path_id}}">
-        	<fieldset>
-            	<a class="pull-left" href="#" >
-                	<!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ comment.author.genre.genre }}.png" alt="">-->
-                	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                </a>
-                <div class="media-body">                        
-                	<h4 class="media-heading">
-                    	<small>{{ comment.author.first_name }} {{ comment.author.last_name }}</small> - <small>{{ comment.date|date:"SHORT_DATE_FORMAT" }}</small>
-                    </h4>
-					{{ comment.comment|safe }}
-					{% if user.is_authenticated %} <!--Maddalen-->
-                    <p><a href="#" onclick="$('#comment_response_div_{{ comment.id }}').show(1000);return false;">{% trans "Respond" %}</a></p>
-                    {%endif%}
-                    <div id="comment_response_div_{{ comment.id }}" style="display:none">
-	                	<div class="form-group">
-                        	<!--<textarea class="form-control" rows="3"></textarea>-->
-                            {{ comment_parent_form.parent_id }}
-                            {{ comment_parent_form.comment }}
-                            {{ comment_parent_form.comment.errors }}
-                         </div>
-                         {% if user.is_authenticated %}
-                         	<button onclick="$('#comment_response_div_{{ comment.id }} input').val({{ comment.id }})" name="submit_comment_parent" type="submit" class="btn btn-primary">Submit</button>
-                            <button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">Close</button>
-                         {% else %}
-                         	<button name="submit_comment_parent" class="btn btn-primary" onclick='window.location.href="/?next="; return false'>Submit</button>
-                            <button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">Close</button>
-                         {% endif %}
-                                    
-                     </div>
-                     {% for subcomment in comment.get_subcomments %}
-                     	<div class="media">
-                        	<a class="pull-left" href="#">
-                            	<!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ subcomment.author.genre.genre }}.png" alt="">-->
-                           		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                            </a>
-                            <div class="media-body">
-								<h4 class="media-heading">
-                                	<small>{{ subcomment.author.first_name }} {{ subcomment.author.last_name }}</small> - <small>{{ subcomment.date|date:"SHORT_DATE_FORMAT" }}</small>
-                                
-                                </h4>
-                                {{ subcomment.comment|safe }}
-                            </div>
-                         </div>
-                     {% endfor %}
-                </div> <!-- ni -->
-              </fieldset>
-          </form>
-      </div>                                           
-{% endfor %}
- </div>
-	<div class="col-md-1">
-	</div>
-	
-</div>
-</div>  
-<!-- END COMMENTS-->
-
-
-
-   
-
-{% endblock %} 
+	{% endblock %}
 

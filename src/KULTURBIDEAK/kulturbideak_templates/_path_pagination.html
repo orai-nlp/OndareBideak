@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if paths.has_previous %}
+            <a href="?page={{ paths.previous_page_number }}">{% trans "aurrekoak" %}</a>
+        {% endif %}
+
+        <span class="current">
+            {% blocktrans with num=paths.number pnum=paths.paginator.num_pages %}{{ num }}.orrialdea {{ pnum }}tik.{% endblocktrans %}
+	    </span>
+
+        {% if paths.has_next %}
+            <a href="?page={{ paths.next_page_number }}">{% trans "hurrengoak" %}</a>
+        {% endif %}
+    </span>
+
+   <!-- <span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
+</div>

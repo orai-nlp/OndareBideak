@@ -400,11 +400,11 @@
 	.ezkerra{
 	float:left;
 	}
-	#nabigMenu_botoiak {
+	/*#nabigMenu_botoiak {
 		border: 1px solid lightgrey;
 		border-radius:10px;
-	}
-	.clear:after {
+	}*/
+	.clearfix::after {
 		clear: both;
 	    content: "";
     	display: table;
@@ -417,6 +417,7 @@
 	#nabigMenu_botoiak ul li{
 		border: 1px solid lightgrey;
 		border-radius:10px;
+		margin: 2px 0px;
 	}
 	#nabigMenu_botoiak .eskuma button{	
 		margin:2px 0px 2px 0px;				
@@ -756,4 +757,10 @@ h2.uppercase {
 .share_titulu{
 	width:100%;
 	margin: 10px 0px;	
+}
+
+.share_buttons{
+	width:100%;
+	margin: -10px 0px 10px 0px;
+	text-align: right;
 }

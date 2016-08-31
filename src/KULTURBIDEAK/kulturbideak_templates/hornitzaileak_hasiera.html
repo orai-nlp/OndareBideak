@@ -9,6 +9,10 @@
 
 <!--<div class="panel panel-default">-->
   <div class="panel-body">
+ 
+ <!-- top pagination -->
+{% include "_provider_pagination.html" %}
+
   
    {% for hornitzaile in hornitzaileak %}
 	
@@ -36,7 +40,7 @@
                 
                 <h4 class="mota"><span class=" glyphicon glyphicon-menu-right" aria-hidden="true"></span>{{hornitzaile.erakundeMota}}</h4>
                 <p class="letratipoa">{{ hornitzaile.deskribapena|slice:"0:100" }}...</p>
-                <a class="btn btn-common" href="/hornitzaile_search?h={{hornitzaile.fk_user.username}}&h_id={{hornitzaile.fk_user.id}}&z=h">Ikusi Hornitzailea <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a class="btn btn-common" href="/hornitzaile_search?h={{hornitzaile.fk_user.username}}&h_id={{hornitzaile.fk_user.id}}&z=h">{% trans "Ikusi Hornitzailea" %} <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
         </div>
         <!-- /.row -->
@@ -48,37 +52,8 @@
 </div>
        
 
-        <hr>
-
-        <!-- Pagination -->
-        <div class="row text-center">
-            <div class="col-lg-12">
-                <ul class="pagination">
-                    <li>
-                        <a href="#">&laquo;</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">1</a>
-                    </li>
-                    <li>
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">3</a>
-                    </li>
-                    <li>
-                        <a href="#">4</a>
-                    </li>
-                    <li>
-                        <a href="#">5</a>
-                    </li>
-                    <li>
-                        <a href="#">&raquo;</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- /.row -->
+<!-- bottom pagination -->
+{% include "_provider_pagination.html" %}
 
 <!--</div>-->
  {% endblock %} 

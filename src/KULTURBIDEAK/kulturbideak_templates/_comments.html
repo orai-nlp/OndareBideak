@@ -10,12 +10,20 @@
 
 		<div class="col-md-10">
 			{% if user.is_authenticated %}
+
 			<!-- Comments Form -->
 			<div class="well info_box">
 				<h4>{% trans "Idatzi iruzkin bat" %}:</h4>
+				{% if 'nabigazioa_hasi' in request.path %}
+				<form class="form-horizontal" role="form" method="POST" action="nabigazio_item">
+					{% csrf_token %}
+					<input type="hidden" name="item_id" value="{{node_id}}">
+					<input type="hidden" name="path_id" value="{{path_id}}">
+				{% else %}
 				<form class="form-horizontal" role="form" method="POST" action="#">
 					{% csrf_token %}
 					<input type="hidden" name="id" value="{{id}}">
+				{% endif %}
 					<fieldset>
 						<div class="form-group">
 							<!--<textarea class="form-control" rows="3"></textarea>-->
@@ -27,8 +35,7 @@
 							{% trans "Bidali iruzkina" %}
 						</button>
 						{% else %}
-						<button name="submit_comment" class="btn btn-primary" onclick='window.location.href="/?next="; return fal
-						se'>
+						<button name="submit_comment" class="btn btn-primary" onclick='window.location.href="/?next="; return false'>
 							{% trans "Bidali iruzkina" %}
 						</button>
 						{% endif %}
@@ -42,9 +49,16 @@
 			<!-- Comment -->
 			{% for comment in comments %}
 			<div class="media">
+				{% if 'nabigazioa_hasi' in request.path %}
+				<form class="form-horizontal" role="form" method="POST" action="nabigazio_item">
+					{% csrf_token %}
+					<input type="hidden" name="item_id" value="{{node_id}}">
+					<input type="hidden" name="path_id" value="{{path_id}}">
+				{% else %}
 				<form class="form-horizontal" role="form" method="POST" action="#">
 					{% csrf_token %}
 					<input type="hidden" name="id" value="{{id}}">
+				{% endif %}
 					<fieldset>
 						<a class="pull-left" href="#" > <!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ comment.author.genre.genre }}.png" alt="">--> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> </a>
 						<div class="media-body">
@@ -99,3 +113,6 @@
 
 	</div>
 </div>
+<!-- END COMMENTS-->
+
+

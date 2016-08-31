@@ -1,0 +1,25 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+<!-- Social Share Kit CSS -->
+<link rel="stylesheet" href="{{STATIC_URL}}css/social-share-kit.css" type="text/css">
+<!-- Social Share Kit JS -->
+<script type="text/javascript" src="{{STATIC_URL}}js/social-share-kit.js"></script>
+<script type="text/javascript">SocialShareKit.init();</script>
+
+<div class="share_titulu eskuma">
+	<a class="titulu-kolorea eskuma" type="button" href="#">{% trans "Konpartitu" %}!</a>
+</div>
+
+<div class="share_buttons eskuma">
+	<div class="ssk-right ssk-xs ssk-round ssk-count clearfix">
+		<a class="ssk ssk-facebook" href=""> </a>
+		<a class="ssk ssk-twitter" href="https://twitter.com/intent/tweet"> </a>
+		<a class="ssk ssk-google-plus" href=""> </a>
+		<a class="ssk ssk-email" href=""></a>
+
+		<!--{% qr_from_mail "m.lopezdelacalle@elhuyar.com" "s" %}-->
+	</div>
+</div>

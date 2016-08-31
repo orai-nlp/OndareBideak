@@ -58,11 +58,8 @@
 	<div class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-9">
-			<div class="pagination">
-				<span class="step-links"> {% if paths.has_previous %} <a href="?page={{ paths.previous_page_number }}">aurrekoak</a> {% endif %} <span class="current"> {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik. </span> {% if paths.has_next %} <a href="?page={{ paths.next_page_number }}">hurrengoak</a> {% endif %} </span>
-
-				<!--<span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
-			</div>
+			<!-- top pagination -->
+			{% include "_path_pagination.html" %}
 
 			{% for path in paths %}
 			<div class="row ezkmarg0">
@@ -70,20 +67,19 @@
 
 				<div class="thumbnail col-xs-2 col-md-2 clear">
 					<!--<div class="stretchy-wrapper">
-						<div class="thumbnail_container">
-						-->
-							{% if path.fk_user_id.id|hornitzailea_da %}
-							<div class="side-corner-tag">
-								<p>
-									<span>{% trans "Aditua" %}</span>
-								</p>
-							<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" > {% if path.paths_thumbnail %}<img class="ob_thumbnail" src="{{path.paths_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">{% endif %}
-							</a>			
-							</div>
-							{%else%}
-							<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" > {% if path.paths_thumbnail %}<img class="ob_thumbnail" src="{{path.paths_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">{% endif %}</a>
-							{%endif%}
-							
+					<div class="thumbnail_container">
+					-->
+					{% if path.fk_user_id.id|hornitzailea_da %}
+					<div class="side-corner-tag">
+						<p>
+							<span>{% trans "Aditua" %}</span>
+						</p>
+						<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" > {% if path.paths_thumbnail %}<img class="ob_thumbnail" src="{{path.paths_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">{% endif %} </a>
+					</div>
+					{%else%}
+					<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" > {% if path.paths_thumbnail %}<img class="ob_thumbnail" src="{{path.paths_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">{% endif %}</a>
+					{%endif%}
+
 					<!--	</div>
 					</div>-->
 
@@ -138,23 +134,8 @@
 			</p>
 			{% endfor %}
 
-<div class="pagination">
-    <span class="step-links">
-        {% if paths.has_previous %}
-            <a href="?page={{ paths.previous_page_number }}">{% trans "aurrekoak" %}</a>
-        {% endif %}
-
-        <span class="current">
-            {{ paths.number }}{% trans ".orrialdea" %} {{ paths.paginator.num_pages }}{% trans "tik." %}
-	    </span>
-
-        {% if paths.has_next %}
-            <a href="?page={{ paths.next_page_number }}">{% trans "hurrengoak" %}</a>
-        {% endif %}
-    </span>
-
-   <!-- <span class="emaitzaInfo"> -- {{paths.paginator.count }} Ibilbide dataren arabera ordenatuta</span>-->
-</div>
+			<!-- bottom pagination -->
+			{% include "_path_pagination.html" %}
 
 		</div><!--column 9-->
 		<div class="col-md-2"></div>

@@ -3,217 +3,104 @@
 {% load tags %}
 {% block content %}
 
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h2 class="titulu-kolorea antzekoTitulua">{% trans "ZURE ITEMAK" %} ({{itemak.paginator.count }})</h2>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-1">
 
-<!--
-<div class="panel panel-info">
-<div class="panel-heading"><b>{% trans "Nire itemak" %}</b></div>
-  <div class="panel-body">
-{% for item in itemak %}
-	<div class="column">	
-		<div class="col-xs-6 col-md-3">
-			
-	
-		<div class="thumbnail">
-			
-			<a class="{% if not item.edm_object %} bilaketaEmaitza {% endif %} thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >
-				{% if item.edm_object %}<img  alt="{{item.dc_title}}" src="{{item.edm_object}}">{% endif %}
-			</a>
-			
-			<div class="caption">
-				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.id}}"/>
-				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
-				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
-				 
-				<h5><a class="" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{item.dc_title}}</a></h5>
-					
-				<p class="" id="hizkuntza"><b> {% trans "Hizkuntza:" %}</b>{{item.dc_language}}</p>
-				
-				
-								
-				<div class="btn-group" role="group" aria-label="...">
-       			<button class="btn btn-primary" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
-       				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-       			</button>
-       			<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >				
- 				<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-				</a>
-  				
-				
+		</div>
+		<div class="col-md-9">
+
+			<!-- top pagination -->
+			{% include "_item_pagination.html" %}
+
+			<!--
+			<div class="panel panel-default">
+			<div class="panel-body">
+			-->
+
+			{% for item in itemak %}
+
+			<div class="row">
+				<!--<div class="col-xs-6 col-md-3">-->
+
+				{% if  item.id%}
+				<div class="thumbnail col-xs-2 col-md-2">
+
+					<!--			{% if request.user|has_group:'hornitzailea' %}
+					<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					</a>
+					{%endif%}-->
+
+					<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" > <img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}"> </a>
 				</div>
-				
-    		</div>
-		</div>
-	</div>
-	</div>
+				<div class="col-xs-1 col-md-1"></div>
 
-{% empty %}
-	<p>{% trans "Ez da zure itemik aurkitu." %}</p>
-{% endfor %}
+				<div class="caption col-xs-9 col-md-9">
+					<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.id}}"/>
+					<input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
+					<input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 
-	</div>
-</div>
--->
-<div class="container">
-<div class="row">
-	<div class="col-md-12">
-	<h2 class="titulu-kolorea antzekoTitulua">ZURE ITEMAK ({{itemak.paginator.count }})</h2>
-	</div>
-</div>
-</div>
-<div class="container">
-<div class="row">
-	<div class="col-md-1">
-	
-	</div>
-<div class="col-md-9">
-<div class="pagination">
-    <span class="step-links">
-        {% if itemak.has_previous %}
-            <a href="?page={{ itemak.previous_page_number }}">aurrekoak</a>
-        {% endif %}
-
-        <span class="current">
-            {{ itemak.number }}.orrialdea {{ itemak.paginator.num_pages }}tik.
-        </span>
-
-        {% if itemak.has_next %}
-            <a href="?page={{ itemak.next_page_number }}">hurrengoak</a>
-        {% endif %}
-    </span>
-   <!-- <span class="emaitzaInfo"> -- {{itemak.paginator.count }} Item dataren arabera ordenatuta</span>-->
-</div>
-
-
-<!--
-<div class="panel panel-default">
-  <div class="panel-body">
-  -->	
-
-	 {% for item in itemak %}
-	 	 
-	     		
-	 <div class="row">	
-		<!--<div class="col-xs-6 col-md-3">-->
-			
-		
-		{% if  item.id%}
-		<div class="thumbnail col-xs-2 col-md-2">
-			
-<!--			{% if request.user|has_group:'hornitzailea' %}
-				<a class="btn btn-warning" type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >				
- 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				</a>
-			{%endif%}-->
-			
-			<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >
-				<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
-			</a>
-		</div>
-		<div class="col-xs-1 col-md-1"></div>
-			
-			<div class="caption col-xs-9 col-md-9">
-				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.id}}"/>
-				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
-				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
-		 		 
-				<h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
-				{% if item.edm_provider %}	
-					<span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
-				{%endif%}
-				{% if item.ob_language %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{item.ob_language}}</span><br />
-				{%endif%}
-				{% if item.edm_country %}
-					<span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="eremu-str">{{item.edm_country}}</span><br />
-				{%endif%}
-				{% if item.dc_creator %}
-					<span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea" %}: <span class="eremu-str">{{item.dc_creator}}</span><br />
-				{%endif%}
-				{% if item.edm_type %}
-					<span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="eremu-str">{{item.edm_type}}</span><br />
-				{%endif%}
-				<h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
-				<!--<div class="btn-group" role="group" aria-label="...">-->
-				<a class="btn  btn-primary ikusi-botoia" type="button" title="Ikusi kultur itema" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}">
-       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-       			</a>
-       			
-				{% if user.is_authenticated %}
-					
-       				<button class="btn gehitu-botoia" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
-       					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-       				</button>
-       				{% if user.id == item.fk_ob_user.id %}
-
-						<a class="btn btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >				
- 						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-						</a>
-						<!-- ezabatu -->
-						<a class="btn btn-danger" type="button" title="Itema ezabatu" onClick="deleteItem({{item.id}})" >				
- 						<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-						</a>
-						
+					<h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
+					{% if item.edm_provider %}
+					<span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="eremu-str"> {{item.edm_provider}} </span>
+					<br />
 					{%endif%}
+					{% if item.ob_language %}
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{item.ob_language}}</span>
+					<br />
+					{%endif%}
+					{% if item.edm_country %}
+					<span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="eremu-str">{{item.edm_country}}</span>
+					<br />
+					{%endif%}
+					{% if item.dc_creator %}
+					<span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea" %}: <span class="eremu-str">{{item.dc_creator}}</span>
+						<br />
+						{%endif%}
+						{% if item.edm_type %} <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="eremu-str">{{item.edm_type}}</span>
+							<br />
+							{%endif%} <h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3> <!--<div class="btn-group" role="group" aria-label="...">--> <a class="btn  btn-primary ikusi-botoia" type="button" title="Ikusi kultur itema" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}"> <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> </a> {% if user.is_authenticated %}
+							<button class="btn gehitu-botoia" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							</button> {% if user.id == item.fk_ob_user.id %} <a class="btn btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" > <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a> <!-- ezabatu --> <a class="btn btn-danger" type="button" title="Itema ezabatu" onClick="deleteItem({{item.id}})" > <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a> {%endif%}
 
-				{% if request.user|has_group:'hornitzailea' %}
-					{% if item.egunekoa == 0  %}
-						<a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" >
-						  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-						</a>
-					{%else%}
-						<a class="btn btn-warning egunekoa-botoia" title="Ezabatu eguneko itema" type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=hasiera" >
-                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                        </a>
-					{%endif%}	
-				{%endif%}
+							{% if request.user|has_group:'hornitzailea' %}
+							{% if item.egunekoa == 0  %} <a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=hasiera" > <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </a> {%else%} <a class="btn btn-warning egunekoa-botoia" title="Ezabatu eguneko itema" type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=hasiera" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> </a> {%endif%}
+							{%endif%} <!--</div>--> {%endif%}
+							<hr />
+				</div>
 
+				<!--</div> <!-- thumbnail -->
+				{% endif %}
+				<!--</div>-->
 
+			</div>
 
-			<!--</div>-->
-				{%endif%}
-				<hr />
-    		</div>
+			{% empty %}
+			<p>
+				{% trans "Ez da zure itemik aurkitu." %}
+			</p>
 
-		<!--</div> <!-- thumbnail -->
-		{% endif %}
-		<!--</div>-->
-		
-  </div>
-  
-  
-  {% empty %}
-	<p>{% trans "Ez da zure itemik aurkitu." %}</p>
-	
-	
-{% endfor %}
+			{% endfor %}
 
-<div class="pagination">
-    <span class="step-links">
-      {% if itemak.has_previous %}
-            <a href="?page={{ itemak.previous_page_number }}">{% trans "aurrekoak" %}</a>
-        {% endif %}
+			<!-- bottom pagination -->
+			{% include "_item_pagination.html" %}
 
-        <span class="current">
-            {{ itemak.number }}{% trans ".orrialdea" %} {{ itemak.paginator.num_pages }}{% trans "tik" %}.
-        </span>
-
-        {% if itemak.has_next %}
-            <a href="?page={{ itemak.next_page_number }}">{% trans "hurrengoak" %}</a>
-        {% endif %}
-    </span>
-  <!--  <span class="emaitzaInfo"> -- {{itemak.paginator.count }} Item dataren arabera ordenatuta</span> -->
-</div>
-
-  
-<!--
-</div>
-</div>
--->
-</div><!--column 9-->
-<div class="col-md-2">
-</div>
-</div><!-- row-->
+			<!--
+			</div>
+			</div>
+			-->
+		</div><!--column 9-->
+		<div class="col-md-2"></div>
+	</div><!-- row-->
 </div><!--container-->
 
-
-{% endblock %} 
+{% endblock %}
