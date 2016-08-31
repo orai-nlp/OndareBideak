@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-31 15:14+0200\n"
+"POT-Creation-Date: 2016-08-31 17:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -303,30 +303,34 @@ msgstr "user"
 msgid "pasahitza"
 msgstr "password"
 
-#: kulturbideak_app/forms.py:67
+#: kulturbideak_app/forms.py:59
+msgid "Erabiltazilea ez dago erregistratua"
+msgstr "There is no user registered with that username"
+
+#: kulturbideak_app/forms.py:68
 msgid "Pasahitza ez da zuzena"
 msgstr "The specified password is not correct"
 
-#: kulturbideak_app/forms.py:88
-#: kulturbideak_app/forms.py:159
+#: kulturbideak_app/forms.py:89
+#: kulturbideak_app/forms.py:162
 msgid "Izena"
 msgstr "Name"
 
-#: kulturbideak_app/forms.py:89
-#: kulturbideak_app/forms.py:160
+#: kulturbideak_app/forms.py:90
+#: kulturbideak_app/forms.py:163
 msgid "Abizenak"
 msgstr "Surname"
 
-#: kulturbideak_app/forms.py:90
-#: kulturbideak_app/forms.py:161
+#: kulturbideak_app/forms.py:91
+#: kulturbideak_app/forms.py:164
 msgid "Erabiltzailea"
 msgstr "User"
 
-#: kulturbideak_app/forms.py:93
+#: kulturbideak_app/forms.py:94
 msgid "hornitzailea"
 msgstr "Provider"
 
-#: kulturbideak_app/forms.py:96
+#: kulturbideak_app/forms.py:98
 #: kulturbideak_templates/base.html:601
 #: kulturbideak_templates/base.html:956
 #: kulturbideak_templates/base_old.html:473
@@ -342,137 +346,191 @@ msgstr "Provider"
 msgid "Hornitzailea"
 msgstr "Provider"
 
-#: kulturbideak_app/forms.py:102
-#: kulturbideak_app/forms.py:106
+#: kulturbideak_app/forms.py:100
+msgid ""
+"* Kultur erakunde baten izenean zatoz? Markatu lauki hau bete hurrengo "
+"eremua. Plataformak aukera gehigarriak eskainiko dizkizu."
+msgstr "* Do you represent a cultural organization? Check this and fill the next "
+"field. You will have additional features "
+
+#: kulturbideak_app/forms.py:105
 msgid "Hornitzailearen izena"
 msgstr "Provider's name"
 
-#: kulturbideak_app/forms.py:111
-#: kulturbideak_app/forms.py:163
+#: kulturbideak_app/forms.py:109
+msgid "Kultur item digitalen erakunde hornitzailearen izena"
+msgstr "Name of the cultural item provider organization"
+
+#: kulturbideak_app/forms.py:114
+#: kulturbideak_app/forms.py:166
 msgid "Helbide elektronikoa"
 msgstr "Email"
 
-#: kulturbideak_app/forms.py:112
+#: kulturbideak_app/forms.py:115
 msgid "Pasahitza"
 msgstr "Password"
 
-#: kulturbideak_app/forms.py:113
-#: kulturbideak_app/forms.py:199
+#: kulturbideak_app/forms.py:116
+#: kulturbideak_app/forms.py:202
 msgid "Errepikatu pasahitza"
 msgstr "Repeat Password"
 
-#: kulturbideak_app/forms.py:132
+#: kulturbideak_app/forms.py:135
 msgid "Erabiltzaile izen hau dagoeneko erregistratua dago"
 msgstr "This username is already registered"
 
-#: kulturbideak_app/forms.py:139
-#: kulturbideak_app/forms.py:204
+#: kulturbideak_app/forms.py:142
+#: kulturbideak_app/forms.py:207
 msgid "Pasahitzak ezberdinak dira"
 msgstr "Passwords are different"
 
-#: kulturbideak_app/forms.py:198
+#: kulturbideak_app/forms.py:201
 msgid "Pasahitz berria"
 msgstr "New Password"
 
-#: kulturbideak_app/forms.py:218
-#: kulturbideak_app/forms.py:259
+#: kulturbideak_app/forms.py:221
+#: kulturbideak_app/forms.py:262
 msgid "titulua"
 msgstr "title"
 
-#: kulturbideak_app/forms.py:219
-#: kulturbideak_app/forms.py:261
+#: kulturbideak_app/forms.py:222
+#: kulturbideak_app/forms.py:264
 msgid "deskribapena"
 msgstr "description"
 
-#: kulturbideak_app/forms.py:220
-#: kulturbideak_app/forms.py:262
+#: kulturbideak_app/forms.py:223
+#: kulturbideak_app/forms.py:265
 msgid ""
 "objektu digitalaren sortzailearen izena ipini, bestela balio lehenetsi "
 "bezala 'Herritarra' agertuko da"
 msgstr "Write the name of the digital item creator. If you leave it empty the "
 "generic  value 'citizen' will appear"
 
-#: kulturbideak_app/forms.py:222
-#: kulturbideak_app/forms.py:264
+#: kulturbideak_app/forms.py:225
+#: kulturbideak_app/forms.py:267
 msgid "gaia"
 msgstr "subbject"
 
-#: kulturbideak_app/forms.py:223
-#: kulturbideak_app/forms.py:265
+#: kulturbideak_app/forms.py:226
+#: kulturbideak_app/forms.py:268
 msgid "herrialdea"
 msgstr "country"
 
-#: kulturbideak_app/forms.py:224
-#: kulturbideak_app/forms.py:266
+#: kulturbideak_app/forms.py:227
+#: kulturbideak_app/forms.py:269
 msgid "data"
 msgstr "date"
 
-#: kulturbideak_app/forms.py:225
-#: kulturbideak_app/forms.py:268
+#: kulturbideak_app/forms.py:228
+#: kulturbideak_app/forms.py:271
 msgid "Jatorrizko Url-a"
 msgstr "Original url"
 
-#: kulturbideak_app/forms.py:226
-#: kulturbideak_app/forms.py:269
+#: kulturbideak_app/forms.py:229
+#: kulturbideak_app/forms.py:272
 msgid ""
 "Objektuaren eskubideen inguruko egin beharreko azalpenak edo kontutan hartu "
 "beharreko xehetasunak. Testu librea."
 msgstr "Explanations or details to take into account with respect the item's terms "
 "of use. Free text."
 
-#: kulturbideak_app/forms.py:233
-#: kulturbideak_app/forms.py:275
+#: kulturbideak_app/forms.py:236
+#: kulturbideak_app/forms.py:278
 msgid "eu"
 msgstr ""
 
-#: kulturbideak_app/forms.py:236
-#: kulturbideak_app/forms.py:278
+#: kulturbideak_app/forms.py:239
+#: kulturbideak_app/forms.py:281
 msgid "Euskera"
 msgstr "Basque"
 
-#: kulturbideak_app/forms.py:240
-#: kulturbideak_app/forms.py:282
+#: kulturbideak_app/forms.py:243
+#: kulturbideak_app/forms.py:285
 msgid "es"
 msgstr ""
 
-#: kulturbideak_app/forms.py:243
-#: kulturbideak_app/forms.py:285
+#: kulturbideak_app/forms.py:246
+#: kulturbideak_app/forms.py:288
 msgid "Gaztelania"
 msgstr "Spanish"
 
-#: kulturbideak_app/forms.py:247
-#: kulturbideak_app/forms.py:289
+#: kulturbideak_app/forms.py:250
+#: kulturbideak_app/forms.py:292
 msgid "en"
 msgstr ""
 
-#: kulturbideak_app/forms.py:250
-#: kulturbideak_app/forms.py:292
+#: kulturbideak_app/forms.py:253
+#: kulturbideak_app/forms.py:295
 msgid "Ingelesa"
 msgstr "English"
 
-#: kulturbideak_app/forms.py:304
-#: kulturbideak_app/forms.py:308
-#: kulturbideak_app/forms.py:317
-#: kulturbideak_app/forms.py:321
+#: kulturbideak_app/forms.py:307
+#: kulturbideak_app/forms.py:311
+#: kulturbideak_app/forms.py:320
+#: kulturbideak_app/forms.py:324
 msgid "Comment"
 msgstr ""
 
-#: kulturbideak_app/forms.py:327
-#: kulturbideak_app/forms.py:331
+#: kulturbideak_app/forms.py:330
+#: kulturbideak_app/forms.py:334
 msgid "parent_id"
 msgstr ""
 
-#: kulturbideak_app/forms.py:351
+#: kulturbideak_app/forms.py:354
 msgid "Image file too large ( > "
 msgstr ""
 
-#: kulturbideak_app/forms.py:360
+#: kulturbideak_app/forms.py:363
 msgid "coodinates"
 msgstr ""
 
-#: kulturbideak_app/forms.py:364
+#: kulturbideak_app/forms.py:367
 msgid "Coordinates"
 msgstr ""
+
+#: kulturbideak_app/views.py:4508
+msgid ""
+"Kulturbideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt "
+"bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. "
+"Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena "
+"eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: "
+"ondarebideak@elhuyar.com"
+msgstr "You are registered in Ondarebideak. At the moment you are registered as a "
+"normal user. Your petition to have Provider privileges has been forwarded. "
+"You will receive an email as soon as you are granted the new role. If you "
+"have any doubt do not hesitate to contact us at ondarebideak@elhuyar.com"
+
+#: kulturbideak_app/views.py:4510
+msgid "Kulturbideak sisteman Erregistratu zara"
+msgstr "You are registered in Ondarebideak."
+
+#: kulturbideak_app/views.py:4532
+msgid "Hornitzailearen izena:"
+msgstr "Provider's name:"
+
+#: kulturbideak_app/views.py:4532
+msgid "Ondorengoa egin datu-basean:"
+msgstr "This operation was performed in the database:"
+
+#: kulturbideak_app/views.py:4532
+msgid "Bidali mezua hornitzaileari: "
+msgstr "Send message to provider:"
+
+#: kulturbideak_app/views.py:4617
+msgid "Zure erabiltzaile Perfila eguneratu duzu"
+msgstr "You have updated your user profile"
+
+#: kulturbideak_app/views.py:4657
+msgid "Zure Pasahitza aldatu da"
+msgstr "Your password has changed"
+
+#: kulturbideak_app/views.py:4690
+msgid "Kultur Itema ezabatu da"
+msgstr "The cultural item has been deleted"
+
+#: kulturbideak_app/views.py:4705
+msgid "Ibilbidea ezabatu da"
+msgstr "The path has been deleted"
 
 #: kulturbideak_templates/_comments.html:16
 msgid "Idatzi iruzkin bat"
@@ -946,4 +1004,8 @@ msgstr "Start"
 #: kulturbideak_templates/pasahitza_aldatu.html:15
 msgid "Aldatu"
 msgstr "Change"
+
+#: kulturbideak_templates/perfila_erakutsi.html:15
+msgid "Eguneratu"
+msgstr "Update"
 

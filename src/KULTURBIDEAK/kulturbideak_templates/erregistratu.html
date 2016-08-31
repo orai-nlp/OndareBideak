@@ -7,7 +7,7 @@
 	<form action="{{BASE_URL}}/erregistratu" method="post" class="form">
 		{% csrf_token %}
 		
-		{{erabiltzailea}}
+		{{ erabiltzailea.as_ul }}
 		<!--
       		<div class="input-group">
   			<span class="input-group-addon" id="sizing-addon2">Izena</span>

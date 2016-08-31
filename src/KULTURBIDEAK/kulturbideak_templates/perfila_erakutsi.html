@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
 
 <div class="login-erregistratu">
@@ -6,12 +7,12 @@
 	<form action="{{BASE_URL}}/perfila_erakutsi" method="post" class="form">
 		{% csrf_token %}
 		
-		{{erabiltzailea}}
+		{{erabiltzailea.as_ul}}
 	
      		<br/>
      		
        		<button class="btn btn-default" type="submit" name="Erabiltzailea_eguneratu">
-       		 Eguneratu
+       		 {% trans "Eguneratu" %}
        		</button>
        
        			

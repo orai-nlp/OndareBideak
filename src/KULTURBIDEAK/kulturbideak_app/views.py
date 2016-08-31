@@ -3027,8 +3027,25 @@ def ibilbideak_hasiera(request):
 
 def hornitzaileak_hasiera(request):
     print "hornitzaileak_hasiera"
-    hornitzaileak=hornitzailea.objects.all()
-    return render_to_response('hornitzaileak_hasiera.html',{'hornitzaileak':hornitzaileak},context_instance=RequestContext(request))
+    hornitzaileak = []
+    hornitzaileak = hornitzailea.objects.all()
+    
+    paginator = Paginator(hornitzaileak, 26)
+    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+ 
+    page = request.GET.get('page')
+    try:
+        hornitzaileak = paginator.page(page)                
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        hornitzaileak = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        hornitzaileak = paginator.page(paginator.num_pages)
+        
+    
+    return render_to_response('hornitzaileak_hasiera.html', {'hornitzaileak':hornitzaileak}, context_instance=RequestContext(request))
     
 def hornitzailea_ikusi(request):
    
@@ -4505,9 +4522,9 @@ def erregistratu(request):
                 
                 #IF Hornitzailea izan nahi badu
                 if cd["hornitzailea"]:
-                    return render_to_response('base.html',{'mezua':"Kulturbideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.com"},context_instance=RequestContext(request)) 
+                    return render_to_response('base.html',{'mezua':_("Kulturbideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.com")},context_instance=RequestContext(request)) 
                 else:
-                    return render_to_response('base.html',{'mezua':"Kulturbideak sisteman Erregistratu zara"},context_instance=RequestContext(request))
+                    return render_to_response('base.html',{'mezua':_("Kulturbideak sisteman Erregistratu zara")},context_instance=RequestContext(request))
    
         else:
             #return render_to_response("izena_eman.html",{"bilaketa":bilaketa_form,"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
@@ -4529,7 +4546,7 @@ def db_erregistratu_erabiltzailea(cd):
         #Hornitzaile bezala erregistratu nahi baldin badu
         if cd["hornitzailea"]:
             hornitzaile_izena=cd["honitzaile_izena"]
-            mezua="Hornitzailearen izena:"+str(hornitzaile_izena)+".\n"+"Ondorengoa egin datu-basean: update auth_user_groups set group_id=3 where user_id="+str(erabiltzailea.id)+"\n"+"Bidali mezua hornitzaileari: "+str(erabiltzailea.email)
+            mezua=_("Hornitzailearen izena:")+str(hornitzaile_izena)+".\n"+_("Ondorengoa egin datu-basean:")+" update auth_user_groups set group_id=3 where user_id="+str(erabiltzailea.id)+"\n"+_("Bidali mezua hornitzaileari: ")+str(erabiltzailea.email)
             send_mail('OndareBideak - Hornitzaile izateko eskaera', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
             
             #Hornitzailearen fitxa (hutsa) sortuko dugu datu-basean
@@ -4614,7 +4631,7 @@ def perfila_erakutsi(request):
                
                 #new_user = authenticate(username=cd["username"],password=cd["password"],email=cd["posta"])
                 #return redirect("/search")
-                return render_to_response('base.html',{'mezua':"Zure erabiltzaile Perfila eguneratu duzu"},context_instance=RequestContext(request))
+                return render_to_response('base.html',{'mezua':_("Zure erabiltzaile Perfila eguneratu duzu")},context_instance=RequestContext(request))
    
         else:
             return render_to_response("perfila_erakutsi.html",{"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
@@ -4654,7 +4671,7 @@ def pasahitza_aldatu(request):
                
                 #new_user = authenticate(username=cd["username"],password=cd["password"],email=cd["posta"])
                 #return redirect("/search")
-                return render_to_response('base.html',{'mezua':"Zure Pasahitza aldatu da"},context_instance=RequestContext(request))
+                return render_to_response('base.html',{'mezua':_("Zure Pasahitza aldatu da")},context_instance=RequestContext(request))
    
         else:
             return render_to_response("pasahitza_aldatu.html",{"erabiltzailea":pasahitza_aldatu_form},context_instance=RequestContext(request))
@@ -4687,7 +4704,7 @@ def ezabatu_itema(request):
         #itemComment
         itemComment.objects.filter(itema__id=id).delete()
         
-        return render_to_response('base.html',{'mezua':"Kultur Itema ezabatu da"},context_instance=RequestContext(request))
+        return render_to_response('base.html',{'mezua':_("Kultur Itema ezabatu da")},context_instance=RequestContext(request))
     
  
 def ezabatu_ibilbidea(request):
@@ -4702,7 +4719,7 @@ def ezabatu_ibilbidea(request):
         pathComment.objects.filter(patha__id=id).delete()
         
         
-        return render_to_response('base.html',{'mezua':"Ibilbidea ezabatu da"},context_instance=RequestContext(request))
+        return render_to_response('base.html',{'mezua':_("Ibilbidea ezabatu da")},context_instance=RequestContext(request))
     
 
 def editatu_ibilbidea(request):

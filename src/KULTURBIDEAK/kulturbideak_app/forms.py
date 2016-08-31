@@ -56,11 +56,12 @@ class LoginForm(Form):
 
     def clean_erabiltzailea(self):
         """Erabiltzailea existitzen den konprobatzen da"""
+        error_message =_("Erabiltazilea ez dago erregistratua")
         try:
             e=User.objects.get(username=self.cleaned_data["erabiltzailea"])
             return self.cleaned_data["erabiltzailea"]
         except:
-            raise forms.ValidationError("Erabiltazilea ez dago erregistratua")
+            raise forms.ValidationError(error_message)
 
     def clean_pasahitza(self):
         """Erabiltzailea eta pasahitza egokia diren konprobatzen da"""
@@ -92,10 +93,12 @@ class CreateUserForm(forms.Form):
     hornitzailea = forms.BooleanField(
         label = _("hornitzailea"),
         required = False,
-        widget=forms.CheckboxInput(attrs={"type":"check", 
+        widget=forms.CheckboxInput(attrs={"type":"check",
+                                          "class":"checkbox-inline",                                           
                                 "placeholder":_("Hornitzailea")
-                                })
-    )
+                                }),
+        help_text=_("* Kultur erakunde baten izenean zatoz? Markatu lauki hau bete hurrengo eremua. Plataformak aukera gehigarriak eskainiko dizkizu.")
+                                      )
     
     
     honitzaile_izena = forms.CharField(
@@ -103,7 +106,7 @@ class CreateUserForm(forms.Form):
         required = False,
         widget=forms.TextInput(attrs={"type":"text", 
                                 "class":"form-control",
-                                "placeholder":_("Hornitzailearen izena")
+                                "placeholder":_("Kultur item digitalen erakunde hornitzailearen izena")
                                 })
     )
 
