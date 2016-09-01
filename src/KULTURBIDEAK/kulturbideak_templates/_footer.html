@@ -5,11 +5,11 @@
 
 <style>
 	.footer-ul {
-		list-style: none;		
-		width:100%;
+		list-style: none;
+		width: 100%;
 	}
-	.footer-ul li{
-		display:inline-block;
+	.footer-ul li {
+		display: block;
 		margin: 4px 30px;
 	}
 	.bordertopFooter {
@@ -24,13 +24,19 @@
 
 </style>
 
-<div id="footer" class="row bordertopFooter">
-	<div class="col-md-1"></div>
-	<div class="col-md-10 blankContainer">
+<div id="footer" class="row bordertopFooter copyright_text wow fadeInUp animated">	
+	<div class="col-md-8 blankContainer">
 		<ul class="footer-ul">
 			<li>
-				Ondarebideak is free software licensed under GPL v3.
+				{% trans "OndareBideak plataforma eta bere teknologia GNU GPL V3 lizentziapean banatutako software librea da." %}
 			</li>
+			<li>
+				{% trans "OndareBideak-ek erakutsitako item kulturalek haien lizentzia propioak dituzte eta eskuzabaltasunez bertan jarri dituzten erakundeen menpekoak dira." %}
+			</li>
+		</ul>	
+	</div>
+	<div class="col-md-4 blankContainer">
+		<ul class="footer-ul">
 			<li>
 				<a href="http://github.com/Elhuyar/Ondarebideak"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Github</a>
 			</li>
@@ -39,6 +45,5 @@
 			</li>
 		</ul>
 	</div>
-	<div class="col-md-1"></div>
 </div>
 

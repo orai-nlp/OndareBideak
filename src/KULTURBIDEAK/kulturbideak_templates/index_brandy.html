@@ -119,9 +119,9 @@
 	                  <ul class="nav navbar-nav navbar-right">
 	                    <li><a href="#HOME"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
 	                    <!--<li><a href="#SERVICE">Services</a></li>-->
-	                    <li><a href="#ABOUT">Zer da?</a></li>
+	                    <li><a href="#ABOUT">{% trans "Zer da?" %}</a></li>
 	                    <!--<li><a href="#TESTIMONIAL">Testimonial</a></li>-->
-	                    <li><a href="#WORK">Adibideak</a></li>
+	                    <li><a href="#WORK">{% trans "Adibideak" %}</a></li>
 			    <li><a href="">|</a></li>
 	                    <!--<li><a href="#CONTACT">Harremanetarako</a></li>-->
 			    <!-- register and login buttons OR logout and user menu -->
@@ -171,7 +171,7 @@
 	                        <div class="home_text wow fadeInUp animated">
 	                          <img src="{{STATIC_URL}}img/brandy/logoa_iluna.png" style="width: 330px; padding: 0px 35px 35px;" alt="">
 				    <!--<h2>it’s ondarebideak</h2>-->
-	                            <p>Ondare digitala atzitu, erabili eta interpretatzeko modu berriak</p>
+	                            <p>{% trans "Ondare digitala atzitu, erabili eta interpretatzeko modu berri bat" %}</p>
 	                            <img src="{{STATIC_URL}}img/brandy/shape.png" alt="">                        
 	                        </div>
 				<!-- Counters -->
@@ -180,28 +180,28 @@
 				    <li class="col-md-3 col-sm-6" style="list-position">   
 				      <div style="visibility: visible; animation-delay: 1s; animation-name: fadeInUp;" class="single_service wow fadeInUp animated" data-wow-delay="1s">
 					<div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="itemak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(52, 170, 220); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">{{itemKop}}</span>
-					  <h2>Item</h2></a>					  
+					  <h2>{% trans "Item" %}</h2></a>					  
 					</div>
 				      </div>
 				    </li>
 				    <li class="col-md-3 col-sm-6">
 				      <div style="visibility: visible; animation-delay: 1s; animation-name: fadeInUp;" class="single_service wow fadeInUp animated" data-wow-delay="1s">
 					<div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="ibilbideak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(76, 217, 100); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">{{ibilbideKop}}</span>
-					<h2>Ibilbide</h2></a>
+					<h2>{% trans "Ibilbide" %}</h2></a>
 					</div>
 				      </div>				      
 				    </li>   
 				    <li class="col-md-3 col-sm-6">
                                       <div style="visibility: visible; animation-delay: 1s; animation-name: fadeInUp;" class="single_service wow fadeInUp animated" data-wow-delay="1s">
                                         <div style="display:inline;width:260px;height:260px;"><a class="linkNodeco" href="hornitzaileak_hasiera"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(255, 149, 0); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">{{hornitzaileKop}}</span>
-                                          <h2>Ondare Erakunde</h2></a>
+                                          <h2>{% trans "Ondare Erakunde" %}</h2></a>
                                         </div>
                                       </div>                                      
                                     </li>
 				    <li class="col-md-3 col-sm-6">
                                       <div style="visibility: visible; animation-delay: 1s; animation-name: fadeInUp;" class="single_service wow fadeInUp animated" data-wow-delay="1s">
                                         <div style="display:inline;width:260px;height:260px;"><span style="width: 134px; height: 86px; vertical-align: middle; background: transparent none repeat scroll 0% 0%; font: bold 52px Arial; text-align: center; color: rgb(255, 59, 48); padding: 0px;" readonly="readonly" class="knob days" data-readonly="true" data-min="0" data-max="365" data-width="260" data-height="260" data-thickness="0.07" data-fgcolor="#34aadc" data-bgcolor="#e1e2e6" data-angleoffset="180">{{erabiltzaileKop}}</span>
-                                          <h2>Erabiltzaile</h2>
+                                          <h2>{% trans "Erabiltzaile" %}</h2>
                                         </div>
                                       </div>                                      
                                     </li>
@@ -347,7 +347,7 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="about_title">
-                        <h2>Zer da OndareBideak?</h2>
+                        <h2>{% trans "Zer da OndareBideak?" %}</h2>
                         <img src="{{STATIC_URL}}img/brandy/shape.png" alt="">
                     </div>
                 </div>
@@ -466,9 +466,9 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="work_title  wow fadeInUp animated">
-                        <h1>Ibilbide Adibideak</h1>
+                        <h1>{% trans "Ibilbide Adibideak" %}</h1>
                         <img src="{{STATIC_URL}}img/brandy/shape.png" alt="">
-                        <p>Hemen OndareBideak-en barruan sortu daitezkeen erakusketa digitalen edo ibilbideen adibideak aurkituko dituzu. <br> Hasi kulturaz gozatzen!</p>
+                        <p>{% trans "Hemen OndareBideak-en barruan sortu daitezkeen erakusketa digitalen edo ibilbideen adibideak aurkituko dituzu." %} <br> {% trans "Hasi kulturaz gozatzen!" %}</p>
                     </div>
                 </div>
             </div>
@@ -484,14 +484,14 @@
 		      <span class="buttonspan" aria-hidden="true"> 
 			<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> 
 			</span> 
-			Ikusi
+			{% trans "Ikusi" %}
 		      </span> 
 		    </a>
 		    <a href="http://obprototipoa.elhuyar.eus/autoplay_hasieratik?path_id=18">
                       <span class="buttonspan" aria-hidden="true">
                         <span class="glyphicon glyphicon-play" aria-hidden="true">
                         </span>
-                        Entzun
+                        {% trans "Entzun" %}
                       </span>
                     </a>			  
                     <h2>Zinema</h2>
@@ -507,14 +507,14 @@
                       <span class="buttonspan" aria-hidden="true">
                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true">
                         </span>
-                        Ikusi
+                        {% trans "Ikusi" %}
                       </span>
                     </a>
                     <a href="http://obprototipoa.elhuyar.eus/autoplay_hasieratik?path_id=20">
                       <span class="buttonspan" aria-hidden="true">
                         <span class="glyphicon glyphicon-play" aria-hidden="true">
                         </span>
-                        Entzun
+                        {% trans "Entzun" %}
                       </span>
                     </a>
                     <h2>Musika</h2>
@@ -536,14 +536,14 @@
                       <span class="buttonspan" aria-hidden="true">
                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true">
                         </span>
-                        Ikusi
+                        {% trans "Ikusi" %}
                       </span>
                     </a>
                     <a href="http://obprototipoa.elhuyar.eus/autoplay_hasieratik?path_id=22">
                       <span class="buttonspan" aria-hidden="true">
                         <span class="glyphicon glyphicon-play" aria-hidden="true">
                         </span>
-                        Entzun
+                        {% trans "Entzun" %}
                       </span>
                     </a>
                     <h2>Kontxa</h2>
@@ -591,7 +591,7 @@
             <div class="row">                                                                                                              
                 <div class="col-md-12 text-center">                                                                                         
                     <div class="contact_title  wow fadeInUp animated">                                                                      
-                        <h1>Garatzaileak</h1>                                                                                               
+                        <h1>{% trans "Garatzaileak" %}</h1>                                                                                               
                         <img src="{{STATIC_URL}}img/brandy/shape.png" alt=""> 
 		    </div>
 		</div>
@@ -696,18 +696,10 @@
               </div>
             </div>
           </div>-->
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="copyright_text   wow fadeInUp animated">
-                        <p>OndareBideak platform and tecnhology is distruted under <i class="fa fa-creative-commons" aria-hidden="true"></i>creative commons license.</p>
-                        <p>Cultural items showed by OndareBideak have their own licenses and depend on the organizations that kindly provided them.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div>        
     </div>
+    <!--footer-->
+    {% include "_footer.html" %}
 </footer>
 
 

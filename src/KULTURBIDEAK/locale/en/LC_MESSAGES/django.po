@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-31 17:40+0200\n"
+"POT-Creation-Date: 2016-09-01 17:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -488,9 +488,34 @@ msgstr ""
 msgid "Coordinates"
 msgstr ""
 
-#: kulturbideak_app/views.py:4508
+#: kulturbideak_app/views.py:4456
+msgid "Ongi etorri OndareBideak sistemara"
+msgstr "Welcome to the Ondarebideak platform"
+
+#: kulturbideak_app/views.py:4492
+#: kulturbideak_app/views.py:4549
+msgid "Hornitzailearen izena:"
+msgstr "Provider's name:"
+
+#: kulturbideak_app/views.py:4492
+msgid "OAI Url-a"
+msgstr "OAI Url"
+
+#: kulturbideak_app/views.py:4492
+#: kulturbideak_app/views.py:4549
+msgid "Bidali mezua hornitzaileari: "
+msgstr "Send message to provider:"
+
+#: kulturbideak_app/views.py:4494
 msgid ""
-"Kulturbideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt "
+"Zure eskaera jaso dugu. Itemen bilketa prest dagoenean jasoko duzu posta "
+"elektroniko bat."
+msgstr "We have received your petition. You will receive an email as soon as the "
+"items are loaded to the platform."
+
+#: kulturbideak_app/views.py:4525
+msgid ""
+"OndareBideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt "
 "bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. "
 "Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena "
 "eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: "
@@ -500,35 +525,27 @@ msgstr "You are registered in Ondarebideak. At the moment you are registered as 
 "You will receive an email as soon as you are granted the new role. If you "
 "have any doubt do not hesitate to contact us at ondarebideak@elhuyar.com"
 
-#: kulturbideak_app/views.py:4510
-msgid "Kulturbideak sisteman Erregistratu zara"
-msgstr "You are registered in Ondarebideak."
+#: kulturbideak_app/views.py:4527
+msgid "OndareBideak sisteman Erregistratu zara"
+msgstr "You are registered in Ondarebideak"
 
-#: kulturbideak_app/views.py:4532
-msgid "Hornitzailearen izena:"
-msgstr "Provider's name:"
-
-#: kulturbideak_app/views.py:4532
+#: kulturbideak_app/views.py:4549
 msgid "Ondorengoa egin datu-basean:"
 msgstr "This operation was performed in the database:"
 
-#: kulturbideak_app/views.py:4532
-msgid "Bidali mezua hornitzaileari: "
-msgstr "Send message to provider:"
-
-#: kulturbideak_app/views.py:4617
+#: kulturbideak_app/views.py:4634
 msgid "Zure erabiltzaile Perfila eguneratu duzu"
 msgstr "You have updated your user profile"
 
-#: kulturbideak_app/views.py:4657
+#: kulturbideak_app/views.py:4674
 msgid "Zure Pasahitza aldatu da"
 msgstr "Your password has changed"
 
-#: kulturbideak_app/views.py:4690
+#: kulturbideak_app/views.py:4707
 msgid "Kultur Itema ezabatu da"
 msgstr "The cultural item has been deleted"
 
-#: kulturbideak_app/views.py:4705
+#: kulturbideak_app/views.py:4722
 msgid "Ibilbidea ezabatu da"
 msgstr "The path has been deleted"
 
@@ -563,6 +580,18 @@ msgstr "Send"
 #: kulturbideak_templates/hornitzaile_fitxa_editatu.html:327
 msgid "Itxi"
 msgstr "Close"
+
+#: kulturbideak_templates/_footer.html:31
+msgid ""
+"OndareBideak plataforma eta bere teknologia GNU GPL V3 lizentziapean "
+"banatutako software librea da."
+msgstr "OndareBideak platform and its techology is free software distributed under GNU GPL V3 license."
+
+#: kulturbideak_templates/_footer.html:34
+msgid ""
+"OndareBideak-ek erakutsitako item kulturalek haien lizentzia propioak "
+"dituzte eta eskuzabaltasunez bertan jarri dituzten erakundeen menpekoak dira."
+msgstr " Cultural items showed by OndareBideak have their own licenses and depend on the organizations that kindly provided them. "
 
 #: kulturbideak_templates/_item_pagination.html:9
 #: kulturbideak_templates/_path_pagination.html:9
@@ -947,6 +976,69 @@ msgstr "Expert"
 #: kulturbideak_templates/itemak_hasiera.html:257
 msgid "Atera"
 msgstr "Exit"
+
+#: kulturbideak_templates/index_brandy.html:122
+msgid "Zer da?"
+msgstr "What's this?"
+
+#: kulturbideak_templates/index_brandy.html:124
+msgid "Adibideak"
+msgstr "Examples"
+
+#: kulturbideak_templates/index_brandy.html:174
+msgid "Ondare digitala atzitu, erabili eta interpretatzeko modu berri bat"
+msgstr "A new way to access and interpret digital heritage"
+
+#: kulturbideak_templates/index_brandy.html:183
+msgid "Item"
+msgstr "Items"
+
+#: kulturbideak_templates/index_brandy.html:190
+msgid "Ibilbide"
+msgstr "Paths"
+
+#: kulturbideak_templates/index_brandy.html:197
+msgid "Ondare Erakunde"
+msgstr "Heritage organizations"
+
+#: kulturbideak_templates/index_brandy.html:204
+msgid "Erabiltzaile"
+msgstr "Users"
+
+#: kulturbideak_templates/index_brandy.html:350
+msgid "Zer da OndareBideak?"
+msgstr "What is OndareBideak?"
+
+#: kulturbideak_templates/index_brandy.html:469
+msgid "Ibilbide Adibideak"
+msgstr "Path examples"
+
+#: kulturbideak_templates/index_brandy.html:471
+msgid ""
+"Hemen OndareBideak-en barruan sortu daitezkeen erakusketa digitalen edo "
+"ibilbideen adibideak aurkituko dituzu."
+msgstr "Here you will find examples the digital exhibitions or paths you can create "
+"in Ondarebideak."
+
+#: kulturbideak_templates/index_brandy.html:471
+msgid "Hasi kulturaz gozatzen!"
+msgstr "Start enjoying Culture!"
+
+#: kulturbideak_templates/index_brandy.html:487
+#: kulturbideak_templates/index_brandy.html:510
+#: kulturbideak_templates/index_brandy.html:539
+msgid "Ikusi"
+msgstr "View"
+
+#: kulturbideak_templates/index_brandy.html:494
+#: kulturbideak_templates/index_brandy.html:517
+#: kulturbideak_templates/index_brandy.html:546
+msgid "Entzun"
+msgstr "Listen"
+
+#: kulturbideak_templates/index_brandy.html:594
+msgid "Garatzaileak"
+msgstr "Developers"
 
 #: kulturbideak_templates/item_berria.html:241
 #: kulturbideak_templates/nabigazio_item_berria.html:268

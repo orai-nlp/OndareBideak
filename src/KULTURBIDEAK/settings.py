@@ -6,8 +6,8 @@ sys.path.insert(0, BASEDIR)
 
 ## ADI, SETTINGS-AK EZBERDIN JOANGO DIRA ####
 SMTP_SERVER="localhost"
-DEFAULT_FROM_EMAIL='basqueresearch@elhuyar.com'
-DEFAULT_TO_EMAIL="i.manterola@elhuyar.com"
+DEFAULT_FROM_EMAIL='ondarebideak@elhuyar.com'
+DEFAULT_TO_EMAIL="ondarebideak@elhuyar.com"
 #BASE_URL = "http://52.0.81.154/OndareBideak" # http://52.0.81.154/OndareBideak Ondoren, azkeneko domeinua jarri daiteke: www.ondarebideak.eus adibidez
 BASE_URL = "http://obprototipoa.elhuyar.eus"
 
@@ -37,7 +37,7 @@ INSTALLED_APPS = ()
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'kulturbideak_db_probak',                      # Or path to database file if using sqlite3.
+            'NAME': 'kulturbideak_db',                      # Or path to database file if using sqlite3.
             # The following settings are not used with sqlite3:
             'USER': 'dss2016', #dss2016    root
             'PASSWORD': 'd552O1Gsql', #d552O1Gsql   d552O1G
@@ -223,9 +223,10 @@ LEAFLET_CONFIG = {
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8975/solr'
+        'URL': 'http://127.0.0.1:8975/solr',
         # ...or for multicore...
         # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+        #'TIMEOUT': 60 * 5, #db osoa eskuz indexatzerakoan bakarrik erabili, bestela komentatu. Ez da komeni denbora hau oso handia izatea defektuz
     },
 }
 # Maddalen- Haystack

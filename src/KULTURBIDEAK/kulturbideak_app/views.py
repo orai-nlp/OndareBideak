@@ -269,7 +269,7 @@ def eguneko_itema_kendu(request):
     #GURI ALDAKETAREN BERRI EMAN?
     
     mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko item hau kendu du (id): "+str(item_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
-    send_mail('OndareBideak - Eguneko itemetan aldaketak', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+    send_mail('OndareBideak - Eguneko itemetan aldaketak', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
         
@@ -980,7 +980,7 @@ def eguneko_itema_gehitu(request):
     #GURI ALDAKETAREN BERRI EMAN?
     
     mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko item hau gehitu du (id): "+str(item_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
-    send_mail('OndareBideak - Eguneko itemetan aldaketak', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+    send_mail('OndareBideak - Eguneko itemetan aldaketak', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
         itemak=[]
@@ -1689,7 +1689,7 @@ def eguneko_ibilbidea_gehitu(request):
 
     #GURI ALDAKETAREN BERRI EMAN?    
     mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko ibilbide hau gehitu du (id): "+str(path_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
-    send_mail('OndareBideak - Eguneko ibilbidetan aldaketak', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+    send_mail('OndareBideak - Eguneko ibilbidetan aldaketak', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
         paths=[]
@@ -2324,7 +2324,7 @@ def eguneko_ibilbidea_kendu(request):
     #GURI ALDAKETAREN BERRI EMAN?
     
     mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko ibilbide hau kendu du (id): "+str(path_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
-    send_mail('OndareBideak - Eguneko ibilbideetan aldaketak', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+    send_mail('OndareBideak - Eguneko ibilbideetan aldaketak', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
        
@@ -3028,7 +3028,7 @@ def ibilbideak_hasiera(request):
 def hornitzaileak_hasiera(request):
     print "hornitzaileak_hasiera"
     hornitzaileak = []
-    hornitzaileak = hornitzailea.objects.all()
+    hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3)
     
     paginator = Paginator(hornitzaileak, 26)
     
@@ -4453,7 +4453,7 @@ def logina(request):
     # return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
     if logina.is_valid():
         login_egin_(request)
-        return render_to_response('base.html',{'mezua':"Ongi etorri Kulturbideak sistemara"},context_instance=RequestContext(request))
+        return render_to_response('base.html',{'mezua':_("Ongi etorri OndareBideak sistemara")},context_instance=RequestContext(request))
     else:
         logina=LoginForm()
         return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
@@ -4489,9 +4489,9 @@ def oaipmh_datubilketa(request):
         if oaipmh_form.is_valid():
             cd=oaipmh_form.cleaned_data
             baseurl=cd['baseurl']
-            mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"OAI Url-a"+str(baseurl)+"\n"+"Bidali mezua hornitzaileari: "+str(request.user.email)
-            send_mail('OndareBideak - Itemak inportatzeko eskaera', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
-            return render_to_response('base.html',{'mezua':"Zure eskaera jaso dugu. Itemen bilketa prest dagoenean jasoko duzu posta elektroniko bat."},context_instance=RequestContext(request))
+            mezua=_("Hornitzailearen izena:")+str(request.user.username)+".\n"+_("OAI Url-a")+str(baseurl)+"\n"+_("Bidali mezua hornitzaileari: ")+str(request.user.email)
+            send_mail('OndareBideak - Itemak inportatzeko eskaera', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
+            return render_to_response('base.html',{'mezua':_("Zure eskaera jaso dugu. Itemen bilketa prest dagoenean jasoko duzu posta elektroniko bat.")},context_instance=RequestContext(request))
            
             '''
             if db_oaipmh_bilketa(cd):
@@ -4522,9 +4522,9 @@ def erregistratu(request):
                 
                 #IF Hornitzailea izan nahi badu
                 if cd["hornitzailea"]:
-                    return render_to_response('base.html',{'mezua':_("Kulturbideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.com")},context_instance=RequestContext(request)) 
+                    return render_to_response('base.html',{'mezua':_("OndareBideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.com")},context_instance=RequestContext(request)) 
                 else:
-                    return render_to_response('base.html',{'mezua':_("Kulturbideak sisteman Erregistratu zara")},context_instance=RequestContext(request))
+                    return render_to_response('base.html',{'mezua':_("OndareBideak sisteman Erregistratu zara")},context_instance=RequestContext(request))
    
         else:
             #return render_to_response("izena_eman.html",{"bilaketa":bilaketa_form,"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
@@ -4547,7 +4547,7 @@ def db_erregistratu_erabiltzailea(cd):
         if cd["hornitzailea"]:
             hornitzaile_izena=cd["honitzaile_izena"]
             mezua=_("Hornitzailearen izena:")+str(hornitzaile_izena)+".\n"+_("Ondorengoa egin datu-basean:")+" update auth_user_groups set group_id=3 where user_id="+str(erabiltzailea.id)+"\n"+_("Bidali mezua hornitzaileari: ")+str(erabiltzailea.email)
-            send_mail('OndareBideak - Hornitzaile izateko eskaera', mezua, 'm.lopezdelacalle@elhuyar.com',['m.lopezdelacalle@elhuyar.com'], fail_silently=False)
+            send_mail('OndareBideak - Hornitzaile izateko eskaera', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
             
             #Hornitzailearen fitxa (hutsa) sortuko dugu datu-basean
             hornitzaile_fitxa=hornitzailea(fk_user=erabiltzailea,izena=hornitzaile_izena)
