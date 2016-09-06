@@ -261,13 +261,6 @@ msgstr "Recorridos más votados"
 msgid "Eguneko Itema"
 msgstr "Item del día"
 
-#: base.html:3541
-#: kulturbideak_templates/base_lokal.html:3057
-#: kulturbideak_templates/base_old.html:662
-#: kulturbideak_templates/base_zerbitzarian.html:558
-msgid "Ze Ibilbidetan? "
-msgstr "Mis recorridos"
-
 #: base.html:3556
 #: kulturbideak_templates/base_lokal.html:3072
 #: kulturbideak_templates/base_old.html:677
@@ -297,7 +290,7 @@ msgstr ""
 
 #: kulturbideak_app/forms.py:54
 msgid "erabiltzailea"
-msgstr "User"
+msgstr "usuario"
 
 #: kulturbideak_app/forms.py:55
 msgid "pasahitza"
@@ -350,7 +343,7 @@ msgstr "Proveedor"
 msgid ""
 "* Kultur erakunde baten izenean zatoz? Markatu lauki hau bete hurrengo "
 "eremua. Plataformak aukera gehigarriak eskainiko dizkizu."
-msgstr "* Vienes en nombre de una organización cultural? Marka esta casilla y "
+msgstr "* Vienes en nombre de una organización cultural? Marca esta casilla y "
 "rellena el siguiente campo. La plataforma te ofrecerá opciones adicionales."
 
 #: kulturbideak_app/forms.py:105
@@ -510,8 +503,8 @@ msgstr "Enviar mensaje al proveedor"
 msgid ""
 "Zure eskaera jaso dugu. Itemen bilketa prest dagoenean jasoko duzu posta "
 "elektroniko bat."
-msgstr "Hemos recibido to petición. Recibirás un corre electrónico tan pronto como "
-"los item hayan sido cargados en la plataforma."
+msgstr "Hemos recibido tu petición. Recibirás un correo electrónico tan pronto como "
+"los items hayan sido cargados en la plataforma."
 
 #: kulturbideak_app/views.py:4525
 msgid ""
@@ -901,7 +894,7 @@ msgstr "Guardar cambios"
 
 #: kulturbideak_templates/hornitzaile_fitxa_editatu.html:108
 msgid "Editatu telefonoa"
-msgstr "Editar telefono"
+msgstr "Editar teléfono"
 
 #: kulturbideak_templates/hornitzaile_fitxa_editatu.html:133
 msgid "Editatu posta elektronikoa"
