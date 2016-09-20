@@ -2,9 +2,17 @@ from django.template.defaultfilters import stringfilter
 from django import template
 from settings import *
 import re
+import HTMLParser
 
 from django.contrib.auth.models import User, Group
 register = template.Library()
+
+
+@register.filter
+def format_html(value): 
+    html_parser = HTMLParser.HTMLParser()
+    first = html_parser.unescape(value)
+    return html_parser.unescape(first)
 
 
 
@@ -60,7 +68,7 @@ def choose_title_language(interfaceLang, item):
     if match_es:
         titulu_es=match_es.group(0)
         titulu_es=titulu_es.replace("<div class=\"titulu_es\">", " ")
-        titulu_es=titulu_es.replace("</div>", " ")
+        titulu_es=titulu_es.replace("</div>", " ")              
     else:
         titulu_es=""
         
@@ -111,6 +119,9 @@ def choose_title_language(interfaceLang, item):
             return titulu_en          
         else:        
             return titulua
+        
+        
+        
 
 @register.filter
 def choose_language_text(Lang, item):
@@ -230,8 +241,13 @@ def choose_language_text(Lang, item):
             text=text +" "+ deskribapena_en          
         else:        
             text=text +" "+ deskribapena
+
     
     return text
+
+
+
+
 @register.filter
 def choose_language_text_not_target(Lang, item):
     hizkuntzak=Lang.split("2")

@@ -1,778 +1,763 @@
-   body{
-        font-family: Verdana,Arial,sans-serif;
-    }
+body {
+	font-family: Verdana, Arial, sans-serif;
+}
 
-    .page_head{
-        height: 200px;
-    }
-    .headerra{
-    	background-color: #d9edf7;
-    }
-    .titulu-kolorea{
-    	color: #31708f!important;
-    }
-    .autocompleteItem{
-        padding: 25px;
-    }
-   .autocomplete_irudia{
-       min-height: 120px;
-       max-height: 120px;
-       background-size:contain;
-    }
+.page_head {
+	height: 200px;
+}
+.headerra {
+	background-color: #d9edf7;
+}
+.titulu-kolorea {
+	color: #31708f !important;
+}
+.autocompleteItem {
+	padding: 25px;
+}
+.autocomplete_irudia {
+	min-height: 120px;
+	max-height: 120px;
+	background-size: contain;
+}
 
-   #SERVICE {
-       padding-top:30px !important;
-   }
-   #item_img{
-   	margin:0% 0% 5px 20%;
-   }
-   #license_info, #nabigMenu_titulu{
-   	margin:0% 0% 0% 20%;
-   }
+#SERVICE {
+	padding-top: 30px !important;
+}
+#item_img {
+	margin: 0% 0% 5px 20%;
+}
+#license_info, #nabigMenu_titulu {
+	margin: 0% 0% 0% 20%;
+}
 
-   .bilaketaEmaitza{
+.bilaketaEmaitza {
 
-		/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
-		/*background-image: url("/uploads/NoIrudiItem.png");*/
-		min-height: 120px;
-		background-size:contain;
-		background-position:center;
-		background-repeat: no-repeat;
-	
-	}
-	.bilaketaEmaitzaPath{
-		
-		/*background-image: url("/uploads/NoIrudiBide.png");*/
-		min-height: 120px;
-		background-size:contain;
-		background-position:center;
-		background-repeat: no-repeat;
-	
-	}
-     .ezkmarg0 {                                                                                                                          
-            margin-left: 0px;                                                                                                                
-        } 
-	 .emaitzaInfo{
-		text-align: right;
-		color:#337ab7;
-		font-family: "dosis" !important;
-    }
-    img.ob_thumbnail{
-    	width:120px !important;
-    	height:120px !important;
-    }
-    #workspace{
-        position:fixed;
-        width: 80%;
-        min-width: 800px;
-        left: 10%;
-        text-align: center;
-        z-index: 100;
-    }
+	/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
+	/*background-image: url("/uploads/NoIrudiItem.png");*/
+	min-height: 120px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.bilaketaEmaitzaPath {
 
-    #workspace_boxes{
-        overflow: auto;
-        display: block;
-        height: 0;
-        border: 1px solid #808080;
-        background: #eeeeee;
-        opacity: 0;
-        -webkit-transition: height 1s,opacity 1s ease-in-out;
-        transition: height 1s,opacity 1s ease-in-out;
-    }
+	/*background-image: url("/uploads/NoIrudiBide.png");*/
+	min-height: 120px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.ezkmarg0 {
+	margin-left: 0px;
+}
+.emaitzaInfo {
+	text-align: right;
+	color: #337ab7;
+	font-family: "dosis" !important;
+}
+img.ob_thumbnail {
+	width: 120px !important;
+	height: 120px !important;
+}
+#workspace {
+	position: fixed;
+	width: 80%;
+	min-width: 800px;
+	left: 10%;
+	text-align: center;
+	z-index: 100;
+}
 
-    .open{
-        height: 300px!important;
-        opacity: 100!important;
-    }
+#workspace_boxes {
+	overflow: auto;
+	display: block;
+	height: 0;
+	border: 1px solid #808080;
+	background: #eeeeee;
+	opacity: 0;
+	-webkit-transition: height 1s, opacity 1s ease-in-out;
+	transition: height 1s, opacity 1s ease-in-out;
+}
 
-    .close{
-        overflow: hidden!important;
-    }
-    
-   .ws_box {
-    
-    cursor: move;
-    display: inline-block;
-    height: 50px;
-    margin: 10px;
-    padding: 10px;
-    vertical-align: top;
-    width: 95px;
-    
-	}
-   
-	.wsb_image {
-    border-radius: 50%;
-    float: left;
-    height: 50px;
-    margin-right: 10px;
-    pointer-events: none;
-    width: 50px;
-    border-style: solid;
-    border-width: 1.5px;
-    /*border-color: orange lightblue blue yellow;*/
-    border-color: #31708f;
-	}
-   
-    .wsb_title{
-    	display: inline-block;
-        font-size: 10pt;
-        pointer-events: none;
-    }
+.open {
+	height: 300px !important;
+	opacity: 100 !important;
+}
 
+.close {
+	overflow: hidden !important;
+}
 
-    .wsb_button{
-        cursor: pointer;
-        display: inline-block;
-        visibility: hidden;
-        font-size: 11pt;
-        font-weight: bold;
-        float: right;
-	    margin: 3px;
-    }
+.ws_box {
 
-    .ws_box:hover .wsb_button{
-        visibility: visible;
-    }
+	cursor: move;
+	display: inline-block;
+	height: 50px;
+	margin: 10px;
+	padding: 10px;
+	vertical-align: top;
+	width: 95px;
+}
 
-    .ws_box_over{
-        border: 1px dotted #808080;
-        background: #d3d3d3;
-    }
+.wsb_image {
+	border-radius: 50%;
+	float: left;
+	height: 50px;
+	margin-right: 10px;
+	pointer-events: none;
+	width: 50px;
+	border-style: solid;
+	border-width: 1.5px;
+	/*border-color: orange lightblue blue yellow;*/
+	border-color: #31708f;
+}
 
-	#path_boxes_egunekoa{
-		width: 98%;
-        height: 600px;
-        display: block;
-        margin-top: 20px;
-        background: ;
-        resize: both;
-        /*overflow: auto;*/
-	}
-	#path_boxes_overview{
-		width: 98%;
-        height: 400px;
-        display: block;
-        margin-top:-29px;
-        padding-top: 5px;
-        background: ;
-        resize: both;
-       /* overflow: auto;*/
-	}
-	
-	 #path_boxes_overview svg{
-        width: 98%;
-        height: 700px;
-        display: block;
-        padding-top: 20px;/* 5px*/
-        background: ;
-        resize: both;
-    }
-    #path_boxes{
-        width: 98%;
-        height: 600px;
-        display: block;
-        border: 1px solid #808080;
-        margin-top: 20px;
-        background:;
-        overflow: auto;
-        resize: both;
-    }
-    
-    #path_boxes svg{
-        width: 100%;
-        height: 100%;
-    }
+.wsb_title {
+	display: inline-block;
+	font-size: 10pt;
+	pointer-events: none;
+}
 
-    .pb_box{
-        cursor: move;
-        fill: transparent;
-        stroke: #000000;
-        stroke-width:1;
-    }
-    
-    .pb_box_overview{
-        cursor: move;
-        fill: transparent;
-        stroke: #000000;
-        stroke-width:1;
-        height:50;
-    }
+.wsb_button {
+	cursor: pointer;
+	display: inline-block;
+	visibility: hidden;
+	font-size: 11pt;
+	font-weight: bold;
+	float: right;
+	margin: 3px;
+}
 
-    .pb_box_back{
-        fill: #ffffff;
-    }
-    
-    .pb_box_back_nabarmendu{
-        fill: #FFEBFF;
-    }
-    .pb_box_back_overview{
-        fill: #F3F3F3;
-    }
+.ws_box:hover .wsb_button {
+	visibility: visible;
+}
 
-    
+.ws_box_over {
+	border: 1px dotted #808080;
+	background: #d3d3d3;
+}
 
-    .pb_box_title{
-        font-size: 12pt!important;
-    }
+#path_boxes_egunekoa {
+	width: 98%;
+	height: 600px;
+	display: block;
+	margin-top: 20px;
+	background: ;
+	resize: both;
+	/*overflow: auto;*/
+}
+#path_boxes_overview {
+	width: 98%;
+	height: 400px;
+	display: block;
+	margin-top: -29px;
+	padding-top: 5px;
+	background: ;
+	resize: both;
+	/* overflow: auto;*/
+}
 
-    .pb_box_image{
-    }
+#path_boxes_overview svg {
+	width: 98%;
+	height: 700px;
+	display: block;
+	padding-top: 20px;/* 5px*/
+	background: ;
+	resize: both;
+}
+#path_boxes {
+	width: 98%;
+	height: 600px;
+	display: block;
+	border: 1px solid #808080;
+	margin-top: 20px;
+	background: ;
+	overflow: auto;
+	resize: both;
+}
 
-    .pb_box_back_moving{
-        fill: #808080;
-        opacity: 0.5;
-    }
+#path_boxes svg {
+	width: 100%;
+	height: 100%;
+}
 
-    .pb_box_delete_button{
-        cursor: pointer;
-        font-weight: bold!important;
-        font-size: 10pt!important;
-    }
-   .pb_box_delete_button{
-        cursor: pointer;
-        fill: #808080!important;
-        font-weight: bold!important;
-        font-size: 10pt!important;
-    }
+.pb_box {
+	cursor: move;
+	fill: transparent;
+	stroke: #000000;
+	stroke-width: 1;
+}
 
-    .pb_box_delete_button:hover{
-        fill: #000000!important;
-    }
-    
-    .orria{
-    	display: block;
-    	margin: 0 auto;
-    	/*text-align: center;*/
-    }
-    .eskuma_div{
-    	width: 15%;
-    	min-height: 500px;
-    	display:inline-block;
-		background: white;
-		vertical-align: top;
-		text-align: left;
-		color:#31708f;
-    }
-    .ezkerra_div{
-    	width: 15%;
-    	min-height: 500px;
-    	display:inline-block;
-    	background:white;
-		vertical-align: top;
-		text-align: left;
-		color: #31708f;
-    }
+.pb_box_overview {
+	cursor: move;
+	fill: transparent;
+	stroke: #000000;
+	stroke-width: 1;
+	height: 50;
+}
 
-    #eguneko_itema img{
-	width:97%;
+.pb_box_back {
+	fill: #ffffff;
+}
+
+.pb_box_back_nabarmendu {
+	fill: #FFEBFF;
+}
+.pb_box_back_overview {
+	fill: #F3F3F3;
+}
+
+.pb_box_title {
+	font-size: 12pt !important;
+}
+
+.pb_box_image {
+}
+
+.pb_box_back_moving {
+	fill: #808080;
+	opacity: 0.5;
+}
+
+.pb_box_delete_button {
+	cursor: pointer;
+	font-weight: bold !important;
+	font-size: 10pt !important;
+}
+.pb_box_delete_button {
+	cursor: pointer;
+	fill: #808080 !important;
+	font-weight: bold !important;
+	font-size: 10pt !important;
+}
+
+.pb_box_delete_button:hover {
+	fill: #000000 !important;
+}
+
+.orria {
+	display: block;
+	margin: 0 auto;
+	/*text-align: center;*/
+}
+.eskuma_div {
+	width: 15%;
+	min-height: 500px;
+	display: inline-block;
+	background: white;
+	vertical-align: top;
+	text-align: left;
+	color: #31708f;
+}
+.ezkerra_div {
+	width: 15%;
+	min-height: 500px;
+	display: inline-block;
+	background: white;
+	vertical-align: top;
+	text-align: left;
+	color: #31708f;
+}
+
+#eguneko_itema img {
+	width: 97%;
 	border: 1px solid #ddd;
 	border-radius: 4px;
 	padding: 5px;
-    }
-    
-    #eguneko_ibilbidea img {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-    width: 97%;
 }
 
-    .crossingPaths{
+#eguneko_ibilbidea img {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 5px;
+	width: 97%;
+}
+
+.crossingPaths {
 	margin-top: 20px;
 	border: 1px solid #ddd;
 	border-radius: 4px;
-        padding: 5px;
-    }
+	padding: 5px;
+}
 
-    .content_div{
-    	width: 65%;
-    	min-height: 500px;
-    	display:inline-block;
-    	background: white;
-		vertical-align: top;
-		margin: 0 20px;
-		text-align: left;
-    }
-    
-    .erabiltzaile-menua{
-    	font-size: 9pt;
-   		margin-top: 0.5em;font-size: 9pt;
-   		text-align: right;
-   
-    }
-   .pathBotoia{
-   	text-align: right;
-   	position:relative;
-   	alignment-adjust: right;
-   	
-   }
-   .footer{
-   	bottom: 0;
-   	position:fixed;
-   	text-align:fixed;
-   	background: #F0FFFF; 
-   	width: 95%;
-   }
-  .hizkuntzak_class {
-    float: left;
-    width: auto;
-	}
-	.ulhizkuntzak {
-    font-size: 13px;
-	}
-	.ulhizkuntzak li {
+.content_div {
+	width: 65%;
+	min-height: 500px;
+	display: inline-block;
+	background: white;
+	vertical-align: top;
+	margin: 0 20px;
+	text-align: left;
+}
+
+.erabiltzaile-menua {
+	font-size: 9pt;
+	margin-top: 0.5em;
+	font-size: 9pt;
+	text-align: right;
+}
+.pathBotoia {
+	text-align: right;
+	position: relative;
+	alignment-adjust: right;
+}
+.footer {
+	bottom: 0;
+	position: fixed;
+	text-align: fixed;
+	background: #F0FFFF;
+	width: 95%;
+}
+.hizkuntzak_class {
+	float: left;
+	width: auto;
+}
+.ulhizkuntzak {
+	font-size: 13px;
+}
+.ulhizkuntzak li {
 	float: left;
 	padding: 0px 6px 0px 6px;
 	border-right: 2px solid #FFFFFF;
-	color:#31708F;
-	
-	}
-	.ulhizkuntzak li:last-child {
+	color: #31708F;
+}
+.ulhizkuntzak li:last-child {
 	border-right: 0px;
-	}
-	#header-content {
-    margin: 0 auto;
-    max-width: 1024px;
-    width: 100%;
-	}
-	.ulNon {
+}
+#header-content {
+	margin: 0 auto;
+	max-width: 1024px;
+	width: 100%;
+}
+.ulNon {
 	margin: 3px 0px 0px 0px;
 	float: left;
-	}
-	.ulNon li {
+}
+.ulNon li {
 	float: left;
 	padding: 0px 6px 0px 6px;
 	border-right: 1px solid #928a83;
 	font-size: 13px;
-	}
-	.ulNon li:last-child {
+}
+.ulNon li:last-child {
 	border-right: 0px;
-	}
-	.ulNon li a {
+}
+.ulNon li a {
 	color: #928a83;
-	}
-	.ulNon li.active a {
+}
+.ulNon li.active a {
 	font-family: "MetaBold", Helvetica, Arial, Verdana, sans-serif;
 	color: #60554b;
-	}
-	.ibilbide-panela{
-		width: 98%;
-	}
-	.info{
-		color: #337ab7;
-	}	
-	.dropdown:hover .dropdown-menu {
-            display: block; right: 20px; top: 0px;
-            margin-top: 70px;
-            width:300px;
-            position:absolute;
-            alignment-adjust: right;
-            float: right;
-            z-index: 1000000000;
-            left:inherit;
-     }
-
-	
-	.text-center {
-    text-align: center;
-    }
-	.laguntza {
-		color:  #9e8012;
-		font-family: "Dosis" !important;
-	}
-	.filtroak {
-		color:  #9e8012;
-	}
-	.thumb-128 {
-    height: 128px;
-    line-height: 128px;
-    padding: 4px;
-    width: 128px;  
-    max-height: 100%;
-    max-width: 100%;
-
-	}
-	.eskuma{
-	float:right;
-	}
-	.ezkerra{
-	float:left;
-	}
-	/*#nabigMenu_botoiak {
-		border: 1px solid lightgrey;
-		border-radius:10px;
-	}*/
-	.clearfix::after {
-		clear: both;
-	    content: "";
-    	display: table;
-	}
-	#nabigMenu_botoiak ul{
-		width:50%;
-		padding:2px;		
-		list-style-type:none;
-	}
-	#nabigMenu_botoiak ul li{
-		border: 1px solid lightgrey;
-		border-radius:10px;
-		margin: 2px 0px;
-	}
-	#nabigMenu_botoiak .eskuma button{	
-		margin:2px 0px 2px 0px;				
-		width:100%;
-		text-align:right;	
-	}
-	#nabigMenu_botoiak .ezkerra button{	
-		margin:2px 0px 2px 0px;				
-		width:100%;
-		text-align:left;
-	}
-	
-	.aurkezpena{}
-	.path_sarrera{
-		overflow:hidden;
-	}
-/* HEADERRAREN ESTILOA*/
-
- .navbar-default-berria .navbar-brand-berria {
-    color: #31708f!important;
-  }
- .navbar-brand-berria {
-    float: left;
-    font-size: 35px!important;
-    height: 70px!important;
-    line-height: 0;
-    padding: 20px!important;
- }
-
-	.navbar-default .navbar-nav > li > a {
-    color: #31708f!important;
-	}
-	.navbar-nav > li > a {
-    padding-bottom: 15px!important;
-    padding-top: 35px!important;
-	}
-	.bilatzailea-kutxa{
-	 padding: 20px;
-   	 
-	}
-	.kolorea{
-		background-color: #31708f!important;
-    	border-color: #31708f!important;
-    	color: #fff;
-    
-    }
-    .table-barrukoa{
-    	font-size: 15px!important;
-    }
-    
-    tr.spaceUnder > th
-	{
- 	 padding-bottom: 0.1em;
-	}
-	
-	a.morelink {
-    text-decoration:none;
-    outline: none;
-	}
-	.morecontent span {
-    display: none;
-	}
-	.comment {
-    /*width: 400px;*/
-    margin: 10px;
-	}
-	.aRight {
-		float: right;
-	}
-
-    /*CSS svg*/
-
-    .node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 3px;
+}
+.ibilbide-panela {
+	width: 98%;
+}
+.info {
+	color: #337ab7;
+}
+.dropdown:hover .dropdown-menu {
+	display: block;
+	right: 20px;
+	top: 0px;
+	margin-top: 70px;
+	width: 300px;
+	position: absolute;
+	alignment-adjust: right;
+	float: right;
+	z-index: 1000000000;
+	left: inherit;
 }
 
-.node text { font: 12px sans-serif; }
+.text-center {
+	text-align: center;
+}
+.laguntza {
+	color: #9e8012;
+	font-family: "Dosis" !important;
+}
+.filtroak {
+	color: #9e8012;
+}
+.thumb-128 {
+	height: 128px;
+	line-height: 128px;
+	padding: 4px;
+	width: 128px;
+	max-height: 100%;
+	max-width: 100%;
+}
+.eskuma {
+	float: right;
+}
+.ezkerra {
+	float: left;
+}
+/*#nabigMenu_botoiak {
+ border: 1px solid lightgrey;
+ border-radius:10px;
+ }*/
+.clearfix::after {
+	clear: both;
+	content: "";
+	display: table;
+}
+#nabigMenu_botoiak ul {
+	width: 50%;
+	padding: 2px;
+	list-style-type: none;
+}
+#nabigMenu_botoiak ul li {
+	border: 1px solid lightgrey;
+	border-radius: 10px;
+	margin: 2px 0px;
+}
+#nabigMenu_botoiak .eskuma button {
+	margin: 2px 0px 2px 0px;
+	width: 100%;
+	text-align: right;
+}
+#nabigMenu_botoiak .ezkerra button {
+	margin: 2px 0px 2px 0px;
+	width: 100%;
+	text-align: left;
+}
+
+.aurkezpena {
+}
+.path_sarrera {
+	overflow: hidden;
+}
+/* HEADERRAREN ESTILOA*/
+
+.navbar-default-berria .navbar-brand-berria {
+	color: #31708f !important;
+}
+.navbar-brand-berria {
+	float: left;
+	font-size: 35px !important;
+	height: 70px !important;
+	line-height: 0;
+	padding: 20px !important;
+}
+
+.navbar-default .navbar-nav > li > a {
+	color: #31708f !important;
+}
+.navbar-nav > li > a {
+	padding-bottom: 15px !important;
+	padding-top: 35px !important;
+}
+.bilatzailea-kutxa {
+	padding: 20px;
+}
+.kolorea {
+	background-color: #31708f !important;
+	border-color: #31708f !important;
+	color: #fff;
+}
+.table-barrukoa {
+	font-size: 15px !important;
+}
+
+tr.spaceUnder > th {
+	padding-bottom: 0.1em;
+}
+
+a.morelink {
+	text-decoration: none;
+	outline: none;
+}
+.morecontent span {
+	display: none;
+}
+.comment {
+	/*width: 400px;*/
+	margin: 10px;
+}
+.aRight {
+	float: right;
+}
+
+/*CSS svg*/
+
+.node circle {
+	fill: #fff;
+	stroke: steelblue;
+	stroke-width: 3px;
+}
+
+.node text {
+	font: 12px sans-serif;
+}
 
 .link {
-    stroke: #499;
-    stroke-opacity: .6;
-      fill: none;
-    }
-circle .selectedNode{
-    width:50px ;
-    height:50px ;
-    stroke-width: 3px ; 
-    stroke: 'red' ;
+	stroke: #499;
+	stroke-opacity: .6;
+	fill: none;
+}
+circle .selectedNode {
+	width: 50px;
+	height: 50px;
+	stroke-width: 3px;
+	stroke: 'red';
 }
 
 circle .unselectedNode {
-    width:50px ;
-    height:50px ;
-    stroke:steelblue ;
-    stroke-width: 3px ;
+	width: 50px;
+	height: 50px;
+	stroke: steelblue;
+	stroke-width: 3px;
 }
 
-  .templink {
-    fill: none;
-    stroke: none;
-    stroke-width: 3px;
-  }
-  
-  .filterButton {
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
+.templink {
+	fill: none;
+	stroke: none;
+	stroke-width: 3px;
+}
+
+.filterButton {
+	background-color: Transparent;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
 }
 
 #logoa {
-    margin-top: -10px;
-    width: 195px;
+	margin-top: -10px;
+	width: 195px;
 }
 .btn-common {
-    border: 0px solid #0099ae;/* 1px solid #0099ae;*/
-    color: #0099ae;
-    font-family: "Open Sans",sans-serif;
-    font-size: 12px;
-    font-weight: 300;
-    padding: 0px;/*7px 15px;*/
-    background:none;
+	border: 0px solid #0099ae;/* 1px solid #0099ae;*/
+	color: #0099ae;
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	font-weight: 300;
+	padding: 0px;/*7px 15px;*/
+	background: none;
 }
 
 .path-name h2 {
-    margin-bottom: 15px;
-    margin-top: 0;
-    /*color: #686868;*/
-    font-size: 24px;
-    font-family: "dosis"!important;
-    font-weight: 300;
+	margin-bottom: 15px;
+	margin-top: 0;
+	/*color: #686868;*/
+	font-size: 24px;
+	font-family: "dosis" !important;
+	font-weight: 300;
 }
 .path-name2 h2 {
-    margin-bottom: 4px;
-    margin-top: 0;
-    /*color: #686868;*/
-    font-size: 30px;
-    font-family: "dosis"!important;
-    font-weight: 400;
+	margin-bottom: 4px;
+	margin-top: 0;
+	/*color: #686868;*/
+	font-size: 30px;
+	font-family: "dosis" !important;
+	font-weight: 400;
 }
 .overflow {
-    overflow: hidden;
+	overflow: hidden;
 }
 .path-info h3 {
-    font-size: 17px;
-    font-family: "dosis"!important;
-    font-weight: 300;
+	font-size: 17px;
+	font-family: "dosis" !important;
+	font-weight: 300;
 }
-.path-info-description{
+.path-info-description {
 	color: #000;
-    font-family: "Lato",sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 22px;
+	font-family: "Lato", sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 22px;
 }
-.item-info-description{
+.item-info-description {
 	color: #000;
-    /*font-family: "Lato",sans-serif;*/
-    font-family: "dosis",sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 22px;
+	/*font-family: "Lato",sans-serif;*/
+	font-family: "dosis", sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 22px;
 }
 .navbar-default li {
-    font-size: 14px;
-    padding: 0 15px 0 0;
-    color: #c03035;
-    text-decoration: none;
-     
+	font-size: 14px;
+	padding: 0 15px 0 0;
+	color: #c03035;
+	text-decoration: none;
 }
-.ibilbide-irudia{
-	
+.ibilbide-irudia {
+
 	height: 128px;
-    border-radius: 0%;
-    /*border: solid 1px #CCC;*/
-   
+	border-radius: 0%;
+	/*border: solid 1px #CCC;*/
+
 }
-.hornitzaile-irudia{
-	
+.hornitzaile-irudia {
+
 	height: 150px;
-
-    border: solid 1px #CCC;
-   
+	border: solid 1px #CCC;
 }
 
-.ibilbide-panela{
-	
- height: 550px;
-	
+.ibilbide-panela {
+
+	height: 550px;
 }
-.autocomplete-galdera{
+.autocomplete-galdera {
 	font-family: "dosis" !important;
-    font-size: 24px;
-    font-weight: 300;
-    margin-bottom: 15px;
-    margin-top: 0;
+	font-size: 24px;
+	font-weight: 300;
+	margin-bottom: 15px;
+	margin-top: 0;
 }
-.gehitu-botoia{
+.gehitu-botoia {
 	color: #0099ae;
-	
 }
-.ikusi-botoia{
+.ikusi-botoia {
 	color: #0099ae !important;
 	border: 1px solid #0099ae;
-	background:none;
-	
+	background: none;
 }
-.gehitu-botoia{
+.gehitu-botoia {
 	color: #0099ae !important;
 	border: 1px solid #0099ae;
-	background:none;
-	
+	background: none;
 }
-.egunekoa-botoia{
-	 color:#eea236;
-	 border: 1px solid #0099ae;
-	 background:none;
+.egunekoa-botoia {
+	color: #eea236;
+	border: 1px solid #0099ae;
+	background: none;
 }
-.eremu-str{
+.eremu-str {
 	color: #0099ae !important;
-	
 }
-.antzekoTitulua{
+.antzekoTitulua {
 	font-family: "dosis" !important;
-    font-size: 24px;
-    font-weight: 300;
-    margin-bottom: 15px;
-    margin-top: 0;
-    alignment-adjust: center;
-	
+	font-size: 24px;
+	font-weight: 300;
+	margin-bottom: 15px;
+	margin-top: 0;
+	alignment-adjust: center;
 }
 h3.uppercase {
-    text-transform: uppercase;
-    
-    font-family: "dosis" !important;
-    font-size: 24px;
-}
-h3.bilaketa{
-	
+	text-transform: uppercase;
 	font-family: "dosis" !important;
-    font-size: 17px;
-    font-weight: 300;
+	font-size: 24px;
+}
+h3.bilaketa {
+
+	font-family: "dosis" !important;
+	font-size: 17px;
+	font-weight: 300;
 }
 h4.mota {
-       
-    font-family: "dosis" !important;
-    font-size: 19px;
-    font-weight: 200;
-    color: #c03035;
+
+	font-family: "dosis" !important;
+	font-size: 19px;
+	font-weight: 200;
+	color: #c03035;
 }
 h4.mota2 {
-       
-    font-family: "dosis" !important;
-    font-size: 19px;
-    font-weight: 200;
-    /*color: #c03035;*/
-}
-h1.dosis{
+
 	font-family: "dosis" !important;
-    font-size: 24px;
+	font-size: 19px;
+	font-weight: 200;
+	/*color: #c03035;*/
+}
+h1.dosis {
+	font-family: "dosis" !important;
+	font-size: 24px;
 }
 
 p.uppercase {
-    text-transform: uppercase;
-    text-align: center;
-    font-family: "dosis" !important;
-    font-size: 24px;
+	text-transform: uppercase;
+	text-align: center;
+	font-family: "dosis" !important;
+	font-size: 24px;
 }
-p.letratipoa{
+p.letratipoa {
 	font-family: "dosis" !important;
 }
-.center{
+.center {
 	text-align: center;
 }
 h2.uppercase {
-    text-transform: uppercase;
-    text-align: center;
-    font-family: "dosis" !important;
-    font-size: 18px;
-    font-weight: 100;
+	text-transform: uppercase;
+	text-align: center;
+	font-family: "dosis" !important;
+	font-size: 18px;
+	font-weight: 100;
 }
-.antzekoItemTitulua{
- 	font-size: 17px;
-    font-family: "dosis"!important;
-    font-weight: 300;	
-    text-align: center;
-	
-	
+.antzekoItemTitulua {
+	font-size: 17px;
+	font-family: "dosis" !important;
+	font-weight: 300;
+	text-align: center;
 }
 
 #frame {
-    border: none;
-    -moz-transform: scale(0.8);
-    -moz-transform-origin: 31px 56px;
-    -o-transform: scale(0.8);
-    -o-transform-origin: 0 0;
-    -webkit-transform: scale(0.8);
-    -webkit-transform-origin: 0 0;
-    overflow: hidden!important;
+	border: none;
+	-moz-transform: scale(0.8);
+	-moz-transform-origin: 31px 56px;
+	-o-transform: scale(0.8);
+	-o-transform-origin: 0 0;
+	-webkit-transform: scale(0.8);
+	-webkit-transform-origin: 0 0;
+	overflow: hidden !important;
 }
 
-.bilaketaTitulua{
+.bilaketaTitulua {
 	font-family: "dosis" !important;
-    font-size: 20px;
-    font-weight: 300;
-    margin-bottom: 15px;
-    margin-top: 0;
+	font-size: 20px;
+	font-weight: 300;
+	margin-bottom: 15px;
+	margin-top: 0;
 	color: #31708f !important;
 }
-.bilaketaEremua{
-	
+.bilaketaEremua {
+
 	color: #c03035;
-    font-size: 14px;
-    padding: 0 15px 0 0;
-    text-decoration: none;
+	font-size: 14px;
+	padding: 0 15px 0 0;
+	text-decoration: none;
 }
 
-
 /* custom modal dialog styles*/
-.modal-dialog{
-	width:75%;
+.modal-dialog {
+	width: 75%;
 }
 
 /* mapa geografikoarentzako estiloak*/
-#geo_map{
-	margin: 20px 0px;	
+#geo_map {
+	margin: 20px 0px;
 }
-#yourmap{
-	border-radius:10px;
+#yourmap {
+	border-radius: 10px;
 }
 
 /* Sare sozialen atala*/
-.share_titulu{
-	width:100%;
-	margin: 10px 0px;	
+.share_titulu {
+	width: 100%;
+	margin: 10px 0px;
 }
 
-.share_buttons{
-	width:100%;
+.share_buttons {
+	width: 100%;
 	margin: -10px 0px 10px 0px;
 	text-align: right;
 }
 
 /* erregistro formularioa*/
 /** we can not use clearfix class because helptext class comes from django form templates*/
-span.helptext{
-	clear:both;
-	content="";
+span.helptext {
+	clear: both;content="";
 	display: table;
 }
 
-.login-erregistratu li{
-	list-style:none;
+.login-erregistratu li {
+	list-style: none;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  /* IE 6+, FF 7+, Op 11+, Saf 1.3+, Chr 1+*/
+    -o-text-overflow: ellipsis;  /* for Opera 9 & 10*/
 }

@@ -7,6 +7,8 @@
 
 {% if autoplay == 1 %}
 
+{% get_current_language as LANGUAGE_CODE %}
+
 <script>
 	//var orr="{{autoplaypages.0}}";
 	var orr = "{{autoplaypage}}";
@@ -40,7 +42,7 @@
 		</div>-->
 		<div class="col-md-4">
 
-			<a id="item_img" class="img-responsive bilaketaEmaitza  thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" > <img  alt="{{momentukoItema.dc_title}}" src="{% if momentukoItema.edm_object %} {{momentukoItema.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}"> </a>
+			<a id="item_img" class="img-responsive bilaketaEmaitza  thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" > <img  alt="{{ LANGUAGE_CODE|choose_title_language:momentukoItema}}" src="{% if momentukoItema.edm_object %} {{momentukoItema.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}"> </a>
 
 			<div id="license_info" class="path-info overflow">
 
@@ -67,7 +69,7 @@
 					{% for aurrekoa in aurrekoak %}
 					<li class="clearfix">
 						<button type="button" class="btn btn-common ezkerra" onclick="nabigatu({{path_id}},{{aurrekoa.fk_item_id_id}})">
-							<span  aria-hidden="true" title="{{aurrekoa.dc_title}}"> <span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> {{aurrekoa.dc_title}} </span>
+							<span  aria-hidden="true" title="{{aurrekoa.dc_title}}"> <span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> {{ LANGUAGE_CODE|choose_title_language:aurrekoa}} </span>
 						</button>
 					</li>
 					{% endfor %}
@@ -80,7 +82,7 @@
 							{%if hasieraBakarra == 1%}
 							<span  aria-hidden="true"> <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></span>
 							{%else%}
-							<span  aria-hidden="true" title="{{hurrengoa.dc_title}}"> {{hurrengoa.dc_title}} <span class="glyphicon glyphicon-forward" aria-hidden="true"> </span> </span>
+							<span class="ellipsis" aria-hidden="true" title="{{hurrengoa.dc_title}}"> {{ LANGUAGE_CODE|choose_title_language:hurrengoa}} </span><span class="glyphicon glyphicon-forward" aria-hidden="true"> </span>
 							{% endif %}
 						</button>
 					</li>
@@ -89,8 +91,7 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="path-name overflow titulu-kolorea">
-				{% get_current_language as LANGUAGE_CODE %}
+			<div class="path-name overflow titulu-kolorea">				
 				<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:momentukoItema}} </h2>
 
 				<ul class="nav navbar-nav navbar-default">

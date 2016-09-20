@@ -2,6 +2,9 @@
 {% load qr_tags %}
 {% load tags%}
 
+{% get_current_language as LANGUAGE_CODE %}
+
+
 <div class="container">
 	<div class="row">
 		<div class="col-md-1"></div>
@@ -22,7 +25,7 @@
 						</p>							
 						{% if antzekoa.dc_title%}
 						<p class="antzekoItemTitulua">
-							{{ antzekoa.dc_title|correct_language_tags }}
+							{{ LANGUAGE_CODE|choose_title_language:antzekoa|format_html|safe}}
 						</p>
 						{%endif%}						
 					</div>

@@ -13,7 +13,7 @@
 		{# Load CSS and JavaScript #}
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/kulturbideak.js"></script>
-		
+
 		{% bootstrap_css %}
 		{% bootstrap_javascript %}
 
@@ -30,8 +30,8 @@
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/readmore.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
 		<script>
-			var csrf_token = "{{ csrf_token }}";
-			var erabiltzailea = "{{request.user.username}}";
+            var csrf_token = "{{ csrf_token }}";
+            var erabiltzailea = "{{request.user.username}}";
 		</script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
@@ -46,212 +46,212 @@
 		<link href="{{STATIC_URL}}css/brandy/css/responsive.css" rel="stylesheet">
 
 		<script>
-			//READ MORE FUNTZIOAK
+            //READ MORE FUNTZIOAK
 		</script>
 
 		<script type="text/javascript">
-			//AUTOCOMPLETE
+            //AUTOCOMPLETE
 		</script>
 
 		<script>
-			//FUNTZIOAK ondare.js
+            //FUNTZIOAK ondare.js
 
 		</script>
 
 		<script type="text/javascript">
-			//AUTOPLAY
+            //AUTOPLAY
 		</script>
 
 		<script type="text/javascript">
-			//MAPA FUNTZIOAK
+            //MAPA FUNTZIOAK
 
-			var global_map;
-			var layer_array = Array();
-			var LeafIcon = L.Icon.extend({});
-			var markers = [];
+            var global_map;
+            var layer_array = Array();
+            var LeafIcon = L.Icon.extend({});
+            var markers = [];
 
-			{% if non == 'itema_gehitu' %}
+            {% if non == 'itema_gehitu' %}
 
-			function load_map(map, options) {
+            function load_map(map, options) {
 
-				global_map = map;
+                global_map = map;
 
-				// zentratu mapa erabiltzaileak
-				if (markers.length > 0) {
-					map.panTo(new L.LatLng(markers[0].getLatLng().lat, markers[0].getLatLng().lng));
-					//document.getElementById("latitude").value = markers[0].getLatLng().lat;
-					//document.getElementById("longitude").value = markers[0].getLatLng().lng;
-					//alert(document.getElementById("longitude").value);
-				}
+                // zentratu mapa erabiltzaileak
+                if (markers.length > 0) {
+                    map.panTo(new L.LatLng(markers[0].getLatLng().lat, markers[0].getLatLng().lng));
+                    //document.getElementById("latitude").value = markers[0].getLatLng().lat;
+                    //document.getElementById("longitude").value = markers[0].getLatLng().lng;
+                    //alert(document.getElementById("longitude").value);
+                }
 
-				// maparen click eventoa
-				//map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);});
-				map.on('click', function(e) {
-					if (markers.length > 0) {
-						map.removeLayer(markers[0]);
-						markers = [];
-					};
-					var marker = L.marker(e.latlng, {
-						title : "Resource Location",
-						alt : "Resource Location",
-						riseOnHover : true,
-						draggable : true
-					}).on("click", function(e) {
-						map.removeLayer(this);
-						layer_array = jQuery.grep(layer_array, function(value) {
-							return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
-						});
-					}).addTo(map);
-					layer_array.push([e.latlng.lat, e.latlng.lng]);
-					markers.push(marker);
-					document.getElementById("latitude").value = e.latlng.lat;
-					document.getElementById("longitude").value = e.latlng.lng;
-				});
+                // maparen click eventoa
+                //map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);});
+                map.on('click', function(e) {
+                    if (markers.length > 0) {
+                        map.removeLayer(markers[0]);
+                        markers = [];
+                    };
+                    var marker = L.marker(e.latlng, {
+                        title : "Resource Location",
+                        alt : "Resource Location",
+                        riseOnHover : true,
+                        draggable : true
+                    }).on("click", function(e) {
+                        map.removeLayer(this);
+                        layer_array = jQuery.grep(layer_array, function(value) {
+                            return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
+                        });
+                    }).addTo(map);
+                    layer_array.push([e.latlng.lat, e.latlng.lng]);
+                    markers.push(marker);
+                    document.getElementById("latitude").value = e.latlng.lat;
+                    document.getElementById("longitude").value = e.latlng.lng;
+                });
 
-			}
+            }
 
-			{% elif   non == 'itema_editatu'  %}
-			function load_map(map, options) {
+            {% elif   non == 'itema_editatu'  %}
+            function load_map(map, options) {
 
-				global_map = map;
+                global_map = map;
 
-				if(markers.length>0 || {{ geoloc_latitude }} !=0.0)
-				{
-					//Mapa zentratu
-					map.panTo(new L.LatLng({{
-					geoloc_latitude | correct_float_format
-				}
-			}, { {
-					geoloc_longitude | correct_float_format
-				}
-			}));
+                if(markers.length>0 || {{ geoloc_latitude }} !=0.0)
+                {
+                    //Mapa zentratu
+                    map.panTo(new L.LatLng({{
+                    geoloc_latitude | correct_float_format
+                }
+            }, { {
+                    geoloc_longitude | correct_float_format
+                }
+            }));
 
-			//Geolokalizazio zaharra beste kolore batekin erakutsi
-			var greenIcon = new LeafIcon({
-				iconUrl : '{{STATIC_URL}}img/leaf-green.png'
-			});
-			L.marker([{{ geoloc_latitude|correct_float_format }}, { {
-					geoloc_longitude | correct_float_format
-				}
-			}], { icon:greenIcon
-			}).
-			addTo(map).openPopup();
+            //Geolokalizazio zaharra beste kolore batekin erakutsi
+            var greenIcon = new LeafIcon({
+                iconUrl : '{{STATIC_URL}}img/leaf-green.png'
+            });
+            L.marker([{{ geoloc_latitude|correct_float_format }}, { {
+                    geoloc_longitude | correct_float_format
+                }
+            }], { icon:greenIcon
+            }).
+            addTo(map).openPopup();
 
-			}
+            }
 
-			// maparen click eventoa
-			map.on('click', function(e) {
-				if (markers.length > 0) {
-					map.removeLayer(markers[0]);
-					markers = [];
-				};
-				var marker = L.marker(e.latlng, {
-					title : "Resource Location",
-					alt : "Resource Location",
-					riseOnHover : true,
-					draggable : true
-				}).on("click", function(e) {
-					map.removeLayer(this);
-					layer_array = jQuery.grep(layer_array, function(value) {
-						return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
-					});
-				}).addTo(map);
-				layer_array.push([e.latlng.lat, e.latlng.lng]);
-				markers.push(marker);
-				document.getElementById("latitude").value = e.latlng.lat;
-				document.getElementById("longitude").value = e.latlng.lng;
-			});
+            // maparen click eventoa
+            map.on('click', function(e) {
+                if (markers.length > 0) {
+                    map.removeLayer(markers[0]);
+                    markers = [];
+                };
+                var marker = L.marker(e.latlng, {
+                    title : "Resource Location",
+                    alt : "Resource Location",
+                    riseOnHover : true,
+                    draggable : true
+                }).on("click", function(e) {
+                    map.removeLayer(this);
+                    layer_array = jQuery.grep(layer_array, function(value) {
+                        return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
+                    });
+                }).addTo(map);
+                layer_array.push([e.latlng.lat, e.latlng.lng]);
+                markers.push(marker);
+                document.getElementById("latitude").value = e.latlng.lat;
+                document.getElementById("longitude").value = e.latlng.lng;
+            });
 
-			}
+            }
 
-			{% elif  non == 'fitxaE'  %}
-			function load_map(map, options) {
+            {% elif  non == 'fitxaE'  %}
+            function load_map(map, options) {
 
-				global_map = map;
+                global_map = map;
 
-				if(markers.length>0 || {{
-				hornitzailea.geoloc_latitude
-			}} !=0.0) {
-				//Mapa zentratu
-				map.panTo(new L.LatLng({{
-				hornitzailea.geoloc_latitude | correct_float_format
-			}}, { {
-					hornitzailea.geoloc_longitude | correct_float_format
-				}
-			}));
+                if(markers.length>0 || {{
+                hornitzailea.geoloc_latitude
+            }} !=0.0) {
+                //Mapa zentratu
+                map.panTo(new L.LatLng({{
+                hornitzailea.geoloc_latitude | correct_float_format
+            }}, { {
+                    hornitzailea.geoloc_longitude | correct_float_format
+                }
+            }));
 
-			//Geolokalizazio zaharra beste kolore batekin erakutsi
-			var greenIcon = new LeafIcon({
-				iconUrl : '{{STATIC_URL}}img/leaf-green.png'
-			});
-			L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, { {
-					hornitzailea.geoloc_longitude | correct_float_format
-				}
-			}], { icon:greenIcon
-			}).
-			addTo(map).openPopup();
+            //Geolokalizazio zaharra beste kolore batekin erakutsi
+            var greenIcon = new LeafIcon({
+                iconUrl : '{{STATIC_URL}}img/leaf-green.png'
+            });
+            L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, { {
+                    hornitzailea.geoloc_longitude | correct_float_format
+                }
+            }], { icon:greenIcon
+            }).
+            addTo(map).openPopup();
 
-			}
+            }
 
-			// maparen click eventoa
-			map.on('click', function(e) {
-				if (markers.length > 0) {
-					map.removeLayer(markers[0]);
-					markers = [];
-				};
-				var marker = L.marker(e.latlng, {
-					title : "Resource Location",
-					alt : "Resource Location",
-					riseOnHover : true,
-					draggable : true
-				}).on("click", function(e) {
-					map.removeLayer(this);
-					layer_array = jQuery.grep(layer_array, function(value) {
-						return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
-					});
-				}).addTo(map);
-				layer_array.push([e.latlng.lat, e.latlng.lng]);
-				markers.push(marker);
-				document.getElementById("latitude").value = e.latlng.lat;
-				document.getElementById("longitude").value = e.latlng.lng;
-			});
+            // maparen click eventoa
+            map.on('click', function(e) {
+                if (markers.length > 0) {
+                    map.removeLayer(markers[0]);
+                    markers = [];
+                };
+                var marker = L.marker(e.latlng, {
+                    title : "Resource Location",
+                    alt : "Resource Location",
+                    riseOnHover : true,
+                    draggable : true
+                }).on("click", function(e) {
+                    map.removeLayer(this);
+                    layer_array = jQuery.grep(layer_array, function(value) {
+                        return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
+                    });
+                }).addTo(map);
+                layer_array.push([e.latlng.lat, e.latlng.lng]);
+                markers.push(marker);
+                document.getElementById("latitude").value = e.latlng.lat;
+                document.getElementById("longitude").value = e.latlng.lng;
+            });
 
-			}
-			{% elif  non == 'fitxaI'  %}
-			function load_map(map, options) {
+            }
+            {% elif  non == 'fitxaI'  %}
+            function load_map(map, options) {
 
-				map.panTo(new L.LatLng({{
-				hornitzailea.geoloc_latitude | correct_float_format
-			}}, { {
-					hornitzailea.geoloc_longitude | correct_float_format
-				}
-			}));
-			L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, { {
-					hornitzailea.geoloc_longitude | correct_float_format
-				}
-			}]).
-			addTo(map).openPopup();
+                map.panTo(new L.LatLng({{
+                hornitzailea.geoloc_latitude | correct_float_format
+            }}, { {
+                    hornitzailea.geoloc_longitude | correct_float_format
+                }
+            }));
+            L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, { {
+                    hornitzailea.geoloc_longitude | correct_float_format
+                }
+            }]).
+            addTo(map).openPopup();
 
-			}
+            }
 
-			{% else %}
-			function load_map(map, options) {
+            {% else %}
+            function load_map(map, options) {
 
-				//Erakusteko bakarrik
-				map.panTo(new L.LatLng({{
-				geoloc_latitude | correct_float_format
-			}}, { {
-					geoloc_longitude | correct_float_format
-				}
-			}));
-			L.marker([{{ geoloc_latitude|correct_float_format }}, { {
-					geoloc_longitude | correct_float_format
-				}
-			}]).
-			addTo(map).openPopup();
+                //Erakusteko bakarrik
+                map.panTo(new L.LatLng({{
+                geoloc_latitude | correct_float_format
+            }}, { {
+                    geoloc_longitude | correct_float_format
+                }
+            }));
+            L.marker([{{ geoloc_latitude|correct_float_format }}, { {
+                    geoloc_longitude | correct_float_format
+                }
+            }]).
+            addTo(map).openPopup();
 
-			}
-			{% endif %}
+            }
+            {% endif %}
 
 		</script>
 
@@ -530,6 +530,8 @@
 					<hr />
 				</div>
 
+				{% block bilaketaFiltroak %}
+
 				{% if non != "fitxaE" %}
 				{% if non != "erakutsi_item" %}
 				{% if non != "itema_editatu" %}
@@ -545,6 +547,7 @@
 					</div>
 					{%endif%}
 					-->
+
 					{% if bilaketa_filtroak == 1%}
 
 					<div class="filtroak">
@@ -849,6 +852,10 @@
 				{%endif%}
 				{%endif%}<!-- not non erakutsi item -->
 				{%endif%}
+
+				{% endblock bilaketaFiltroak %}
+				
+				
 				<div class="content_div" align="center">
 					{% if mezua %}
 
@@ -894,7 +901,7 @@
 							<div class="col-md-6">
 								<div class="path-name overflow titulu-kolorea">
 									{% get_current_language as LANGUAGE_CODE %}
-									<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item}} </h2>
+									<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item| safe}} </h2>
 
 									<ul class="nav navbar-nav navbar-default">
 										<li>
@@ -1023,7 +1030,7 @@
 							</div>
 						</div>
 					</div>
-				
+
 					{% leaflet_map "yourmap" callback="load_map" %}
 					{%endif%}
 
@@ -1031,7 +1038,7 @@
 
 					{% endblock content %}
 				</div>
-				
+
 			</div>
 
 		</div>
@@ -1039,7 +1046,6 @@
 		{% block footer %}
 		{% include "_footer.html" %}
 		{% endblock footer %}
-		
 
 		<!--Ventana modal-->
 
@@ -1083,7 +1089,7 @@
 		<!-- Latest compiled and minified JavaScript -->
 		<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
 		<script type="text/javascript">
-			//SocialShareKit.init();
+            //SocialShareKit.init();
 		</script>
 
 	</body>

@@ -5,6 +5,8 @@
 {% load tags%}
 {% block content %}
 
+{% get_current_language as LANGUAGE_CODE %}
+
 <input type="hidden" id="item_id_{{id}}" value="{{id}}"/>
 <input type="hidden" id="titulua_{{id}}" value="{{titulua}}"/>
 <input type="hidden" id="irudia_{{id}}" value="{{irudia}}"/>
@@ -12,7 +14,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-4">
-			<a id="item_img" class="img-responsive bilaketaEmaitza  thumbnail" href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" target="{% if item.edm_isshownby %}_blank{%endif%}" > {% if item.edm_object %} <!--<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">--> <img  alt="{{item.dc_title}}" src="{{item.edm_object}}"> {%else%} <iframe id="frame" src="{{item.edm_isshownby}}"></iframe> {% endif %} </a>
+			<a id="item_img" class="img-responsive bilaketaEmaitza  thumbnail" href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" target="{% if item.edm_isshownby %}_blank{%endif%}" > {% if item.edm_object %} <img  title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" src="{{item.edm_object}}"> {%else%} <iframe id="frame" src="{{item.edm_isshownby}}"></iframe> {% endif %} </a>
 
 			<div id="license_info" class="path-info overflow">
 				<ul class="nav  navbar-default">
@@ -30,9 +32,8 @@
 
 		</div>
 		<div class="col-md-6">
-			<div class="path-name overflow titulu-kolorea">
-				{% get_current_language as LANGUAGE_CODE %}
-				<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item}} </h2>
+			<div class="path-name overflow titulu-kolorea">				
+				<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
 
 				<ul class="nav navbar-nav navbar-default">
 					<li>
@@ -72,7 +73,7 @@
 			<div class="path-info overflow ">
 				<div class="comment more item-info-description">
 
-					{{ LANGUAGE_CODE|choose_description_language:item |safe}}
+					{{ LANGUAGE_CODE|choose_description_language:item |format_html|safe}}
 
 				</div>
 			</div>

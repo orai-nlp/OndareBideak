@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-
-{% block content %}
 {% load i18n %}
 {% load tags %}
 {% load leaflet_tags %}
 
-<link rel="stylesheet" href="{{STATIC_URL}}css/adituTag.css" type="text/css">
+{% get_current_language as LANGUAGE_CODE %}
+
 
 {% if hornitzailea %}
 {% block additional_scripts %}
@@ -14,6 +13,7 @@
 <link href="{{ STATIC_URL }}css/proposal.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/social-share-kit.css" rel="stylesheet">
+<link rel="stylesheet" href="{{STATIC_URL}}css/adituTag.css" type="text/css">
 {% endblock %}
 {%endif%}
 <!--<p> Showing {{ page.object_list|length }} of {{ page.paginator.count }} Results on Page {{ page.number }} of {{ page.paginator.n\
@@ -21,7 +21,12 @@ um_pages }}</p>-->
 <!--<p class="emaitzaInfo"> {{ items.count }} Kultur Item eta {{paths.count}} Ibilbide</p>-->
 
 
+{% block bilaketaFiltroak %}
+{% include "_search_filters.html" %}
+{% endblock bilaketaFiltroak %}
 
+
+{% block content %}
 
 <ul class="nav nav-tabs"  name="AdvOrBasicSearch">
   {% if hornitzailea%}
@@ -181,7 +186,7 @@ um_pages }}</p>-->
 			{%endif%}-->
 
 			<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
-				<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
+				<img  title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 			</a>
 		</div>
 		<div class="col-xs-1 col-md-1"></div>
@@ -191,7 +196,7 @@ um_pages }}</p>-->
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 				 {% if item.dc_title %}
-				<h5><a class="bilaketaTitulua" title="{{item.dc_title}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ item.dc_title|correct_language_tags }}</a></h5>
+				<h5><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h5>
 				{%endif%}
                                 {% if item.edm_provider %}
                                         <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
