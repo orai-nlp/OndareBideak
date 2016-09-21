@@ -3105,7 +3105,7 @@ def autocomplete(request):
 
 
 def cross_search(request):
-    print "cross_search"
+    
     #Defektuz itemen orria erakusteko
     z="i"
     # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -3130,8 +3130,6 @@ def cross_search(request):
      
         #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
         items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
-        print "CROSS_SEARCH"
-        print items.count()
         paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
  
     elif hizkuntza == 'es':
@@ -3184,10 +3182,21 @@ def cross_search(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         paths = paginator.page(paginator.num_pages)
     
+    #Datu-baseko hornitzaileak lortu
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak_text ="_".join(db_hornitzaileak)
+    
+    #Datu-baseko motak lortu
+    db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+    db_motak_text ="_".join(db_motak)
+    
+    #Datu-baseko lizentziak lortu
+    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+    db_lizentziak_text ="_".join(db_lizentziak)
     
     
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 
 def hornitzaile_search(request):
@@ -3261,11 +3270,24 @@ def hornitzaile_search(request):
     geoloc_latitude=hornitzaile.geoloc_latitude
     
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+    
+    #Datu-baseko hornitzaileak lortu
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak_text ="_".join(db_hornitzaileak)
+    
+    #Datu-baseko motak lortu
+    db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+    db_motak_text ="_".join(db_motak)
+    
+    #Datu-baseko lizentziak lortu
+    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+    db_lizentziak_text ="_".join(db_lizentziak)
+    
+    return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 def filtro_search(request):
     
-   
+    print "filtro_search"
     # Helburu hizkuntza guztietan burutuko du bilaketa
     hizkuntza=request.GET['hizkRadio']   
     galdera=request.GET['search_input']
@@ -3313,31 +3335,7 @@ def filtro_search(request):
             if(h=="en"):
                 hEn="en"
                 
-    horniEkm="ez"
-    horniArrunta="ez"
-    if hornitzaileakF != "":       
-        horniF=hornitzaileakF.split(',')
-        for h in horniF:
-            if(h=="EuskoMedia"):
-                horniEkm="EuskoMedia"
-            if(h=="herritarra"):
-                horniArrunta="herritarra"
-        
-    motaT="ez"
-    motaS="ez"
-    motaV="ez"  
-    motaI="ez"  
-    if motakF != "":       
-        motaF=motakF.split(',')
-        for m in motaF:
-            if(m=="testua"):
-                motaT="TEXT"
-            if(m=="audioa"):
-                motaS="SOUND"
-            if(m=="bideoa"):
-                motaV="VIDEO"
-            if(m=="irudia"):
-                motaI="IMAGE"
+    
     
     oData="ez"
     oData2="ez"
@@ -3351,19 +3349,6 @@ def filtro_search(request):
                 oData2="dataAsc"
             if(o=="botoak"):
                 oBoto="botoak"
-    
-    lLibre="ez"
-    lCommons="ez"
-    lCopy="ez"
-    if lizentziakF !="":
-        lizentziaF=lizentziakF.split(',')
-        for l in lizentziaF:
-            if(l=="librea"):
-                lLibre="librea"
-            if(l=="creativeCommons"):
-                lCommons="creativeCommons"
-            if(l=="copyRight"):
-                lCopy="copyRight"
     
     
     bEgun="ez"
@@ -3403,17 +3388,22 @@ def filtro_search(request):
             items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
         #hornitzaile filtroa
         if(hornitzaileakF != ""):
-            if(horniEkm=="ekm"):
-                items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-            else:
-                items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-        #Mota filtroa, edm_type=SOUND
-        if(motakF != ""):
-            print "Motaren arabera filtratu"
-            print items.count()
-            print motaT
-            items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])  
-            print items.count()
+            
+            hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+            items = items.filter(edm_provider__in=hornitzaileakF_list)
+
+        #Mota filtroa,
+        if(motakF != ""):       
+            motakF_list = [str(x) for x in motakF.split(",")]
+            items = items.filter(edm_type__in=motakF_list)
+            
+        #Lizentziak filtroa 
+        print "Lizentziarik bai?"
+        print lizentziakF
+        if(lizentziakF != ""):       
+            lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+            items = items.filter(edm_rights__in=lizentziakF_list)  
+        
         #Ordena Filtroa
         bozkatuenak_item_zerrenda=[]
         if(ordenakF != ""):            
@@ -3434,14 +3424,7 @@ def filtro_search(request):
                     items_ids.append(id)
                 #Ordena mantentzen du??                        
                 items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-        #Lizentziak filtroa
-        if lizentziakF !="":  
-            if  lLibre=="librea":
-                items=items.filter(edm_rights='librea')
-            if lCommons=="creativeCommons":
-                items=items.filter(edm_rights='creativeCommons')
-            if lCopy=="copyRight":
-                items=items.filter(edm_rights='copyRight')                
+                      
         #Besteak filtroa
         if (besteakF != ""):  
             if bEgun=="egunekoa":
@@ -3466,31 +3449,34 @@ def filtro_search(request):
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-        #hornitzaile filtroa TXUKUNDUUUU
+        #hornitzaile filtroa 
+        print "hornitzaileakF bai?"
+        print hornitzaileakF
         if(hornitzaileakF != ""):
+            
+            #hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+            print "hornitzaileakF"
+            print hornitzaileakF
+            print "hornitzaileakF_list"
+            print hornitzaileakF_list
+            item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+            print item_hornitzaile_erab
+            usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+            
+            #ID errepikatuak kendu
+            usr_id_zerrenda_set = set(usr_id_zerrenda)
+            usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+            paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+
             
             '''
             if(horniEkm=="herritarra"):
                 #Hornitzaileak diren erabiltzaileak hartu
                 paths = paths.exclude(path_fk_user_id__in=hornitzaile_erab)
-            else:
-                
-                paths = paths.filter(path_fk_user_id__in=hornitzaile_erab)
+            
             '''
-           
-            if(horniEkm=="ekm"):
-                
-                hornitzaileakF=hornitzaileakF+"ekm"
-                hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                hornitzaile_erab=User.objects.get(username='ekm')
-                paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-            else:      
-                        
-                items = items #.exclude(path_fk_user_id=hornitzaile_erab)
-       
         #Mota filtroa,IBILBIDEETAN EZ DAGO MOTA
-        #if(motakF != ""):
-            #paths = paths
         #Ordena Filtroa
         bozkatuenak_path_zerrenda=[]
         if(ordenakF != ""):            
@@ -3535,13 +3521,19 @@ def filtro_search(request):
             items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
         #hornitzaile filtroa
         if(hornitzaileakF != ""):
-            if(horniEkm=="ekm"):
-                items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-            else:
-                items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-        #Mota filtroa, edm_type=SOUND
-        if(motakF != ""):
-            items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+            hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+            items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+        #Mota filtroa,
+        if(motakF != ""):       
+            motakF_list = [str(x) for x in motakF.split(",")]
+            items = items.filter(edm_type__in=motakF_list) 
+        
+        #Lizentziak filtroa 
+        if(lizentziakF != ""):       
+            lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+            items = items.filter(edm_rights__in=lizentziakF_list)    
+         
         #Ordena Filtroa
         bozkatuenak_item_zerrenda=[]
         if(ordenakF != ""):            
@@ -3562,14 +3554,7 @@ def filtro_search(request):
                     items_ids.append(id)
                 #Ordena mantentzen du??                        
                 items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-        #Lizentziak filtroa
-        if lizentziakF !="":  
-            if  lLibre=="librea":
-                items=items.filter(edm_rights='librea')
-            if lCommons=="creativeCommons":
-                items=items.filter(edm_rights='creativeCommons')
-            if lCopy=="copyRight":
-                items=items.filter(edm_rights='copyRight')                
+                      
         #Besteak filtroa
         if (besteakF != ""):  
             if bEgun=="egunekoa":
@@ -3595,26 +3580,12 @@ def filtro_search(request):
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
         #hornitzaile filtroa TXUKUNDUUUU
         if(hornitzaileakF != ""):
-            
-            '''
-            if(horniEkm=="arrunta"):
-                #Hornitzaileak diren erabiltzaileak hartu
-                paths = paths.exclude(path_fk_user_id__in=hornitzaile_erab)
-            else:
-                
-                paths = paths.filter(path_fk_user_id__in=hornitzaile_erab)
-            '''
-           
-            if(horniEkm=="ekm"):
-                
-                hornitzaileakF=hornitzaileakF+"ekm"
-                hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                hornitzaile_erab=User.objects.get(username='ekm')
-                paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-            else:      
-                        
-                items = items #.exclude(path_fk_user_id=hornitzaile_erab)
-       
+            hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+            item_hornitzaile_erab=item.objects.filter(edm_provider__in=[hornitzaileakF_list])
+            usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+              
+            paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda)
+        
         #Mota filtroa,IBILBIDEETAN EZ DAGO MOTA
         #if(motakF != ""):
             #paths = paths
@@ -3653,21 +3624,28 @@ def filtro_search(request):
                 #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
                 paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
     elif hizkuntza == 'en':
-        print "radio hizk en"
+
         items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
         
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
+        
         #hornitzaile filtroa
         if(hornitzaileakF != ""):
-            if(horniEkm=="ekm"):
-                items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-            else:
-                items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-        #Mota filtroa, edm_type=SOUND
-        if(motakF != ""):
-            items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+            hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+            items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+        #Mota filtroa,
+        if(motakF != ""):       
+            motakF_list = [str(x) for x in motakF.split(",")]
+            items = items.filter(edm_type__in=motakF_list) 
+        
+        #Lizentziak filtroa 
+        if(lizentziakF != ""):       
+            lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+            items = items.filter(edm_rights__in=lizentziakF_list)   
+             
         #Ordena Filtroa
         bozkatuenak_item_zerrenda=[]
         if(ordenakF != ""):            
@@ -3688,14 +3666,7 @@ def filtro_search(request):
                     items_ids.append(id)
                 #Ordena mantentzen du??                        
                 items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-        #Lizentziak filtroa
-        if lizentziakF !="":  
-            if  lLibre=="librea":
-                items=items.filter(edm_rights='librea')
-            if lCommons=="creativeCommons":
-                items=items.filter(edm_rights='creativeCommons')
-            if lCopy=="copyRight":
-                items=items.filter(edm_rights='copyRight')                
+                      
         #Besteak filtroa
         if (besteakF != ""):  
             if bEgun=="egunekoa":
@@ -3719,27 +3690,13 @@ def filtro_search(request):
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-        #hornitzaile filtroa TXUKUNDUUUU
+        #hornitzaile filtroa 
         if(hornitzaileakF != ""):
-            
-            '''
-            if(horniEkm=="herritarra"):
-                #Hornitzaileak diren erabiltzaileak hartu
-                paths = paths.exclude(path_fk_user_id__in=hornitzaile_erab)
-            else:
-                
-                paths = paths.filter(path_fk_user_id__in=hornitzaile_erab)
-            '''
-           
-            if(horniEkm=="ekm"):
-                
-                hornitzaileakF=hornitzaileakF+"ekm"
-                hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                hornitzaile_erab=User.objects.get(username='ekm')
-                paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-            else:      
-                        
-                items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+            hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+            item_hornitzaile_erab=item.objects.filter(edm_provider__in=[hornitzaileakF_list])
+            usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+              
+            paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda)
        
         #Mota filtroa,IBILBIDEETAN EZ DAGO MOTA
         #if(motakF != ""):
@@ -3812,12 +3769,26 @@ def filtro_search(request):
         paths = paginator.page(paginator.num_pages)
     
     
+    #Datu-basetik filtro aukerak lortu
+    #Datu-baseko hornitzaileak lortu
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak_text ="_".join(db_hornitzaileak)
+    
+    #Datu-baseko motak lortu
+    db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+    db_motak_text ="_".join(db_motak)
+    
+    #Datu-baseko lizentziak lortu
+    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+    db_lizentziak_text ="_".join(db_lizentziak)
+    
     if hornitzaile_izena:
        
         hornitzaile = hornitzailea.objects.get(fk_user__username=hornitzaile_izena)
-        return render_to_response('cross_search.html',{'hornitzailea':hornitzaile,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkuntzakF':hizkF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
+        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'hornitzailea':hornitzaile,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkuntzakF':hizkF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
     else:
-        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkuntzakF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
+        
+        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkuntzakF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
 
 def nabigazioa_hasi(request):
     
