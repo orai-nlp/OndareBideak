@@ -666,7 +666,7 @@ function save_proposal_telefonoa(){
 	
     var telefonoa = $("#id_telefonoa").val();
    
-   	alert(telefonoa);
+   	//alert(telefonoa);
     $.ajax({
           url: '/ajax_edit_telefonoa',
           async: false,
@@ -695,7 +695,7 @@ function save_proposal_emaila(){
 	
     var emaila = $("#id_emaila").val();
    
-   	alert(emaila);
+   	//alert(emaila);
     $.ajax({
           url: '/ajax_edit_emaila',
           async: false,
@@ -719,6 +719,36 @@ function save_proposal_emaila(){
           
     });
 }
+
+function save_proposal_website(){
+    
+    var web = $("#id_website").val();
+   
+    //alert(web);
+    $.ajax({
+          url: '/ajax_edit_website',
+          async: false,
+          data: {website:web},
+          dataType:'html',
+          success : function(data, status, xhr){
+            var response=data;
+           
+            if (response != ""){
+                $('#id_website2').text(data);
+                $('#id_website').text(data);
+                $("#website_modal").modal('hide');
+                
+                }
+            else{
+                
+                $("#website_modal").modal('hide');
+            }
+            
+         }   
+          
+    });
+}
+
 
 function save_proposal_ordutegia(){
 	

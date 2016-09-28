@@ -5,9 +5,10 @@
 {% load tags%}
 {% block content %}
 
-{% if autoplay == 1 %}
-
 {% get_current_language as LANGUAGE_CODE %}
+
+
+{% if autoplay == 1 %}
 
 <script>
 	//var orr="{{autoplaypages.0}}";
@@ -15,7 +16,7 @@
 	orr=orr+"&autoplay=1&offset="+{{offset}};
 
 	var orria = orr.replace("&amp;", "&");
-	var sec = 2000;
+	var sec = 10000;
 	doSetTimeOutAutoplay(orria, sec); 
 </script>
 
@@ -23,11 +24,16 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-1"></div>
+		<div class="col-md-2 path-titulu-legend">
+			<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+						<span>{% trans "IBILBIDEA" %}: </span>
+		</div>
 
-		<div class="col-md-9">
-			<div class="path-name2 overflow titulu-kolorea">
-				<a class="titulu-kolorea" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}"><h2 class="bold">{{momentukoPatha.dc_title}}</h2></a>
+		<div class="col-md-8">
+			<div class="path-name2 overflow titulu-kolorea">				
+						<h2 class="bold">
+						<a class="titulu-kolorea" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}">{{momentukoPatha.dc_title}}</a>
+						</h2>						
 			</div>
 		</div>
 		<div class="col-md-2">
@@ -40,115 +46,73 @@
 	<div class="row">
 		<!--<div class="col-md-1">
 		</div>-->
-		<div class="col-md-4">
-
-			<a id="item_img" class="img-responsive bilaketaEmaitza  thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" > <img  alt="{{ LANGUAGE_CODE|choose_title_language:momentukoItema}}" src="{% if momentukoItema.edm_object %} {{momentukoItema.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}"> </a>
-
-			<div id="license_info" class="path-info overflow">
-
-				<ul class="nav  navbar-default">
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Lizentzia" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_rights%}
-							{{momentukoItema.edm_rights}}
-							{%else%}
-							-
-							{% endif %} </span>
-
-					</li>
-				</ul>
-			</div>
-			<div id="nabigMenu_titulu" class="path-info overflow">
-				<h3 class="titulu-kolorea">{% trans "NABIGATU" %}</h3>
-			</div>
-
-			<div id="nabigMenu_botoiak" class="clearfix">
-				<!--BOTOIAK AURREKOAK -->
-				<ul class="ezkerra">
-					{% for aurrekoa in aurrekoak %}
-					<li class="clearfix">
-						<button type="button" class="btn btn-common ezkerra" onclick="nabigatu({{path_id}},{{aurrekoa.fk_item_id_id}})">
-							<span  aria-hidden="true" title="{{aurrekoa.dc_title}}"> <span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> {{ LANGUAGE_CODE|choose_title_language:aurrekoa}} </span>
-						</button>
-					</li>
-					{% endfor %}
-				</ul>
-				<!--BOTOIAK HURRENGOAK -->
-				<ul class="eskuma">
-					{% for hurrengoa in hurrengoak %}
-					<li class="clearfix">
-						<button type="button" class="btn btn-common eskuma" onclick="nabigatu({{path_id}},{{hurrengoa.fk_item_id_id}})">
-							{%if hasieraBakarra == 1%}
-							<span  aria-hidden="true"> <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></span>
-							{%else%}
-							<span class="ellipsis" aria-hidden="true" title="{{hurrengoa.dc_title}}"> {{ LANGUAGE_CODE|choose_title_language:hurrengoa}} </span><span class="glyphicon glyphicon-forward" aria-hidden="true"> </span>
-							{% endif %}
-						</button>
-					</li>
-					{% endfor %}
-				</ul>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="path-name overflow titulu-kolorea">				
-				<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:momentukoItema}} </h2>
-
-				<ul class="nav navbar-nav navbar-default">
-					<li>
-						{% if "VIDEO" in momentukoItema.edm_type %}
-						<span class="glyphicon glyphicon-film" aria-hidden="true"></span>
-						{% endif %}
-						{% if "TEXT" in momentukoItema.edm_type %}
-						<span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-						{% endif %}
-						{% if "IMAGE" in momentukoItema.edm_type %}
-						<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
-						{% endif %}
-						{% if "SOUND" in momentukoItema.edm_type %}
-						<span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
-						{% endif %}
-					</li>
-					<li>
-						<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-						{% if momentukoItema.edm_year %}
-						{{momentukoItema.edm_year}}
-						{%else%}
-						-
-						{% endif %}
-					</li>
-
-					<li>
-						<!-- itemak erabiiltzailearekin lotutakoan hau aldatu, username erakutsi-->
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-
-						{{momentukoItema.dc_creator}}   &nbsp;  {{momentukoItema.edm_provider}}
-					</li>
-				</ul>
-			</div>
-
-			<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
-
-			<div class="path-info overflow ">
-				<div class="comment more item-info-description">
-					{{momentukoNodea.dc_description}}
-
-				</div>
-			</div>
-			<div class="path-info overflow">
+		<div class="col-md-3">
+			
+			<div id="nabigMapa" class="path-info overflow">
 				<button id="create_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modaloverview" >
 					<span  aria-hidden="true"> <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"> </span> {% trans "HEMEN ZAUDE" %} </span>
 				</button>
-				<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> {% trans "AUTOPLAY" %} </a>
+
+				{% if autoplay == 1 %}
+				<a id="autoplay" class="btn btn-common" href="#" onclick="stopTimeOutAutoplay();return false;"> <span id="autoplay-icon" class="glyphicon glyphicon-pause" aria-hidden="true"></span> {% trans "STOP AUTOPLAY" %} </a>
+				{% else %}
+				<a id="autoplay" class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"> <span id="autoplay-icon" class="glyphicon glyphicon-play" aria-hidden="true"></span> {% trans "AUTOPLAY" %} </a>
+				{% endif %}
+
 			</div>
-			<div class="path-info overflow">
+
+			<!-- TTS -->
+						<div id="tts" class="path-info overflow">
+			<div id="preloadedImages"></div>
+			<p id="lerrojauzia1" class="clearfix"></p>
+			<div id="audiobotoiak"{% if not request.mobile or request.tablet %}{% else %} class="mobile"{% endif %}>
+				<div class="ezkerrean">
+					<a href="#" id="gelditubotoia" onClick="TTS.stopBotoia(); return false;" class="audiobotoia" title="Gelditu" style="display:none"></a>
+					<a href="#" id="hasierarabotoia" onClick="TTS.hasierara(); return false;" class="audiobotoia" title="Hasierara" style="display:none"></a>
+					<a href="#" id="atzeraparagrafoabotoia" onClick="TTS.atzeraparagrafoa(); return false;" class="audiobotoia" title="Aurreko paragrafora" style="display:none"></a>
+					<a href="#" id="atzerabotoia" onClick="TTS.atzera(); return false;" class="audiobotoia" title="Aurreko esaldira" style="display:none"></a>
+					<a href="#" id="playbotoia" onClick="TTS.entzun(); return false;" class="audiobotoia play" title="Entzun" accesskey="p"></a>
+					<a href="#" id="aurrerabotoia" onClick="TTS.aurrera(); return false;" class="audiobotoia" title="Hurrengo esaldira" style="display:none"></a>
+					<a href="#" id="aurreraparagrafoabotoia" onClick="TTS.aurreraparagrafoa(); return false;" class="audiobotoia" title="Hurrengo paragrafora" style="display:none"></a>
+					<a href="#" id="amaierarabotoia" onClick="TTS.amaierara(); return false;" class="audiobotoia" title="Amaierara" style="display:none"></a>
+					<a href="#" id="joanbotoia" onClick="TTS.joan(); return false;" class="audiobotoia" title="Zati zehatz batera joateko, klik egin bertan eta jarraitu botoia sakatu" style="display:none"></a>
+					<a href="#" id="azalpentestua" class="audiobotoia" onClick="TTS.entzun(); return false;" title="Edukia entzun"><span id="entzuntestua" class="ezkerrean">Orria entzun</span></a>
+					<a href="#" id="aboutbotoia" onClick="TTS.about(); return false;" class="audiobotoia" title="Honi buruz" accesskey="h" style="display:none"></a>
+				</div>
+				<div id="bolumenakontrola" class="audiobotoia ezkerrean" title="Bolumena" style="display:none">
+					<div class="banatzekoa"></div>
+					<a href="#" id="volume" onClick="TTS.bolumenaerakutsiezkutatu(); return false;"></a>
+					<a href="#" id="bolumenaslider"></a>
+					<span id="bolumenatooltip" class="slidertooltipbolumena" style="display:none"></span>
+				</div>
+				<div id="abiadurakontrola" class="audiobotoia ezkerrean" title="Irakurketaren abiadura" style="display:none">
+					<a href="#" id="abiadura" onClick="TTS.abiaduraerakutsiezkutatu(); return false;"></a>
+					<a href="#" id="abiaduraslider" class="ezkerrean"></a>
+					<span id="abiaduratooltip" class="slidertooltipabiadura" style="display:none"></span>
+				</div>
+				<div id="generoakontrola" class="audiobotoia ezkerrean" title="Ahotsaren generoa" style="display:none">
+					<a href="#" id="genero" class="ezkerrean" onClick="TTS.generoaerakutsiezkutatu(); return false;"></a>
+					<div id="generoaukera" style="display:none">
+						<a href="#" id="generoemakumea" class="ezkerrean" onClick="TTS.generoaaldatu(event); return false;" title="Emakumea"></a>
+						<div class="ezkerrean banatzekoa"></div>
+						<a href="#" id="generogizona" class="ezkerrean aukeratuta" onClick="TTS.generoaaldatu(event); return false;" title="Gizona"></a>
+					</div>
+				</div>
+				<div class="banatzekoa"></div>
+				<a id="tts_elhuyar_logoa" href="https://www.elhuyar.eus/eu/site/hizketa-teknologiak" title="Elhuyar Hizkuntza eta Teknologia" target="_blank"></a>
+			</div>
+			</div><!-- tts -->
+
+<hr />
+			
+<div id="item_infobox" class="path-info overflow">
 				<h3 class="titulu-kolorea">{% trans "EZAUGARRIAK" %}</h3>
 				<ul class="nav  navbar-default">
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Sortzailea" %}:&nbsp;
 						<span class="eremu-str"> {% if momentukoItema.dc_creator%}
-							{{momentukoItema.dc_creator}}
+							{{momentukoItema.dc_creator|format_html |safe}}
 							{%else%}
 							-
 							{% endif %} </span>
@@ -159,7 +123,7 @@
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Hornitzailea" %}:&nbsp;
 						<span class="eremu-str"> {% if momentukoItema.edm_provider%}
-							{{momentukoItema.edm_provider}}
+							{{momentukoItema.edm_provider|format_html |safe}}
 							{%else%}
 							-
 							{% endif %} </span>
@@ -178,9 +142,8 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Hizkuntza" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_language %}
-							{{momentukoItema.edm_language}}
-							{{momentukoItema.dc_language}}
+						<span class="eremu-str"> {% if momentukoItema.ob_language %}
+							{{momentukoItema.ob_language| ob_language_errep_kendu}}
 							{%else%}
 							-
 							{% endif %} </span>
@@ -215,30 +178,11 @@
 							-
 							{% endif %} </span>
 
-					</li>
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Jatorrizko deskribapena" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_description %}
-							<div class="comment more item-info-description">
-								{{ LANGUAGE_CODE|choose_description_language:momentukoItema |safe}}
-							</div> {%else%}
-							-
-							{% endif %} </span>
-
-						<div class="path-info overflow ">
-
-					</li>
-
-					<li>
-						{% if momentukoItema.edm_isshownat%}
-						<a  class="eremu-str" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
-						{%endif%}
-					</li>
+					</li>								
 				</ul>
 			</div>
 
-			<div class="path-info overflow">
+<div id="crossingPaths" class="path-info overflow">
 
 				<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
 				{%if itemPaths %}
@@ -247,7 +191,10 @@
 					<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} ({{itemPaths.count}})</h3>
 					{% for node in itemPaths %}
 					{% if forloop.counter < 4 %}
-					<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
+					<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">
+						<span class="glyphicon glyphicon-map-marker" aria-hidden="true">
+						
+					</span>&nbsp;{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
 					{%endif%}
 					{%endfor%}
 					<!--</br>-->
@@ -260,6 +207,140 @@
 				<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; - </h3>
 				{%endif%}
 			</div>
+
+
+		</div>
+		<div class="col-md-7">
+			<div class="path-name overflow titulu-kolorea">				
+				<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:momentukoItema| format_html |safe}} </h2>
+
+				<ul class="nav navbar-nav navbar-default">
+					<li>
+						{% if "VIDEO" in momentukoItema.edm_type %}
+						<span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+						{% endif %}
+						{% if "TEXT" in momentukoItema.edm_type %}
+						<span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+						{% endif %}
+						{% if "IMAGE" in momentukoItema.edm_type %}
+						<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+						{% endif %}
+						{% if "SOUND" in momentukoItema.edm_type %}
+						<span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
+						{% endif %}
+					</li>
+					<li>
+						<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+						{% if momentukoItema.edm_year %}
+						{{momentukoItema.edm_year}}
+						{%else%}
+						-
+						{% endif %}
+					</li>
+
+					<li>
+						<!-- itemak erabiiltzailearekin lotutakoan hau aldatu, username erakutsi-->
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+
+						{{momentukoItema.dc_creator|format_html |safe}}   &nbsp;  {{momentukoItema.edm_provider|format_html |safe}}
+					</li>
+				</ul>
+			</div>
+
+			<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
+
+			<div class="path-info overflow ">
+				<div id="description" class="item-info-description">
+			
+			<div class="clearfix"></div>
+			<span class="comment more item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+				
+				</div>
+			</div>
+			
+			<!-- item preview -->
+			
+			<div id="item_preview">
+			{% include "_item_preview.html" %}
+			<div id="license_info" class="path-info overflow">
+
+				<ul class="nav  navbar-default">
+					<li class="ezkerra">
+						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+						{% trans "Lizentzia" %}:&nbsp;
+						<span class="eremu-str"> {% if momentukoItema.edm_rights%}
+							<a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a>
+							{%else%}
+							-
+							{% endif %} </span>
+
+					</li>
+					<li class="eskuma">
+						{% if momentukoItema.edm_isshownat%}
+						<a  class="eremu-str" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
+						{%endif%}
+					</li>
+				</ul>
+			</div>
+		</div> <!-- item preview-->
+			
+			
+						<div id="nabigMenu" class="path-info">
+			<!--<div id="nabigMenu_titulu" class="path-info overflow">
+				<h3 class="titulu-kolorea">{% trans "NABIGATU" %}</h3>
+			</div>-->
+
+			<div id="nabigMenu_botoiak" class="clearfix">
+				<!--BOTOIAK AURREKOAK -->
+				<ul class="ezkerra">
+					<h3 class="titulu-kolorea">{% trans "Atzera" %}</h3>
+					{% for aurrekoa in aurrekoak %}
+					{% with h=LANGUAGE_CODE|choose_title_language:aurrekoa|format_html|safe %}
+					<li class="clearfix">
+						<button type="button" class="btn btn-common ezkerra" onclick="nabigatu({{path_id}},{{aurrekoa.fk_item_id_id}})">
+							<span class="glyphicon glyphicon-backward" aria-hidden="true" style="float: left;padding-left:3px;"> </span><div class="ellipsis" style="float:right;"><span class="ellipsis" aria-hidden="true" title="{{h}}"> {{h}} </span></div>
+						</button>
+					</li>
+					{% endwith %}
+					{% endfor %}
+				</ul>
+				<!--BOTOIAK HURRENGOAK -->
+				<ul class="eskuma">
+					<h3 class="titulu-kolorea text-right">{% trans "Nondik jo nahi duzu Aurrera?" %}</h3>
+					{% for hurrengoa in hurrengoak %}
+					{% with h=LANGUAGE_CODE|choose_title_language:hurrengoa|format_html|safe %}
+					<li class="clearfix">
+						<button type="button" class="btn btn-common eskuma" onclick="nabigatu({{path_id}},{{hurrengoa.fk_item_id_id}})">
+							{%if hasieraBakarra == 1%}
+							<span  aria-hidden="true"> <span class="glyphicon glyphicon-repeat" aria-hidden="true" style="float:right;padding-right:3px;"></span></span>
+							{%else%}
+							<div class="ellipsis" style="float:left;"><span class="ellipsis" aria-hidden="true" title="{{h}}"> {{h}} </span></div><span class="glyphicon glyphicon-forward" aria-hidden="true" style="float: right; padding-right:3px;"> </span>
+							{% endif %}
+						</button>
+					</li>
+					{% endwith %}
+					{% endfor %}
+				</ul>
+			</div>
+			</div>
+			
+			<div id="item_moreInfo" class="path-info overflow">				
+				<ul class="nav  navbar-default">			
+					<li>
+						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+						{% trans "Jatorrizko deskribapena" %}:&nbsp;
+						<span class="eremu-str"> {% if momentukoItema.dc_description %}
+							<div class="comment more item-info-description">
+								{{ LANGUAGE_CODE|choose_description_language:momentukoItema |format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags |safe}}
+							</div> {%else%}
+							-
+							{% endif %} </span>
+
+						<!--<div class="path-info overflow ">-->
+					</li>					
+				</ul>
+			</div>			
+			
 		</div>
 		<div class="col-md-2">
 			<!-- BOTAZIO SISTEMA ITEMAK-->
@@ -358,7 +439,7 @@
 				//path_node[0];
 				var titulua = "{{node.dc_title}}";
 				//path_node[1];
-				var irudia = "{{node.paths_thumbnail}}";
+				var irudia = htmlDecode("{{node.paths_thumbnail}}");
 				//path_node[2];
 				if (irudia == " ") {
 					irudia = "/uploads/NoIrudiItem.png";
@@ -387,3 +468,19 @@
 </div>
 
 {% endblock %}
+
+
+{% block pageEndScripts %}
+		<!-- TTS -->
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts_berezia.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
+{% endblock pageEndScripts %}
+

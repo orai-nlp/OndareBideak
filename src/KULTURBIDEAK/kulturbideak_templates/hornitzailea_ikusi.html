@@ -64,7 +64,9 @@ um_pages }}</p>-->
                 {%endif%}
                 	 </h1>  
                
-
+				 {% if hornitzailea.ikonoa %}
+        				<img id="id_icon"  class="hornitzaile-ikonoa" src="{{ hornitzailea.ikonoa }}" alt="">      			
+				 {%endif%}
                 <!--<p class="lead">{% trans "Deskribapena" %}</p>-->
                 <p><span id="id_summary">{{hornitzailea.deskribapena}}</span></p>
                                                                         

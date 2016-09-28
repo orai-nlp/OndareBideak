@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% load leaflet_tags %}
 {% load tags %}
 {% load i18n %}
+{% load leaflet_tags %}
+
 {% block content %}
 
 <div class="itema_gehitu">
@@ -10,6 +11,7 @@
 <div class="container">
 <div class="row">
   <div class="col-md-1">
+    
     </div>
   <div class="col-md-3">
     <a class="img-responsive bilaketaEmaitza  thumbnail" href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" target="{% if item.edm_isshownby %}_blank{%endif%}" >
@@ -44,12 +46,12 @@
 	</ul>
       </div>
     
-    </div>
+    </div><!--col-3-->
   <div class="col-md-6">
     <div class="path-name overflow titulu-kolorea">
       {% get_current_language as LANGUAGE_CODE %}
       
-      <h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item}} </h2>
+      <h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item |format_html|safe}} </h2>
       
       <ul class="nav navbar-nav navbar-default">
 	<li>
@@ -274,18 +276,19 @@
 				<!--</br>-->
 				{% if itemPaths|length  >= 4 %} <!-- ONDOREN >= 4 JARRI-->
 	  <a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
+	  </div>
 	  {%endif%}
 	  
-	  </div>
+	<!--  </div>-->
       {% else %}
       <h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; - </h3>
       {%endif%}
       </div>
-    </div>
+    </div><!-- col-6-->
   <div class="col-md-2">
      
     </div>
-</div>
+</div><!--row-->
 </div> <!--container-->
 
 	
@@ -307,7 +310,7 @@
 		<label for="id_titulua">{% trans "Titulua" %}:</label>
 		{{itema.titulua}}
 		
-		<label for="id_deskribapena">{% trans "Deskribapena:</label>
+		<label for="id_deskribapena">{% trans "Deskribapena"%}:</label>
 		{{itema.deskribapena}}
 		
 		<label for="id_sortzailea">{% trans "Sortzailea" %}:</label>
@@ -351,11 +354,9 @@
 		<br/>
 		<br/>
 		<!-- GEOLOKALIZAZIOA -->
-		<label for="id_hizkuntzak">{% trans "Geolokalizazioa" %}:</label>
-
+		<label for="id_geolokalizazioa">Geolokalizazioa:</label>
 		<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
 		<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
-            
             
 		{% leaflet_map "yourmap" callback="load_map" %}
 		

@@ -360,32 +360,6 @@ def eguneko_itema_kendu(request):
                 if(h=="en"):
                     hEn="en"
                 
-        horniEkm="ez"
-        horniArrunta="ez"
-        if hornitzaileakF != "":       
-            horniF=hornitzaileakF.split(',')
-            for h in horniF:
-                if(h=="EuskoMedia"):
-                    horniEkm="EuskoMedia"
-                if(h=="herritarra"):
-                    horniArrunta="herritarra"
-        
-        motaT="ez"
-        motaS="ez"
-        motaV="ez"  
-        motaI="ez"  
-        if motakF != "":       
-            motaF=motakF.split(',')
-            for m in motaF:
-                if(m=="testua"):
-                    motaT="TEXT"
-                if(m=="audioa"):
-                    motaS="SOUND"
-                if(m=="bideoa"):
-                    motaV="VIDEO"
-                if(m=="irudia"):
-                    motaI="IMAGE"
-    
         oData="ez"
         oData2="ez"
         oBoto="ez"
@@ -398,20 +372,6 @@ def eguneko_itema_kendu(request):
                     oData2="dataAsc"
                 if(o=="botoak"):
                     Boto="botoak"
-    
-        lLibre="ez"
-        lCommons="ez"
-        lCopy="ez"
-        if lizentziakF !="":
-            lizentziaF=lizentziakF.split(',')
-            for l in lizentziaF:
-                if(l=="librea"):
-                    lLibre="librea"
-                if(l=="creativeCommons"):
-                    lCommons="creativeCommons"
-                if(l=="copyRight"):
-                    lCopy="copyRight"
-    
     
         bEgun="ez"
         bProp="ez"
@@ -441,19 +401,23 @@ def eguneko_itema_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+            #hornitzaile filtroa                                                                                                   
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=hornitzaileakF_list)
+
+            #Mota filtroa,                                                           
             if(motakF != ""):
-                print "Motaren arabera filtratu"
-                print items.count()
-                print motaT
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])  
-                print items.count()
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
+
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -464,23 +428,18 @@ def eguneko_itema_kendu(request):
                
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                                                  
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -488,7 +447,7 @@ def eguneko_itema_kendu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":                          
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":              
@@ -500,18 +459,18 @@ def eguneko_itema_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+             #hornitzaile filtroa                                                                                                   
             if(hornitzaileakF != ""):
-           
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+
        
        
             #Ordena Filtroa
@@ -522,15 +481,14 @@ def eguneko_itema_kendu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azka
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
         
        
             #Besteak filtroa
@@ -553,15 +511,21 @@ def eguneko_itema_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+             #hornitzaile filtroa                                                                                                
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+            #Mota filtroa,                                                                                                       
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -571,23 +535,17 @@ def eguneko_itema_kendu(request):
                 if(oData2 == "dataAsc"):             
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                               
+
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                                     
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -595,7 +553,7 @@ def eguneko_itema_kendu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":                        
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":
@@ -608,18 +566,20 @@ def eguneko_itema_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+
             if(hornitzaileakF != ""):
- 
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+                #hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]                                                  
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)#if(hornitzaileakF != ""):
+
        
       
             #Ordena Filtroa
@@ -630,16 +590,14 @@ def eguneko_itema_kendu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                  
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
-        
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                          
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
       
             #Besteak filtroa
             if (besteakF != ""):  
@@ -660,15 +618,22 @@ def eguneko_itema_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+          
+            #hornitzaile filtroa                                                                                                    
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+            #Mota filtroa,                                                                                                          
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -680,23 +645,16 @@ def eguneko_itema_kendu(request):
                     #items = items.order_by('-dc_date')
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+                    
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -704,7 +662,7 @@ def eguneko_itema_kendu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":             
               
                     items=items.filter(edm_object = Raw("[* TO *]"))  
@@ -718,18 +676,17 @@ def eguneko_itema_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
             if(hornitzaileakF != ""):
-           
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
        
      
             #Ordena Filtroa
@@ -740,15 +697,14 @@ def eguneko_itema_kendu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                               
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
         
       
             #Besteak filtroa
@@ -798,7 +754,20 @@ def eguneko_itema_kendu(request):
     
     
         z="i"
-        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+        
+         #Datu-baseko hornitzaileak lortu                                                                                           
+        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+        db_hornitzaileak_text ="_".join(db_hornitzaileak)
+
+        #Datu-baseko motak lortu                                                                                                    
+        db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+        db_motak_text ="_".join(db_motak)
+
+        #Datu-baseko lizentziak lortu                                                                                               
+        db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+        db_lizentziak_text ="_".join(db_lizentziak)
+
+        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'db_hornitzaileak_text':db_hornitzaileak_text,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     elif nondik =="ikusi":
      
@@ -854,7 +823,7 @@ def eguneko_itema_kendu(request):
         non="erakutsi_item"
 
         
-        return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+        return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
     else:
         
@@ -976,6 +945,10 @@ def eguneko_itema_gehitu(request):
     nondik = request.GET.get('nondik')
 
     item.objects.filter(id=item_id).update(egunekoa = 1)   
+    #item_tartekoa.egunekoa=1
+    #item_tartekoa.save()        
+
+
 
     #GURI ALDAKETAREN BERRI EMAN?
     
@@ -1029,7 +1002,7 @@ def eguneko_itema_gehitu(request):
         # Helburu hizkuntza guztietan burutuko du bilaketa
         hizkuntza=request.GET['hizkRadio']   
         galdera=request.GET['search_input']
-    
+        
         #FILTROAK
         hizkuntzakF=request.GET['hizkuntzakF']
         hizkF=[] 
@@ -1065,32 +1038,7 @@ def eguneko_itema_gehitu(request):
                 if(h=="en"):
                     hEn="en"
                 
-        horniEkm="ez"
-        horniArrunta="ez"
-        if hornitzaileakF != "":       
-            horniF=hornitzaileakF.split(',')
-            for h in horniF:
-                if(h=="EuskoMedia"):
-                    horniEkm="EuskoMedia"
-                if(h=="herritarra"):
-                    horniArrunta="herritarra"
-        
-        motaT="ez"
-        motaS="ez"
-        motaV="ez"  
-        motaI="ez"  
-        if motakF != "":       
-            motaF=motakF.split(',')
-            for m in motaF:
-                if(m=="testua"):
-                    motaT="TEXT"
-                if(m=="audioa"):
-                    motaS="SOUND"
-                if(m=="bideoa"):
-                    motaV="VIDEO"
-                if(m=="irudia"):
-                    motaI="IMAGE"
-    
+           
         oData="ez"
         oData2="ez"
         oBoto="ez"
@@ -1103,20 +1051,6 @@ def eguneko_itema_gehitu(request):
                     oData2="dataAsc"
                 if(o=="botoak"):
                     Boto="botoak"
-    
-        lLibre="ez"
-        lCommons="ez"
-        lCopy="ez"
-        if lizentziakF !="":
-            lizentziaF=lizentziakF.split(',')
-            for l in lizentziaF:
-                if(l=="librea"):
-                    lLibre="librea"
-                if(l=="creativeCommons"):
-                    lCommons="creativeCommons"
-                if(l=="copyRight"):
-                    lCopy="copyRight"
-    
     
         bEgun="ez"
         bProp="ez"
@@ -1136,29 +1070,54 @@ def eguneko_itema_gehitu(request):
                     bIrudiBai="irudiaDu"
                 if(b=="irudiaEzDu"):
                     bIrudiEz="irudiaEzDu"
-    
+                    
+        #print request.POST['hornitzaile_search'].fk_user.username
+        if 'hornitzaile_search' in request.GET:
+            # dagokion hornitzailearenak hartuko ditugu behean hasteko
+            hornitzaileakF=""
+            hornitzaile_username=request.GET['hornitzaile_search']
+            horni_id=request.GET['horni_id']
+
+
+        else:
+            print "eez"
+
+
         #GALDERA BOTA
         if hizkuntza == 'eu':
             #ITEMS
-            #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
-            items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
-       
+            if 'hornitzaile_search' in request.GET:
+                hornitzaile_erab=User.objects.filter(username=hornitzaile_username)
+                hornitzaile_id=int(horni_id)
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items)
+             
+            else:    
+            
+                items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
+            #print "ksksk"    
+            #print len(items)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+       
+            #hornitzaile filtroa                                                                                                         
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+              
+                # username ->userid -> distinct(edm_provider)
+                items = items.filter(edm_provider__in=hornitzaileakF_list)
+              
+            #Mota filtroa                                                                                                              
             if(motakF != ""):
-                print "Motaren arabera filtratu"
-                print items.count()
-                print motaT
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])  
-                print items.count()
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                   
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+    
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -1169,23 +1128,18 @@ def eguneko_itema_gehitu(request):
                
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+               
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                                                  
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+                
+    
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -1193,31 +1147,36 @@ def eguneko_itema_gehitu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":                          
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":              
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                 
-        
+            if 'hornitzaile_search' in request.GET:
+                #hornitzaile_id=hornitzailea.objects.filter(fk_user.username=hornitzaileakF)
+              
+
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)
+
+            else:
             #PATHS
-            paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+                paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+            
+            #hornitzaile filtroa                                                                                                    
             if(hornitzaileakF != ""):
-           
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
-       
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+                #ID errepikatuak kendu 
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
        
             #Ordena Filtroa
             bozkatuenak_path_zerrenda=[]
@@ -1227,15 +1186,15 @@ def eguneko_itema_gehitu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                 
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
         
        
             #Besteak filtroa
@@ -1250,7 +1209,8 @@ def eguneko_itema_gehitu(request):
                 if bIrudiEz=="irudiaEzDu":
                 
                     paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
-    
+            print "bukatuuu"        
+            print len(items)
                 
         elif hizkuntza == 'es':
        
@@ -1258,15 +1218,22 @@ def eguneko_itema_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+            
+            #hornitzaile filtroa                                                                                                        
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=[hornitzaileakF_list])
+                
+                #Mota filtroa,                                                                                                 
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+                    
+            #Lizentziak filtroa                                                                                                    
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -1276,23 +1243,18 @@ def eguneko_itema_gehitu(request):
                 if(oData2 == "dataAsc"):             
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                      
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+                    #print bozkatuenak_item_zerrenda[0].item_id                                                                          
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                                                       
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -1300,7 +1262,7 @@ def eguneko_itema_gehitu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":                        
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":
@@ -1313,18 +1275,21 @@ def eguneko_itema_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+            #hornitzaile filtroa                                                                                                         
             if(hornitzaileakF != ""):
- 
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+                #hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]                                                 
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+
+                #ID errepikatuak kendu                                                                                                   
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+
        
       
             #Ordena Filtroa
@@ -1335,15 +1300,15 @@ def eguneko_itema_gehitu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                               
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                        
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+                    
         
       
             #Besteak filtroa
@@ -1365,15 +1330,22 @@ def eguneko_itema_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+           
+            #hornitzaile filtroa                                                                                                
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+            #Mota filtroa,                                                                                                         
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                         
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -1385,23 +1357,16 @@ def eguneko_itema_gehitu(request):
                     #items = items.order_by('-dc_date')
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                              
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+                    
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+                                        
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -1423,20 +1388,20 @@ def eguneko_itema_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+            #hornitzaile filtroa                                                                                                         
             if(hornitzaileakF != ""):
-           
-                if(horniEkm=="ekm"):
+
                 
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
-       
-     
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+                
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+
+                #ID errepikatuak kendu                                                                                             
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+                
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+                #hornitzaile filtroa                                                                                                    
             #Ordena Filtroa
             bozkatuenak_path_zerrenda=[]
             if(ordenakF != ""):            
@@ -1445,15 +1410,15 @@ def eguneko_itema_gehitu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                        
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
         
       
             #Besteak filtroa
@@ -1503,7 +1468,26 @@ def eguneko_itema_gehitu(request):
     
     
         z="i"
-        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+
+        #Datu-baseko hornitzaileak lortu                                                                                           
+        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+        db_hornitzaileak_text ="_".join(db_hornitzaileak)
+        
+        #Datu-baseko motak lortu                                                                                                   
+        db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+        db_motak_text ="_".join(db_motak)
+    
+        #Datu-baseko lizentziak lortu                                                                                              
+        db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+        db_lizentziak_text ="_".join(db_lizentziak)
+        
+        #Maddalen:
+        if 'hornitzailea_search' in request.GET:
+            z='h'
+            return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+
+        else:
+            return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     elif nondik =="ikusi":
         print "nondik ba? ikusi"
@@ -1559,7 +1543,7 @@ def eguneko_itema_gehitu(request):
         non="erakutsi_item"
         
         
-        return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+        return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
     else:
         
         #editatu
@@ -1776,32 +1760,6 @@ def eguneko_ibilbidea_gehitu(request):
                 if(h=="en"):
                     hEn="en"
                 
-        horniEkm="ez"
-        horniArrunta="ez"
-        if hornitzaileakF != "":       
-            horniF=hornitzaileakF.split(',')
-            for h in horniF:
-                if(h=="EuskoMedia"):
-                    horniEkm="EuskoMedia"
-                if(h=="herritarra"):
-                    horniArrunta="herritarra"
-        
-        motaT="ez"
-        motaS="ez"
-        motaV="ez"  
-        motaI="ez"  
-        if motakF != "":       
-            motaF=motakF.split(',')
-            for m in motaF:
-                if(m=="testua"):
-                    motaT="TEXT"
-                if(m=="audioa"):
-                    motaS="SOUND"
-                if(m=="bideoa"):
-                    motaV="VIDEO"
-                if(m=="irudia"):
-                    motaI="IMAGE"
-    
         oData="ez"
         oData2="ez"
         oBoto="ez"
@@ -1815,19 +1773,7 @@ def eguneko_ibilbidea_gehitu(request):
                 if(o=="botoak"):
                     Boto="botoak"
     
-        lLibre="ez"
-        lCommons="ez"
-        lCopy="ez"
-        if lizentziakF !="":
-            lizentziaF=lizentziakF.split(',')
-            for l in lizentziaF:
-                if(l=="librea"):
-                    lLibre="librea"
-                if(l=="creativeCommons"):
-                    lCommons="creativeCommons"
-                if(l=="copyRight"):
-                    lCopy="copyRight"
-    
+            
     
         bEgun="ez"
         bProp="ez"
@@ -1857,15 +1803,24 @@ def eguneko_ibilbidea_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+            
+            #hornitzaile filtroa                                                                                              
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=hornitzaileakF_list)
+
+            #Mota filtroa,                                                                                                         
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+    
+        
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -1876,23 +1831,17 @@ def eguneko_ibilbidea_gehitu(request):
                
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                               
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                                                  
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -1900,7 +1849,7 @@ def eguneko_ibilbidea_gehitu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":                          
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":              
@@ -1912,18 +1861,19 @@ def eguneko_ibilbidea_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+            
+            #hornitzaile filtroa                                                                                                    
             if(hornitzaileakF != ""):
-           
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+
        
        
             #Ordena Filtroa
@@ -1934,16 +1884,15 @@ def eguneko_ibilbidea_gehitu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                 
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
-        
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
        
             #Besteak filtroa
             if (besteakF != ""):  
@@ -1965,15 +1914,23 @@ def eguneko_ibilbidea_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+ 
+             #hornitzaile filtroa   
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+            #Mota filtroa                                                                                                       
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
+    
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -1983,23 +1940,19 @@ def eguneko_ibilbidea_gehitu(request):
                 if(oData2 == "dataAsc"):             
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+                    #print bozkatuenak_item_zerrenda[0].item_id                                                                     
+                    
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                                                 
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+                    
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -2007,7 +1960,7 @@ def eguneko_ibilbidea_gehitu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":                        
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":
@@ -2020,18 +1973,18 @@ def eguneko_ibilbidea_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+            
             if(hornitzaileakF != ""):
- 
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
        
       
             #Ordena Filtroa
@@ -2042,15 +1995,14 @@ def eguneko_ibilbidea_gehitu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
         
       
             #Besteak filtroa
@@ -2072,15 +2024,23 @@ def eguneko_ibilbidea_gehitu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+            
+             #hornitzaile filtroa                                                                                                  
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+            #Mota filtroa,                                                                                                          
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
+
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -2092,23 +2052,16 @@ def eguneko_ibilbidea_gehitu(request):
                     #items = items.order_by('-dc_date')
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+                    
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -2116,7 +2069,7 @@ def eguneko_ibilbidea_gehitu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":             
               
                     items=items.filter(edm_object = Raw("[* TO *]"))  
@@ -2132,16 +2085,18 @@ def eguneko_ibilbidea_gehitu(request):
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
             #hornitzaile filtroa TXUKUNDUUUU
             if(hornitzaileakF != ""):
-           
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+
        
      
             #Ordena Filtroa
@@ -2152,15 +2107,15 @@ def eguneko_ibilbidea_gehitu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                 
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
         
       
             #Besteak filtroa
@@ -2210,7 +2165,21 @@ def eguneko_ibilbidea_gehitu(request):
     
     
         z="p"
-        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+
+        #Datu-baseko hornitzaileak lortu                                                                                             
+        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+        db_hornitzaileak_text ="_".join(db_hornitzaileak)
+
+        #Datu-baseko motak lortu                                                                                                     
+        db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+        db_motak_text ="_".join(db_motak)
+
+        #Datu-baseko lizentziak lortu                                                                                                
+        db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+        db_lizentziak_text ="_".join(db_lizentziak)
+
+        
+        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     elif(nondik=="ikusi"):
         print "nondik ba?"
@@ -2409,32 +2378,6 @@ def eguneko_ibilbidea_kendu(request):
                 if(h=="en"):
                     hEn="en"
                 
-        horniEkm="ez"
-        horniArrunta="ez"
-        if hornitzaileakF != "":       
-            horniF=hornitzaileakF.split(',')
-            for h in horniF:
-                if(h=="EuskoMedia"):
-                    horniEkm="EuskoMedia"
-                if(h=="herritarra"):
-                    horniArrunta="herritarra"
-        
-        motaT="ez"
-        motaS="ez"
-        motaV="ez"  
-        motaI="ez"  
-        if motakF != "":       
-            motaF=motakF.split(',')
-            for m in motaF:
-                if(m=="testua"):
-                    motaT="TEXT"
-                if(m=="audioa"):
-                    motaS="SOUND"
-                if(m=="bideoa"):
-                    motaV="VIDEO"
-                if(m=="irudia"):
-                    motaI="IMAGE"
-    
         oData="ez"
         oData2="ez"
         oBoto="ez"
@@ -2447,19 +2390,6 @@ def eguneko_ibilbidea_kendu(request):
                     oData2="dataAsc"
                 if(o=="botoak"):
                     Boto="botoak"
-    
-        lLibre="ez"
-        lCommons="ez"
-        lCopy="ez"
-        if lizentziakF !="":
-            lizentziaF=lizentziakF.split(',')
-            for l in lizentziaF:
-                if(l=="librea"):
-                    lLibre="librea"
-                if(l=="creativeCommons"):
-                    lCommons="creativeCommons"
-                if(l=="copyRight"):
-                    lCopy="copyRight"
     
     
         bEgun="ez"
@@ -2490,15 +2420,25 @@ def eguneko_ibilbidea_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+
+
+            #hornitzaile filtroa                                                                                                    
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=hornitzaileakF_list)
+
+            #Mota filtroa,                                                                                                          
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+    
+
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -2509,23 +2449,18 @@ def eguneko_ibilbidea_kendu(request):
                
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                                                  
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -2533,7 +2468,7 @@ def eguneko_ibilbidea_kendu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":                          
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":              
@@ -2545,18 +2480,19 @@ def eguneko_ibilbidea_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+            
+            #hornitzaile filtroa                                                                                                    
             if(hornitzaileakF != ""):
-           
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+
        
        
             #Ordena Filtroa
@@ -2567,15 +2503,15 @@ def eguneko_ibilbidea_kendu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                 
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
         
        
             #Besteak filtroa
@@ -2598,15 +2534,24 @@ def eguneko_ibilbidea_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-            #hornitzaile filtroa
+                
+             #hornitzaile filtroa                                                                                                   
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+            #Mota filtroa                                                                                                           
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
+
+                
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -2616,23 +2561,19 @@ def eguneko_ibilbidea_kendu(request):
                 if(oData2 == "dataAsc"):             
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                 
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+                    #print bozkatuenak_item_zerrenda[0].item_id                                                                     
+
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                                                  
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+                    
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -2640,7 +2581,7 @@ def eguneko_ibilbidea_kendu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":                        
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":
@@ -2653,19 +2594,20 @@ def eguneko_ibilbidea_kendu(request):
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-            #hornitzaile filtroa TXUKUNDUUUU
+            
             if(hornitzaileakF != ""):
- 
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
-       
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+
+
       
             #Ordena Filtroa
             bozkatuenak_path_zerrenda=[]
@@ -2675,15 +2617,14 @@ def eguneko_ibilbidea_kendu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
         
       
             #Besteak filtroa
@@ -2706,14 +2647,21 @@ def eguneko_ibilbidea_kendu(request):
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
             #hornitzaile filtroa
+            #hornitzaile filtroa                                                                                                    
             if(hornitzaileakF != ""):
-                if(horniEkm=="ekm"):
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta,"ekm"])
-                else:
-                    items = items.filter(edm_provider__in=[horniEkm,horniArrunta])
-            #Mota filtroa, edm_type=SOUND
+                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
+
+            #Mota filtroa,                                                                                                          
             if(motakF != ""):
-                items = items.filter(edm_type__in=[motaT,motaS,motaV,motaI])       
+                motakF_list = [str(x) for x in motakF.split(",")]
+                items = items.filter(edm_type__in=motakF_list)
+
+            #Lizentziak filtroa                                                                                                     
+            if(lizentziakF != ""):
+                lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
+                items = items.filter(edm_rights__in=lizentziakF_list)
+
             #Ordena Filtroa
             bozkatuenak_item_zerrenda=[]
             if(ordenakF != ""):            
@@ -2725,23 +2673,17 @@ def eguneko_ibilbidea_kendu(request):
                     #items = items.order_by('-dc_date')
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                  
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+
                     items_ids=[]
-                    for itema in items:
-                        id = itema.item_id
-                        items_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-            #Lizentziak filtroa
-            if lizentziakF !="":  
-                if  lLibre=="librea":
-                    items=items.filter(edm_rights='librea')
-                if lCommons=="creativeCommons":
-                    items=items.filter(edm_rights='creativeCommons')
-                if lCopy=="copyRight":
-                    items=items.filter(edm_rights='copyRight')                
+                    items_ids=map(lambda x: int(x.item_id),items)
+                    bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+
+                    items=items.filter(item_id__in=bozkatuenak_ids)
+
+
+                    
             #Besteak filtroa
             if (besteakF != ""):  
                 if bEgun=="egunekoa":
@@ -2749,7 +2691,7 @@ def eguneko_ibilbidea_kendu(request):
                 if bProp == "proposatutakoa":
                     items=items.filter(proposatutakoa=1)
                 if bWikify=="wikifikatua":
-                    items=items.filter(wikifikatua=1)
+                    items=items.filter(aberastua=1)
                 if bIrudiBai=="irudiaDu":             
               
                     items=items.filter(edm_object = Raw("[* TO *]"))  
@@ -2765,16 +2707,18 @@ def eguneko_ibilbidea_kendu(request):
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
             #hornitzaile filtroa TXUKUNDUUUU
             if(hornitzaileakF != ""):
-           
-                if(horniEkm=="ekm"):
-                
-                    hornitzaileakF=hornitzaileakF+"ekm"
-                    hornitzaile_erab=User.objects.get(username__in=hornitzaileakF)
-                    hornitzaile_erab=User.objects.get(username='ekm')
-                    paths = paths.filter(path_fk_user_id=hornitzaile_erab)
-                else:      
-                        
-                    items = items #.exclude(path_fk_user_id=hornitzaile_erab)
+
+
+                item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
+
+                usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
+
+                #ID errepikatuak kendu                                                                                              
+                usr_id_zerrenda_set = set(usr_id_zerrenda)
+                usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
+
+                paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
+
        
      
             #Ordena Filtroa
@@ -2785,15 +2729,17 @@ def eguneko_ibilbidea_kendu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                    ##PROBATU order_by erabiltzen! agian azkarragoa            
+
+                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                     paths_ids=[]
-                    for patha in paths:
-                        id = patha.path_id
-                        paths_ids.append(id)
-                    #Ordena mantentzen du??                        
-                    paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                    paths_ids=map(lambda x: int(x.path_id),paths)
+                    bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                    #Ordena mantentzen du??                                                                                         
+                    paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
+
         
       
             #Besteak filtroa
@@ -2843,7 +2789,23 @@ def eguneko_ibilbidea_kendu(request):
     
     
         z="p"
-        return render_to_response('cross_search.html',{'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+
+        #Datu-baseko hornitzaileak lortu                                                                                         
+                                                                                                                        
+        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+        db_hornitzaileak_text ="_".join(db_hornitzaileak)
+
+        #Datu-baseko motak lortu                                                                                                   
+        db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+        db_motak_text ="_".join(db_motak)
+
+        #Datu-baseko lizentziak lortu                                                                                               
+        db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+        db_lizentziak_text ="_".join(db_lizentziak)
+
+
+
+        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     elif (nondik=="ikusi"):
         print "nondik ba?"
@@ -3129,6 +3091,7 @@ def cross_search(request):
     if hizkuntza == 'eu':
      
         #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
+        #items=SearchQuerySet.all()filter(SQ(text_eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_eu'}" + galdera)|(text_es2eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_es2eu'}" + galdera)|(text_en2eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_en2eu'}" + galdera)).models(*search_models_items)
         items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
         paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
  
@@ -3224,6 +3187,8 @@ def hornitzaile_search(request):
     #Itemak erabiltzaileekin lotzean hau aldatu
     #items = SearchQuerySet().all().filter(fk_ob_user__id=hornitzaile_id).models(*search_models_items) 
     items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+    print "Hornitzailearen item kopurua"
+    print len(items)
     #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
     paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)
 
@@ -3262,7 +3227,7 @@ def hornitzaile_search(request):
     
     #HORNITZAILEAREN FITXA 
     #user_id=request.user.id
-    hornitzaile = hornitzailea.objects.get(fk_user__id=hornitzaile_erab.id)
+    hornitzaile = hornitzailea.objects.get(fk_user__id=hornitzaile_id)
    
     geoloc_longitude=0.0
     geoloc_latitude=0.0
@@ -3282,7 +3247,7 @@ def hornitzaile_search(request):
     #Datu-baseko lizentziak lortu
     db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
     db_lizentziak_text ="_".join(db_lizentziak)
-    
+    print "HOrnitzaile_search response aurretik"
     return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 def filtro_search(request):
@@ -3294,6 +3259,7 @@ def filtro_search(request):
     z=request.GET['z']
     if 'hornitzailea' in request.GET:
         hornitzaile_izena=request.GET['hornitzailea']
+        print "hornitzaile_izena"
     else:
         hornitzaile_izena=""
     
@@ -3324,8 +3290,7 @@ def filtro_search(request):
     hEn="ez"
     if hizkuntzakF != "": 
         hizkF=hizkuntzakF.split(',')
-        print "split hizkuntzakF"
-        print hizkF
+
         for h in hizkF:
             print h
             if(h=="eu"):
@@ -3394,9 +3359,10 @@ def filtro_search(request):
 
         #Mota filtroa,
         if(motakF != ""):       
+            print "motakF"
             motakF_list = [str(x) for x in motakF.split(",")]
             items = items.filter(edm_type__in=motakF_list)
-            
+            print len(items)
         #Lizentziak filtroa 
         print "Lizentziarik bai?"
         print lizentziakF
@@ -3406,25 +3372,31 @@ def filtro_search(request):
         
         #Ordena Filtroa
         bozkatuenak_item_zerrenda=[]
+        print "ordenakF"
+        print ordenakF
         if(ordenakF != ""):            
             if(oData == "data"):
                 #items = items.order_by('-dc_date')
+                print "DATA BEHERAKA"
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
+                
             if(oData2 == "dataAsc"):
                 print "DATA GORAKA"
                 #items = items.order_by('-dc_date')
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
+                
             if(oBoto == "botoak"):
                 ##PROBATU order_by erabiltzen! agian azkarragoa            
                 bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
+                #print bozkatuenak_item_zerrenda[0].item_id
                 items_ids=[]
-                for itema in items:
-                    id = itema.item_id
-                    items_ids.append(id)
-                #Ordena mantentzen du??                        
-                items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
-                      
+     
+                items_ids=map(lambda x: int(x.item_id),items)
+                bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+          
+                #items=bozkatuenak_item_zerrenda.filter(item_id__in=items_ids)                
+                items=items.filter(item_id__in=bozkatuenak_ids)
+     
         #Besteak filtroa
         if (besteakF != ""):  
             if bEgun=="egunekoa":
@@ -3432,7 +3404,7 @@ def filtro_search(request):
             if bProp == "proposatutakoa":
                 items=items.filter(proposatutakoa=1)
             if bWikify=="wikifikatua":
-                items=items.filter(wikifikatua=1)
+                items=items.filter(aberastua=1)
             if bIrudiBai=="irudiaDu":             
                 #import pdb
                 #pdb.set_trace()             
@@ -3450,17 +3422,11 @@ def filtro_search(request):
         if hizkuntzakF != "":       
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
         #hornitzaile filtroa 
-        print "hornitzaileakF bai?"
-        print hornitzaileakF
         if(hornitzaileakF != ""):
             
             #hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
-            print "hornitzaileakF"
-            print hornitzaileakF
-            print "hornitzaileakF_list"
-            print hornitzaileakF_list
             item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
-            print item_hornitzaile_erab
+
             usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
             
             #ID errepikatuak kendu
@@ -3469,13 +3435,7 @@ def filtro_search(request):
 
             paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda_uniq)
 
-            
-            '''
-            if(horniEkm=="herritarra"):
-                #Hornitzaileak diren erabiltzaileak hartu
-                paths = paths.exclude(path_fk_user_id__in=hornitzaile_erab)
-            
-            '''
+
         #Mota filtroa,IBILBIDEETAN EZ DAGO MOTA
         #Ordena Filtroa
         bozkatuenak_path_zerrenda=[]
@@ -3485,15 +3445,15 @@ def filtro_search(request):
             if(oData2 == "dataAsc"):
                 paths = paths.order_by('path_creation_date')              
             if(oBoto == "botoak"):
+
                 ##PROBATU order_by erabiltzen! agian azkarragoa            
                 bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
     
                 paths_ids=[]
-                for patha in paths:
-                    id = patha.path_id
-                    paths_ids.append(id)
+                paths_ids=map(lambda x: int(x.path_id),paths)
+                bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
                 #Ordena mantentzen du??                        
-                paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                paths=paths.filter(path_id__in=bozkatuenak_path_ids)  
         
         #Lizentziak filtroa,IBILBIDEETAN EZ DAGO LIZENTZIA
         #if lizentziakF !="": 
@@ -3562,7 +3522,7 @@ def filtro_search(request):
             if bProp == "proposatutakoa":
                 items=items.filter(proposatutakoa=1)
             if bWikify=="wikifikatua":
-                items=items.filter(wikifikatua=1)
+                items=items.filter(aberastua=1)
             if bIrudiBai=="irudiaDu":             
                 #import pdb
                 #pdb.set_trace()             
@@ -3597,15 +3557,14 @@ def filtro_search(request):
             if(oData2 == "dataAsc"):
                 paths = paths.order_by('path_creation_date')              
             if(oBoto == "botoak"):
-                ##PROBATU order_by erabiltzen! agian azkarragoa            
+  
                 bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
                 paths_ids=[]
-                for patha in paths:
-                    id = patha.path_id
-                    paths_ids.append(id)
-                #Ordena mantentzen du??                        
-                paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
+                paths_ids=map(lambda x: int(x.path_id),paths)
+                bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                #Ordena mantentzen du??                                                                                          
+                paths=paths.filter(path_id__in=bozkatuenak_path_ids)
+
         
         #Lizentziak filtroa,IBILBIDEETAN EZ DAGO LIZENTZIA
         #if lizentziakF !="": 
@@ -3657,15 +3616,13 @@ def filtro_search(request):
                 #items = items.order_by('-dc_date')
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
             if(oBoto == "botoak"):
-                ##PROBATU order_by erabiltzen! agian azkarragoa            
-                bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-    
-                items_ids=[]
-                for itema in items:
-                    id = itema.item_id
-                    items_ids.append(id)
-                #Ordena mantentzen du??                        
-                items=bozkatuenak_item_zerrenda.filter(id__in=items_ids)                
+                 ##PROBATU order_by erabiltzen! agian azkarragoa                                                                 
+                 bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+                 items_ids=[]
+                 items_ids=map(lambda x: int(x.item_id),items)
+                 bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+                 items=items.filter(item_id__in=bozkatuenak_ids)
+
                       
         #Besteak filtroa
         if (besteakF != ""):  
@@ -3674,7 +3631,7 @@ def filtro_search(request):
             if bProp == "proposatutakoa":
                 items=items.filter(proposatutakoa=1)
             if bWikify=="wikifikatua":
-                items=items.filter(wikifikatua=1)
+                items=items.filter(aberastua=1)
             if bIrudiBai=="irudiaDu":             
                 #import pdb
                 #pdb.set_trace()             
@@ -3709,16 +3666,15 @@ def filtro_search(request):
             if(oData2 == "dataAsc"):
                 paths = paths.order_by('path_creation_date')              
             if(oBoto == "botoak"):
-                ##PROBATU order_by erabiltzen! agian azkarragoa            
+                ##PROBATU order_by erabiltzen! agian azkarragoa                                                                  
                 bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
-    
+
                 paths_ids=[]
-                for patha in paths:
-                    id = patha.path_id
-                    paths_ids.append(id)
-                #Ordena mantentzen du??                        
-                paths=bozkatuenak_path_zerrenda.filter(id__in=paths_ids)  
-        
+                paths_ids=map(lambda x: int(x.path_id),paths)
+                bozkatuenak_path_ids=map(lambda x: int(x.path_id),bozkatuenak_path_zerrenda)
+                #Ordena mantentzen du??                                                                                          
+                paths=paths.filter(path_id__in=bozkatuenak_path_ids)##PROBATU order_by erabiltzen! agian azkarragoa                
+
         #Lizentziak filtroa,IBILBIDEETAN EZ DAGO LIZENTZIA
         #if lizentziakF !="": 
             #paths = paths
@@ -4762,7 +4718,7 @@ def erakutsi_item(request):
             id=request.GET['id']        
             item_tupla = item.objects.get(pk=id)
             
-   
+    titulua=item_tupla.dc_title
     herrialdea=item_tupla.edm_country
     hizkuntza=item_tupla.dc_language
     kategoria=item_tupla.dc_type
@@ -4811,7 +4767,7 @@ def erakutsi_item(request):
     
     non="erakutsi_item"
 
-    return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+    return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
 
 
@@ -4911,7 +4867,7 @@ def botoa_eman_item(request):
 
     else:
         non="erakutsi_item"
-        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
     
 def botoa_kendu_item(request):
@@ -5009,7 +4965,7 @@ def botoa_kendu_item(request):
 
     else:
         non="erakutsi_item"
-        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
 
 def editatu_itema(request):
@@ -5070,6 +5026,7 @@ def editatu_itema(request):
             dc_language="en"
             edm_language="en"
         '''
+        ob_language=''
         #Hizkuntza kontrola
         if 'eu' in request.POST:
             ob_language="eu"
@@ -5428,12 +5385,13 @@ def itema_gehitu(request):
             dc_language="en"
             edm_language="en"
         '''
+        ob_language=""
         #Hizkuntza kontrola
-        if request.POST['eu']:
+        if request.POST.get('eu'):
             ob_language="eu"
-        if request.POST['es']:
+        if request.POST.get('es'):
             ob_language=ob_language +" es"
-        if request.POST['en']:
+        if request.POST.get('en'):
             ob_language=ob_language +" en"
         
    
@@ -5671,9 +5629,10 @@ def ajax_workspace_item_gehitu(request):
         uri=request.POST.get('uri')
         dc_source=request.POST.get('dc_source')
         dc_title=request.POST.get('dc_title')
-        dc_description=request.POST.get('dc_description')
+        dc_description=request.POST.get('dc_description')        
         type=request.POST.get('type')
         thumbnail=request.POST.get('paths_thumbnail')
+        print "ajax_workspace_item_gehitu --",thumbnail
     
         #workspace eta item objektuak pasa!
         #workspace=workspace.objects.get(fk_usr_id__id=request.user.id)   
@@ -6177,6 +6136,26 @@ def ajax_edit_emaila(request):
         else:
             response = None
             return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+
+def ajax_edit_website(request):
+   
+   
+    if request.GET:
+        web = request.GET.get('website')
+        user_id=request.user.id
+       
+        if not request.user.is_anonymous():
+            
+            hornitzailea.objects.filter(fk_user__id=user_id).update(website=web)
+          
+            response= web
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
+         
+        else:
+            response = None
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+              
+
               
 def ajax_edit_ordutegia(request):
    

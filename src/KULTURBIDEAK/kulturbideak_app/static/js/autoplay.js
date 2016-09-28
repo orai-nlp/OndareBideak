@@ -1,3 +1,5 @@
+var autoplayTimeout;
+
 function Redirect(url) 
 {  
 	window.location=url; 
@@ -10,5 +12,12 @@ function doSetTimeOutAutoplay(url,sec)
 	//alert("doSetTimeOutAutoplay");
 	//alert(url);
 	//setTimeout('Redirect('+url+')', sec);
-	setTimeout(function(){window.location = url;}, sec);
+	autoplayTimeout= setTimeout(function(){window.location = url;}, sec);
+}
+
+function stopTimeOutAutoplay(){
+    console.log("stopppppp");
+    $('#autoplay-icon').className='glyphicon glyphicon-play';
+    //$('#autoplay')="<span id=\"autoplay-icon\" class=\"glyphicon glyphicon-play\" aria-hidden=\"true\"></span> AUTOPLAY";
+     clearTimeout(autoplayTimeout);    
 }

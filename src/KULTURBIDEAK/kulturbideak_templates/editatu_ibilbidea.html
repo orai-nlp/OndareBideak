@@ -191,13 +191,14 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
 <script type="text/javascript">
   var id="{{node.fk_item_id_id}}";//path_node[0];
 	var titulua="{{node.dc_title}}";//path_node[1];
-	var irudia="{{node.paths_thumbnail}}";//path_node[2];
+	var irudia=htmlDecode("{{node.paths_thumbnail}}");//path_node[2];
+	//console.log(irudia+" --- {{node.paths_thumbnail}}");
         if (irudia == " ")
         {
            irudia="/uploads/NoIrudiItem.png";
         }
 
-        var narrazioa="{{node.dc_description}}";
+        var narrazioa="{{node.dc_description|convert_newline2br}}";
 	var aita_id="{{node.paths_prev}}";
 
   

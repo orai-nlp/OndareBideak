@@ -181,11 +181,11 @@
 		<div class="col-md-1"></div>
 
 		<div class="col-md-10">
-			<div class="panel panel-default ibilbide-panela">
+			<!--<div class="panel panel-default ibilbide-panela">-->
 
 				<!--<div class="panel-heading"><b class="titulu-kolorea">HEMEN ZAUDE </b></div>-->
-				<div class="panel-body">
-					<div id="path_boxes_overview"></div>
+				<!--<div class="panel-body">-->
+					<div id="path_boxes_overview" class="clearfix"></div>
 					<script>
 						var ibilbide_data = [];
 						var path_id = {{path_id}};
@@ -203,7 +203,7 @@
 						//path_node[0];
 						var titulua = "{{node.dc_title}}";
 						//path_node[1];
-						var irudia = "{{node.paths_thumbnail}}";
+						var irudia = htmlDecode("{{node.paths_thumbnail}}");
 						//path_node[2];
 						if (!irudia || irudia === "") {
 							irudia = "/uploads/NoIrudiItem.png";
@@ -225,8 +225,8 @@
 					</script>
 					{% endfor%}
 					<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3ondarebideakoverview.js"></script>
-				</div>
-			</div
+				<!--</div>-->
+			</div>
 
 			<div class="col-md-1"></div>
 

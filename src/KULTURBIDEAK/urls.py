@@ -61,6 +61,7 @@ from KULTURBIDEAK.kulturbideak_app.views import ajax_hornitzaile_irudia_gorde
 from KULTURBIDEAK.kulturbideak_app.views import ajax_hornitzaile_argazkia_gorde
 from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_telefonoa
 from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_emaila
+from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_website
 from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_ordutegia
 from KULTURBIDEAK.kulturbideak_app.views import fitxa_gorde
 from KULTURBIDEAK.kulturbideak_app.views import hornitzailea_ikusi
@@ -150,7 +151,8 @@ urlpatterns = patterns('',
     url(r'ajax_hornitzaile_irudia_gorde',ajax_hornitzaile_irudia_gorde),
     url(r'ajax_hornitzaile_argazkia_gorde',ajax_hornitzaile_argazkia_gorde),
     url(r'ajax_edit_telefonoa',ajax_edit_telefonoa),
-    url(r'ajax_edit_emaila',ajax_edit_emaila), 
+    url(r'ajax_edit_emaila',ajax_edit_emaila),
+    url(r'ajax_edit_website',ajax_edit_website), 
     url(r'ajax_edit_ordutegia',ajax_edit_ordutegia), 
     url(r'fitxa_gorde',fitxa_gorde),
     url(r'hornitzailea_ikusi',hornitzailea_ikusi),

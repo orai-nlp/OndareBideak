@@ -48,6 +48,12 @@
                         <a href="#" data-toggle="modal" data-target="#emaila_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
                      	 
                 	</h4>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #337ab7" class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+							{% trans "Webgunea" %}*:
+							<span id="id_website2" class="list-group-item-text" >{{hornitzailea.website}}</span>
+               		  <a href="#" data-toggle="modal" data-target="#website_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>                      
+                	</h4>
+                	
                 	<h4 class="mota2"><span style="font-size:1.5em;color: #337ab7" class="glyphicon glyphicon-time" aria-hidden="true"></span>
 						{% trans "Ordutegia" %}*:
                		 <span id="id_ordutegia2" class="list-group-item-text">{{hornitzailea.ordutegia}}</span>
@@ -147,6 +153,34 @@
                         </div>
                       </div>
                     </div>
+                
+                  <div class="modal fade" id="website_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <!--<button type="button" class="close" onmousedown="$(this).click();return false;" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            
+                            <h4 class="modal-emaila" id="myModalLabel">{% trans "Editatu webgunea" %}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <div class="col-md-12">
+									<input id="id_website" class="form-control" type="text" placeholder="website" name="emaila">
+								</div>
+                              
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>
+                            <button type="button" onmousedown="save_proposal_website();" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                
+                
+                
                 
                 	<div class="modal fade" id="ordutegia_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog modal-lg" role="document">
@@ -301,6 +335,22 @@
                       </div>
                     </div>
 
+  <!-- Preview Image -->
+  <div id="hornitzaile-ikonoa" class="clearfix">
+        <p class="lead">{% trans "Ikonoa" %} *</p>
+        {% if hornitzailea.ikonoa == "" %}
+        	<a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+            </br>
+        	<a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'Igo Argazkia' %}" class="hovertext"><img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt=""></a>
+		 {%else %}
+		 <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
+               </br> 
+			 <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'Igo Argazkia' %}" class="hovertext"> <img id="id_image" class="img-responsive" src="{{ hornitzailea.ikonoa }}" alt=""></a>
+        {%endif%}
+        </div>
+         <hr>
+
+
                 <p class="lead">{% trans "Deskribapena" %} *</p>
                 <p><span id="id_summary">{{hornitzailea.deskribapena}}</span>
                         <a href="#" data-toggle="modal" data-target="#summary_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
@@ -335,18 +385,7 @@
                 
             
 				
-         <!-- Preview Image -->
-        <p class="lead">{% trans "Ikonoa" %} *</p>
-        {% if hornitzailea.ikonoa == "" %}
-        	<a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
-            </br>
-        	<a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'Igo Argazkia' %}" class="hovertext"><img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt=""></a>
-		 {%else %}
-		 <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>      
-               </br> 
-			 <a href="#" data-toggle="modal" data-target="#attached_documents_modal" aria-hidden="true" title="{% trans 'Igo Argazkia' %}" class="hovertext"> <img id="id_image" class="img-responsive" src="{{ hornitzailea.ikonoa }}" alt=""></a>
-        {%endif%}
-         <hr>
+       
                 
           <!-- Preview Argazkia -->
        <p class="lead">{% trans "Argazkia" %} *</p>

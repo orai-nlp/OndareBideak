@@ -1,52 +1,63 @@
 
+/***************************
+*    Utils
+****************************/
 
-var paper = null;
-var el_counter=0;
-var svgns = "http://www.w3.org/2000/svg";
-var pb_box_w = 160;
-var pb_box_h = 120;
-var pb_box_space = 20;//
-var paths_starts = [];
-var connections = [];
-
+//function to unescape html entities
+function htmlDecode(input){
+  var e = document.createElement('div');
+  e.innerHTML = input;  
+  if (e.childNodes.length === 0)
+  {
+      return "";
+  }
+  else if (e.childNodes[0].nodeValue)
+  {
+      //console.log("arrunta "+e.childNodes[0].nodeValue);
+      return e.childNodes[0].nodeValue;
+  }
+  else
+  {
+      //console.log("aldaketarik ez");
+      return input;
+  }
+}
 
 
 //Maddalen: Nodoen titulutik etiketak garbitu eta Moztu 
-function tituluaGarbituMoztu (titulua){
-	
-		
-	var tituluaJat=titulua.replace(/&lt;/g, "<");
-	tituluaJat=tituluaJat.replace(/&gt;/g, ">");
-	tituluaJat=tituluaJat.replace(/&quot;/g, "");
 
-	
-	titulua=tituluaJat;
+function tituluaGarbitu (titulua,moztu){ 
+            
+    //console.log("garbitu hasiera - "+titulua);
+    titulua=titulua.replace(/^\s+/,"");
+    var tituluaJat=htmlDecode(titulua);   
+    titulua=tituluaJat;
     var titulu_es="";
     var titulu_en="";
     var titulu_eu="";
    
     //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
-    var myRegexpES = new RegExp("<div class=titulu_es>(.*?)</div>");
+    var myRegexpES = new RegExp("<div class=\"titulu_es\">(.*?)</div>");
     //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
     var match_es = myRegexpES.exec(titulua);
    
-    if (match_es){   	
+    if (match_es){      
         titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
        }
     else{
         titulu_es="";
        }
     
-    var myRegexpEN = new RegExp("<div class=titulu_en>(.*?)</div>");
+    var myRegexpEN = new RegExp("<div class=\"titulu_en\">(.*?)</div>");
     var match_en = myRegexpES.exec(titulua);     
     if (match_en){
         titulu_en=match_en[1];
        }
     else{
         titulu_en="";
-   	}
+    }
  
- 	var myRegexpEU = new RegExp("<div class=titulu_eu>(.*?)</div>");
+    var myRegexpEU = new RegExp("<div class=\"titulu_eu\">(.*?)</div>");
     var match_eu = myRegexpEU.exec(titulua);  
     if (match_eu){
         titulu_eu=match_eu[1];
@@ -68,15 +79,34 @@ function tituluaGarbituMoztu (titulua){
    
     //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
     if (titulua ==""){
-        titulua=tituluaJat;
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ");
-        titulua=titulua.replace("</div>", " ");
-        
-        
+        titulua=tituluaJat;                
     }
-  
-	return titulua.substr(0,25)+"...";
+    titulua=titulua.replace(/<div class=\"?titulu_lg\"?>(.*?)<\/div>/, "$1");
+    
+    if (moztu==true && titulua.length>25){
+        return titulua.substr(0,24)+"...";
+    }
+    else{
+        return titulua;        
+    }
+
 }
+
+/***************************
+*    End of Utils
+****************************/
+
+var paper = null;
+var el_counter=0;
+var svgns = "http://www.w3.org/2000/svg";
+var pb_box_w = 160;
+var pb_box_h = 120;
+var pb_box_space = 20;//
+var paths_starts = [];
+var connections = [];
+
+
+
 
 
 function initialize(){
@@ -703,19 +733,21 @@ function toggle_workspace(){
 function create_workspace_box(index,user_id){
    	el_counter++;
     var item_id = document.getElementById("item_id_"+index).value;
-    var titulua = document.getElementById("titulua_"+index).value;	
+    var titulua = document.getElementById("titulua_"+index).value;
+    console.log("cwb - 1 "+titulua);
     var irudia = document.getElementById("irudia_"+index).value;
     
     //Titulua garbitu eta laburtu
-    titulua=titulua.replace('<div class=\"titulu_es\">', ' ');
+    /*titulua=titulua.replace('<div class=\"titulu_es\">', ' ');
     titulua=titulua.replace('</div>', ' ');
     titulua=titulua.replace('<div class=\"titulu_en\">', ' ');
     titulua=titulua.replace('</div>', ' ');
     titulua=titulua.replace('<div class=\"titulu_eu\">', ' ');
     titulua=titulua.replace('</div>',' ');
     titulua=titulua.replace('<div class=\"titulu_lg\">', ' ');
-    titulua=titulua.replace('</div>',' ');
-   
+    titulua=titulua.replace('</div>',' ');*/
+    titulua=tituluaGarbitu(titulua,false);  
+    console.log(titulua+" -- "+item_id);   
    	//Titulua laburtu?
     //titulua_subs = titulua.substr(0, 20);  
     //titulua = titulua_subs + "...";
@@ -737,7 +769,7 @@ function create_workspace_box(index,user_id){
   	
   	//AJAX
   	start_loader("loader");                             
-	if (item_id.value != ""){		                                       
+	if (item_id != ""){		                                       
 		create_workspace_box_request(item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail);                                       //request!
 	}
 	else{                                                                                                       // baldintzak bete ez badira
@@ -774,7 +806,7 @@ function create_workspace_box_request(item_id,uri,dc_source,dc_title,dc_descript
         };
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("item_id="+item_id+ "&uri=" + uri + "&dc_source=" + dc_source + "&dc_title=" + dc_title + "&dc_description=" + dc_description + "&type=" + type + "&paths_thumbnail=" + paths_thumbnail + "&csrfmiddlewaretoken=" + csrftoken);                     
+        xmlHttp.send("item_id="+item_id+ "&uri=" + uri + "&dc_source=" + dc_source + "&dc_title=" + encodeURIComponent(dc_title) + "&dc_description=" + encodeURIComponent(dc_description) + "&type=" + type + "&paths_thumbnail=" + encodeURIComponent(paths_thumbnail) + "&csrfmiddlewaretoken=" + csrftoken);                     
     }
 	
 	
@@ -850,7 +882,7 @@ function add_workspace_box(box_id,text_value,image_value){
     wsb_title.setAttribute("class","wsb_title");
    
     //Titulua Garbitu eta Laburtu
-    text_value = tituluaGarbituMoztu(text_value);  
+    text_value = tituluaGarbitu(text_value,true);  
    
     wsb_title.appendChild(document.createTextNode(text_value));
     ws_box.appendChild(wsb_title);
@@ -1210,7 +1242,7 @@ function create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_des
       
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("path_id="+path_id+"&item_id="+item_id.replace("pb_","")+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+dc_title+"&dc_description="+dc_description+"&type="+type+"&paths_thumbnail="+paths_thumbnail+"&paths_prev="+paths_prev.replace("pb_","")+"&paths_next="+paths_next.replace("pb_","")+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
+        xmlHttp.send("path_id="+path_id+"&item_id="+item_id.replace("pb_","")+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+encodeURIComponent(dc_title)+"&dc_description="+encodeURIComponent(dc_description)+"&type="+type+"&paths_thumbnail="+encodeURIComponent(paths_thumbnail)+"&paths_prev="+paths_prev.replace("pb_","")+"&paths_next="+paths_next.replace("pb_","")+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
 
     }
 }
@@ -2664,8 +2696,17 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 {
 	var radios = document.getElementsByName('hizkRadio');
 	var galdera = document.getElementById('search_input').value;
-	
-
+    
+        if(document.getElementById('hornitzailea'))
+	 {
+	    hornitzaile_search=document.getElementById('hornitzailea').value;
+	    horni_id=document.getElementById('hornitzaile_search').value; 
+	 }
+        else{
+	    hornitzaile_search="";
+	    horni_id="";
+	}
+        
 	for (var i = 0, length = radios.length; i < length; i++) 
 	{
    	    if (radios[i].checked)
@@ -2692,14 +2733,14 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 	var EnhizkElement = document.getElementById('hizkuntza3F');
 	
 	//Hornitzaileak
-	var EkmHorniElement = document.getElementById('hornitzaile1F');
-	var ArruntaHorniElement = document.getElementById('hornitzaile2F');
+	//var EkmHorniElement = document.getElementById('hornitzaile1F');
+	//var ArruntaHorniElement = document.getElementById('hornitzaile2F');
 	
 	//Mota
-	var textMotaElement = document.getElementById('mota1F');
-	var audioMotaElement = document.getElementById('mota2F');
-	var videoMotaElement = document.getElementById('mota3F');
-	var imgMotaElement = document.getElementById('mota4F');
+	//var textMotaElement = document.getElementById('mota1F');
+	//var audioMotaElement = document.getElementById('mota2F');
+	//var videoMotaElement = document.getElementById('mota3F');
+	//var imgMotaElement = document.getElementById('mota4F');
 	
 	//Ordena
 	var dataOrdenaElement = document.getElementById('ordena1F');
@@ -2707,9 +2748,9 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 	var botoOrdenaElement = document.getElementById('ordena2F');
 	
 	//Lizentzia
-	var lizentziaLibreElement =document.getElementById('lizentzia1F');
-	var lizentziaCommonsElement =document.getElementById('lizentzia2F');
-	var lizentziaCopyElement =document.getElementById('lizentzia3F');
+	//var lizentziaLibreElement =document.getElementById('lizentzia1F');
+	//var lizentziaCommonsElement =document.getElementById('lizentzia2F');
+	//var lizentziaCopyElement =document.getElementById('lizentzia3F');
 	
 	//Beste batzuk
 	var egunekoaElement = document.getElementById('egunekoaF');
@@ -2738,37 +2779,54 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 	 
 	 }
 	 //HORNITZAILEAK
-	 if(EkmHorniElement.checked == true)
-	 {
-	 	balioa=EkmHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 if(ArruntaHorniElement.checked == true)
-	 {
-	 	balioa=ArruntaHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 //MOTA
-	 if(textMotaElement.checked == true)
-	 {
-	 	balioa=textMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(audioMotaElement.checked == true)
-	 {
-	 	balioa=audioMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(videoMotaElement.checked == true)
-	 {
-	 	balioa=videoMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(imgMotaElement.checked == true)
-	 {
-	 	balioa=imgMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
+         db_hornitzaileak_text=document.getElementById('db_hornitzaileak_text').value;
+         db_hornitzaileak=db_hornitzaileak_text.split("_");
+         for (var i = 0, length = db_hornitzaileak.length; i < length; i++)
+                {
+                        horniId=db_hornitzaileak[i];
+                        var horniElement=document.getElementById(horniId);
+                        console.log(horniElement);
+                        if(horniElement.checked == true)
+                        {
+                                balioa=horniElement.value;
+                                hornitzaileakF_ar.push(balioa);
+                        }
+
+                }
+
+         //MOTA                                                                                                                      
+         db_motak_text=document.getElementById('db_motak_text').value;
+         db_motak=db_motak_text.split("_");
+         for (var i = 0, length = db_motak.length; i < length; i++)
+                {
+                        motaId=db_motak[i];
+                        var motaElement=document.getElementById(motaId);
+                        if(motaElement.checked == true)
+                        {
+                                balioa=motaElement.value;
+                                motaF_ar.push(balioa);
+                        }
+
+                }
+         //LIZENTZIA                                                                                                                 
+         db_lizentziak_text=document.getElementById('db_lizentziak_text').value;
+         db_lizentziak=db_lizentziak_text.split("_");
+
+         for (var i = 0, length = db_lizentziak.length; i < length; i++)
+                {
+                        lizentziaId=db_lizentziak[i];
+                        var lizentziaElement=document.getElementById(lizentziaId);
+
+                        if(lizentziaElement.checked == true)
+                        {
+                                balioa=lizentziaElement.value;
+                                lizentziaF_ar.push(balioa);
+
+                        }
+
+                }
+ 
+
 	 //ORDENA
 	 if(dataOrdenaElement.checked == true)
 	 {
@@ -2785,22 +2843,7 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 	 	balioa=botoOrdenaElement.value;
 	 	ordenaF_ar.push(balioa);
 	 }
-	 //LIZENTZIA
-	 if(lizentziaLibreElement.checked == true)
-	 {
-	 	balioa=lizentziaLibreElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCommonsElement.checked == true)
-	 {
-	 	balioa=lizentziaCommonsElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCopyElement.checked == true)
-	 {
-	 	balioa=lizentziaCopyElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
+
 	 //Beste batzuk
 	  if(egunekoaElement.checked == true)
 	 {
@@ -2836,7 +2879,7 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 	 var lizentziakF=lizentziaF_ar.toString();
 	 var besteakF =besteF_ar.toString();
 	 
-	var url = 'eguneko_itema_gehitu?hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+item_id+'&nondik=bilaketa';   	
+	var url = 'eguneko_itema_gehitu?hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+item_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id;   	
     window.location.href=url;
 	
 }
@@ -2873,14 +2916,14 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 	var EnhizkElement = document.getElementById('hizkuntza3F');
 	
 	//Hornitzaileak
-	var EkmHorniElement = document.getElementById('hornitzaile1F');
-	var ArruntaHorniElement = document.getElementById('hornitzaile2F');
+	//var EkmHorniElement = document.getElementById('hornitzaile1F');
+	//var ArruntaHorniElement = document.getElementById('hornitzaile2F');
 	
 	//Mota
-	var textMotaElement = document.getElementById('mota1F');
-	var audioMotaElement = document.getElementById('mota2F');
-	var videoMotaElement = document.getElementById('mota3F');
-	var imgMotaElement = document.getElementById('mota4F');
+	//var textMotaElement = document.getElementById('mota1F');
+	//var audioMotaElement = document.getElementById('mota2F');
+	//var videoMotaElement = document.getElementById('mota3F');
+	//var imgMotaElement = document.getElementById('mota4F');
 	
 	//Ordena
 	var dataOrdenaElement = document.getElementById('ordena1F');
@@ -2888,9 +2931,9 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 	var botoOrdenaElement = document.getElementById('ordena2F');
 	
 	//Lizentzia
-	var lizentziaLibreElement =document.getElementById('lizentzia1F');
-	var lizentziaCommonsElement =document.getElementById('lizentzia2F');
-	var lizentziaCopyElement =document.getElementById('lizentzia3F');
+	//var lizentziaLibreElement =document.getElementById('lizentzia1F');
+	//var lizentziaCommonsElement =document.getElementById('lizentzia2F');
+	//var lizentziaCopyElement =document.getElementById('lizentzia3F');
 	
 	//Beste batzuk
 	var egunekoaElement = document.getElementById('egunekoaF');
@@ -2918,38 +2961,87 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 	 	hizkuntzakF_ar.push(balioa);
 	 
 	 }
-	 //HORNITZAILEAK
-	 if(EkmHorniElement.checked == true)
-	 {
-	 	balioa=EkmHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 if(ArruntaHorniElement.checked == true)
-	 {
-	 	balioa=ArruntaHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 //MOTA
-	 if(textMotaElement.checked == true)
-	 {
-	 	balioa=textMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(audioMotaElement.checked == true)
-	 {
-	 	balioa=audioMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(videoMotaElement.checked == true)
-	 {
-	 	balioa=videoMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(imgMotaElement.checked == true)
-	 {
-	 	balioa=imgMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
+	  //HORNITZAILEAK                                                                                                          
+         db_hornitzaileak_text=document.getElementById('db_hornitzaileak_text').value;
+         db_hornitzaileak=db_hornitzaileak_text.split("_");
+         for (var i = 0, length = db_hornitzaileak.length; i < length; i++)
+                {
+                        horniId=db_hornitzaileak[i];
+                        var horniElement=document.getElementById(horniId);
+                        console.log(horniElement);
+                        if(horniElement.checked == true)
+                        {
+                                balioa=horniElement.value;
+                                hornitzaileakF_ar.push(balioa);
+                        }
+
+                }
+          //MOTA                                                                                                                  
+                                                                                                         
+         db_motak_text=document.getElementById('db_motak_text').value;
+         db_motak=db_motak_text.split("_");
+         for (var i = 0, length = db_motak.length; i < length; i++)
+                {
+                        motaId=db_motak[i];
+                        var motaElement=document.getElementById(motaId);
+                        if(motaElement.checked == true)
+                        {
+                                balioa=motaElement.value;
+                                motaF_ar.push(balioa);
+                        }
+
+                }
+         //LIZENTZIA                                                                                                               
+                                                                                                                                    
+         db_lizentziak_text=document.getElementById('db_lizentziak_text').value;
+         db_lizentziak=db_lizentziak_text.split("_");
+
+         for (var i = 0, length = db_lizentziak.length; i < length; i++)
+                {
+                        lizentziaId=db_lizentziak[i];
+                        var lizentziaElement=document.getElementById(lizentziaId);
+
+                        if(lizentziaElement.checked == true)
+                        {
+                                balioa=lizentziaElement.value;
+                                lizentziaF_ar.push(balioa);
+
+                        }
+
+                }
+ //MOTA                                                                                                                     \
+                                                                                                                                     
+         db_motak_text=document.getElementById('db_motak_text').value;
+         db_motak=db_motak_text.split("_");
+         for (var i = 0, length = db_motak.length; i < length; i++)
+                {
+                        motaId=db_motak[i];
+                        var motaElement=document.getElementById(motaId);
+                        if(motaElement.checked == true)
+                        {
+                                balioa=motaElement.value;
+                                motaF_ar.push(balioa);
+                        }
+
+                }
+         //LIZENTZIA                                                                                                              
+         db_lizentziak_text=document.getElementById('db_lizentziak_text').value;
+         db_lizentziak=db_lizentziak_text.split("_");
+
+         for (var i = 0, length = db_lizentziak.length; i < length; i++)
+                {
+                        lizentziaId=db_lizentziak[i];
+                        var lizentziaElement=document.getElementById(lizentziaId);
+
+                        if(lizentziaElement.checked == true)
+                        {
+                                balioa=lizentziaElement.value;
+                                lizentziaF_ar.push(balioa);
+
+                        }
+
+                }
+
 	 //ORDENA
 	 if(dataOrdenaElement.checked == true)
 	 {
@@ -2966,22 +3058,7 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 	 	balioa=botoOrdenaElement.value;
 	 	ordenaF_ar.push(balioa);
 	 }
-	 //LIZENTZIA
-	 if(lizentziaLibreElement.checked == true)
-	 {
-	 	balioa=lizentziaLibreElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCommonsElement.checked == true)
-	 {
-	 	balioa=lizentziaCommonsElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCopyElement.checked == true)
-	 {
-	 	balioa=lizentziaCopyElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
+
 	 //Beste batzuk
 	  if(egunekoaElement.checked == true)
 	 {
@@ -3054,14 +3131,14 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 	var EnhizkElement = document.getElementById('hizkuntza3F');
 	
 	//Hornitzaileak
-	var EkmHorniElement = document.getElementById('hornitzaile1F');
-	var ArruntaHorniElement = document.getElementById('hornitzaile2F');
+	//var EkmHorniElement = document.getElementById('hornitzaile1F');
+	//var ArruntaHorniElement = document.getElementById('hornitzaile2F');
 	
 	//Mota
-	var textMotaElement = document.getElementById('mota1F');
-	var audioMotaElement = document.getElementById('mota2F');
-	var videoMotaElement = document.getElementById('mota3F');
-	var imgMotaElement = document.getElementById('mota4F');
+	//var textMotaElement = document.getElementById('mota1F');
+	//var audioMotaElement = document.getElementById('mota2F');
+	//var videoMotaElement = document.getElementById('mota3F');
+	//var imgMotaElement = document.getElementById('mota4F');
 	
 	//Ordena
 	var dataOrdenaElement = document.getElementById('ordena1F');
@@ -3069,9 +3146,9 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 	var botoOrdenaElement = document.getElementById('ordena2F');
 	
 	//Lizentzia
-	var lizentziaLibreElement =document.getElementById('lizentzia1F');
-	var lizentziaCommonsElement =document.getElementById('lizentzia2F');
-	var lizentziaCopyElement =document.getElementById('lizentzia3F');
+	//var lizentziaLibreElement =document.getElementById('lizentzia1F');
+	//var lizentziaCommonsElement =document.getElementById('lizentzia2F');
+	//var lizentziaCopyElement =document.getElementById('lizentzia3F');
 	
 	//Beste batzuk
 	var egunekoaElement = document.getElementById('egunekoaF');
@@ -3099,38 +3176,56 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 	 	hizkuntzakF_ar.push(balioa);
 	 
 	 }
-	 //HORNITZAILEAK
-	 if(EkmHorniElement.checked == true)
-	 {
-	 	balioa=EkmHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 if(ArruntaHorniElement.checked == true)
-	 {
-	 	balioa=ArruntaHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 //MOTA
-	 if(textMotaElement.checked == true)
-	 {
-	 	balioa=textMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(audioMotaElement.checked == true)
-	 {
-	 	balioa=audioMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(videoMotaElement.checked == true)
-	 {
-	 	balioa=videoMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(imgMotaElement.checked == true)
-	 {
-	 	balioa=imgMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
+         //HORNITZAILEAK                                                                                                             
+         db_hornitzaileak_text=document.getElementById('db_hornitzaileak_text').value;
+         db_hornitzaileak=db_hornitzaileak_text.split("_");
+         for (var i = 0, length = db_hornitzaileak.length; i < length; i++)
+                {
+                        horniId=db_hornitzaileak[i];
+                        var horniElement=document.getElementById(horniId);
+                        console.log(horniElement);
+                        if(horniElement.checked == true)
+                        {
+                                balioa=horniElement.value;
+                                hornitzaileakF_ar.push(balioa);
+                        }
+
+                }
+         //MOTA                                                                                                                   
+                                                                                                                                   
+         db_motak_text=document.getElementById('db_motak_text').value;
+         db_motak=db_motak_text.split("_");
+         for (var i = 0, length = db_motak.length; i < length; i++)
+                {
+                        motaId=db_motak[i];
+                        var motaElement=document.getElementById(motaId);
+                        if(motaElement.checked == true)
+                        {
+                                balioa=motaElement.value;
+                                motaF_ar.push(balioa);
+                        }
+
+                }
+         //LIZENTZIA                                                                                                               
+                                                                                                                                    
+         db_lizentziak_text=document.getElementById('db_lizentziak_text').value;
+         db_lizentziak=db_lizentziak_text.split("_");
+
+         for (var i = 0, length = db_lizentziak.length; i < length; i++)
+                {
+                        lizentziaId=db_lizentziak[i];
+                        var lizentziaElement=document.getElementById(lizentziaId);
+
+                        if(lizentziaElement.checked == true)
+                        {
+                                balioa=lizentziaElement.value;
+                                lizentziaF_ar.push(balioa);
+
+                        }
+
+                }
+
+
 	 //ORDENA
 	 if(dataOrdenaElement.checked == true)
 	 {
@@ -3147,22 +3242,7 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 	 	balioa=botoOrdenaElement.value;
 	 	ordenaF_ar.push(balioa);
 	 }
-	 //LIZENTZIA
-	 if(lizentziaLibreElement.checked == true)
-	 {
-	 	balioa=lizentziaLibreElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCommonsElement.checked == true)
-	 {
-	 	balioa=lizentziaCommonsElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCopyElement.checked == true)
-	 {
-	 	balioa=lizentziaCopyElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
+
 	 //Beste batzuk
 	  if(egunekoaElement.checked == true)
 	 {
@@ -3234,25 +3314,14 @@ function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 	var EshizkElement = document.getElementById('hizkuntza2F');
 	var EnhizkElement = document.getElementById('hizkuntza3F');
 	
-	//Hornitzaileak
-	var EkmHorniElement = document.getElementById('hornitzaile1F');
-	var ArruntaHorniElement = document.getElementById('hornitzaile2F');
-	
-	//Mota
-	var textMotaElement = document.getElementById('mota1F');
-	var audioMotaElement = document.getElementById('mota2F');
-	var videoMotaElement = document.getElementById('mota3F');
-	var imgMotaElement = document.getElementById('mota4F');
+
 	
 	//Ordena
 	var dataOrdenaElement = document.getElementById('ordena1F');
 	var data2OrdenaElement = document.getElementById('ordena3F');
 	var botoOrdenaElement = document.getElementById('ordena2F');
 	
-	//Lizentzia
-	var lizentziaLibreElement =document.getElementById('lizentzia1F');
-	var lizentziaCommonsElement =document.getElementById('lizentzia2F');
-	var lizentziaCopyElement =document.getElementById('lizentzia3F');
+
 	
 	//Beste batzuk
 	var egunekoaElement = document.getElementById('egunekoaF');
@@ -3280,38 +3349,57 @@ function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 	 	hizkuntzakF_ar.push(balioa);
 	 
 	 }
-	 //HORNITZAILEAK
-	 if(EkmHorniElement.checked == true)
-	 {
-	 	balioa=EkmHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 if(ArruntaHorniElement.checked == true)
-	 {
-	 	balioa=ArruntaHorniElement.value;
-	 	hornitzaileakF_ar.push(balioa);
-	 }
-	 //MOTA
-	 if(textMotaElement.checked == true)
-	 {
-	 	balioa=textMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(audioMotaElement.checked == true)
-	 {
-	 	balioa=audioMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(videoMotaElement.checked == true)
-	 {
-	 	balioa=videoMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
-	 if(imgMotaElement.checked == true)
-	 {
-	 	balioa=imgMotaElement.value;
-	 	motaF_ar.push(balioa);
-	 }
+
+         //HORNITZAILEAK                                                                                                            
+         db_hornitzaileak_text=document.getElementById('db_hornitzaileak_text').value;
+         db_hornitzaileak=db_hornitzaileak_text.split("_");
+         for (var i = 0, length = db_hornitzaileak.length; i < length; i++)
+                {
+                        horniId=db_hornitzaileak[i];
+                        var horniElement=document.getElementById(horniId);
+                        console.log(horniElement);
+                        if(horniElement.checked == true)
+                        {
+                                balioa=horniElement.value;
+                                hornitzaileakF_ar.push(balioa);
+                        }
+
+                }
+
+         //MOTA                                                                                                                   
+         db_motak_text=document.getElementById('db_motak_text').value;
+         db_motak=db_motak_text.split("_");
+         for (var i = 0, length = db_motak.length; i < length; i++)
+                {
+                        motaId=db_motak[i];
+                        var motaElement=document.getElementById(motaId);
+                        if(motaElement.checked == true)
+                        {
+                                balioa=motaElement.value;
+                                motaF_ar.push(balioa);
+                        }
+
+                }
+         //LIZENTZIA                                                                                                        
+         db_lizentziak_text=document.getElementById('db_lizentziak_text').value;
+         db_lizentziak=db_lizentziak_text.split("_");
+
+         for (var i = 0, length = db_lizentziak.length; i < length; i++)
+                {
+                        lizentziaId=db_lizentziak[i];
+                        var lizentziaElement=document.getElementById(lizentziaId);
+
+                        if(lizentziaElement.checked == true)
+                        {
+                                balioa=lizentziaElement.value;
+                                lizentziaF_ar.push(balioa);
+
+                        }
+
+                }
+
+    
+
 	 //ORDENA
 	 if(dataOrdenaElement.checked == true)
 	 {
@@ -3328,22 +3416,7 @@ function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 	 	balioa=botoOrdenaElement.value;
 	 	ordenaF_ar.push(balioa);
 	 }
-	 //LIZENTZIA
-	 if(lizentziaLibreElement.checked == true)
-	 {
-	 	balioa=lizentziaLibreElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCommonsElement.checked == true)
-	 {
-	 	balioa=lizentziaCommonsElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
-	  if(lizentziaCopyElement.checked == true)
-	 {
-	 	balioa=lizentziaCopyElement.value;
-	 	lizentziaF_ar.push(balioa);	 	
-	 }
+
 	 //Beste batzuk
 	  if(egunekoaElement.checked == true)
 	 {
@@ -3470,6 +3543,7 @@ function bilaketaFiltratu_db()
 		{
 			horniId=db_hornitzaileak[i];			
 			var horniElement=document.getElementById(horniId);
+			console.log(horniElement);
 			if(horniElement.checked == true)
 	 		{ 			
 	 			balioa=horniElement.value;
@@ -3847,3 +3921,5 @@ function deleteItem(id){
     	window.location.href=url;
     }
 }
+
+

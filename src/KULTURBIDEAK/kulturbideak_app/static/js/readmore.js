@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var showChar = 515;
+    var showChar = 450;
     var ellipsestext = "...";
     var moretext = "more";
     var lesstext = "less";

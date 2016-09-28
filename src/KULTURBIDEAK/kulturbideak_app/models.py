@@ -551,6 +551,7 @@ class hornitzailea(models.Model):
     argazkia = models.CharField(max_length=1000)
     telefonoa = models.CharField(max_length=1000)
     emaila = models.CharField(max_length=1000)
+    website = models.CharField(max_length=1000)
     ordutegia = models.CharField(max_length=1000)
     helbidea = models.CharField(max_length=1000)
     geoloc_longitude = models.FloatField(null=True)

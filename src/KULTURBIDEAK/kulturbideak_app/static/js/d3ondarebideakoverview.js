@@ -1,3 +1,126 @@
+/***************************
+*    Utils
+****************************/
+// function to get multiline labels for d3 svg text elements
+function insertLineBreaksD3(d) {
+    var el = d3.select(this);
+    el.attr("stroke", function(d) {
+        return "black";
+    });
+    var words = d.split(/[_ ]/);
+    el.text('');
+
+    for (var i = 0; i < words.length; i++) {
+        // if a word is too short (<3 chars) append it to the next element
+        //if (words[i].length<3 && i< words.length-1){
+        //    words[i+1]=words[i]+" "+words[i+1];
+        //    continue;
+        //}
+        
+	if (i>= words.length/2){
+            var tspan = el.append('tspan').text(words[i]);
+            if (i > 0)
+		tspan.attr('x', 0).attr('dy', '15');
+	}
+    }
+}
+
+//function to unescape html entities
+function htmlDecode(input){
+  var e = document.createElement('div');
+  e.innerHTML = input;  
+  if (e.childNodes.length === 0)
+  {
+      return "";
+  }
+  else if (e.childNodes[0].nodeValue)
+  {
+      //console.log("arrunta "+e.childNodes[0].nodeValue);
+      return e.childNodes[0].nodeValue;
+  }
+  else
+  {
+      //console.log("aldaketarik ez");
+      return input;
+  }
+}
+
+
+//Maddalen: Nodoen titulutik etiketak garbitu eta Moztu 
+
+function tituluaGarbitu (titulua,moztu){ 
+        
+    titulua=titulua.replace(/^\s+/,"");
+    var tituluaJat=htmlDecode(titulua);
+    titulua=tituluaJat;
+    var titulu_es="";
+    var titulu_en="";
+    var titulu_eu="";
+   
+    //console.log(titulua);
+    //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    var myRegexpES = new RegExp("<div class=\"titulu_es\">(.*?)</div>");
+    //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
+    var match_es = myRegexpES.exec(titulua);
+   
+    if (match_es){      
+        titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
+       }
+    else{
+        titulu_es="";
+       }
+    
+    var myRegexpEN = new RegExp("<div class=\"titulu_en\">(.*?)</div>");
+    var match_en = myRegexpES.exec(titulua);     
+    if (match_en){
+        titulu_en=match_en[1];
+       }
+    else{
+        titulu_en="";
+    }
+ 
+    var myRegexpEU = new RegExp("<div class=\"titulu_eu\">(.*?)</div>");
+    var match_eu = myRegexpEU.exec(titulua);  
+    if (match_eu){
+        titulu_eu=match_eu[1];
+       }
+    else{
+        titulu_eu="";
+    }
+  
+    //titulua= !!!erabaki defektuzkoa zein den eu,en,es
+    if (titulu_eu){
+        titulua=titulu_eu;
+     }
+    else if (titulu_es){
+        titulua=titulu_es;
+       }
+    else{
+        titulua=titulu_en;
+       }
+   
+    //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
+    if (titulua ==""){
+        titulua=tituluaJat;                
+    }
+    titulua=titulua.replace(/<div class=\"titulu_lg\">(.*?)<\/div>/, "$1");
+    
+    if (moztu==true && titulua.length>15){
+        return titulua.substr(0,14)+"...";
+    }
+    else{
+        return titulua;        
+    }
+
+}
+
+
+
+/***************************
+*    End of Utils
+****************************/
+
+
 var data = ibilbide_data;
 //console.log(data);
 var path_id = path_id;
@@ -30,22 +153,28 @@ data.forEach(function(node) {
 
 
 // ************** Generate the tree diagram  *****************
-var divWidth = d3.select('#path_boxes_overview').style('width').substr(0,d3.select('#path_boxes_overview').style('width').length-2);
-var divWidth = divWidth-(divWidth*0.04);
-var divHeight = d3.select('#path_boxes_overview').style('height').substr(0,d3.select('#path_boxes_overview').style('height').length-2);
-var divHeight = divHeight-(divHeight*0.1);
+//var divWidth = d3.select('#path_boxes_overview').style('width').substr(0,d3.select('#path_boxes_overview').style('width').length-2);
+var divWidth = document.getElementById('path_boxes_overview').offsetWidth;
+divWidth=900;
+divWidth = divWidth-(divWidth*0.04);
+//var divHeight = d3.select('#path_boxes_overview').style('height').substr(0,d3.select('#path_boxes_overview').style('height').length-2);
+var divHeight = document.getElementById('path_boxes_overview').offsetHeight;
+divHeight=600;
+divHeight = divHeight-(divHeight*0.1);
 
-var margintop = 20;
+var margintop = 0;
+var marginbottom = 40;
 var modal= document.getElementById('modaloverview');
 if (modal != null)
 {
-    margintop=200;
+    margintop=0;
+    marginbottom=40;
 }
 //Maddalen: top:20 zegoen lehen, baina modalean ondo ikusteko aldatu dut
-var margin = {top: margintop, right: 120, bottom: 20, left: 120},
+var margin = {top: margintop, right: 120, bottom: marginbottom, left: 40},
     width = divWidth - margin.right - margin.left,
-    //height = divHeight - margin.top - margin.bottom;
-    height = divHeight - 50 - 20;
+    height = divHeight - margin.top - margin.bottom;
+    //height = divHeight - 50 - 20;
     
     var i = 0;
     var duration = 750;
@@ -56,7 +185,8 @@ var margin = {top: margintop, right: 120, bottom: 20, left: 120},
     var luzera = 45;
 var tree = d3.layout.tree()
     .size([width,height]);
-
+console.log("w "+width+" -  h "+height);
+console.log("path-overview - w "+divWidth+" -  h "+divHeight);
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { 
         return [d.y-luzera, d.x]; });
@@ -64,6 +194,7 @@ var diagonal = d3.svg.diagonal()
 var svg = d3.select("#path_boxes_overview").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
+    .attr("class","clearfix")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     function click() {
@@ -107,141 +238,6 @@ var svg = d3.select("#path_boxes_overview").append("svg")
 
     } 
             
-//Maddalen: Nodoen titulutik etiketak garbitzen dituen funtzioa
-
-function tituluaGarbitu (titulua){
-	
-		
-	var tituluaJat=titulua.replace(/&lt;/g, "<");
-	tituluaJat=tituluaJat.replace(/&gt;/g, ">");
-	tituluaJat=tituluaJat.replace(/&quot;/g, "");
-
-	
-	titulua=tituluaJat;
-    var titulu_es="";
-    var titulu_en="";
-    var titulu_eu="";
-   
-    //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
-    var myRegexpES = new RegExp("<div class=titulu_es>(.*?)</div>");
-    //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
-    var match_es = myRegexpES.exec(titulua);
-   
-    if (match_es){   	
-        titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
-       }
-    else{
-        titulu_es="";
-       }
-    
-    var myRegexpEN = new RegExp("<div class=titulu_en>(.*?)</div>");
-    var match_en = myRegexpES.exec(titulua);     
-    if (match_en){
-        titulu_en=match_en[1];
-       }
-    else{
-        titulu_en="";
-   	}
- 
- 	var myRegexpEU = new RegExp("<div class=titulu_eu>(.*?)</div>");
-    var match_eu = myRegexpEU.exec(titulua);  
-    if (match_eu){
-        titulu_eu=match_eu[1];
-       }
-    else{
-        titulu_eu="";
-    }
-  
-    //titulua= !!!erabaki defektuzkoa zein den eu,en,es
-    if (titulu_eu){
-        titulua=titulu_eu;
-     }
-    else if (titulu_es){
-        titulua=titulu_es;
-       }
-    else{
-        titulua=titulu_en;
-       }
-   
-    //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
-    if (titulua ==""){
-        titulua=tituluaJat;
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ");
-        titulua=titulua.replace("</div>", " ");
-        
-        
-    }
-    
-	return titulua;
-}
-
-//Maddalen: Nodoen titulutik etiketak garbitu eta Moztu 
-
-function tituluaGarbituMoztu (titulua){
-	
-		
-	var tituluaJat=titulua.replace(/&lt;/g, "<");
-	tituluaJat=tituluaJat.replace(/&gt;/g, ">");
-	tituluaJat=tituluaJat.replace(/&quot;/g, "");
-
-	
-	titulua=tituluaJat;
-    var titulu_es="";
-    var titulu_en="";
-    var titulu_eu="";
-   
-    //espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
-    var myRegexpES = new RegExp("<div class=titulu_es>(.*?)</div>");
-    //var myRegexpES = /<div class=\"titulu_es\">(.*?)</div>/g;
-    var match_es = myRegexpES.exec(titulua);
-   
-    if (match_es){   	
-        titulu_es=match_es[1]; //0 posizioan jatorrizkoa dago
-       }
-    else{
-        titulu_es="";
-       }
-    
-    var myRegexpEN = new RegExp("<div class=titulu_en>(.*?)</div>");
-    var match_en = myRegexpES.exec(titulua);     
-    if (match_en){
-        titulu_en=match_en[1];
-       }
-    else{
-        titulu_en="";
-   	}
- 
- 	var myRegexpEU = new RegExp("<div class=titulu_eu>(.*?)</div>");
-    var match_eu = myRegexpEU.exec(titulua);  
-    if (match_eu){
-        titulu_eu=match_eu[1];
-       }
-    else{
-        titulu_eu="";
-    }
-  
-    //titulua= !!!erabaki defektuzkoa zein den eu,en,es
-    if (titulu_eu){
-        titulua=titulu_eu;
-     }
-    else if (titulu_es){
-        titulua=titulu_es;
-       }
-    else{
-        titulua=titulu_en;
-       }
-   
-    //DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
-    if (titulua ==""){
-        titulua=tituluaJat;
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ");
-        titulua=titulua.replace("</div>", " ");
-        
-        
-    }
-  
-	return titulua.substr(0,14)+"...";
-}
 
 
 
@@ -311,14 +307,14 @@ function update(source) {
 
   //Nodoen Gainean Sagua jarritakoan Nodoaren Titulu osoa erakutsiko da        
 	nodeEnter.append("svg:title").text(function(d) {
-                return tituluaGarbitu(d.name);  });
+                return tituluaGarbitu(d.name,false);  });
   
   //Borobila sortu
   var radio = 30;
 
   nodeEnter.append("circle")
     .attr("id",function(d) {
-     return 'nodo: '+tituluaGarbitu(d.name); }) //Maddalen
+     return 'nodo: '+tituluaGarbitu(d.name,false); }) //Maddalen
     .attr("class", "aukeratuta")
     .attr("r", function(d){
             return 15;
@@ -356,7 +352,7 @@ function update(source) {
             .attr('height', 1)
             .attr('patternContentUnits', 'objectBoundingBox')
             .append("svg:image")
-                .attr("xlink:xlink:href", function(d) { return (d.irudia);}) // "icon" is my image url. It comes from json too. The double xlink:xlink is a necessary hack (first "xlink:" is lost...).
+                .attr("xlink:xlink:href", function(d) { return htmlDecode(d.irudia);}) // "icon" is my image url. It comes from json too. The double xlink:xlink is a necessary hack (first "xlink:" is lost...).
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("height", 1)
@@ -372,7 +368,7 @@ function update(source) {
     })
       .attr("text-anchor", function(d) { 
           return d.children || d._children ? "end" : "start"; })
-      .text(function(d) { return tituluaGarbituMoztu(d.name);}) //Maddalen
+      .text(function(d) { return tituluaGarbitu(d.name,true);}) //Maddalen
       .style("fill-opacity", 1);
 
         var nodeUpdate = node.transition()

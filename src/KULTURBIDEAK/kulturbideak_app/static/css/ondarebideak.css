@@ -24,11 +24,58 @@ body {
 	padding-top: 30px !important;
 }
 #item_img {
-	margin: 0% 0% 5px 20%;
+	margin: 5px;
 }
-#license_info, #nabigMenu_titulu {
-	margin: 0% 0% 0% 20%;
+#license_info {
+	margin: 5px;
 }
+#license_info ul li {
+	width:49%;
+	padding:0px;
+}
+
+#license_info ul li.ezkerra {
+	width:70%;
+	padding:10px 15px;
+}
+
+#license_info ul li.eskuma {
+	width:30%;
+	text-align:right
+}
+#nabigMenu_titulu {
+	text-align:center;
+}
+
+#nabigMenu {
+	width: 100%;
+	border-top:1px solid #C8C8C8;
+}
+
+
+.path-titulu-legend{
+	font-size: 16px;
+	padding: 8px;
+	color: #c03035;
+	text-decoration: none;
+	text-align:right;
+}
+.path-titulu-icon{
+	font-size: 14px;	
+	color: #c03035;
+	text-decoration: none;	
+}
+
+#nabigMapa{
+	margin:10px 0 10px 0;
+}
+
+#autoplay{
+	float:right;
+	padding: 3%;
+	margin-right:10px;
+}
+
 
 .bilaketaEmaitza {
 
@@ -47,6 +94,11 @@ body {
 	background-position: center;
 	background-repeat: no-repeat;
 }
+
+.nabigItem {
+	min-height: 300px;
+}
+
 .ezkmarg0 {
 	margin-left: 0px;
 }
@@ -147,24 +199,24 @@ img.ob_thumbnail {
 	/*overflow: auto;*/
 }
 #path_boxes_overview {
-	width: 98%;
-	height: 400px;
+	width: 100%;
+	/*min-height: 400px;*/
+	height: 600px;
 	display: block;
-	margin-top: -29px;
-	padding-top: 5px;
+	border: 1px solid #C0C0C0;
+	border-radius: 5px;
+	margin: 20px 0 20px 0;
 	background: ;
+	overflow: auto;
 	resize: both;
 	/* overflow: auto;*/
 }
 
 #path_boxes_overview svg {
-	width: 98%;
-	height: 700px;
-	display: block;
-	padding-top: 20px;/* 5px*/
-	background: ;
-	resize: both;
+	width: 100%;
+	height: 100%;
 }
+
 #path_boxes {
 	width: 98%;
 	height: 600px;
@@ -274,6 +326,13 @@ img.ob_thumbnail {
 }
 
 .crossingPaths {
+	margin-top: 20px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 5px;
+}
+
+#crossingPaths {
 	margin-top: 20px;
 	border: 1px solid #ddd;
 	border-radius: 4px;
@@ -401,15 +460,26 @@ img.ob_thumbnail {
 	content: "";
 	display: table;
 }
+
+
 #nabigMenu_botoiak ul {
-	width: 50%;
+	width: 40%;
 	padding: 2px;
 	list-style-type: none;
+	
 }
+
+#nabigMenu botoiak ul h3 {
+	margin-top:10px;
+}
+
+
 #nabigMenu_botoiak ul li {
 	border: 1px solid lightgrey;
 	border-radius: 10px;
 	margin: 2px 0px;
+	height:24px;
+	line-height:24px;
 }
 #nabigMenu_botoiak .eskuma button {
 	margin: 2px 0px 2px 0px;
@@ -547,7 +617,7 @@ circle .unselectedNode {
 	font-weight: 300;
 }
 .path-name2 h2 {
-	margin-bottom: 4px;
+	margin-bottom: 15px;
 	margin-top: 0;
 	/*color: #686868;*/
 	font-size: 30px;
@@ -562,18 +632,12 @@ circle .unselectedNode {
 	font-family: "dosis" !important;
 	font-weight: 300;
 }
-.path-info-description {
-	color: #000;
-	font-family: "Lato", sans-serif;
-	font-size: 14px;
-	font-weight: 300;
-	line-height: 22px;
-}
-.item-info-description {
+
+.item-info-description,.path-info-description {
 	color: #000;
 	/*font-family: "Lato",sans-serif;*/
 	font-family: "dosis", sans-serif;
-	font-size: 14px;
+	font-size: 18px;
 	font-weight: 300;
 	line-height: 22px;
 }
@@ -592,12 +656,18 @@ circle .unselectedNode {
 }
 .hornitzaile-irudia {
 
-	height: 150px;
+	/*height: 150px;*/
 	border: solid 1px #CCC;
 }
 
-.ibilbide-panela {
+.hornitzaile-ikonoa{	
+	border-radius: 5px;
+}
 
+#hornitzaile-ikonoa{	
+	width:13%;
+}
+.ibilbide-panela {
 	height: 550px;
 }
 .autocomplete-galdera {
@@ -657,7 +727,7 @@ h4.mota {
 h4.mota2 {
 
 	font-family: "dosis" !important;
-	font-size: 19px;
+	font-size: 18px;
 	font-weight: 200;
 	/*color: #c03035;*/
 }
@@ -692,14 +762,18 @@ h2.uppercase {
 	text-align: center;
 }
 
-#frame {
+#preview_frame {
 	border: none;
-	-moz-transform: scale(0.8);
-	-moz-transform-origin: 31px 56px;
-	-o-transform: scale(0.8);
-	-o-transform-origin: 0 0;
-	-webkit-transform: scale(0.8);
-	-webkit-transform-origin: 0 0;
+	-moz-transform: scale(0.98, 0.98); 
+  	-webkit-transform: scale(0.98, 0.98); 
+  	-o-transform: scale(0.98, 0.98);
+  	-ms-transform: scale(0.98, 0.98);
+  	transform: scale(0.98, 0.98); 
+  	-moz-transform-origin: top left;
+  	-webkit-transform-origin: top left;
+  	-o-transform-origin: top left;
+  	-ms-transform-origin: top left;
+  	transform-origin: top left;
 	overflow: hidden !important;
 }
 
@@ -755,9 +829,18 @@ span.helptext {
 	list-style: none;
 }
 
+.crop{
+	width:95%;
+	overflow:hidden;
+	height:24px;
+	line-height:24px;
+}
+
 .ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;  /* IE 6+, FF 7+, Op 11+, Saf 1.3+, Chr 1+*/
     -o-text-overflow: ellipsis;  /* for Opera 9 & 10*/
+    width:90%;
+    padding:0 3px 0 3px;
 }

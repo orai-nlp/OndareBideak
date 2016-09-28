@@ -7,6 +7,21 @@ import HTMLParser
 from django.contrib.auth.models import User, Group
 register = template.Library()
 
+@register.filter
+def add_ekm_prefix_to_desc(value): 
+    value=value.replace('="/ImgsAuna/','="http://www.euskomedia.org/ImgsAuna/')
+    value=value.replace('href="/aunamendi/', 'href="http://www.euskomedia.org/aunamendi/')
+    
+    return value
+
+@register.filter
+def convert_newline2br(value): 
+    value=value.replace('\n','<br/>')    
+    return value
+
+@register.filter
+def clean_http_prefix(value): 
+    return value.replace('http://www.http://','http://')
 
 @register.filter
 def format_html(value): 
@@ -14,6 +29,9 @@ def format_html(value):
     first = html_parser.unescape(value)
     return html_parser.unescape(first)
 
+@register.filter
+def replace_quotes(value): 
+    return value.replace('"',"'")
 
 
 @register.filter(name='hornitzailea_da')
@@ -33,7 +51,15 @@ def has_group(user, group_name):
     return True if group in user.groups.all() else False
 
 
+@register.filter
+def ob_language_errep_kendu(value):
 
+    value_array=value.split(' ')
+    value_clean=set(value_array)
+    value_str=' '.join(value_clean)
+
+    return value_str
+    
 
 @register.filter
 def correct_float_format(value):
@@ -54,6 +80,15 @@ def correct_language_tags(value):
     value=value.replace('</div>',' ')
     return value
 
+
+@register.filter
+def correct_wikification_url_tags(value):
+    
+    value=value.replace('http://es.dbpedia.org/resource/', 'https://es.wikipedia.org/wiki/')
+    value=value.replace('http://dbpedia.org/resource/', 'https://en.wikipedia.org/wiki/')
+
+
+    return value
 
 @register.filter
 def choose_title_language(interfaceLang, item):
@@ -400,25 +435,41 @@ def choose_language_text_not_target(Lang, item):
 @register.filter
 def choose_description_language(interfaceLang, item):
     
+    
     deskribapena=item.dc_description
     deskribapena_es=""
     deskribapena_en=""
     deskribapena_eu=""
     #espresio erregularrak erabilita hizkuntza desberdinetako deskribapenak atera
+    #Kontuz! .*? expresioak ez ditu lerro saltoak onartzen, Aunamendirekin adibidez arazoak
+    #re.DOTALL
+    #Make the '.' special character match any character at all, including a newline; without this flag, '.' will match anything except a newline.
+    #match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena,re.DOTALL) ??ERROREA EMATEN DU
+
     match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena)
 
     if match_es:
         deskribapena_es=match_es.group(0)
         deskribapena_es=deskribapena_es.replace("<div class=\"desc_es\">", " ")
         deskribapena_es=deskribapena_es.replace("</div>", " ")
+
+        deskribapena_es=format_html(deskribapena_es)
+        deskribapena_es=re.sub('<p class=".*?">',"",deskribapena_es)
+        deskribapena_es=re.sub("</?p>","",deskribapena_es)
+
     else:
         deskribapena_es=""
         
     match_en = re.search('<div class=\"desc_en\">(.*?)</div>', deskribapena)
     if match_en:
-        deskribapena_en=match_es.group(0)
+        deskribapena_en=match_en.group(0)
         deskribapena_en=deskribapena_en.replace("<div class=\"desc_en\">", " ")
         deskribapena_en=deskribapena_en.replace("</div>", " ")
+
+        deskribapena_en=format_html(deskribapena_en)
+        deskribapena_en=re.sub('<p class=".*?">',"",deskribapena_en)
+        deskribapena_en=re.sub("</?p>","",deskribapena_en)
+
     else:
         deskribapena_en=""
     
@@ -427,6 +478,17 @@ def choose_description_language(interfaceLang, item):
         deskribapena_eu=match_eu.group(0)
         deskribapena_eu=deskribapena_eu.replace("<div class=\"desc_eu\">", " ")
         deskribapena_eu=deskribapena_eu.replace("</div>", " ")
+
+        
+        #AUNAMEDIko etiketak kentzeko
+        #deskribapena_eu=deskribapena_eu.replace('&lt;p class=&quot;','<p class="')
+        #deskribapena_eu=deskribapena_eu.replace('&quot;&gt;','">')
+        #deskribapena_eu=deskribapena_eu.replace('&lt;/p&gt;','</p>')
+        #deskribapena_eu=deskribapena_eu.replace('&lt;p&gt;','<p>')
+        deskribapena_eu=format_html(deskribapena_eu) 
+        deskribapena_eu=re.sub('<p class=".*?">',"",deskribapena_eu) 
+        deskribapena_eu=re.sub("</?p>","",deskribapena_eu)
+        #print deskribapena_eu
     else:
         deskribapena_eu=""
     
@@ -442,7 +504,29 @@ def choose_description_language(interfaceLang, item):
         deskribapena=item.dc_description
         deskribapena=deskribapena.replace("<div class=\"desc_lg\">", " ")
         deskribapena=deskribapena.replace("</div>", " ")
-    
+        #AUnamendi
+        deskribapena=deskribapena.replace("<div class=\"desc_eu\">", " ")
+        deskribapena=deskribapena.replace("</div>", " ")
+        deskribapena=deskribapena.replace("<div class=\"desc_es\">", " ")
+        deskribapena=deskribapena.replace("</div>", " ")
+        deskribapena=deskribapena.replace("<div class=\"desc_en\">", " ")
+        deskribapena=deskribapena.replace("</div>", " ")
+
+
+        #AUNAMEDIko etiketak kentzeko
+        #deskribapena=deskribapena.replace('&lt;p class=&quot;','<p class="')
+        #deskribapena=deskribapena.replace('&quot;&gt;','">')
+        #deskribapena=deskribapena.replace('&lt;/p&gt;','</p>')
+        #deskribapena=deskribapena.replace('&lt;p&gt;','<p>')
+
+        deskribapena=format_html(deskribapena) 
+        deskribapena=re.sub('<p class=".*?">',"",deskribapena) 
+        deskribapena=re.sub("</?p>","",deskribapena) 
+
+
+
+
+
     if interfaceLang == "eu":
          
         if deskribapena_eu != "":

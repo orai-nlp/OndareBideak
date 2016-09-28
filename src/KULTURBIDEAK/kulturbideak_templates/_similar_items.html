@@ -17,7 +17,15 @@
 			<div class="col-xs-6 col-md-3">
 
 				<div class="">
-					<a class="thumbnail bilaketaEmaitza"  href="{{BASE_URL}}/erakutsi_item?id={{antzekoa.item_id}}" > <img  alt="{{antzekoa.dc_title}}" src="	{% if antzekoa.edm_object %}{{antzekoa.edm_object}}{%else%} /uploads/NoIrudiItem.png {% endif %}"> </a>
+					<a class="thumbnail bilaketaEmaitza"  href="{{BASE_URL}}/erakutsi_item?id={{antzekoa.item_id}}" >
+						{% if antzekoa.edm_object %}
+							<img width="90%" alt="{{antzekoa.dc_title}}" src="{{ antzekoa.edm_object|clean_http_prefix }}">
+						{% elif antzekoa.edm_isshownat %}
+						<iframe id="preview_frame" style="width:100%;height:300px;" src="{{antzekoa.edm_isshownat}}"></iframe>
+						{%else%}
+						<img  alt="{{antzekoa.dc_title}}" src="/uploads/NoIrudiItem.png">
+						{%endif%} 
+					</a>
 
 					<div class="caption">
 						<p class="uppercase">

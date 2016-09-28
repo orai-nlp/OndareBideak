@@ -13,7 +13,7 @@
             {% blocktrans with num=hornitzaileak.number pnum=hornitzaileak.paginator.num_pages %}{{ num }}.orrialdea {{ pnum }}tik.{% endblocktrans %}
 	    </span>
 
-        {% if paths.has_next %}
+        {% if hornitzaileak.has_next %}
             <a href="?page={{ hornitzaileak.next_page_number }}">{% trans "hurrengoak" %}</a>
         {% endif %}
     </span>

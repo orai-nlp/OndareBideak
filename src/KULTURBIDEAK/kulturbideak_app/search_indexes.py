@@ -11,6 +11,7 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     dc_description = indexes.CharField(model_attr='dc_description')
     dc_creator = indexes.CharField(model_attr='dc_creator')
     dc_language = indexes.CharField(model_attr='dc_language')
+    dc_date = indexes.CharField(model_attr='dc_date')
     edm_provider= indexes.CharField(model_attr='edm_provider')
     edm_country= indexes.CharField(model_attr='edm_country')
     edm_type= indexes.CharField(model_attr='edm_type')

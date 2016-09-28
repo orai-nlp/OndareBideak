@@ -7,14 +7,14 @@
 
 
 {% if hornitzailea %}
-{% block additional_scripts %}
+{% block additional_css %}
 <link href="{{ STATIC_URL }}css/blog-post.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/areas.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/proposal.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/social-share-kit.css" rel="stylesheet">
 <link rel="stylesheet" href="{{STATIC_URL}}css/adituTag.css" type="text/css">
-{% endblock %}
+{% endblock additional_css %}
 {%endif%}
 <!--<p> Showing {{ page.object_list|length }} of {{ page.paginator.count }} Results on Page {{ page.number }} of {{ page.paginator.n\
 um_pages }}</p>-->
@@ -55,6 +55,7 @@ um_pages }}</p>-->
 </ul>
 
 <input type="hidden" name="hornitzailea" id="hornitzailea" value="{{ hornitzailea.fk_user.username }}" />
+<input type="hidden" name="hornitzaile_search" id="hornitzaile_search" value="{{ hornitzailea.fk_user.id }}" />
 
 <div class="tab-content" name="AdvOrBasicSearch2">
 	
@@ -88,6 +89,11 @@ um_pages }}</p>-->
                		 <span id="id_emaila">{{hornitzailea.emaila}}</span>
                        
                 	</h4>
+                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+						
+               		  <span id="id_website"><a href="http://{{hornitzailea.website}}" target="_blank">{{hornitzailea.website}}</a></span>
+                       
+                	</h4>
                 	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-time" aria-hidden="true"></span>
 						
                		 <span id="id_emaila">{{hornitzailea.ordutegia}}</span>
@@ -97,17 +103,26 @@ um_pages }}</p>-->
                 </div>
     
             </div> 
-           	<div class="col-lg-6"> <!-- col-lg-8-->
+           	<div class="col-lg-8"> <!-- col-lg-8-->
 				{% if hornitzailea.izena != "" %}
 					<h1 class=" dosis text-center"><span id="id_title"> {{hornitzailea.izena}}</span>
 				{%else%}
 				     <h1 class="dosis text-center"><span id="id_title"> Hornitzailearen Izena*</span>
                 {%endif%}
                 	 </h1>  
-               
-
+                        
                 <!--<p class="lead">{% trans "Deskribapena" %}</p>-->
-                <p class="letratipoa"><span  id="id_summary">{{hornitzailea.deskribapena}}</span></p>
+                <div class="path-info-description">
+                	<div class="row">                
+        		<div class="col-md-8" ><span id="id_summary">{{hornitzailea.deskribapena}}</span></div>
+        			<div id="hornitzaile-ikonoa" class="col-md-4">
+				{% if hornitzailea.ikonoa %}
+        				<img id="id_icon" class="hornitzaile-ikonoa" src="{{ hornitzailea.ikonoa }}" alt="">      			
+	 			{%endif%}
+        		</div>
+        		</div>
+        		
+        		</div>
                                                                         
                 <hr>
 		
@@ -186,7 +201,7 @@ um_pages }}</p>-->
 			{%endif%}-->
 
 			<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
-				<img  title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
+				<img  title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}{% endif%}" src="{% if item.edm_object %} {{item.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 			</a>
 		</div>
 		<div class="col-xs-1 col-md-1"></div>
@@ -211,7 +226,7 @@ um_pages }}</p>-->
                                         <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="eremu-str">{{item.edm_country}}</span><br />
                                 {%endif%}
                                 {% if item.ob_language %}
-                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{item.ob_language}}</span><br />
+                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{item.ob_language | ob_language_errep_kendu}}</span><br />
                                 {%endif%}                              
                                 {% if item.edm_type %}
                                         <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="eremu-str">{{item.edm_type}}</span><br />
@@ -294,15 +309,16 @@ um_pages }}</p>-->
 	  <div class="thumbnail col-xs-2 col-md-2">
 	    {% if path.path_fk_user_id|hornitzailea_da %}
 	    <div class="side-corner-tag">
+	      
               <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
-		{% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}
+		{% if path.path_thumbnail %}<img class="ob_thumbnail" src="{{path.path_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">{% endif %}
 		<p><span>aditua</span></p>
               </a>
 	    </div>
 	    {%else%}
 	    <div class="">
               <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
-                {% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">
+                {% if path.path_thumbnail %}<img class="ob_thumbnail" src="{{path.path_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">
 {% endif %}
               </a>
             </div>
