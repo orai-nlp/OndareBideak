@@ -22,7 +22,8 @@ text-transform: uppercase;
 	color:  #93CFE9;/*  #4EABD5 #93CFE9*/
 }
 header{
-	background: url(../../../img/brandy/header_bg.jpg);
+	#background: url(../../../img/brandy/header_bg.jpg);
+	background: url(../../../img/brandy/shrine-1031662_1920.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 }

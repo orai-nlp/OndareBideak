@@ -176,13 +176,17 @@ var margin = {top: margintop, right: 120, bottom: marginbottom, left: 40},
     height = divHeight - margin.top - margin.bottom;
     //height = divHeight - 50 - 20;
     
-    var i = 0;
-    var duration = 750;
-    var viewerWidth =  0;
-    var viewerHeight = width;
-    var newHeight = 4;
-    //luzera = radio +10
-    var luzera = 45;
+var i = 0;
+var duration = 750;
+var viewerWidth =  0;
+var viewerHeight = width;
+var newHeight = 4;
+//Nodoen tamaina
+var radio = 20;
+//Link-en luzera
+var luzera = radio +20
+//var luzera = 45;
+
 var tree = d3.layout.tree()
     .size([width,height]);
 console.log("w "+width+" -  h "+height);
@@ -308,16 +312,13 @@ function update(source) {
   //Nodoen Gainean Sagua jarritakoan Nodoaren Titulu osoa erakutsiko da        
 	nodeEnter.append("svg:title").text(function(d) {
                 return tituluaGarbitu(d.name,false);  });
-  
-  //Borobila sortu
-  var radio = 30;
-
+    
   nodeEnter.append("circle")
     .attr("id",function(d) {
      return 'nodo: '+tituluaGarbitu(d.name,false); }) //Maddalen
     .attr("class", "aukeratuta")
     .attr("r", function(d){
-            return 15;
+            return radio;
     })
     .style("stroke", function(d){ 
         var id_url = window.location.href.substr((window.location.href.indexOf("item_id=")+8),window.location.href.length);
@@ -339,7 +340,7 @@ function update(source) {
             if (d.id == id_url){
                 return 'red';
             }
-        }})    
+        }})            
         .style("fill", function(d) { 
             var ir = "#"+d.id;
             return  "url("+ir+")";});
@@ -362,9 +363,9 @@ function update(source) {
   //Testua gehitu  
   nodeEnter.append("text")
       .attr("x", function(d) { 
-          return d.children || d._children ? 35 : -35; })
+          return d.children || d._children ? (radio+luzera)/2 : -(radio+luzera)/2; }) // lehen 35: -35
       .attr("dy", function(d) {
-            return d.children || d._children ?  30 : 30;
+            return d.children || d._children ?  (radio+15) : (radio+15); //lehen 30 : 30
     })
       .attr("text-anchor", function(d) { 
           return d.children || d._children ? "end" : "start"; })
@@ -403,7 +404,7 @@ function update(source) {
             .attr("r", 0);
 
         nodeExit.select("text")
-            .style("fill-opacity", 0);                      
+            .style("fill-opacity", 0);                   
 
 
   // Estekak deklaratu

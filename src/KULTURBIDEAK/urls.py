@@ -4,6 +4,8 @@ from django.conf import settings
 from django.views.generic.base import RedirectView, TemplateView
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import RedirectView
+from django.views.generic import TemplateView
+#from django.views.generic import direct_to_template
 from kulturbideak_app import views
 from KULTURBIDEAK.kulturbideak_app.views import kulturBideak
 from KULTURBIDEAK.kulturbideak_app.views import hasiera
@@ -165,6 +167,8 @@ urlpatterns = patterns('',
     url(r'eguneko_ibilbidea_gehitu',eguneko_ibilbidea_gehitu),
     url(r'eguneko_ibilbidea_kendu',eguneko_ibilbidea_kendu),
             
+    (r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
+                               
     (r'^search/', include('haystack.urls')),
     
     #url(r'^rosetta/', include('rosetta.urls')),
