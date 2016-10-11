@@ -27,8 +27,18 @@
 		<!-- Animate CSS-->
 		<link rel="stylesheet" href="{{STATIC_URL}}css/brandy/css/animate.css">
 
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
 		<!-- Bootstrap -->
-		<link href="{{STATIC_URL}}css/brandy/css/bootstrap.min.css" rel="stylesheet">
+		{# Load the tag library #}
+		{% load bootstrap3 %}
+
+		{# Load CSS and JavaScript #}
+		{% bootstrap_css %}
+		{% bootstrap_javascript %}
+
+		{# Display django.contrib.messages as Bootstrap alerts #}
+		{# bootstrap_messages #}
+		<!--<link href="{{STATIC_URL}}css/brandy/css/bootstrap.min.css" rel="stylesheet">-->
 
 		<!-- Style -->
 		<link href="{{STATIC_URL}}css/brandy/css/style.css" rel="stylesheet">

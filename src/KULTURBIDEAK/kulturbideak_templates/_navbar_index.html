@@ -13,7 +13,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a id="brand-logo" class="navbar-brand" href="#"><img src="{{STATIC_URL}}img/brandy/logoa_iluna.png"></a>
+			<a id="brand-logo" class="{% if request.get_full_path != '/' %}navbar-brand{% else %}index-brand{% endif %}" href="/"><img src="{{STATIC_URL}}img/brandy/logoa_iluna.png"></a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -24,7 +24,7 @@
 				<input name="next" type="hidden" value="#" />
 				<input type="hidden" name="language" value="{{ lang.0 }}" />
 				{% get_current_language as LANGUAGE_CODE %}
-				<ul class="nav navbar-nav navbar-left">
+				<ul id="lang_ul">
 
 					{% for langa in LANGUAGES %}
 					{% if forloop.last %}
@@ -52,8 +52,71 @@
 				</ul>
 			</form>
 
+			{% if request.get_full_path != '/' %}
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="itemak_hasiera"> {% trans "ITEMAK" %} </a>
+						</li>
+						<li>
+							<a href="ibilbideak_hasiera"> {% trans "IBILBIDEAK" %} </a>
+						</li>
+						<li>
+
+							<a href="hornitzaileak_hasiera"> <span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span> {% trans "HORNITZAILEAK" %} </a>
+						</li>
+					</ul>
+
+					<div class="col-sm-3 col-md-3 bilatzailea-kutxa text-center nav navbar-nav">
+						<!--<form action="/search" method="get" class="navbar-form">-->
+						<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
+
+							{% csrf_token %}
+							<div class="input-group" style="width:97%;">
+								{% trans "Bilatu ..." as the_placeholder %}
+								<!-- id=id_q-->
+								{% if bilaketaGaldera%}
+								<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
+								{% else %}
+								<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
+
+								{%endif%}
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="submit">
+										<span class="glyphicon glyphicon-search" aria-hidden="true"></span> !
+									</button> </span>
+
+							</div>
+
+							{% if radioHizkuntza == "eu" or not radioHizkuntza %}
+							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu" checked>
+							Eu
+							{%else%}
+							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu">
+							Eu
+							{%endif%}
+							{% if radioHizkuntza == "es"%}
+							<input  type="radio" id="hizkRadio" name="hizkRadio" value="es" checked>
+							Es
+							{%else%}
+							<input  type="radio" id="hizkRadio" name="hizkRadio" value="es">
+							Es
+							{%endif%}
+							{% if radioHizkuntza == "en"%}
+							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en" checked>
+							En
+							{%else%}
+							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en">
+							En
+							{%endif%}
+
+						</form>
+
+					</div><!-- bilaketa kutxa -->
+				{% endif %}
+
 			<!-- Home menu -->
-			<ul class="nav navbar-nav navbar-right">
+			<ul id="home_menu" class="nav navbar-nav navbar-right">
+				{% if request.get_full_path == '/' %}
 				<li>
 					<a href="#HOME"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
 				</li>
@@ -68,8 +131,12 @@
 				<li>
 					<a href="">|</a>
 				</li>
+				{% endif %}
 				<!--<li><a href="#CONTACT">Harremanetarako</a></li>-->
 				<!-- register and login buttons OR logout and user menu -->
+				{% if request.mobile %}
+				<hr>
+				{% endif %}
 				{% if user.is_authenticated %}
 				<li>
 					<a href="irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> {% trans "Irten" %}</a>

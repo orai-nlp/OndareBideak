@@ -2,20 +2,25 @@
 	<head>
 		{% load i18n %}
 		{# Load the tag library #}
-
+		{% load bootstrap3 %}
+		
 		<!-- Google Font -->
 		<link href='http://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
-	    <!-- TTS -->
+		<!-- TTS -->
+		{% if not request.mobile or request.tablet %}
 		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts.css">
+		{% else %}
+		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts_mob.css">
+		{% endif %}		
 		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tinybox.css">
-		
+
 		{% block additional_css %}
 		{% endblock additional_css %}
 
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
-		{% load bootstrap3 %}
+		
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/raphael-min.js"></script>
 		{# Load CSS and JavaScript #}
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>
@@ -67,13 +72,9 @@
 
 		<script type="text/javascript">
             //AUTOPLAY
-        </script>
+		</script>
 
-
-		
-
-		
-{% block mapFunctions %}
+		{% block mapFunctions %}
 		<script type="text/javascript">
             //MAPA FUNTZIOAK
 
@@ -85,7 +86,7 @@
             {% if non == 'itema_gehitu' %}
 
             function load_map(map, options) {
-	    console.log('itema gehitu kkkkk')
+                console.log('itema gehitu kkkkk')
                 global_map = map;
 
                 // zentratu mapa erabiltzaileak
@@ -124,19 +125,30 @@
 
             {% elif   non == 'itema_editatu'  %}
             function load_map(map, options) {
-	    
+
                 global_map = map;
 
                 if(markers.length>0 || {{ geoloc_latitude }} !=0.0)
                 {
                     //Mapa zentratu
-                    map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }}, {{ geoloc_longitude | correct_float_format }}));
+                    map.panTo(new L.LatLng({{
+                    geoloc_latitude | correct_float_format
+                }
+            }, { {
+                    geoloc_longitude | correct_float_format
+                }
+            }));
 
             //Geolokalizazio zaharra beste kolore batekin erakutsi
             var greenIcon = new LeafIcon({
                 iconUrl : '{{STATIC_URL}}img/leaf-green.png'
             });
-         L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude | correct_float_format }}], { icon:greenIcon}).addTo(map).openPopup();
+            L.marker([{{ geoloc_latitude|correct_float_format }}, { {
+                    geoloc_longitude | correct_float_format
+                }
+            }], { icon:greenIcon
+            }).
+            addTo(map).openPopup();
 
             }
 
@@ -167,18 +179,31 @@
 
             {% elif  non == 'fitxaE'  %}
             function load_map(map, options) {
-	    
+
                 global_map = map;
 
-                if(markers.length>0 || {{   hornitzailea.geoloc_latitude }} !=0.0) {
+                if(markers.length>0 || {{
+                hornitzailea.geoloc_latitude
+            }} !=0.0) {
                 //Mapa zentratu
-                map.panTo(new L.LatLng({{  hornitzailea.geoloc_latitude | correct_float_format }}, {{ hornitzailea.geoloc_longitude | correct_float_format }}));
+                map.panTo(new L.LatLng({{
+                hornitzailea.geoloc_latitude | correct_float_format
+            }}, { {
+                    hornitzailea.geoloc_longitude | correct_float_format
+                }
+            }));
 
             //Geolokalizazio zaharra beste kolore batekin erakutsi
             var greenIcon = new LeafIcon({
                 iconUrl : '{{STATIC_URL}}img/leaf-green.png'
             });
-     L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, {{hornitzailea.geoloc_longitude | correct_float_format}}], { icon:greenIcon }).addTo(map).openPopup();}
+            L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, { {
+                    hornitzailea.geoloc_longitude | correct_float_format
+                }
+            }], { icon:greenIcon
+            }).
+            addTo(map).openPopup();
+            }
 
             // maparen click eventoa
             map.on('click', function(e) {
@@ -194,7 +219,9 @@
                 }).on("click", function(e) {
                     map.removeLayer(this);
                     layer_array = jQuery.grep(layer_array, function(value) {
-                        return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0 });}).addTo(map);
+                        return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
+                    });
+                }).addTo(map);
                 layer_array.push([e.latlng.lat, e.latlng.lng]);
                 markers.push(marker);
                 document.getElementById("latitude").value = e.latlng.lat;
@@ -204,39 +231,60 @@
             }
             {% elif  non == 'fitxaI'  %}
             function load_map(map, options) {
-	    console.log('itema i kekeke')
-                map.panTo(new L.LatLng({{ hornitzailea.geoloc_latitude | correct_float_format }}, {{ hornitzailea.geoloc_longitude |correct_float_format}}));
-      L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, {{hornitzailea.geoloc_longitude | correct_float_format}}]).addTo(map).openPopup();
+                console.log('itema i kekeke')
+                map.panTo(new L.LatLng({{
+                hornitzailea.geoloc_latitude | correct_float_format
+            }}, { {
+                    hornitzailea.geoloc_longitude | correct_float_format
+                }
+            }));
+            L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, { {
+                    hornitzailea.geoloc_longitude | correct_float_format
+                }
+            }]).
+            addTo(map).openPopup();
 
             }
 
             {% else %}
             function load_map(map, options) {
-	    console.log('itema bestela kkkkk')
+                console.log('itema bestela kkkkk')
                 //Erakusteko bakarrik
-                map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }},{{ geoloc_longitude | correct_float_format }}));
-            L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude | correct_float_format}}]).addTo(map).openPopup();
+                map.panTo(new L.LatLng({{
+                geoloc_latitude | correct_float_format
+            }}, { {
+                    geoloc_longitude | correct_float_format
+                }
+            }));
+            L.marker([{{ geoloc_latitude|correct_float_format }}, { {
+                    geoloc_longitude | correct_float_format
+                }
+            }]).
+            addTo(map).openPopup();
 
             }
             {% endif %}
 
 		</script>
-{% endblock %}
-
+		{% endblock %}
 
 		<script type="text/javascript">
-                        //Google Analytics
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            //Google Analytics
+            (function(i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] ||
+                function() {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-84780510-1', 'auto');
-  ga('send', 'pageview');
-			</script>
-
-
-
+            ga('create', 'UA-84780510-1', 'auto');
+            ga('send', 'pageview');
+		</script>
 
 		<!-- Ikerren sciptak, hornitzaileen fitxarako -->
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/scripts.js"></script>
@@ -270,174 +318,9 @@
 			<!--aldeetako margina -->
 
 			<!--HEADER -->
-			{% block navbar %}			
-			<nav class="navbar navbar-default navbar-default-berria" role="navigation">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-
-					<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">
-						{% csrf_token %}
-						<input name="next" type="hidden" value="#" />
-						<input type="hidden" name="language" value="{{ lang.0 }}" />
-						{% get_current_language as LANGUAGE_CODE %}
-						<p>
-
-							{% for langa in LANGUAGES %}
-							{% if forloop.last %}
-							{% if langa.1 ==  LANGUAGE_CODE %}
-							<a class="active" href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-							{% else %}
-							<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-							{% endif %}
-							{% else %}
-							{% if langa.1 == LANGUAGE_CODE %}
-							<a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-							{% else %}
-							<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-							{% endif %}
-							{% endif %}
-							{% endfor %}
-						</p>
-						<p>
-							<a class="navbar-brand navbar-brand-berria" title="OndareBideak" href="http://ondarebideak.dss2016.eu"> <!--<span class="laguntza">O<small>ndare</small></span>B<small>ideak</small>--> <!--<img src="/uploads/logoa.png" alt="Ondarebideak" height="102" width="300">--> <img id="logoa" src="{{STATIC_URL}}img/logoa_iluna.png" alt="Ondarebideak" > </a>
-						</p>
-
-					</form>
-
-				</div>
-
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li>
-							<a href="itemak_hasiera"> {% trans "ITEMAK" %} </a>
-						</li>
-						<li>
-							<a href="ibilbideak_hasiera"> {% trans "IBILBIDEAK" %} </a>
-						</li>
-						<li>
-
-							<a href="hornitzaileak_hasiera"> <span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span> {% trans "HORNITZAILEAK" %} </a>
-						</li>
-					</ul>
-
-					<div class="col-sm-3 col-md-3 bilatzailea-kutxa text-center">
-						<!--<form action="/search" method="get" class="navbar-form">-->
-						<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
-
-							{% csrf_token %}
-							<div class="input-group" style="width:97%;">
-								{% trans "Bilatu ..." as the_placeholder %}
-								<!-- id=id_q-->
-								{% if bilaketaGaldera%}
-								<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
-								{% else %}
-								<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
-
-								{%endif%}
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit">
-										<span class="glyphicon glyphicon-search" aria-hidden="true"></span> !
-									</button> </span>
-
-							</div>
-
-							{% if radioHizkuntza == "eu" or not radioHizkuntza %}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu" checked>
-							Eu
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu">
-							Eu
-							{%endif%}
-							{% if radioHizkuntza == "es"%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="es" checked>
-							Es
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="es">
-							Es
-							{%endif%}
-							{% if radioHizkuntza == "en"%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en" checked>
-							En
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en">
-							En
-							{%endif%}
-
-						</form>
-
-					</div><!-- /input-group -->
-
-					<!-- PROBA HASI -->
-
-					<!-- BIGARREN PROBA-->
-					{% if user.is_authenticated %}
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"> </span> {% trans "Irten" %}</a>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a>
-								</li>
-								<li>
-									<a href="{{BASE_URL}}/nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a>
-								</li>
-								<li role="separator" class="divider"></li>
-								{% if request.user|has_group:'hornitzailea' %}
-								<li>
-									<a href="{{BASE_URL}}/oaipmh_datubilketa">{% trans "OAI-PMH bidezko itemen bilketa" %}</a>
-								</li>
-								{% endif%}
-								<li>
-									<a href="{{BASE_URL}}/itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span></a>
-								</li>
-
-								<li role="separator" class="divider"></li>
-								<li>
-									<a href="{{BASE_URL}}/perfila_erakutsi">{% trans "Profila" %}</a>
-								</li>
-								<li>
-									<a href="{{BASE_URL}}/pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a>
-								</li>
-								<li role="separator" class="divider"></li>
-								{% if request.user|has_group:'hornitzailea' %}
-								<li>
-									<a href="{{BASE_URL}}/hornitzaile_fitxa_editatu">{% trans "Hornitzaile fitxa editatu" %}</a>
-								</li>
-								<li role="separator" class="divider"></li>
-								{% endif%}
-
-								<li>
-									<a href="irten">{% trans "Irten" %} <!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
-
-								</li>
-							</ul>
-						</li>
-					</ul>
-					{% else %}
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="erregistratu">{% trans "Erregistratu" %} </a>
-						</li>
-
-						<li>
-							<a href="logina"><span class="glyphicon glyphicon-log-in" aria-hidden="true"> </span> {% trans "Login" %} </a>
-						</li>
-					</ul>
-					{% endif %}
-
-				</div><!-- /.navbar-collapse -->
-			</nav>
-			{% endblock navbar %}
+			{% block navbar %}
+				{% include "_navbar_index.html" %}
+				{% endblock navbar %}
 			<!-- BUKATU HEADER PROBA-->
 			<!--
 			{% if user.is_authenticated %}
@@ -840,8 +723,7 @@
 				{%endif%}
 
 				{% endblock bilaketaFiltroak %}
-				
-				
+
 				<div class="content_div" align="center">
 					{% if mezua %}
 
@@ -1078,9 +960,8 @@
             //SocialShareKit.init();
 		</script>
 
-	
-{% block pageEndScripts %}
-{% endblock pageEndScripts %}
+		{% block pageEndScripts %}
+		{% endblock pageEndScripts %}
 
 	</body>
 </html>

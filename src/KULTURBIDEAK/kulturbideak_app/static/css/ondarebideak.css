@@ -503,6 +503,32 @@ img.ob_thumbnail {
 }
 /* HEADERRAREN ESTILOA*/
 
+.navbar-brand{
+	margin-top:25px;
+}
+
+.index-brand{
+	margin-left:150px;	
+}
+
+#brand-logo.index-brand img {
+	margin-top:10px;
+}
+
+#hizkuntza_aukeraketa_id{
+	position:absolute;
+	width:150px;	
+}
+
+#hizkuntza_aukeraketa_id ul{
+	list-style:none;
+	padding:0px;
+}
+
+#hizkuntza_aukeraketa_id ul li{
+	display:inline-block;
+}
+
 .navbar-default-berria .navbar-brand-berria {
 	color: #31708f !important;
 }
@@ -862,9 +888,18 @@ span.helptext {
 		width:150px;
 	}
 	
+	.index-brand{
+		margin-left:50px;	
+	}
+	
 	#hizkuntza_aukeraketa_id ul.nav li{
 		display:inline-block;
 	}
+	
+	#home_menu li{
+		display:inline-block;
+	}
+	
 	
 }
 
