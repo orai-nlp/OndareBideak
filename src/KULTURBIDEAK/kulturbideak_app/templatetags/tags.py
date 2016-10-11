@@ -8,6 +8,15 @@ from django.contrib.auth.models import User, Group
 register = template.Library()
 
 @register.filter
+def is_in(id,list): 
+
+    for item in list:       
+        if int(id) == item.id:
+            return 1
+    
+    return 0
+
+@register.filter
 def get_item_image(item): 
     img=item    
     return img

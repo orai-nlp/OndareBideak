@@ -21,9 +21,21 @@ um_pages }}</p>-->
 <!--<p class="emaitzaInfo"> {{ items.count }} Kultur Item eta {{paths.count}} Ibilbide</p>-->
 
 
+
+
 {% block bilaketaFiltroak %}
 {% include "_search_filters.html" %}
 {% endblock bilaketaFiltroak %}
+
+
+{% block egunekoakBozkatuenakAzkenak %}
+	{% if z != 'h'%}
+		{% include "_item_path_aukerak.html" %}	
+	{% else %}
+		<!-- EZER -->
+	{%endif%}
+{% endblock egunekoakBozkatuenakAzkenak %}
+
 
 
 {% block content %}
@@ -54,8 +66,11 @@ um_pages }}</p>-->
   {%endif%}
 </ul>
 
-<input type="hidden" name="hornitzailea" id="hornitzailea" value="{{ hornitzailea.fk_user.username }}" />
+<input type="hidden" name="hornitzailea_username" id="hornitzailea_username" value="{{ hornitzailea.fk_user.username }}" />
 <input type="hidden" name="hornitzaile_search" id="hornitzaile_search" value="{{ hornitzailea.fk_user.id }}" />
+<input type="hidden" name="nireak" id="nireak" value="{{ nireak }}" />
+
+
 
 <div class="tab-content" name="AdvOrBasicSearch2">
 	
@@ -155,7 +170,12 @@ um_pages }}</p>-->
 
 
 {% if z == 'i'%}
+
+
+
   <div id="itemak" class="tab-pane fade in active">
+  	
+  
 {%else%}
   <div id="itemak" class="tab-pane fade">
 {%endif%}	
@@ -172,7 +192,7 @@ um_pages }}</p>-->
         </span>
 
         {% if items.has_next %}
-            <a href="?page={{ items.next_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">hurrengoak</a>
+            <a href="?page={{ items.next_page_number }}&hizkRadio={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">hurrengoak</a>
         {% endif %}
     </span>
 	</div>
@@ -254,12 +274,13 @@ um_pages }}</p>-->
 
                                 {%endif%}
 				{% if request.user|has_group:'hornitzailea' %}
-					{% if item.egunekoa == 0  %}
-						<a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.item_id}})" >
+					{% if not item.item_id|is_in:eguneko_itemak %} 
+					
+						<a class="btn btn-warning " title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.item_id}})" >
                                                   <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                                                 </a>
 					{%else%}
-                                                <a class="btn btn-warning egunekoa-botoia" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu({{item.item_id}})" >
+                            <a class="btn btn-warning egunekoa-botoia" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu({{item.item_id}})" >
 						  <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 						</a>
 					{%endif%}
@@ -280,6 +301,7 @@ um_pages }}</p>-->
   </div> <!--itemak -->
   {% if z == 'p'%}
   <div id="ibilbideak" class="tab-pane fade in active">
+  
   {%else%}
   <div id="ibilbideak" class="tab-pane fade">
   {%endif%}
@@ -310,14 +332,14 @@ um_pages }}</p>-->
 	    {% if path.path_fk_user_id|hornitzailea_da %}
 	    <div class="side-corner-tag">
 	      
-              <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
+              <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
 		{% if path.path_thumbnail %}<img class="ob_thumbnail" src="{{path.path_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">{% endif %}
 		<p><span>aditua</span></p>
               </a>
 	    </div>
 	    {%else%}
 	    <div class="">
-              <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
+              <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
                 {% if path.path_thumbnail %}<img class="ob_thumbnail" src="{{path.path_thumbnail}}">{% else %} <img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">
 {% endif %}
               </a>
@@ -362,12 +384,13 @@ um_pages }}</p>-->
             {%endif%}
 
 	    {% if request.user|has_group:'hornitzailea' %}
-            {% if path.path_egunekoa == 0  %}
+           
+            {% if not path.path_id|is_in:eguneko_ibilbideak %} 
             <a class="btn btn-warning" type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu_ibilb({{path.path_id}})" >
               <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
             </a>
             {%else%}
-            <a class="btn btn-warning" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >
+            <a class="btn btn-warning egunekoa-botoia" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >
               <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
             </a>
             {%endif%}

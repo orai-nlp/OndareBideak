@@ -25,6 +25,7 @@ from django.shortcuts import render_to_response
 from KULTURBIDEAK.kulturbideak_app.models import item
 from KULTURBIDEAK.kulturbideak_app.models import path
 from KULTURBIDEAK.kulturbideak_app.models import node
+from KULTURBIDEAK.kulturbideak_app.models import hornitzailea
 from KULTURBIDEAK.kulturbideak_app.models import workspace_item
 from django.contrib.auth.models import User,Group
 from KULTURBIDEAK.kulturbideak_app.forms import *
@@ -128,9 +129,11 @@ def hasiera(request):
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
     return render_to_response('index.html',{'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop},context_instance=RequestContext(request))
 
+ 
 
 def hasiera_old(request):
-  
+    
+    
     #Kontadoreko kopuruak lortu datu-basetik
     #Itemak
     itemKop = item.objects.count()
@@ -144,18 +147,18 @@ def hasiera_old(request):
     return render_to_response('index_brandy.html',{'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop},context_instance=RequestContext(request))
 
    
-   
 def itemak_hasiera(request):
+    
+    print "itemak_hasiera"
     #DB-an GALDERA EGIN EGUNEKO/RANDOM/AZKENAK ITEMAK LORTZEKO 
     #Itemen hasierako pantailan erakutsi behar diren Itemen informazioa datu-basetik lortu eta pasa
+    '''
     itemak=[]
     itemak=item.objects.order_by('-edm_year')
+    
     paginator = Paginator(itemak, 26)
-    
-   
-    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
- 
-    
+
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.    
     page = request.GET.get('page')
     try:
         itemak = paginator.page(page)
@@ -165,11 +168,8 @@ def itemak_hasiera(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         itemak = paginator.page(paginator.num_pages)
-    
-    #Proposatutakoak
-    ##if(item.objects.filter(proposatutakoa=1)):
-        ##itemak=item.objects.filter(proposatutakoa=1)
-        
+    '''
+   
     #Egunekoak
     eguneko_itemak=[]
     eguneko_itemak=item.objects.filter(egunekoa=1)
@@ -188,9 +188,97 @@ def itemak_hasiera(request):
             item_ids.append(id)
        
         item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+        
+    #IBILBIDEAK
+    #Egunekoak
+    eguneko_ibilbideak=[]
+    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
     
-    non="fitxaE"  
-    return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
+    #Azkenak
+    azken_ibilbideak=[]
+    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+    #Bozkatuenak
+    ibilbide_bozkatuenak=[]
+    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+    if bozkatuenak_ibilbide_zerrenda:
+        path_ids=[]
+        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+            id = bozkatuena.path.id
+            path_ids.append(id)
+       
+        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+    
+        
+    #ALDAKETA-CROSS-SEARCH
+    
+    #Datu-baseko hornitzaileak lortu                                                                                             
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak_text ="_".join(db_hornitzaileak)
+
+    #Datu-baseko motak lortu                                                                                                     
+    db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+    db_motak_text ="_".join(db_motak)
+
+    #Datu-baseko lizentziak lortu                                                                                                
+    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+    db_lizentziak_text ="_".join(db_lizentziak)
+
+    non="fitxaE"
+    
+    z='i'
+    if request.GET.get('z'):
+        z = request.GET.get('z')   
+    #paths=[]
+    bilaketa_filtroak=1
+    galdera=''
+    hizkuntza='eu'
+    hizkF=''
+    horniF=''
+    motaF=''
+    ordenaF=''
+    lizentziaF=''
+    besteaF=''
+    search_models_items=[item]
+    
+    items = SearchQuerySet().all().models(*search_models_items)
+    search_models_paths=[path]
+    paths = SearchQuerySet().all().models(*search_models_paths)
+    
+     
+    #PAGINATOR ITEMS
+    paginator = Paginator(items, 26)    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+    page = request.GET.get('page')
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        items = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        items = paginator.page(paginator.num_pages)
+        
+        
+    #PAGINATOR PATHS
+    paginator = Paginator(paths, 26)    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+    page = request.GET.get('page')
+    try:
+        paths = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paths = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paths = paginator.page(paginator.num_pages)
+    
+    
+    return render_to_response('cross_search.html',{'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+      
+    #return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
     
 def eguneko_itemak(request):
     itemak=[]
@@ -273,18 +361,36 @@ def eguneko_itema_kendu(request):
     
     item.objects.filter(id=item_id).update(egunekoa = 0,proposatutakoa=1)   
 
-    #GURI ALDAKETAREN BERRI EMAN?
-    
+    #GURI ALDAKETAREN BERRI EMAN?   
     mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko item hau kendu du (id): "+str(item_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
     send_mail('OndareBideak - Eguneko itemetan aldaketak', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
         
-        '''
-        uri =randomword(10); 
+        #!!! HEMENDIK NIRE ITEMAK SAKATZEAN SARTUKO DA
+        userName=request.user.username
+        userID=request.user.id
+        itemak=[]
+        itemak = item.objects.filter(fk_ob_user__id=userID).order_by('-dc_date')
+        #PAGINATOR
+        paginator = Paginator(itemak, 26)
     
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+     
+        page = request.GET.get('page')
+        try:
+            itemak = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            itemak = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            itemak = paginator.page(paginator.num_pages)
+        non="fitxaE"
+        return render_to_response('nire_itemak.html',{'non':non,'itemak':itemak},context_instance=RequestContext(request))
+    
+        
         '''
-
         itemak=[]
         itemak=item.objects.order_by('-edm_year')
     
@@ -325,7 +431,7 @@ def eguneko_itema_kendu(request):
     
         non="fitxaE"  
         return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
-
+        '''
     elif(nondik=="bilaketa"):
        
         # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -346,6 +452,8 @@ def eguneko_itema_kendu(request):
         besteakF=request.GET['besteakF']
         besteaF=[]
     
+        nireak=request.GET['nireak']
+        
         items=[]
         paths=[]
         search_models_items = [item]
@@ -378,7 +486,7 @@ def eguneko_itema_kendu(request):
                 if(o=="dataAsc"):
                     oData2="dataAsc"
                 if(o=="botoak"):
-                    Boto="botoak"
+                    oBoto="botoak"
     
         bEgun="ez"
         bProp="ez"
@@ -398,12 +506,35 @@ def eguneko_itema_kendu(request):
                     bIrudiBai="irudiaDu"
                 if(b=="irudiaEzDu"):
                     bIrudiEz="irudiaEzDu"
+        
+        hornitzaile_izena=request.GET['hornitzaile_search']
+        if hornitzaile_izena !="":
+            #dagokion hornitzailearenak hartuko ditugu behean hasteko
+            #hornitzaileakF=""
+            horni_id=request.GET['horni_id']
+         
+            hornitzaile_id=int(horni_id)     
+           
+            hornitzailea_obj=hornitzailea.objects.get(fk_user__id=hornitzaile_id)
+            hornitzaile_izena=hornitzailea_obj.izena
+        
     
         #GALDERA BOTA
         if hizkuntza == 'eu':
-            #ITEMS
-            #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
-            items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:        
+                items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
        
             #hizkuntza filtroa
             if hizkuntzakF != "":       
@@ -461,12 +592,24 @@ def eguneko_itema_kendu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                 
         
-            #PATHS
-            paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else:   
+            
+                paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
-             #hornitzaile filtroa                                                                                                   
+            #hornitzaile filtroa                                                                                                   
             if(hornitzaileakF != ""):
 
                 item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
@@ -513,12 +656,26 @@ def eguneko_itema_kendu(request):
     
                 
         elif hizkuntza == 'es':
+            
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:
        
-            items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+                items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
-             #hornitzaile filtroa                                                                                                
+            #hornitzaile filtroa                                                                                                
             if(hornitzaileakF != ""):
                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
@@ -568,8 +725,19 @@ def eguneko_itema_kendu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                 #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
-        
-            paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else: 
+                paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -597,7 +765,7 @@ def eguneko_itema_kendu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                  
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                  
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
 
                     paths_ids=[]
@@ -614,13 +782,28 @@ def eguneko_itema_kendu(request):
                     paths=paths.filter(path_proposatutakoa=1)
            
                 if bIrudiBai=="irudiaDu":             
-                    aths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                    paths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":
                     #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
                     paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
+        
         elif hizkuntza == 'en':
+            
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:
        
-            items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+                items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
         
             #hizkuntza filtroa
             if hizkuntzakF != "":       
@@ -628,8 +811,8 @@ def eguneko_itema_kendu(request):
           
             #hornitzaile filtroa                                                                                                    
             if(hornitzaileakF != ""):
-                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
-                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=[hornitzaileakF_list])
 
             #Mota filtroa,                                                                                                          
             if(motakF != ""):
@@ -652,7 +835,7 @@ def eguneko_itema_kendu(request):
                     #items = items.order_by('-dc_date')
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
 
                     items_ids=[]
@@ -678,8 +861,20 @@ def eguneko_itema_kendu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                     #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else: 
         
-            paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+                paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -758,11 +953,55 @@ def eguneko_itema_kendu(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             paths = paginator.page(paginator.num_pages)
+            
+            
+            
+            
+        #ITEMAK
+        #Egunekoak
+        eguneko_itemak=[]
+        eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_itemak=[]
+        azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+        #Bozkatuenak
+        item_bozkatuenak=[]
+        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+        if bozkatuenak_item_zerrenda:
+            item_ids=[]
+            for bozkatuena in bozkatuenak_item_zerrenda:
+                id = bozkatuena.item.id
+                item_ids.append(id)
+       
+            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+        #IBILBIDEAK
+        #Egunekoak
+        eguneko_ibilbideak=[]
+        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_ibilbideak=[]
+        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+        #Bozkatuenak
+        ibilbide_bozkatuenak=[]
+        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+        if bozkatuenak_ibilbide_zerrenda:
+            path_ids=[]
+            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+                id = bozkatuena.path.id
+                path_ids.append(id)
+       
+            ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+            
     
     
         z="i"
         
-         #Datu-baseko hornitzaileak lortu                                                                                           
+        #Datu-baseko hornitzaileak lortu                                                                                           
         db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
         db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
@@ -774,7 +1013,15 @@ def eguneko_itema_kendu(request):
         db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
         db_lizentziak_text ="_".join(db_lizentziak)
 
-        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'db_hornitzaileak_text':db_hornitzaileak_text,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+        if  hornitzaile_izena !="":
+            
+            geoloc_longitude=hornitzailea_obj.geoloc_longitude
+            geoloc_latitude=hornitzailea_obj.geoloc_latitude
+            
+            return render_to_response('cross_search.html',{'nireak':nireak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzailea_obj,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+
+        else:
+            return render_to_response('cross_search.html',{'nireak':nireak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'db_hornitzaileak_text':db_hornitzaileak_text,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     elif nondik =="ikusi":
      
@@ -951,14 +1198,9 @@ def eguneko_itema_gehitu(request):
     item_id = request.GET.get('id')
     nondik = request.GET.get('nondik')
 
-    #print "eguneko_itema_gehitu"
-    #print hornitzailea.objects.count()
-
     item.objects.filter(id=item_id).update(egunekoa = 1)   
     #item_tartekoa.egunekoa=1
     #item_tartekoa.save()        
-
-
 
     #GURI ALDAKETAREN BERRI EMAN?
     
@@ -966,6 +1208,32 @@ def eguneko_itema_gehitu(request):
     send_mail('OndareBideak - Eguneko itemetan aldaketak', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
+        
+        #!!! HEMENDIK NIRE ITEMAK SAKATZEAN SARTUKO DA?
+        userName=request.user.username
+        userID=request.user.id
+        itemak=[]
+        itemak = item.objects.filter(fk_ob_user__id=userID).order_by('-dc_date')
+        #PAGINATOR
+        paginator = Paginator(itemak, 26)
+    
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+     
+        page = request.GET.get('page')
+        try:
+            itemak = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            itemak = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            itemak = paginator.page(paginator.num_pages)
+        non="fitxaE"
+        return render_to_response('nire_itemak.html',{'non':non,'itemak':itemak},context_instance=RequestContext(request))
+    
+        
+        
+        '''
         itemak=[]
         itemak=item.objects.order_by('-edm_year')
         paginator = Paginator(itemak, 26)
@@ -1006,9 +1274,13 @@ def eguneko_itema_gehitu(request):
     
         non="fitxaE"  
         return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
-
+        '''
     elif(nondik=="bilaketa"):
-        print "bilaketa orritik"
+        #!! Hona 3 lekutatik etor daiteke:
+        #ITEMEN HASIERA ORRITIK
+        #HORNITZAILEAREN ORRITIK
+        #GALDERA ARRUNT BATETIK
+        
         # Helburu hizkuntza guztietan burutuko du bilaketa
         hizkuntza=request.GET['hizkRadio']   
         galdera=request.GET['search_input']
@@ -1027,6 +1299,9 @@ def eguneko_itema_gehitu(request):
         besteakF=request.GET['besteakF']
         besteaF=[]
     
+        nireak=request.GET['nireak']
+
+        
         items=[]
         paths=[]
         search_models_items = [item]
@@ -1060,7 +1335,7 @@ def eguneko_itema_gehitu(request):
                 if(o=="dataAsc"):
                     oData2="dataAsc"
                 if(o=="botoak"):
-                    Boto="botoak"
+                    oBoto="botoak"
     
         bEgun="ez"
         bProp="ez"
@@ -1081,31 +1356,35 @@ def eguneko_itema_gehitu(request):
                 if(b=="irudiaEzDu"):
                     bIrudiEz="irudiaEzDu"
                     
-        #print request.POST['hornitzaile_search'].fk_user.username
-        if 'hornitzaile_search' in request.GET:
-            # dagokion hornitzailearenak hartuko ditugu behean hasteko
-            hornitzaileakF=""
-            hornitzaile_username=request.GET['hornitzaile_search']
-            horni_id=request.GET['horni_id']
-
-
-        else:
-            print "eez"
-
-
+        hornitzaile_izena=request.GET['hornitzaile_search']
+        hornitzaile_obj=[]
+        if (hornitzaile_izena !=""):
+            # dagokion hornitzailearenak hartuko ditugu behean hasteko          
+            hornitz_id=request.GET['horni_id']
+            hornitzaile_id=int(hornitz_id)     
+           
+            hornitzaile_obj=hornitzailea.objects.filter(fk_user__id=hornitzaile_id)
+            hornitzaile_izena=hornitzaile_obj.izena
+        
         #GALDERA BOTA
         if hizkuntza == 'eu':
-            #ITEMS
-            if 'hornitzaile_search' in request.GET:
-                hornitzaile_erab=User.objects.filter(username=hornitzaile_username)
-                hornitzaile_id=int(horni_id)
-                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items)
-             
-            else:    
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
             
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+                
+            else:
+                #galdera arrunt baten filtroetatik
                 items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
-            #print "ksksk"    
-            #print len(items)
+            
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
@@ -1138,7 +1417,7 @@ def eguneko_itema_gehitu(request):
                
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
                
                     items_ids=[]
@@ -1162,16 +1441,20 @@ def eguneko_itema_gehitu(request):
                     items=items.filter(edm_object = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":              
                     items=items.exclude(edm_object = Raw("[* TO *]"))
-                
-            if 'hornitzaile_search' in request.GET:
-                #hornitzaile_id=hornitzailea.objects.filter(fk_user.username=hornitzaileakF)
-              
-
-                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)
-
-            else:
-            #PATHS
+            
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+            else:       
                 paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+            
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -1219,12 +1502,25 @@ def eguneko_itema_gehitu(request):
                 if bIrudiEz=="irudiaEzDu":
                 
                     paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
-            print "bukatuuu"        
-            print len(items)
+         
                 
         elif hizkuntza == 'es':
-       
-            items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+            
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+            
+            else:
+                items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+            
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
@@ -1253,11 +1549,10 @@ def eguneko_itema_gehitu(request):
                 if(oData2 == "dataAsc"):             
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                      
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                      
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
                     #print bozkatuenak_item_zerrenda[0].item_id                                                                          
                     items_ids=[]
-
                     items_ids=map(lambda x: int(x.item_id),items)
                     bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
 
@@ -1281,7 +1576,20 @@ def eguneko_itema_gehitu(request):
                 #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
         
-            paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+            
+            else:       
+                paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+            
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -1289,11 +1597,8 @@ def eguneko_itema_gehitu(request):
             if(hornitzaileakF != ""):
 
                 #hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]                                                 
-
                 item_hornitzaile_erab=item.objects.filter(edm_provider__in=hornitzaileakF_list)
-
                 usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
-
                 #ID errepikatuak kendu                                                                                                   
                 usr_id_zerrenda_set = set(usr_id_zerrenda)
                 usr_id_zerrenda_uniq=list(usr_id_zerrenda_set)
@@ -1329,13 +1634,27 @@ def eguneko_itema_gehitu(request):
                     paths=paths.filter(path_proposatutakoa=1)
            
                 if bIrudiBai=="irudiaDu":             
-                    aths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                    paths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":
                     #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
                     paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
         elif hizkuntza == 'en':
-       
-            items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+            
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+            
+            else:      
+                items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
         
             #hizkuntza filtroa
             if hizkuntzakF != "":       
@@ -1343,8 +1662,8 @@ def eguneko_itema_gehitu(request):
            
             #hornitzaile filtroa                                                                                                
             if(hornitzaileakF != ""):
-                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
-                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=[hornitzaileakF_list])
 
             #Mota filtroa,                                                                                                         
             if(motakF != ""):
@@ -1367,7 +1686,7 @@ def eguneko_itema_gehitu(request):
                     #items = items.order_by('-dc_date')
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                              
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                              
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
                     
                     items_ids=[]
@@ -1394,7 +1713,20 @@ def eguneko_itema_gehitu(request):
                     #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
         
-            paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+            
+            else: 
+                paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+            
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -1491,13 +1823,57 @@ def eguneko_itema_gehitu(request):
         db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
         db_lizentziak_text ="_".join(db_lizentziak)
         
+        
+        #ITEMAK
+        #Egunekoak
+        eguneko_itemak=[]
+        eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_itemak=[]
+        azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+        #Bozkatuenak
+        item_bozkatuenak=[]
+        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+        if bozkatuenak_item_zerrenda:
+            item_ids=[]
+            for bozkatuena in bozkatuenak_item_zerrenda:
+                id = bozkatuena.item.id
+                item_ids.append(id)
+       
+            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+        #IBILBIDEAK
+        #Egunekoak
+        eguneko_ibilbideak=[]
+        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_ibilbideak=[]
+        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+        #Bozkatuenak
+        ibilbide_bozkatuenak=[]
+        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+        if bozkatuenak_ibilbide_zerrenda:
+            path_ids=[]
+            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+                id = bozkatuena.path.id
+                path_ids.append(id)
+       
+            ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+        
+        
         #Maddalen:
-        if 'hornitzailea_search' in request.GET:
-            z='h'
-            return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+        if hornitzaile_izena !="":
+            geoloc_longitude=hornitzaile_obj.geoloc_longitude
+            geoloc_latitude=hornitzaile_obj.geoloc_latitude
+           
+            return render_to_response('cross_search.html',{'nireak':nireak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile_obj,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
         else:
-            return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+            return render_to_response('cross_search.html',{'nireak':nireak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     elif nondik =="ikusi":
         print "nondik ba? ikusi"
@@ -1679,13 +2055,41 @@ def eguneko_ibilbidea_gehitu(request):
     path_id = request.GET.get('id')
     nondik = request.GET.get('nondik')
     
-    path.objects.filter(id=path_id).update(egunekoa = 1)   
-
+    path.objects.filter(id=path_id).update(egunekoa = 1)
+  
+  
     #GURI ALDAKETAREN BERRI EMAN?    
     mezua="Hornitzailearen izena:"+str(request.user.username)+".\n"+"Eguneko ibilbide hau gehitu du (id): "+str(path_id)+"\n"+"Beharra badago bidali mezua hornitzaileari: "+str(request.user.email)
     send_mail('OndareBideak - Eguneko ibilbidetan aldaketak', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
+        
+        
+        #HEMENDIK NIRE IBILBDEAK SAKATZEAN SARTUKO DA
+        
+        userID=request.user.id
+        ibilbideak=[]
+        ibilbideak = path.objects.filter(fk_user_id__id=userID).order_by('-creation_date')
+        
+        #PAGINATOR
+        paginator = Paginator(ibilbideak, 26)
+
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+     
+        page = request.GET.get('page')
+        try:
+            ibilbideak = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            ibilbideak = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            ibilbideak = paginator.page(paginator.num_pages)
+        non="fitxaE"
+        return render_to_response('nire_ibilbideak.html',{'non':non,'paths':ibilbideak},context_instance=RequestContext(request))
+   
+        
+        '''
         paths=[]
         paths=path.objects.order_by('-creation_date')
         paginator = Paginator(paths, 26)
@@ -1729,6 +2133,7 @@ def eguneko_ibilbidea_gehitu(request):
     
        
         return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
+        '''
     elif(nondik=="bilaketa"):
         print "bilaketa orritik"
         # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -1749,6 +2154,8 @@ def eguneko_ibilbidea_gehitu(request):
         besteakF=request.GET['besteakF']
         besteaF=[]
     
+        nireak=request.GET['nireak']
+        
         items=[]
         paths=[]
         search_models_items = [item]
@@ -1781,7 +2188,7 @@ def eguneko_ibilbidea_gehitu(request):
                 if(o=="dataAsc"):
                     oData2="dataAsc"
                 if(o=="botoak"):
-                    Boto="botoak"
+                    oBoto="botoak"
     
             
     
@@ -1803,12 +2210,39 @@ def eguneko_ibilbidea_gehitu(request):
                     bIrudiBai="irudiaDu"
                 if(b=="irudiaEzDu"):
                     bIrudiEz="irudiaEzDu"
+                    
+        hornitzaile_izena=request.GET['hornitzaile_search']
+        hornitzailea_obj=[]
+        if hornitzaile_izena !="":
+            # dagokion hornitzailearenak hartuko ditugu behean hasteko
+            print "hornitzaile_search"
+           
+            #hornitzaileakF=""
+            horni_id=request.GET['horni_id']
+         
+            hornitzaile_id=int(horni_id)     
+           
+            hornitzailea_obj=hornitzailea.objects.get(fk_user__id=hornitzaile_id)
+            hornitzaile_izena=hornitzailea_obj.izena
+
     
         #GALDERA BOTA
         if hizkuntza == 'eu':
-            #ITEMS
-            #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
-            items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:
+                #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
+                items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
        
             #hizkuntza filtroa
             if hizkuntzakF != "":       
@@ -1841,7 +2275,7 @@ def eguneko_ibilbidea_gehitu(request):
                
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                               
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                               
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
 
                     items_ids=[]
@@ -1866,8 +2300,19 @@ def eguneko_ibilbidea_gehitu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                 
         
-            #PATHS
-            paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else: 
+                paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -1919,13 +2364,27 @@ def eguneko_ibilbidea_gehitu(request):
     
                 
         elif hizkuntza == 'es':
+            
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:
        
-            items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+                items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
  
-             #hornitzaile filtroa   
+            #hornitzaile filtroa   
             if(hornitzaileakF != ""):
                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
@@ -1978,8 +2437,19 @@ def eguneko_ibilbidea_gehitu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                 #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
-        
-            paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else: 
+                paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -2023,22 +2493,35 @@ def eguneko_ibilbidea_gehitu(request):
                     paths=paths.filter(path_proposatutakoa=1)
            
                 if bIrudiBai=="irudiaDu":             
-                    aths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                    paths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":
                     #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
                     paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
         elif hizkuntza == 'en':
        
-            items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:
+                items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
         
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
             
-             #hornitzaile filtroa                                                                                                  
+            #hornitzaile filtroa                                                                                                  
             if(hornitzaileakF != ""):
-                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
-                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=[hornitzaileakF_list])
 
             #Mota filtroa,                                                                                                          
             if(motakF != ""):
@@ -2088,8 +2571,19 @@ def eguneko_ibilbidea_gehitu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                     #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
-        
-            paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else: 
+                paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -2172,6 +2666,47 @@ def eguneko_ibilbidea_gehitu(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             paths = paginator.page(paginator.num_pages)
+            
+            
+        #ITEMAK
+        #Egunekoak
+        eguneko_itemak=[]
+        eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_itemak=[]
+        azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+        #Bozkatuenak
+        item_bozkatuenak=[]
+        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+        if bozkatuenak_item_zerrenda:
+            item_ids=[]
+            for bozkatuena in bozkatuenak_item_zerrenda:
+                id = bozkatuena.item.id
+                item_ids.append(id)
+       
+            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+        #IBILBIDEAK
+        #Egunekoak
+        eguneko_ibilbideak=[]
+        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_ibilbideak=[]
+        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+        #Bozkatuenak
+        ibilbide_bozkatuenak=[]
+        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+        if bozkatuenak_ibilbide_zerrenda:
+            path_ids=[]
+            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+                id = bozkatuena.path.id
+                path_ids.append(id)
+       
+            ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
     
     
         z="p"
@@ -2187,9 +2722,18 @@ def eguneko_ibilbidea_gehitu(request):
         #Datu-baseko lizentziak lortu                                                                                                
         db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
         db_lizentziak_text ="_".join(db_lizentziak)
-
         
-        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+        if hornitzaile_izena !="":
+            
+            geoloc_longitude=hornitzailea_obj.geoloc_longitude
+            geoloc_latitude=hornitzailea_obj.geoloc_latitude
+            
+            return render_to_response('cross_search.html',{'nireak':nireak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzailea_obj,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+
+            
+        else:
+        
+            return render_to_response('cross_search.html',{'nireak':nireak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     elif(nondik=="ikusi"):
         print "nondik ba?"
@@ -2306,7 +2850,32 @@ def eguneko_ibilbidea_kendu(request):
     send_mail('OndareBideak - Eguneko ibilbideetan aldaketak', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
     
     if(nondik=="hasiera"):
+        
+        #HEMENDIK NIRE IBILBDEAK SAKATZEAN SARTUKO DA
+        
+        userID=request.user.id
+        ibilbideak=[]
+        ibilbideak = path.objects.filter(fk_user_id__id=userID).order_by('-creation_date')
+        
+        #PAGINATOR
+        paginator = Paginator(ibilbideak, 26)
+
+        type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+     
+        page = request.GET.get('page')
+        try:
+            ibilbideak = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            ibilbideak = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            ibilbideak = paginator.page(paginator.num_pages)
+        non="fitxaE"
+        return render_to_response('nire_ibilbideak.html',{'non':non,'paths':ibilbideak},context_instance=RequestContext(request))
+   
        
+        '''
         paths=[]
         paths=path.objects.order_by('-creation_date')
         paginator = Paginator(paths, 26)
@@ -2347,6 +2916,7 @@ def eguneko_ibilbidea_kendu(request):
         non="fitxaE"  
 
         return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
+        '''
     elif(nondik=="bilaketa"):
         print "bilaketa orritik"
         # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -2367,6 +2937,8 @@ def eguneko_ibilbidea_kendu(request):
         besteakF=request.GET['besteakF']
         besteaF=[]
     
+        nireak=request.GET['nireak']
+        
         items=[]
         paths=[]
         search_models_items = [item]
@@ -2399,7 +2971,7 @@ def eguneko_ibilbidea_kendu(request):
                 if(o=="dataAsc"):
                     oData2="dataAsc"
                 if(o=="botoak"):
-                    Boto="botoak"
+                    oBoto="botoak"
     
     
         bEgun="ez"
@@ -2420,12 +2992,40 @@ def eguneko_ibilbidea_kendu(request):
                     bIrudiBai="irudiaDu"
                 if(b=="irudiaEzDu"):
                     bIrudiEz="irudiaEzDu"
+                    
+        
+        hornitzaile_izena=request.GET['hornitzaile_search']
+        if hornitzaile_izena !="":
+            # dagokion hornitzailearenak hartuko ditugu behean hasteko
+            print "hornitzaile_search"
+           
+            hornitzaileakF=""
+            horni_id=request.GET['horni_id']
+         
+            hornitzaile_id=int(horni_id)     
+           
+            hornitzailea_obj=hornitzailea.objects.get(fk_user__id=hornitzaile_id)
+            hornitzaile_izena=hornitzailea_obj.izena
+        
+        
     
         #GALDERA BOTA
         if hizkuntza == 'eu':
-            #ITEMS
-            #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
-            items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:
+                #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
+                items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
        
             #hizkuntza filtroa
             if hizkuntzakF != "":       
@@ -2459,7 +3059,7 @@ def eguneko_ibilbidea_kendu(request):
                
                     items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 if(oBoto == "botoak"):
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
 
                     items_ids=[]
@@ -2485,8 +3085,19 @@ def eguneko_ibilbidea_kendu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                 
         
-            #PATHS
-            paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else: 
+                paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -2539,13 +3150,27 @@ def eguneko_ibilbidea_kendu(request):
     
                 
         elif hizkuntza == 'es':
+            
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:
        
-            items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+                items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
                 
-             #hornitzaile filtroa                                                                                                   
+            #hornitzaile filtroa                                                                                                   
             if(hornitzaileakF != ""):
                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
@@ -2599,8 +3224,20 @@ def eguneko_ibilbidea_kendu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                 #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
-        
-            paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else:  
+                paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+           
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -2627,7 +3264,7 @@ def eguneko_ibilbidea_kendu(request):
                 if(oData2 == "dataAsc"):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
                     paths_ids=[]
                     paths_ids=map(lambda x: int(x.path_id),paths)
@@ -2645,13 +3282,27 @@ def eguneko_ibilbidea_kendu(request):
                     paths=paths.filter(path_proposatutakoa=1)
            
                 if bIrudiBai=="irudiaDu":             
-                    aths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
+                    paths=paths.filter(path_thumbnail = Raw("[* TO *]"))  
                 if bIrudiEz=="irudiaEzDu":
                     #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
                     paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
         elif hizkuntza == 'en':
+            
+            #ITEMS:hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "itemak" aukeratik dator       
+                items = SearchQuerySet().all().models(*search_models_items)
+            elif(hornitzaile_izena!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
+                #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+            elif(nireak!=""):
+                # hornitzaile baten orriko filtroak sakatuta
+                items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+             
+            else:
        
-            items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+                items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
         
             #hizkuntza filtroa
             if hizkuntzakF != "":       
@@ -2659,8 +3310,8 @@ def eguneko_ibilbidea_kendu(request):
             #hornitzaile filtroa
             #hornitzaile filtroa                                                                                                    
             if(hornitzaileakF != ""):
-                 hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
-                 items = items.filter(edm_provider__in=[hornitzaileakF_list])
+                hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
+                items = items.filter(edm_provider__in=[hornitzaileakF_list])
 
             #Mota filtroa,                                                                                                          
             if(motakF != ""):
@@ -2710,8 +3361,19 @@ def eguneko_ibilbidea_kendu(request):
                     items=items.exclude(edm_object = Raw("[* TO *]"))
                     #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
-        
-            paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+            #PATHS hasierako karga
+            if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+                #menu nagusiko "ibilbideak" aukeratik dator 
+                paths = SearchQuerySet().all().models(*search_models_paths) 
+            elif(hornitzaile_izena!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)      
+            elif(nireak!=""):
+                #hornitzaile baten orriko filtroak sakatuta
+                paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)                
+           
+            else:  
+                paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
             #hizkuntza filtroa
             if hizkuntzakF != "":       
                 paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -2740,7 +3402,7 @@ def eguneko_ibilbidea_kendu(request):
                     paths = paths.order_by('path_creation_date')              
                 if(oBoto == "botoak"):
 
-                     ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
+                    ##PROBATU order_by erabiltzen! agian azkarragoa                                                                
                     bozkatuenak_path_zerrenda = votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')
 
                     paths_ids=[]
@@ -2798,6 +3460,48 @@ def eguneko_ibilbidea_kendu(request):
             paths = paginator.page(paginator.num_pages)
     
     
+    
+        #ITEMAK
+        #Egunekoak
+        eguneko_itemak=[]
+        eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_itemak=[]
+        azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+        #Bozkatuenak
+        item_bozkatuenak=[]
+        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+        if bozkatuenak_item_zerrenda:
+            item_ids=[]
+            for bozkatuena in bozkatuenak_item_zerrenda:
+                id = bozkatuena.item.id
+                item_ids.append(id)
+       
+            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+        #IBILBIDEAK
+        #Egunekoak
+        eguneko_ibilbideak=[]
+        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+        #Azkenak
+        azken_ibilbideak=[]
+        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+        #Bozkatuenak
+        ibilbide_bozkatuenak=[]
+        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+        if bozkatuenak_ibilbide_zerrenda:
+            path_ids=[]
+            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+                id = bozkatuena.path.id
+                path_ids.append(id)
+       
+            ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+            
+    
         z="p"
 
         #Datu-baseko hornitzaileak lortu                                                                                         
@@ -2813,9 +3517,17 @@ def eguneko_ibilbidea_kendu(request):
         db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
         db_lizentziak_text ="_".join(db_lizentziak)
 
+        if hornitzaile_izena !="":
+            
+            geoloc_longitude=hornitzailea_obj.geoloc_longitude
+            geoloc_latitude=hornitzailea_obj.geoloc_latitude
+            
+            return render_to_response('cross_search.html',{'nireak':nireak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzailea_obj,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
+            
+        else:
 
-        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+            return render_to_response('cross_search.html',{'nireak':nireak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
 
     elif (nondik=="ikusi"):
         print "nondik ba?"
@@ -2923,10 +3635,13 @@ def eguneko_ibilbidea_kendu(request):
      
 def ibilbideak_hasiera(request):
     
+    
+    print "ibilbideak_hasiera"
     #Ibilbideen hasierako pantailan erakutsi behar diren Ibilbideen informazioa datu-basetik lortu eta pasa
      
     #DB-an GALDERA EGIN EGUNEKO/RANDOM/AZKENAK/IKUSIENA PATHA LORTZEKO   
     #DB-an GALDERA EGIN EGUNEKO IBILBIDEA LORTZEKO
+    '''
     paths=[]
     paths=path.objects.order_by('-creation_date')
     
@@ -2943,6 +3658,28 @@ def ibilbideak_hasiera(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         paths = paginator.page(paginator.num_pages)
+    '''
+    
+    
+    #Egunekoak
+    eguneko_itemak=[]
+    eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+    #Azkenak
+    azken_itemak=[]
+    azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+    #Bozkatuenak
+    item_bozkatuenak=[]
+    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+    if bozkatuenak_item_zerrenda:
+        item_ids=[]
+        for bozkatuena in bozkatuenak_item_zerrenda:
+            id = bozkatuena.item.id
+            item_ids.append(id)
+       
+        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
     
     #Egunekoak
     eguneko_ibilbideak=[]
@@ -2963,42 +3700,79 @@ def ibilbideak_hasiera(request):
        
         ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
     
-    non="fitxaE"  
+    non="fitxaE"
     
-    return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
+    #Datu-baseko hornitzaileak lortu                                                                                             
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
-    '''
-    if(path.objects.filter(egunekoa=1)):
-        
-        egunekoIbilbidea = path.objects.get(egunekoa=1)
-        #lortu path-aren ezaugarriak
+    #Datu-baseko motak lortu                                                                                                     
+    db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+    db_motak_text ="_".join(db_motak)
+
+    #Datu-baseko lizentziak lortu                                                                                                
+    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+    db_lizentziak_text ="_".join(db_lizentziak)
     
-        id=egunekoIbilbidea.id
-        titulua=egunekoIbilbidea.dc_title
-        gaia=egunekoIbilbidea.dc_subject
-        deskribapena=egunekoIbilbidea.dc_description
-        irudia=egunekoIbilbidea.paths_thumbnail
-             
-        #path hasierak hartu
-        nodes = [] 
-        erroak = node.objects.filter(fk_path_id=egunekoIbilbidea,paths_start=1)
-        for erroa in erroak:
-            nodes = nodes + get_tree(erroa)
-    else:
-        id=""
-        titulua=""
-        gaia=""
-        deskribapena=""
-        irudia=""                    
-        nodes = []     
+    
+    z='p'
+    if request.GET.get('z'):
+        z = request.GET.get('z')    
+  
+    
+    items=[]
+    bilaketa_filtroak=1
+    galdera=''
+    hizkuntza='eu'
+    hizkF=''
+    horniF=''
+    motaF=''
+    ordenaF=''
+    lizentziaF=''
+    besteaF=''
+    search_models_paths=[path]
+    search_models_items=[item]
+    items = SearchQuerySet().all().models(*search_models_items)
+    paths = SearchQuerySet().all().models(*search_models_paths)
+    
+  
+    
+     
+    #PAGINATOR PATHS
+    paginator = Paginator(paths, 26)    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+    page = request.GET.get('page')
+    try:
+        paths = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paths = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paths = paginator.page(paginator.num_pages)
         
-        
-        
-    return render_to_response('ibilbideak_hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    '''
+    #PAGINATOR ITEMS
+    paginator = Paginator(items, 26)    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+    page = request.GET.get('page')
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        items = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        items = paginator.page(paginator.num_pages)
+    
+    
+    return render_to_response('cross_search.html',{'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))   
+    #return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
 
+   
 def hornitzaileak_hasiera(request):
-    print "hornitzaileak_hasiera"
+
     hornitzaileak = []
     hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3)
     
@@ -3155,6 +3929,48 @@ def cross_search(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         paths = paginator.page(paginator.num_pages)
     
+    #ITEMAK
+    #Egunekoak
+    eguneko_itemak=[]
+    eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+    #Azkenak
+    azken_itemak=[]
+    azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+    #Bozkatuenak
+    item_bozkatuenak=[]
+    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+    if bozkatuenak_item_zerrenda:
+        item_ids=[]
+        for bozkatuena in bozkatuenak_item_zerrenda:
+            id = bozkatuena.item.id
+            item_ids.append(id)
+       
+        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+    #IBILBIDEAK
+    #Egunekoak
+    eguneko_ibilbideak=[]
+    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+    #Azkenak
+    azken_ibilbideak=[]
+    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+    #Bozkatuenak
+    ibilbide_bozkatuenak=[]
+    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+    if bozkatuenak_ibilbide_zerrenda:
+        path_ids=[]
+        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+            id = bozkatuena.path.id
+            path_ids.append(id)
+       
+        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+    
+    
+    
     #Datu-baseko hornitzaileak lortu
     db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
@@ -3169,11 +3985,12 @@ def cross_search(request):
     
     
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 
 def hornitzaile_search(request):
     # Hornitzaile jakin baten item eta ibilbide guztiak bilatuko dira
+    
     #username
     hornitzaile_izena=request.GET['h']
     #Erab id
@@ -3184,7 +4001,7 @@ def hornitzaile_search(request):
     galdera=""
     hizkuntza="eu"
     horniF=[]
-    horniF.append(hornitzaile_izena)
+    #horniF.append(hornitzaile_izena)
    
     items=[]
     paths=[]
@@ -3197,13 +4014,10 @@ def hornitzaile_search(request):
     #Itemak erabiltzaileekin lotzean hau aldatu
     #items = SearchQuerySet().all().filter(fk_ob_user__id=hornitzaile_id).models(*search_models_items) 
     items = SearchQuerySet().all().filter(item_user_id=hornitzaile_id).models(*search_models_items) 
-    print "Hornitzailearen item kopurua"
-    print len(items)
     #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
     paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)
 
-    
-  
+      
     #PAGINATOR ITEMS
     paginator = Paginator(items, 26)    
     type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
@@ -3257,35 +4071,39 @@ def hornitzaile_search(request):
     #Datu-baseko lizentziak lortu
     db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
     db_lizentziak_text ="_".join(db_lizentziak)
-    print "HOrnitzaile_search response aurretik"
+ 
     return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+
 
 def filtro_search(request):
     
-    print "filtro_search"
+    #Hona iristeko 4 aukera daude:
+    #bilakera arrunt baten filtroetatik
+    #Menu nagusiko itemak edo ibilbideak sakatuta. Kasu honetan galdera="" eta z-ren balioak kontutan hartu
+    #Hornitzaile bat kontsultatzetik. Kasu honetan  'hornitzailea' in request.GET  eta galdera hutsa da
+    #Nire itemak ala Nire ibilbideak kontsultatzeko aukeratik ('nireak' aldagaiarekin kontrolatzen dugu aukera honetatik datorren)
+    
     # Helburu hizkuntza guztietan burutuko du bilaketa
-    hizkuntza=request.GET['hizkRadio']   
+    hizkuntza=request.GET['hizkRadio']
+   
     galdera=request.GET['search_input']
     z=request.GET['z']
-    if 'hornitzailea' in request.GET:
-        hornitzaile_izena=request.GET['hornitzailea']
-        print "hornitzaile_izena"
-    else:
-        hornitzaile_izena=""
-    
-    
+ 
     hizkuntzakF=request.GET['hizkuntzakF']
     hizkF=[] 
     hornitzaileakF=request.GET['hornitzaileakF']
-    horniF=[]
+   
+    #horniF=[]
     motakF=request.GET['motakF']
-    motaF=[]
+    #motaF=[]
     ordenakF=request.GET['ordenakF']
     ordenaF=[]
     lizentziakF=request.GET['lizentziakF']
-    lizentziaF=[]  
+    #lizentziaF=[]  
     besteakF=request.GET['besteakF']
     besteaF=[]
+    
+    nireak=request.GET['nireak']
     
     items=[]
     paths=[]
@@ -3293,6 +4111,12 @@ def filtro_search(request):
     search_models_paths = [path]
     bilaketa_filtroak=1
     
+    if 'hornitzailea' in request.GET:     
+        hornitzaile_izena=request.GET['hornitzailea']
+        hornitzailea_user_id=request.GET['hornitzailea_user_id']      
+    else:
+        hornitzaile_izena=""
+        hornitzailea_user_id=""
     
     #FILTROAK PRESTATU
     hEu="ez"
@@ -3347,35 +4171,35 @@ def filtro_search(request):
     
     #GALDERA BOTA
     if hizkuntza == 'eu':
-        #ITEMS
-        #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)| SQ(dc_language='eu') ).models(*search_models_items)       
-        if (galdera ==""):
-            print "galdera null"
-            items = SearchQuerySet().all().models(*search_models_items)  
-           
+        #ITEMS:hasierako karga
+        if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+            #menu nagusiko "itemak" aukeratik dator       
+            items = SearchQuerySet().all().models(*search_models_items)
+        elif(hornitzaile_izena!=""):
+            # hornitzaile baten orriko filtroak sakatuta
+            items = SearchQuerySet().all().filter(item_user_id=hornitzailea_user_id).models(*search_models_items) 
+            #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+        elif(nireak!=""):
+            #Nire itemak kontsultatzetik 
+            items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
             
-            print items.count() 
         else:
-            items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)       
-       
+            #galdera arrunt baten filtroetatik
+            items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
         #hornitzaile filtroa
         if(hornitzaileakF != ""):
-            
+            #!hornitzaile baten orri nagusitik baldin badator, hemen filtratuko ditugu hhornitzaile horri dagozkionak (goian gehitu diogu hornitzaileakF-ri)
             hornitzaileakF_list = [str(x) for x in hornitzaileakF.split(",")]
             items = items.filter(edm_provider__in=hornitzaileakF_list)
 
         #Mota filtroa,
-        if(motakF != ""):       
-            print "motakF"
-            motakF_list = [str(x) for x in motakF.split(",")]
+        if(motakF != ""):            
+            motakF_list = [str(x) for x in motakF.split(",")]      
             items = items.filter(edm_type__in=motakF_list)
-            print len(items)
         #Lizentziak filtroa 
-        print "Lizentziarik bai?"
-        print lizentziakF
         if(lizentziakF != ""):       
             lizentziakF_list = [str(x) for x in lizentziakF.split(",")]
             items = items.filter(edm_rights__in=lizentziakF_list)  
@@ -3387,11 +4211,9 @@ def filtro_search(request):
         if(ordenakF != ""):            
             if(oData == "data"):
                 #items = items.order_by('-dc_date')
-                print "DATA BEHERAKA"
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
                 
             if(oData2 == "dataAsc"):
-                print "DATA GORAKA"
                 #items = items.order_by('-dc_date')
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
                 
@@ -3426,8 +4248,21 @@ def filtro_search(request):
                 #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
         #...
         
-        #PATHS
-        paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+        #PATHS hasierako karga
+        if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+            #menu nagusiko "itemak" aukeratik dator 
+            paths = SearchQuerySet().all().models(*search_models_paths) 
+        elif(hornitzaile_izena!=""):
+            #hornitzaile baten orriko filtroak sakatuta
+            paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)      
+        elif(nireak!=""):
+            #Nire ibilbideak kontsultatzetik 
+            paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)      
+        
+        else:
+            #galdera arrunt batetik dator
+            paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+       
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -3465,9 +4300,6 @@ def filtro_search(request):
                 #Ordena mantentzen du??                        
                 paths=paths.filter(path_id__in=bozkatuenak_path_ids)  
         
-        #Lizentziak filtroa,IBILBIDEETAN EZ DAGO LIZENTZIA
-        #if lizentziakF !="": 
-            #paths = paths
         #Besteak filtroa
         if (besteakF != ""):  
             if bEgun=="egunekoa":
@@ -3484,8 +4316,23 @@ def filtro_search(request):
     
                 
     elif hizkuntza == 'es':
-       
-        items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+        
+        #ITEMS:hasierako karga
+        if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+            #menu nagusiko "itemak" aukeratik dator       
+            items = SearchQuerySet().all().models(*search_models_items)
+        elif(hornitzaile_izena!=""):
+            # hornitzaile baten orriko filtroak sakatuta
+            items = SearchQuerySet().all().filter(item_user_id=hornitzailea_user_id).models(*search_models_items) 
+            #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+        elif(nireak!=""):
+            #Nire itemak kontsultatzetik 
+            items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+
+        else:
+            #galdera arrunt batetik dator       
+            items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+        
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             items = items.filter(SQ(dc_language=hEu)|SQ(dc_language=hEs)|SQ(dc_language=hEn))
@@ -3511,7 +4358,7 @@ def filtro_search(request):
                 #items = items.order_by('-dc_date')
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
             if(oData2 == "dataAsc"):
-                print "DATA GORAKA"
+              
                 #items = items.order_by('-dc_date')
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
             if(oBoto == "botoak"):
@@ -3542,9 +4389,21 @@ def filtro_search(request):
                 #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
                 items=items.exclude(edm_object = Raw("[* TO *]"))
                 #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
-        #...
         
-        paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+        #PATHS hasierako karga
+        if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+            #menu nagusiko "itemak" aukeratik dator 
+            paths = SearchQuerySet().all().models(*search_models_paths) 
+        elif(hornitzaile_izena!=""):
+            #hornitzaile baten orriko filtroak sakatuta
+            paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)      
+        elif(nireak!=""):
+            #Nire ibilbideak kontsultatzetik 
+            paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)        
+        else:
+            #galdera arrunt batetik dator
+            paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+        
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -3555,10 +4414,7 @@ def filtro_search(request):
             usr_id_zerrenda=map(lambda x: int(x.fk_ob_user.id),item_hornitzaile_erab)
               
             paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda)
-        
-        #Mota filtroa,IBILBIDEETAN EZ DAGO MOTA
-        #if(motakF != ""):
-            #paths = paths
+          
         #Ordena Filtroa
         bozkatuenak_path_zerrenda=[]
         if(ordenakF != ""):            
@@ -3575,10 +4431,6 @@ def filtro_search(request):
                 #Ordena mantentzen du??                                                                                          
                 paths=paths.filter(path_id__in=bozkatuenak_path_ids)
 
-        
-        #Lizentziak filtroa,IBILBIDEETAN EZ DAGO LIZENTZIA
-        #if lizentziakF !="": 
-            #paths = paths
         #Besteak filtroa
         if (besteakF != ""):  
             if bEgun=="egunekoa":
@@ -3594,7 +4446,20 @@ def filtro_search(request):
                 paths=paths.exclude(path_thumbnail = Raw("[* TO *]"))
     elif hizkuntza == 'en':
 
-        items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+        #ITEMS:hasierako karga
+        if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+            #menu nagusiko "itemak" aukeratik dator       
+            items = SearchQuerySet().all().models(*search_models_items)
+        elif(hornitzaile_izena!=""):
+            # hornitzaile baten orriko filtroak sakatuta
+            items = SearchQuerySet().all().filter(item_user_id=hornitzailea_user_id).models(*search_models_items) 
+            #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)
+        elif(nireak!=""):
+            #Nire itemak kontsultatzetik 
+            items = SearchQuerySet().all().filter(item_user_id=request.user.id).models(*search_models_items) 
+
+        else:
+            items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
         
         #hizkuntza filtroa
         if hizkuntzakF != "":       
@@ -3622,16 +4487,15 @@ def filtro_search(request):
                 #items = items.order_by('-dc_date')
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('-edm_year')
             if(oData2 == "dataAsc"):
-                print "DATA GORAKA"
                 #items = items.order_by('-dc_date')
                 items = items.filter( edm_year= Raw("[* TO *]")).order_by('edm_year')
             if(oBoto == "botoak"):
-                 ##PROBATU order_by erabiltzen! agian azkarragoa                                                                 
-                 bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
-                 items_ids=[]
-                 items_ids=map(lambda x: int(x.item_id),items)
-                 bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
-                 items=items.filter(item_id__in=bozkatuenak_ids)
+                ##PROBATU order_by erabiltzen! agian azkarragoa                                                                 
+                bozkatuenak_item_zerrenda = votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')
+                items_ids=[]
+                items_ids=map(lambda x: int(x.item_id),items)
+                bozkatuenak_ids=map(lambda x: int(x.item_id),bozkatuenak_item_zerrenda)
+                items=items.filter(item_id__in=bozkatuenak_ids)
 
                       
         #Besteak filtroa
@@ -3651,9 +4515,21 @@ def filtro_search(request):
                 #self.searchqueryset.filter(edm_object = None ) hau egiten du behekoak
                 items=items.exclude(edm_object = Raw("[* TO *]"))
                 #items=items.filter(SQ(edm_object='null')|SQ(edm_object="uploads/NoIrudiItem.png"))
-        #...
         
-        paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+        #PATHS hasierako karga
+        if (galdera =="" and hornitzaile_izena=="" and nireak==""):
+            #menu nagusiko "itemak" aukeratik dator 
+            paths = SearchQuerySet().all().models(*search_models_paths) 
+        elif(hornitzaile_izena!=""):
+            #hornitzaile baten orriko filtroak sakatuta
+            paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzailea_user_id).models(*search_models_paths)      
+        elif(nireak!=""):
+            #Nire ibilbideak kontsultatzetik 
+            paths = SearchQuerySet().all().filter(path_fk_user_id=request.user.id).models(*search_models_paths)      
+        else:
+            #galdera arrunt batetik dator
+            paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+        
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -3665,9 +4541,6 @@ def filtro_search(request):
               
             paths = paths.filter(path_fk_user_id__in=usr_id_zerrenda)
        
-        #Mota filtroa,IBILBIDEETAN EZ DAGO MOTA
-        #if(motakF != ""):
-            #paths = paths
         #Ordena Filtroa
         bozkatuenak_path_zerrenda=[]
         if(ordenakF != ""):            
@@ -3685,9 +4558,6 @@ def filtro_search(request):
                 #Ordena mantentzen du??                                                                                          
                 paths=paths.filter(path_id__in=bozkatuenak_path_ids)##PROBATU order_by erabiltzen! agian azkarragoa                
 
-        #Lizentziak filtroa,IBILBIDEETAN EZ DAGO LIZENTZIA
-        #if lizentziakF !="": 
-            #paths = paths
         #Besteak filtroa
         if (besteakF != ""):  
             if bEgun=="egunekoa":
@@ -3749,12 +4619,11 @@ def filtro_search(request):
     db_lizentziak_text ="_".join(db_lizentziak)
     
     if hornitzaile_izena:
-       
         hornitzaile = hornitzailea.objects.get(fk_user__username=hornitzaile_izena)
-        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'hornitzailea':hornitzaile,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkuntzakF':hizkF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
+        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'hornitzailea':hornitzaile,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkuntzakF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
     else:
         
-        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkuntzakF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
+        return render_to_response('cross_search.html',{'nireak':nireak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkuntzakF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
 
 def nabigazioa_hasi(request):
     
@@ -5305,7 +6174,7 @@ def handle_uploaded_file(f,izena):
         for chunk in f.chunks():
             destination.write(chunk)
 
-
+'''
 def nire_itemak_erakutsi(request):
     
     userName=request.user.username
@@ -5327,10 +6196,131 @@ def nire_itemak_erakutsi(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         itemak = paginator.page(paginator.num_pages)
     non="fitxaE"
-    return render_to_response('nire_itemak.html',{'non':non,'itemak':itemak},context_instance=RequestContext(request))
-   
+    bilaketa_filtroak=1
+    
+    return render_to_response('nire_itemak.html',{'non':non,'itemak':itemak,'bilaketa_filtroak':bilaketa_filtroak},context_instance=RequestContext(request))
+  
+''' 
+
+def nire_itemak_erakutsi(request):
+    
+    userName=request.user.username
+    userID=request.user.id
+    
+    #ITEMAK
+    #Egunekoak
+    eguneko_itemak=[]
+    eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+    #Azkenak
+    azken_itemak=[]
+    azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+    #Bozkatuenak
+    item_bozkatuenak=[]
+    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+    if bozkatuenak_item_zerrenda:
+        item_ids=[]
+        for bozkatuena in bozkatuenak_item_zerrenda:
+            id = bozkatuena.item.id
+            item_ids.append(id)
+       
+        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+    #IBILBIDEAK
+    #Egunekoak
+    eguneko_ibilbideak=[]
+    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+    #Azkenak
+    azken_ibilbideak=[]
+    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+    #Bozkatuenak
+    ibilbide_bozkatuenak=[]
+    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+    if bozkatuenak_ibilbide_zerrenda:
+        path_ids=[]
+        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+            id = bozkatuena.path.id
+            path_ids.append(id)
+       
+        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+    
+     
+        
+    
+    #Datu-baseko hornitzaileak lortu                                                                                             
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak_text ="_".join(db_hornitzaileak)
+
+    #Datu-baseko motak lortu                                                                                                     
+    db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+    db_motak_text ="_".join(db_motak)
+
+    #Datu-baseko lizentziak lortu                                                                                                
+    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+    db_lizentziak_text ="_".join(db_lizentziak)
+
+    non="fitxaE"
+    
+    z='i' 
+    paths=[]
+    bilaketa_filtroak=1
+    galdera=''
+    hizkuntza='eu'
+    hizkF=''
+    horniF=''
+    motaF=''
+    ordenaF=''
+    lizentziaF=''
+    besteaF=''
+    search_models_items=[item]
+    
+    items = SearchQuerySet().all().filter(item_user_id=userID).models(*search_models_items)
+    
+    '''
+    search_models_paths=[path]
+    paths = SearchQuerySet().all().filter(path_fk_user_id=userID).models(*search_models_paths)
+    
+     #PAGINATOR PATHS
+    paginator = Paginator(paths, 26)    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+    page = request.GET.get('page')
+    try:
+        paths = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paths = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paths = paginator.page(paginator.num_pages)
+    
+    ''' 
+    
+    
+    #PAGINATOR ITEMS
+    paginator = Paginator(items, 26)    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+    page = request.GET.get('page')
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        items = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        items = paginator.page(paginator.num_pages)
+        
+    nireak='1'
+    return render_to_response('cross_search.html',{'nireak':nireak,'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+      
 
 
+
+'''
 def nire_ibilbideak_erakutsi(request):
     
     userID=request.user.id
@@ -5354,7 +6344,127 @@ def nire_ibilbideak_erakutsi(request):
     non="fitxaE"
     return render_to_response('nire_ibilbideak.html',{'non':non,'paths':ibilbideak},context_instance=RequestContext(request))
    
-   
+'''
+def nire_ibilbideak_erakutsi(request):
+
+    userName=request.user.username
+    userID=request.user.id
+    
+    #ITEMAK
+    #Egunekoak
+    eguneko_itemak=[]
+    eguneko_itemak=item.objects.filter(egunekoa=1)
+    
+    #Azkenak
+    azken_itemak=[]
+    azken_itemak=item.objects.order_by('-edm_year')[:10]
+    
+    #Bozkatuenak
+    item_bozkatuenak=[]
+    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+    if bozkatuenak_item_zerrenda:
+        item_ids=[]
+        for bozkatuena in bozkatuenak_item_zerrenda:
+            id = bozkatuena.item.id
+            item_ids.append(id)
+       
+        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+    #IBILBIDEAK
+    #Egunekoak
+    eguneko_ibilbideak=[]
+    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    
+    #Azkenak
+    azken_ibilbideak=[]
+    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    
+    #Bozkatuenak
+    ibilbide_bozkatuenak=[]
+    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+    if bozkatuenak_ibilbide_zerrenda:
+        path_ids=[]
+        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+            id = bozkatuena.path.id
+            path_ids.append(id)
+       
+        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+    
+    
+    
+    non="fitxaE"
+    
+    #Datu-baseko hornitzaileak lortu                                                                                             
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak_text ="_".join(db_hornitzaileak)
+
+    #Datu-baseko motak lortu                                                                                                     
+    db_motak=map(lambda x: x['edm_type'],item.objects.values('edm_type').distinct())
+    db_motak_text ="_".join(db_motak)
+
+    #Datu-baseko lizentziak lortu                                                                                                
+    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
+    db_lizentziak_text ="_".join(db_lizentziak)
+    
+    
+    z='p'
+    if request.GET.get('z'):
+        z = request.GET.get('z')    
+  
+    
+    items=[]
+    bilaketa_filtroak=1
+    galdera=''
+    hizkuntza='eu'
+    hizkF=''
+    horniF=''
+    motaF=''
+    ordenaF=''
+    lizentziaF=''
+    besteaF=''
+    search_models_paths=[path]
+    #search_models_items=[item]
+    #items = SearchQuerySet().all().filter(item_user_id=userID).models(*search_models_items)
+
+    paths = SearchQuerySet().all().filter(path_fk_user_id=userID).models(*search_models_paths)
+    
+  
+    
+     
+    #PAGINATOR PATHS
+    paginator = Paginator(paths, 26)    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+    page = request.GET.get('page')
+    try:
+        paths = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paths = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paths = paginator.page(paginator.num_pages)
+    '''    
+    #PAGINATOR ITEMS
+    paginator = Paginator(items, 26)    
+    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
+    
+    page = request.GET.get('page')
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        items = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        items = paginator.page(paginator.num_pages)
+    '''
+    nireak="1"
+    return render_to_response('cross_search.html',{'nireak':nireak,'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))   
+    
+    
+ 
+    
 def itema_gehitu(request):
     
     itema=ItemGehituForm(request.POST, request.FILES)
