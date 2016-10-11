@@ -8,6 +8,20 @@ from django.contrib.auth.models import User, Group
 register = template.Library()
 
 @register.filter
+def get_item_image(item): 
+    img=item    
+    return img
+
+
+@register.filter
+def cut_karrusel_text(input): 
+    out=input[:150]
+    if len(input) > len(out): 
+        out=out+"..."
+    return out
+
+
+@register.filter
 def add_ekm_prefix_to_desc(value): 
     value=value.replace('="/ImgsAuna/','="http://www.euskomedia.org/ImgsAuna/')
     value=value.replace('href="/aunamendi/', 'href="http://www.euskomedia.org/aunamendi/')

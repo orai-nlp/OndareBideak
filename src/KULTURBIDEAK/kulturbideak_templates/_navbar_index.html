@@ -1,0 +1,128 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a id="brand-logo" class="navbar-brand" href="#"><img src="{{STATIC_URL}}img/brandy/logoa_iluna.png"></a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<!-- Language menu-->
+			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">
+				{% csrf_token %}
+				<input name="next" type="hidden" value="#" />
+				<input type="hidden" name="language" value="{{ lang.0 }}" />
+				{% get_current_language as LANGUAGE_CODE %}
+				<ul class="nav navbar-nav navbar-left">
+
+					{% for langa in LANGUAGES %}
+					{% if forloop.last %}
+					{% if langa.1 ==  LANGUAGE_CODE %}
+					<li>
+						<a class="active" href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+					</li>
+					{% else %}
+					<li>
+						<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+					</li>
+					{% endif %}
+					{% else %}
+					{% if langa.1 == LANGUAGE_CODE %}
+					<li>
+						<a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+					</li>
+					{% else %}
+					<li>
+						<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+					</li>
+					{% endif %}
+					{% endif %}
+					{% endfor %}
+				</ul>
+			</form>
+
+			<!-- Home menu -->
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="#HOME"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+				</li>
+				<!--<li><a href="#SERVICE">Services</a></li>-->
+				<li>
+					<a href="#ABOUT">{% trans "Zer da?" %}</a>
+				</li>
+				<!--<li><a href="#TESTIMONIAL">Testimonial</a></li>-->
+				<li>
+					<a href="#WORK">{% trans "Adibideak" %}</a>
+				</li>
+				<li>
+					<a href="">|</a>
+				</li>
+				<!--<li><a href="#CONTACT">Harremanetarako</a></li>-->
+				<!-- register and login buttons OR logout and user menu -->
+				{% if user.is_authenticated %}
+				<li>
+					<a href="irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> {% trans "Irten" %}</a>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a>
+						</li>
+						<li>
+							<a href="{{BASE_URL}}/nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						{% if request.user|has_group:'hornitzailea' %}
+						<li>
+							<a href="{{BASE_URL}}/oaipmh_datubilketa">{% trans "OAI-PMH bidezko itemen bilketa" %}</a>
+						</li>
+						{% endif%}
+						<li>
+							<a href="{{BASE_URL}}/itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+						</li></a>
+						<li role="separator" class="divider"></li>
+						<li>
+							<a href="{{BASE_URL}}/perfila_erakutsi">{% trans "Profila" %}</a>
+						</li>
+						<li>
+							<a href="{{BASE_URL}}/pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						{% if request.user|has_group:'hornitzailea' %}
+						<li>
+							<a href="{{BASE_URL}}/hornitzaile_fitxa_editatu">{% trans "Hornitzaile fitxa editatu" %}</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						{% endif%}
+
+						<li>
+							<a href="irten">{% trans "Irten" %} <!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
+						</li>
+					</ul>
+				</li>
+				{% else %}
+				<li>
+					<a href="erregistratu"><b>{% trans "Erregistratu" %}</b> </a>
+				</li>
+
+				<li>
+					<a href="logina"><span class="glyphicon glyphicon-log-in" aria-hidden="true"> </span> {% trans "Login" %} </a>
+				</li>
+				{% endif %}
+
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container -->
+</nav>

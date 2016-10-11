@@ -20,8 +20,12 @@ body {
 	background-size: contain;
 }
 
+#brand-logo img {
+	width:230px;
+}
+
 #SERVICE {
-	padding-top: 30px !important;
+	padding-top: 20px !important;
 }
 #item_img {
 	margin: 5px;
@@ -654,6 +658,12 @@ circle .unselectedNode {
 	/*border: solid 1px #CCC;*/
 
 }
+.ibilbide-irudia-index {
+	max-height: 300px;
+	border-radius: 0%;
+	/*border: solid 1px #CCC;*/
+}
+
 .hornitzaile-irudia {
 
 	/*height: 150px;*/
@@ -844,3 +854,18 @@ span.helptext {
     width:90%;
     padding:0 3px 0 3px;
 }
+
+@media only screen and (max-width: 960px)
+{
+
+	#brand-logo img {
+		width:150px;
+	}
+	
+	#hizkuntza_aukeraketa_id ul.nav li{
+		display:inline-block;
+	}
+	
+}
+
+

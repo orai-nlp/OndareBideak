@@ -92,38 +92,45 @@ def get_tree(el_node):
                 nodeLoadError="Node "+child_node_id+" could not be loaded"
     return nodes
 
-def brandy(request):
-    
-    return render_to_response('index_brandy.html',context_instance=RequestContext(request))
- 
-
 def hasiera(request):
-  
-    #DB-an GALDERA EGIN EGUNEKO IBILBIDEAK LORTZEKO
-    egunekoIbilbideak=[]
-    egunekoIbilbideak = path.objects.filter(egunekoa=1)
-    '''
-    if(path.objects.filter(egunekoa=1)):
-        
-        egunekoIbilbideak = path.objects.filter(egunekoa=1)
      
-        #path hasierak hartu
-        nodes = [] 
-        erroak = node.objects.filter(fk_path_id__id=id,paths_start=1)        
-        #erroak = node.objects.filter(fk_path_id=egunekoIbilbidea,paths_start=1)
-        for erroa in erroak:
-            nodes = nodes + get_tree(erroa)
-        #import pdb
-        #pdb.set_trace()
+   
+    #Kontadoreko kopuruak lortu datu-basetik
+    #Itemak
+    itemKop = item.objects.count()
+    #eguneko itema
+    egunekoItem = item.objects.filter(egunekoa=1).order_by('?')[:1]
+    if (not egunekoItem):
+        egunekoItem = item.objects.order_by('?')[:1]
+        
+    egunekoItem = egunekoItem[0] 
+    #Ibilbideak
+    ibilbideKop = path.objects.count()   
+    #Karruselerako Ibilbideak
+    ibilbideak = path.objects.order_by('?')[:5]
+    #eguneko patha
+    egunekoPath = path.objects.filter(egunekoa=1).order_by('?')[:1]
+    ## eguneko path-ik ez badago hartu karruseleko lehena
+    if (not egunekoPath):
+        egunekoPath = ibilbideak[0]    
     else:
-        id=""
-        titulua=""
-        gaia=""
-        deskribapena=""
-        irudia=""                    
-        nodes = []     
-    '''
+        egunekoPath = egunekoPath[0];
+    ibilbideak=ibilbideak[1:]
     
+    
+    #Hornitzaileak
+    hornitzaileKop = hornitzailea.objects.count()
+    #hornitzaile bat erakutsi
+    egunekoHornitzaile = hornitzailea.objects.order_by('?')[:1]
+    egunekoHornitzaile = egunekoHornitzaile[0]; 
+    #Erabiltzaileak
+    erabiltzaileKop = usr.objects.count()
+    #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+    return render_to_response('index.html',{'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop},context_instance=RequestContext(request))
+
+
+def hasiera_old(request):
+  
     #Kontadoreko kopuruak lortu datu-basetik
     #Itemak
     itemKop = item.objects.count()
@@ -134,7 +141,7 @@ def hasiera(request):
     #Erabiltzaileak
     erabiltzaileKop = usr.objects.count()
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    return render_to_response('index_brandy.html',{'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'egunekoIbilbideak':egunekoIbilbideak},context_instance=RequestContext(request))
+    return render_to_response('index_brandy.html',{'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop},context_instance=RequestContext(request))
 
    
    
@@ -943,6 +950,9 @@ def eguneko_itema_gehitu(request):
     
     item_id = request.GET.get('id')
     nondik = request.GET.get('nondik')
+
+    #print "eguneko_itema_gehitu"
+    #print hornitzailea.objects.count()
 
     item.objects.filter(id=item_id).update(egunekoa = 1)   
     #item_tartekoa.egunekoa=1

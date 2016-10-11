@@ -64,3 +64,8 @@ src/KULTURBIDEAK/kulturbideak_app/media/uploads/
 # eclipse project files
 .project
 .settings/
+
+# various backup files
+*~
+*.bkp
+*.backup
