@@ -410,10 +410,12 @@ padding-top: 10px;
 /*Footer*/
 footer{
 	background-color: #f1f1f1;
-	padding-top: 50px;
-	padding-bottom: 50px;
+	/*padding-top: 20px;*/
+	/*padding-bottom: 50px;*/
 }
-.footer_logo{}
+.footer_logo{
+	padding: 10px 0px;
+}
 .footer_logo img{}
 .social{
 	padding-top: 65px;

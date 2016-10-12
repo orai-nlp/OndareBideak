@@ -121,7 +121,7 @@ img.ob_thumbnail {
 	min-width: 800px;
 	left: 10%;
 	text-align: center;
-	z-index: 100;
+	z-index: 10000;
 }
 
 #workspace_boxes {
@@ -294,6 +294,7 @@ img.ob_thumbnail {
 .orria {
 	display: block;
 	margin: 0 auto;
+	padding-top:140px;
 	/*text-align: center;*/
 }
 .eskuma_div {
@@ -508,7 +509,7 @@ img.ob_thumbnail {
 }
 
 .index-brand{
-	margin-left:150px;	
+	margin-left:200px;	
 }
 
 #brand-logo.index-brand img {
@@ -527,8 +528,15 @@ img.ob_thumbnail {
 
 #hizkuntza_aukeraketa_id ul li{
 	display:inline-block;
+	border-right: 1px solid #ccc;
+	padding: 0px 10px 0px 5px;
+	margin-top: 10px;
+	line-height: 14px;
 }
 
+.last_li {
+	border-right:0px !important;	
+}
 .navbar-default-berria .navbar-brand-berria {
 	color: #31708f !important;
 }
@@ -900,7 +908,18 @@ span.helptext {
 		display:inline-block;
 	}
 	
+	#SERVICE {
+		padding-top: 50px !important;
+	}
 	
+	/* there is a collapsing problem in pages extending base.html, this is a workaround, but as
+	 * soon as that problem is fixed this should be deleted. */
+	.orria {
+		display: block;
+		margin: 0 auto;
+		padding-top:200px;
+		/*text-align: center;*/
+	}
 }
 
 

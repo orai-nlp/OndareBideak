@@ -7,7 +7,7 @@
 	<div class="container">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -17,7 +17,7 @@
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
 			<!-- Language menu-->
 			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">
 				{% csrf_token %}
@@ -27,26 +27,22 @@
 				<ul id="lang_ul">
 
 					{% for langa in LANGUAGES %}
-					{% if forloop.last %}
-					{% if langa.1 ==  LANGUAGE_CODE %}
-					<li>
+					{% if forloop.last %}					
+					<li class="last_li">
+						{% if langa.1 ==  LANGUAGE_CODE %}
 						<a class="active" href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-					</li>
-					{% else %}
-					<li>
+						{% else %}
 						<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-					</li>
-					{% endif %}
+						{% endif %}
+					</li>		
 					{% else %}
-					{% if langa.1 == LANGUAGE_CODE %}
 					<li>
+						{% if langa.1 == LANGUAGE_CODE %}					
 						<a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-					</li>
-					{% else %}
-					<li>
+						{% else %}
 						<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+						{% endif %}
 					</li>
-					{% endif %}
 					{% endif %}
 					{% endfor %}
 				</ul>
@@ -66,7 +62,7 @@
 						</li>
 					</ul>
 
-					<div class="col-sm-3 col-md-3 bilatzailea-kutxa text-center nav navbar-nav">
+					<div class="col-sm-3 col-md-3 bilatzailea-kutxa text-center navbar-nav">
 						<!--<form action="/search" method="get" class="navbar-form">-->
 						<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
 
