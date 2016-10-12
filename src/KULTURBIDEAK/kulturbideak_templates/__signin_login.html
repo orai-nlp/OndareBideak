@@ -1,0 +1,89 @@
+{% load i18n %}
+{% load tags%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>ONDAREBIDEAK</title>
+		<!-- Google Font -->
+		<link href='http://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
+		<!-- Brandy Style -->
+		<link href="{{STATIC_URL}}css/brandy/css/style.css" rel="stylesheet">
+		<!-- Responsive CSS -->
+		<link href="{{STATIC_URL}}css/brandy/css/responsive.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
+
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
+		<!-- Bootstrap -->
+		{# Load the tag library #}
+		{% load bootstrap3 %}
+
+		{# Load CSS and JavaScript #}
+		{% bootstrap_css %}
+		{% bootstrap_javascript %}
+
+		{# Display django.contrib.messages as Bootstrap alerts #}
+		{# bootstrap_messages #}
+
+		<!-- ondarebideak css-->
+		<link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
+
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
+		<script>
+            var csrf_token = "{{ csrf_token }}";
+            var erabiltzailea = "{{request.user.username}}";
+		</script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
+
+	</head>
+
+	<body onload="initialize_notlogged();">
+		<header id="HOME" style="background-position: 50% 0px;">
+			<div class="section_overlay">
+				{% block navbar %}
+				{% include "_navbar.html" %}
+				{% endblock navbar %}
+			</div>
+
+		</header>
+		
+		<!-- PAGE -->
+		<div  style="max-width:1210px;margin:0 auto; padding-bottom: 50px;">
+			<!--PANTAILA EGITURA NAGUSIA-->
+			<div class="orria2">
+			{% block content %}
+			{% endblock content %}
+			</div>
+		</div>
+		
+		<footer>
+			<!--footer-->
+			{% include "_footer.html" %}
+		</footer>
+
+		<!-- =========================
+		SCRIPTS
+		============================== -->
+
+		<!--<script src="{{STATIC_URL}}js/brandy/jquery.min.js"></script>
+		<script src="{{STATIC_URL}}js/brandy/bootstrap.min.js"></script>
+		<script src="{{STATIC_URL}}js/brandy/jquery.nicescroll.js"></script>
+		<script src="{{STATIC_URL}}js/brandy/owl.carousel.js"></script>
+		<script src="{{STATIC_URL}}js/brandy/wow.js"></script>
+		<script src="{{STATIC_URL}}js/brandy/script.js"></script>-->
+
+	</body>
+
+</html>
