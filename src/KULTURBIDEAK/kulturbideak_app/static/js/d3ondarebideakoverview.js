@@ -108,8 +108,8 @@ function tituluaGarbitu (titulua,moztu){
     }
     titulua=titulua.replace(/<div class=\"titulu_lg\">(.*?)<\/div>/, "$1");
     
-    if (moztu==true && titulua.length>15){
-        return titulua.substr(0,14)+"...";
+    if (moztu==true && titulua.length>25){
+        return titulua.substr(0,24)+"...";
     }
     else{
         return titulua;        
@@ -390,7 +390,7 @@ function update(source) {
           .attr("title",function(d) { return tituluaGarbitu(d.name,false);})
           .style("background","transparent")
           .append("p")
-            .text(function(d) { return tituluaGarbitu(d.name,false);}) //Maddalen
+            .text(function(d) { return tituluaGarbitu(d.name,true);}) //Maddalen
             .style("fill-opacity", 1)
                 .attr("class","d3label");
 
