@@ -1,44 +1,25 @@
-{% extends "base.html" %}
+{% extends "__signin_login.html" %}
 {% load i18n %}
+{% load tags%}
+
 {% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="login-erregistratu col-md-8">
 
-<div class="login-erregistratu">
-	
-	<form action="{{BASE_URL}}/erregistratu" method="post" class="form">
-		{% csrf_token %}
-		
-		{{ erabiltzailea.as_ul }}
-		<!--
-      		<div class="input-group">
-  			<span class="input-group-addon" id="sizing-addon2">Izena</span>
- 			<input type="text" id="erabIzena" class="form-control" placeholder="Erabiltzaile izena" aria-describedby="sizing-addon2">
-			</div>
-			
-			<br/>
-			
-			<div class="input-group">
-  			<span class="input-group-addon" id="sizing-addon2">Posta</span>
- 			 <input type="text" id="posta" class="form-control" placeholder="Posta elektronikoa" aria-describedby="sizing-addon2">
-			</div>
-			
-			<br />
-			
-			<div class="input-group">
-  			<span class="input-group-addon" id="sizing-addon2">Pasahitza</span>
- 			 <input type="password" id="pasahitza" class="form-control" placeholder="Pasahitza" aria-describedby="sizing-addon2">
-			</div>
-		-->
-     		<br/>
-     		
-       		<button class="btn btn-default" type="submit" name="Erabiltzailea_gehitu">
-       		{% trans "Erregistratu" %}
-       		</button>
-       
-       			
-       		
-       			
-      		
-      	</form>
+			<form action="{{BASE_URL}}/erregistratu" method="post" class="form">
+				{% csrf_token %}
 
+				{{ erabiltzailea.as_ul }}
+				<br/>
+
+				<button class="btn btn-default" type="submit" name="Erabiltzailea_gehitu">
+					{% trans "Erregistratu" %}
+				</button>
+			</form>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
 </div>
 {% endblock %} 

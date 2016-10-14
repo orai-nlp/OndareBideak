@@ -28,15 +28,18 @@ function insertLineBreaksD3(d) {
 //function to unescape html entities
 function htmlDecode(input){
   var e = document.createElement('div');
-  e.innerHTML = input;  
+  var pre_cleaning = input.replace(/&amp;/g,"&").replace(/&amp;/g,"&");
+  e.innerHTML = pre_cleaning;   
+  var result ="";
   if (e.childNodes.length === 0)
   {
-      return "";
+      return result;
   }
   else if (e.childNodes[0].nodeValue)
   {
       //console.log("arrunta "+e.childNodes[0].nodeValue);
-      return e.childNodes[0].nodeValue;
+      result = e.childNodes[0].nodeValue;      
+      return result.replace(/http:\/\/www.http\/\//, "http://");
   }
   else
   {
@@ -361,7 +364,7 @@ function update(source) {
                 .attr("preserveAspectRatio", "xMinYMin slice");                  
   
   //Testua gehitu  
-  nodeEnter.append("text")
+  /*nodeEnter.append("text")
       .attr("x", function(d) { 
           return d.children || d._children ? (radio+luzera)/2 : -(radio+luzera)/2; }) // lehen 35: -35
       .attr("dy", function(d) {
@@ -371,6 +374,27 @@ function update(source) {
           return d.children || d._children ? "end" : "start"; })
       .text(function(d) { return tituluaGarbitu(d.name,true);}) //Maddalen
       .style("fill-opacity", 1);
+*/
+  nodeEnter.append("foreignObject")
+      .attr("x", function(d) { 
+          return -radio-luzera/2; }) // lehen 35: -35
+      .attr("y", function(d) {
+            return radio; //lehen 30 : 30
+    })
+      .attr("width",function ( d, i ) { return radio*2.1+luzera;})
+      .attr("height",function ( d, i ) { return 38;})
+      .attr("text-anchor", function(d) { 
+          return d.children || d._children ? "end" : "start"; })
+          .append("xhtml:body")
+          .attr("xmlns","http://www.w3.org/1999/xhtml")
+          .attr("title",function(d) { return tituluaGarbitu(d.name,false);})
+          .style("background","transparent")
+          .append("p")
+            .text(function(d) { return tituluaGarbitu(d.name,false);}) //Maddalen
+            .style("fill-opacity", 1)
+                .attr("class","d3label");
+
+
 
         var nodeUpdate = node.transition()
             .duration(duration)

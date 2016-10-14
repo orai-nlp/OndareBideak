@@ -2,6 +2,19 @@ body {
 	font-family: Verdana, Arial, sans-serif;
 }
 
+
+.d3label{
+	text-decoration: none;
+	color:#000000;
+	font-size: 14px;
+	line-height:19px;
+	font-family: 'Dosis', sans-serif;
+}
+
+i {
+	font-style:italic;
+}
+
 .page_head {
 	height: 200px;
 }
@@ -291,12 +304,13 @@ img.ob_thumbnail {
 	fill: #000000 !important;
 }
 
-.orria {
+.orria, .orria2 {
 	display: block;
 	margin: 0 auto;
 	padding-top:140px;
 	/*text-align: center;*/
 }
+	
 .eskuma_div {
 	width: 15%;
 	min-height: 500px;
@@ -889,7 +903,7 @@ span.helptext {
     padding:0 3px 0 3px;
 }
 
-@media only screen and (max-width: 960px)
+@media only screen and (max-width: 991px)
 {
 
 	#brand-logo img {
@@ -911,15 +925,20 @@ span.helptext {
 	#SERVICE {
 		padding-top: 50px !important;
 	}
-	
-	/* there is a collapsing problem in pages extending base.html, this is a workaround, but as
-	 * soon as that problem is fixed this should be deleted. */
-	.orria {
-		display: block;
-		margin: 0 auto;
-		padding-top:200px;
-		/*text-align: center;*/
-	}
+		
 }
 
-
+@media (min-width: 768px) and (max-width: 991px) {
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+    .navbar-collapse.collapse.in {
+        display: block !important;
+    }
+    .navbar-header .collapse, .navbar-toggle {
+        display:block !important;
+    }
+    .navbar-header {
+        float:none;
+    }
+}

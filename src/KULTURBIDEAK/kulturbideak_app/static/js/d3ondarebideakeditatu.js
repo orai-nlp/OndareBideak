@@ -28,15 +28,18 @@ function insertLineBreaksD3(d) {
 //function to unescape html entities
 function htmlDecode(input){
   var e = document.createElement('div');
-  e.innerHTML = input;  
+  var pre_cleaning = input.replace(/&amp;/g,"&").replace(/&amp;/g,"&");
+  e.innerHTML = pre_cleaning;   
+  var result ="";
   if (e.childNodes.length === 0)
   {
-      return "";
+      return result;
   }
   else if (e.childNodes[0].nodeValue)
   {
       //console.log("arrunta "+e.childNodes[0].nodeValue);
-      return e.childNodes[0].nodeValue;
+      result = e.childNodes[0].nodeValue;      
+      return result.replace(/http:\/\/www.http\/\//, "http://");
   }
   else
   {
@@ -171,7 +174,8 @@ function sortu(data){
     var duration = 750;//Transizioaren iraupena
     var viewerWidth =  0; //nodoak zetratzeko zabalera
     var viewerHeight = width; //nodoak zetratzeko altuera
-    var luzera = 40; //luzera = radio +10. Link-aren luzaera.
+    var radio = 30;
+    var luzera = radio+10; //luzera = radio +10. Link-aren luzaera.
     var i = 0;
 
     //Zuhaitza sortu
@@ -586,9 +590,9 @@ function sortu(data){
             .attr("class", "aukeratuta")
             .attr("r", function(d){
                 if (nodes.length>=10){
-                    return 20;
+                    return radio-10;
                 } else {
-                    return 30;
+                    return radio;
                 }
             })
             .style("fill", function(d) { 
@@ -612,7 +616,7 @@ function sortu(data){
             .attr("preserveAspectRatio", "xMinYMin slice"); 
           
         //Nodoari testua gehitu. 
-        nodeEnter.append("text")
+        /*nodeEnter.append("text")
             .attr("x", function(d) { 
                 return d.children || d._children ? 30 : -30; })
             .attr("dy", function(d) {
@@ -628,7 +632,27 @@ function sortu(data){
                 //var name = d.name.substring(0,10)+"...";
                 var name = tituluaGarbitu(d.name,true);
                 return name; })
-            .style("fill-opacity", 1);
+            .style("fill-opacity", 1);*/
+	
+	   nodeEnter.append("foreignObject")
+      .attr("x", function(d) { 
+          return -radio-luzera/3; }) // lehen 35: -35
+      .attr("y", function(d) {
+            return radio/1.8; //lehen 30 : 30
+    })
+      .attr("width",function ( d, i ) { return radio*2.1+luzera;})
+      .attr("height",function ( d, i ) { return 38;})
+      .attr("text-anchor", function(d) { 
+          return d.children || d._children ? "end" : "start"; })
+          .append("xhtml:body")
+          .attr("xmlns","http://www.w3.org/1999/xhtml")
+          .attr("title",function(d) { return tituluaGarbitu(d.name,false);})
+          .style("background","transparent")
+          .append("p")
+            .text(function(d) { return tituluaGarbitu(d.name,false);}) //Maddalen
+            .style("fill-opacity", 1)
+                .attr("class","d3label");
+
 	
     //Nodoaren transizioaren posizioa.
 	var nodeUpdate = node.transition()

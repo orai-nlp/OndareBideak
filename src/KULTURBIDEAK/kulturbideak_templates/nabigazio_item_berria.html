@@ -437,7 +437,7 @@
 			<script type="text/javascript">
 				var id = "{{node.fk_item_id_id}}";
 				//path_node[0];
-				var titulua = "{{node.dc_title}}";
+				var titulua = htmlDecode("{{node.dc_title}}");
 				//path_node[1];
 				var irudia = htmlDecode("{{node.paths_thumbnail}}");
 				//path_node[2];
@@ -466,6 +466,29 @@
 
 	</div>
 </div>
+
+
+<div class="modal fade" id="modalqrcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4>{% trans "QR kodea" %}</h4>
+			</div>
+
+			<div id="qr_code">
+				<img src="node.qr">
+				<p>	<a href="node.qr">qr</a></p>
+			</div>			
+		</div>
+
+	</div>
+</div>
+
+
+
 
 {% endblock %}
 

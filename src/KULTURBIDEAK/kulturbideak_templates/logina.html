@@ -1,37 +1,27 @@
-{% extends "base.html" %}
+{% extends "__signin_login.html" %}
 {% load i18n %}
+{% load tags%}
+
 {% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="login-erregistratu col-md-6">
 
-<div class="login-erregistratu">
-	
-	<form action="{{BASE_URL}}/logina" method="post" class="form">
-		{% csrf_token %}
-		{{ logina.erabiltzailea.errors}}
-		{{ logina.pasahitza.errors}}
-		{{logina}}
-		<!--
-      		<div class="input-group">
-  			<span class="input-group-addon" id="sizing-addon2">Izena</span>
- 			<input type="text" id="erabIzena" class="form-control" placeholder="Erabiltzaile izena" aria-describedby="sizing-addon2">
-			</div>
-			
-			<br />
-			
-			<div class="input-group">
-  			<span class="input-group-addon" id="sizing-addon2">Pasahitza</span>
- 			 <input type="password" id="pasahitza" class="form-control" placeholder="Pasahitza" aria-describedby="sizing-addon2">
-			</div>
-			-->
-     		<br/>
-     		
-       		<button class="btn btn-default" type="submit">
-       		 {% trans "Sartu" %}
-       		</button>
-       			
-       			
-      		
-      	
-      	</form>
+			<form action="{{BASE_URL}}/logina" method="post" class="form">
+				{% csrf_token %}
+				{{ logina.erabiltzailea.errors}}
+				{{ logina.pasahitza.errors}}
+				{{logina}}
 
+				<br/>
+				<button class="btn btn-default" type="submit">
+					{% trans "Sartu" %}
+				</button>
+			</form>
+		</div>
+		<div class="col-md-3"></div>
+	</div>
 </div>
-{% endblock %} 
+
+{% endblock content %} 
