@@ -98,7 +98,13 @@
          <div class="scrollable">
           <div class="items">
              <div class="item">
-                <a href="http://ondarebideak.dss2016.eu/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h"><img src="{% if egunekoHornitzaile.argazkia %}{{egunekoHornitzaile.argazkia|clean_http_prefix}}{% else %}{{egunekoHornitzaile.ikonoa|clean_http_prefix}}{% endif %}" class="attachment-medium wp-post-image" title="{{egunekoHornitzaile.izena}}" /></a>
+                <a href="http://ondarebideak.dss2016.eu/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h">
+             	{% if egunekoHornitzaile.argazkia %}
+             	<img src="{{egunekoHornitzaile.argazkia|clean_http_prefix}}" class="attachment-medium wp-post-image" title="{{egunekoHornitzaile.izena}}" />
+             	{% else %}
+             	<img src="{{egunekoHornitzaile.ikonoa|clean_http_prefix}}" class="attachment-medium wp-post-image small_karrusel_img" title="{{egunekoHornitzaile.izena}}" />
+             	{% endif %}
+             	</a>
              </div>
           </div>
          </div>
