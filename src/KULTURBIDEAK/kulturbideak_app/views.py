@@ -2801,8 +2801,8 @@ def eguneko_ibilbidea_gehitu(request):
         autoplay=0
         
         #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-        pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
-        itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+        pathqrUrl="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl="http://ondarebideak.dss2016.eu/erakutsi_item?id="+str(item_id)
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=momentukoItema)
@@ -3595,8 +3595,8 @@ def eguneko_ibilbidea_kendu(request):
         autoplay=0
         
         #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-        pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
-        itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+        pathqrUrl="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl="http://ondarebideak.dss2016.eu/erakutsi_item?id="+str(item_id)
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=momentukoItema)
@@ -4694,8 +4694,8 @@ def nabigazioa_hasi(request):
         autoplay=0
         
         #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-        pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
-        itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+        pathqrUrl="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl="http://ondarebideak.dss2016.eu/erakutsi_item?id="+str(item_id)
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=momentukoItema)

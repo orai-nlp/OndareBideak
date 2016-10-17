@@ -3,6 +3,10 @@ body {
 }
 
 
+#qr_code{
+	text-align:center;
+}
+
 .d3label{
 	text-decoration: none;
 	color:#000000;

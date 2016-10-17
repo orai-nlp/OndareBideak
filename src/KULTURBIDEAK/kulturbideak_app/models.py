@@ -135,7 +135,7 @@ class item(models.Model):
         
     #Itemei dagokien QR kodeak sortzeko erabiliko da
     def get_absolute_url(self):
-        return "http://www.kulturbideak.org/erakutsi_item?id=%i" % self.id
+        return "http://ondarebideak.dss2016.eu/erakutsi_item?id=%i" % self.id
       
     # get comments
     def get_comments(self):
