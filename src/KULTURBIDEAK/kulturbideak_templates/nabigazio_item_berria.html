@@ -7,17 +7,16 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 
-
 {% if autoplay == 1 %}
 
 <script>
-	//var orr="{{autoplaypages.0}}";
-	var orr = "{{autoplaypage}}";
-	orr=orr+"&autoplay=1&offset="+{{offset}};
+    //var orr="{{autoplaypages.0}}";
+    var orr = "{{autoplaypage}}";
+    orr=orr+"&autoplay=1&offset="+{{offset}};
 
-	var orria = orr.replace("&amp;", "&");
-	var sec = 10000;
-	doSetTimeOutAutoplay(orria, sec); 
+    var orria = orr.replace("&amp;", "&");
+    var sec = 10000;
+    doSetTimeOutAutoplay(orria, sec); 
 </script>
 
 {%endif%} <!--  autoplay-->
@@ -26,14 +25,12 @@
 	<div class="row">
 		<div class="col-md-2 path-titulu-legend">
 			<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						<span>{% trans "IBILBIDEA" %}: </span>
+			<span>{% trans "IBILBIDEA" %}: </span>
 		</div>
 
 		<div class="col-md-8">
-			<div class="path-name2 overflow titulu-kolorea">				
-						<h2 class="bold">
-						<a class="titulu-kolorea" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}">{{momentukoPatha.dc_title}}</a>
-						</h2>						
+			<div class="path-name2 overflow titulu-kolorea">
+				<h2 class="bold"><a class="titulu-kolorea" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}">{{momentukoPatha.dc_title}}</a></h2>
 			</div>
 		</div>
 		<div class="col-md-2">
@@ -47,7 +44,7 @@
 		<!--<div class="col-md-1">
 		</div>-->
 		<div class="col-md-3">
-			
+
 			<div id="nabigMapa" class="path-info overflow">
 				<button id="create_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modaloverview" >
 					<span  aria-hidden="true"> <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"> </span> {% trans "HEMEN ZAUDE" %} </span>
@@ -62,50 +59,51 @@
 			</div>
 
 			<!-- TTS -->
-						<div id="tts" class="path-info overflow">
-			<div id="preloadedImages"></div>
-			<p id="lerrojauzia1" class="clearfix"></p>
-			<div id="audiobotoiak"{% if not request.mobile or request.tablet %}{% else %} class="mobile"{% endif %}>
-				<div class="ezkerrean">
-					<a href="#" id="gelditubotoia" onClick="TTS.stopBotoia(); return false;" class="audiobotoia" title="Gelditu" style="display:none"></a>
-					<a href="#" id="hasierarabotoia" onClick="TTS.hasierara(); return false;" class="audiobotoia" title="Hasierara" style="display:none"></a>
-					<a href="#" id="atzeraparagrafoabotoia" onClick="TTS.atzeraparagrafoa(); return false;" class="audiobotoia" title="Aurreko paragrafora" style="display:none"></a>
-					<a href="#" id="atzerabotoia" onClick="TTS.atzera(); return false;" class="audiobotoia" title="Aurreko esaldira" style="display:none"></a>
-					<a href="#" id="playbotoia" onClick="TTS.entzun(); return false;" class="audiobotoia play" title="Entzun" accesskey="p"></a>
-					<a href="#" id="aurrerabotoia" onClick="TTS.aurrera(); return false;" class="audiobotoia" title="Hurrengo esaldira" style="display:none"></a>
-					<a href="#" id="aurreraparagrafoabotoia" onClick="TTS.aurreraparagrafoa(); return false;" class="audiobotoia" title="Hurrengo paragrafora" style="display:none"></a>
-					<a href="#" id="amaierarabotoia" onClick="TTS.amaierara(); return false;" class="audiobotoia" title="Amaierara" style="display:none"></a>
-					<a href="#" id="joanbotoia" onClick="TTS.joan(); return false;" class="audiobotoia" title="Zati zehatz batera joateko, klik egin bertan eta jarraitu botoia sakatu" style="display:none"></a>
-					<a href="#" id="azalpentestua" class="audiobotoia" onClick="TTS.entzun(); return false;" title="Edukia entzun"><span id="entzuntestua" class="ezkerrean">Orria entzun</span></a>
-					<a href="#" id="aboutbotoia" onClick="TTS.about(); return false;" class="audiobotoia" title="Honi buruz" accesskey="h" style="display:none"></a>
-				</div>
-				<div id="bolumenakontrola" class="audiobotoia ezkerrean" title="Bolumena" style="display:none">
-					<div class="banatzekoa"></div>
-					<a href="#" id="volume" onClick="TTS.bolumenaerakutsiezkutatu(); return false;"></a>
-					<a href="#" id="bolumenaslider"></a>
-					<span id="bolumenatooltip" class="slidertooltipbolumena" style="display:none"></span>
-				</div>
-				<div id="abiadurakontrola" class="audiobotoia ezkerrean" title="Irakurketaren abiadura" style="display:none">
-					<a href="#" id="abiadura" onClick="TTS.abiaduraerakutsiezkutatu(); return false;"></a>
-					<a href="#" id="abiaduraslider" class="ezkerrean"></a>
-					<span id="abiaduratooltip" class="slidertooltipabiadura" style="display:none"></span>
-				</div>
-				<div id="generoakontrola" class="audiobotoia ezkerrean" title="Ahotsaren generoa" style="display:none">
-					<a href="#" id="genero" class="ezkerrean" onClick="TTS.generoaerakutsiezkutatu(); return false;"></a>
-					<div id="generoaukera" style="display:none">
-						<a href="#" id="generoemakumea" class="ezkerrean" onClick="TTS.generoaaldatu(event); return false;" title="Emakumea"></a>
-						<div class="ezkerrean banatzekoa"></div>
-						<a href="#" id="generogizona" class="ezkerrean aukeratuta" onClick="TTS.generoaaldatu(event); return false;" title="Gizona"></a>
+			<div id="tts" class="path-info overflow">
+				<div id="preloadedImages"></div>
+				<p id="lerrojauzia1" class="clearfix"></p>
+				<div id="audiobotoiak"{% if not request.mobile or request.tablet %}{% else %} class="mobile"{% endif %}>
+					<div class="ezkerrean">
+						<a href="#" id="gelditubotoia" onClick="TTS.stopBotoia(); return false;" class="audiobotoia" title="Gelditu" style="display:none"></a>
+						<a href="#" id="hasierarabotoia" onClick="TTS.hasierara(); return false;" class="audiobotoia" title="Hasierara" style="display:none"></a>
+						<a href="#" id="atzeraparagrafoabotoia" onClick="TTS.atzeraparagrafoa(); return false;" class="audiobotoia" title="Aurreko paragrafora" style="display:none"></a>
+						<a href="#" id="atzerabotoia" onClick="TTS.atzera(); return false;" class="audiobotoia" title="Aurreko esaldira" style="display:none"></a>
+						<a href="#" id="playbotoia" onClick="TTS.entzun(); return false;" class="audiobotoia play" title="Entzun" accesskey="p"></a>
+						<a href="#" id="aurrerabotoia" onClick="TTS.aurrera(); return false;" class="audiobotoia" title="Hurrengo esaldira" style="display:none"></a>
+						<a href="#" id="aurreraparagrafoabotoia" onClick="TTS.aurreraparagrafoa(); return false;" class="audiobotoia" title="Hurrengo paragrafora" style="display:none"></a>
+						<a href="#" id="amaierarabotoia" onClick="TTS.amaierara(); return false;" class="audiobotoia" title="Amaierara" style="display:none"></a>
+						<a href="#" id="joanbotoia" onClick="TTS.joan(); return false;" class="audiobotoia" title="Zati zehatz batera joateko, klik egin bertan eta jarraitu botoia sakatu" style="display:none"></a>
+						<a href="#" id="azalpentestua" class="audiobotoia" onClick="TTS.entzun(); return false;" title="Edukia entzun"><span id="entzuntestua" class="ezkerrean">Orria entzun</span></a>
+						<a href="#" id="aboutbotoia" onClick="TTS.about(); return false;" class="audiobotoia" title="Honi buruz" accesskey="h" style="display:none"></a>
 					</div>
+					<div id="bolumenakontrola" class="audiobotoia ezkerrean" title="Bolumena" style="display:none">
+						<div class="banatzekoa"></div>
+						<a href="#" id="volume" onClick="TTS.bolumenaerakutsiezkutatu(); return false;"></a>
+						<a href="#" id="bolumenaslider"></a>
+						<span id="bolumenatooltip" class="slidertooltipbolumena" style="display:none"></span>
+					</div>
+					<div id="abiadurakontrola" class="audiobotoia ezkerrean" title="Irakurketaren abiadura" style="display:none">
+						<a href="#" id="abiadura" onClick="TTS.abiaduraerakutsiezkutatu(); return false;"></a>
+						<a href="#" id="abiaduraslider" class="ezkerrean"></a>
+						<span id="abiaduratooltip" class="slidertooltipabiadura" style="display:none"></span>
+					</div>
+					<div id="generoakontrola" class="audiobotoia ezkerrean" title="Ahotsaren generoa" style="display:none">
+						<a href="#" id="genero" class="ezkerrean" onClick="TTS.generoaerakutsiezkutatu(); return false;"></a>
+						<div id="generoaukera" style="display:none">
+							<a href="#" id="generoemakumea" class="ezkerrean" onClick="TTS.generoaaldatu(event); return false;" title="Emakumea"></a>
+							<div class="ezkerrean banatzekoa"></div>
+							<a href="#" id="generogizona" class="ezkerrean aukeratuta" onClick="TTS.generoaaldatu(event); return false;" title="Gizona"></a>
+						</div>
+					</div>
+					<div class="banatzekoa"></div>
+					<a id="tts_elhuyar_logoa" href="https://www.elhuyar.eus/eu/site/hizketa-teknologiak" title="Elhuyar Hizkuntza eta Teknologia" target="_blank"></a>
 				</div>
-				<div class="banatzekoa"></div>
-				<a id="tts_elhuyar_logoa" href="https://www.elhuyar.eus/eu/site/hizketa-teknologiak" title="Elhuyar Hizkuntza eta Teknologia" target="_blank"></a>
-			</div>
 			</div><!-- tts -->
 
-<hr />
+			<hr />
 			
-<div id="item_infobox" class="path-info overflow">
+			<!-- item_infobox -->
+			<div id="item_infobox" class="path-info overflow">
 				<h3 class="titulu-kolorea">{% trans "EZAUGARRIAK" %}</h3>
 				<ul class="nav  navbar-default">
 					<li>
@@ -178,11 +176,12 @@
 							-
 							{% endif %} </span>
 
-					</li>								
+					</li>
 				</ul>
 			</div>
-
-<div id="crossingPaths" class="path-info overflow">
+			
+			<!-- Crossing paths -->
+			<div id="crossingPaths" class="path-info overflow">
 
 				<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
 				{%if itemPaths %}
@@ -191,10 +190,7 @@
 					<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} ({{itemPaths.count}})</h3>
 					{% for node in itemPaths %}
 					{% if forloop.counter < 4 %}
-					<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">
-						<span class="glyphicon glyphicon-map-marker" aria-hidden="true">
-						
-					</span>&nbsp;{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
+					<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}"> <span class="glyphicon glyphicon-map-marker" aria-hidden="true"> </span>&nbsp;{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
 					{%endif%}
 					{%endfor%}
 					<!--</br>-->
@@ -207,20 +203,18 @@
 				<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; - </h3>
 				{%endif%}
 			</div>
-			<!-- QR code link-->
-<div id="qr_link" class="path-info overflow">
-	<div>
-			<a id="qr_code_create_link" href="" data-toggle="modal" data-target="#modalqrcode" >
-				<h3 class="titulu-kolorea">
-				{% trans "Eraman itema mundu errealera!" %}
-				<span>&nbsp;</span><span class="glyphicon glyphicon-qrcode" aria-hidden="true"> </span>
-				</h3>
-			</a>
-	</div>
-</div>
-</div><!--col-md-3 ezkerreko zutabe-->
+			
+			<!-- QR code link
+			<div id="qr_link" class="path-info overflow">
+				<div>
+					<a id="qr_code_create_link" href="" data-toggle="modal" data-target="#modalqrcode" > <h3 class="titulu-kolorea"> {% trans "Eraman itema mundu errealera!" %} <span>&nbsp;</span><span class="glyphicon glyphicon-qrcode" aria-hidden="true"> </span></h3> </a>
+				</div>
+			</div>-->
+			
+		</div><!--col-md-3 ezkerreko zutabea-->
+		
 		<div class="col-md-7">
-			<div class="path-name overflow titulu-kolorea">				
+			<div class="path-name overflow titulu-kolorea">
 				<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:momentukoItema| format_html |safe}} </h2>
 
 				<ul class="nav navbar-nav navbar-default">
@@ -260,81 +254,84 @@
 
 			<div class="path-info overflow ">
 				<div id="description" class="item-info-description">
-			
-			<div class="clearfix"></div>
-			<span class="comment more item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
-				
+
+					<div class="clearfix"></div>
+					<span class="comment more item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+
 				</div>
 			</div>
-			
+
 			<!-- item preview -->
-			
+
 			<div id="item_preview">
-			{% include "_item_preview.html" %}
-			<div id="license_info" class="path-info overflow">
+				{% include "_item_preview.html" %}
+				<div id="license_info" class="path-info overflow">
 
-				<ul class="nav  navbar-default">
-					<li class="ezkerra">
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Lizentzia" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_rights%}
-							<a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a>
-							{%else%}
-							-
-							{% endif %} </span>
+					<ul class="nav  navbar-default">
+						<li class="ezkerra">
+							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+							{% trans "Lizentzia" %}:&nbsp;
+							<span class="eremu-str"> {% if momentukoItema.edm_rights%} <a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a> {%else%}
+								-
+								{% endif %} </span>
 
-					</li>
-					<li class="eskuma">
-						{% if momentukoItema.edm_isshownat%}
-						<a  class="eremu-str" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
-						{%endif%}
-					</li>
-				</ul>
+						</li>
+						<li class="eskuma">
+							{% if momentukoItema.edm_isshownat%}
+							<a  class="eremu-str" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
+							{%endif%}
+						</li>
+					</ul>
+				</div>
 			</div>
-		</div> <!-- item preview-->
-			
-			
-						<div id="nabigMenu" class="path-info">
-			<!--<div id="nabigMenu_titulu" class="path-info overflow">
+			<!-- item preview-->
+
+			<div id="nabigMenu" class="path-info">
+				<!--<div id="nabigMenu_titulu" class="path-info overflow">
 				<h3 class="titulu-kolorea">{% trans "NABIGATU" %}</h3>
-			</div>-->
+				</div>-->
 
-			<div id="nabigMenu_botoiak" class="clearfix">
-				<!--BOTOIAK AURREKOAK -->
-				<ul class="ezkerra">
-					<h3 class="titulu-kolorea">{% trans "Atzera" %}</h3>
-					{% for aurrekoa in aurrekoak %}
-					{% with h=LANGUAGE_CODE|choose_title_language:aurrekoa|format_html|safe %}
-					<li class="clearfix">
-						<button type="button" class="btn btn-common ezkerra" onclick="nabigatu({{path_id}},{{aurrekoa.fk_item_id_id}})">
-							<span class="glyphicon glyphicon-backward" aria-hidden="true" style="float: left;padding-left:3px;"> </span><div class="ellipsis" style="float:right;"><span class="ellipsis" aria-hidden="true" title="{{h}}"> {{h}} </span></div>
-						</button>
-					</li>
-					{% endwith %}
-					{% endfor %}
-				</ul>
-				<!--BOTOIAK HURRENGOAK -->
-				<ul class="eskuma">
-					<h3 class="titulu-kolorea text-right">{% trans "Nondik jo nahi duzu Aurrera?" %}</h3>
-					{% for hurrengoa in hurrengoak %}
-					{% with h=LANGUAGE_CODE|choose_title_language:hurrengoa|format_html|safe %}
-					<li class="clearfix">
-						<button type="button" class="btn btn-common eskuma" onclick="nabigatu({{path_id}},{{hurrengoa.fk_item_id_id}})">
-							{%if hasieraBakarra == 1%}
-							<span  aria-hidden="true"> <span class="glyphicon glyphicon-repeat" aria-hidden="true" style="float:right;padding-right:3px;"></span></span>
-							{%else%}
-							<div class="ellipsis" style="float:left;"><span class="ellipsis" aria-hidden="true" title="{{h}}"> {{h}} </span></div><span class="glyphicon glyphicon-forward" aria-hidden="true" style="float: right; padding-right:3px;"> </span>
-							{% endif %}
-						</button>
-					</li>
-					{% endwith %}
-					{% endfor %}
-				</ul>
+				<div id="nabigMenu_botoiak" class="clearfix">
+					<!--BOTOIAK AURREKOAK -->
+					<ul class="ezkerra">
+						<h3 class="titulu-kolorea">{% trans "Atzera" %}</h3>
+						{% for aurrekoa in aurrekoak %}
+						{% with h=LANGUAGE_CODE|choose_title_language:aurrekoa|format_html|safe %}
+						<li class="clearfix">
+							<button type="button" class="btn btn-common ezkerra" onclick="nabigatu({{path_id}},{{aurrekoa.fk_item_id_id}})">
+								<span class="glyphicon glyphicon-backward" aria-hidden="true" style="float: left;padding-left:3px;"> </span>
+								<div class="ellipsis" style="float:right;">
+									<span class="ellipsis" aria-hidden="true" title="{{h}}"> {{h}} </span>
+								</div>
+							</button>
+						</li>
+						{% endwith %}
+						{% endfor %}
+					</ul>
+					<!--BOTOIAK HURRENGOAK -->
+					<ul class="eskuma">
+						<h3 class="titulu-kolorea text-right">{% trans "Nondik jo nahi duzu Aurrera?" %}</h3>
+						{% for hurrengoa in hurrengoak %}
+						{% with h=LANGUAGE_CODE|choose_title_language:hurrengoa|format_html|safe %}
+						<li class="clearfix">
+							<button type="button" class="btn btn-common eskuma" onclick="nabigatu({{path_id}},{{hurrengoa.fk_item_id_id}})">
+								{%if hasieraBakarra == 1%}
+								<span  aria-hidden="true"> <span class="glyphicon glyphicon-repeat" aria-hidden="true" style="float:right;padding-right:3px;"></span></span>
+								{%else%}
+								<div class="ellipsis" style="float:left;">
+									<span class="ellipsis" aria-hidden="true" title="{{h}}"> {{h}} </span>
+								</div><span class="glyphicon glyphicon-forward" aria-hidden="true" style="float: right; padding-right:3px;"> </span>
+								{% endif %}
+							</button>
+						</li>
+						{% endwith %}
+						{% endfor %}
+					</ul>
+				</div>
 			</div>
-			</div>
-			
-			<div id="item_moreInfo" class="path-info overflow">				
-				<ul class="nav  navbar-default">			
+
+			<div id="item_moreInfo" class="path-info overflow">
+				<ul class="nav  navbar-default">
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Jatorrizko deskribapena" %}:&nbsp;
@@ -346,10 +343,10 @@
 							{% endif %} </span>
 
 						<!--<div class="path-info overflow ">-->
-					</li>					
+					</li>
 				</ul>
-			</div>			
-			
+			</div>
+
 		</div>
 		<div class="col-md-2">
 			<!-- BOTAZIO SISTEMA ITEMAK-->
@@ -376,7 +373,7 @@
 			{%endif%}
 
 			<!-- social network sharing buttons -->
-			{% include "_sharing.html"%}			
+			{% include "_sharing.html"%}
 
 		</div>
 	</div>
@@ -432,40 +429,40 @@
 
 			<div id="path_boxes_overview"></div>
 			<script>
-				var ibilbide_data = [];
-				var path_id = {{path_id}};
-				var root = {
-					"id" : 0,
-					"name" : "ROOT",
-					"irudia" : "http://obprototipoa.elhuyar.eus/uploads/festivalCineDonostia.jpeg",
-					"parent" : ''
-				};
-				ibilbide_data.push(root);
+                var ibilbide_data = [];
+                var path_id = {{path_id}};
+                var root = {
+                    "id" : 0,
+                    "name" : "ROOT",
+                    "irudia" : "http://obprototipoa.elhuyar.eus/uploads/festivalCineDonostia.jpeg",
+                    "parent" : ''
+                };
+                ibilbide_data.push(root);
 			</script>
 			{% for node in path_nodeak%}
 			<script type="text/javascript">
-				var id = "{{node.fk_item_id_id}}";
-				//path_node[0];
-				var titulua = htmlDecode("{{node.dc_title}}");
-				//path_node[1];
-				var irudia = htmlDecode("{{node.paths_thumbnail}}");
-				//path_node[2];
-				if (irudia == " ") {
-					irudia = "/uploads/NoIrudiItem.png";
-				}
+                var id = "{{node.fk_item_id_id}}";
+                //path_node[0];
+                var titulua = htmlDecode("{{node.dc_title}}");
+                //path_node[1];
+                var irudia = htmlDecode("{{node.paths_thumbnail}}");
+                //path_node[2];
+                if (irudia == " ") {
+                    irudia = "/uploads/NoIrudiItem.png";
+                }
 
-				var aita_id = "{{node.paths_prev}}";
-				//aita hutsa bada , root izango da bere aita
-				if (aita_id == "") {
-					aita_id = 0;
-				}
-				var obj = {
-					id : id,
-					name : titulua,
-					irudia : irudia,
-					parent : aita_id
-				};
-				ibilbide_data.push(obj);
+                var aita_id = "{{node.paths_prev}}";
+                //aita hutsa bada , root izango da bere aita
+                if (aita_id == "") {
+                    aita_id = 0;
+                }
+                var obj = {
+                    id : id,
+                    name : titulua,
+                    irudia : irudia,
+                    parent : aita_id
+                };
+                ibilbide_data.push(obj);
 
 			</script>
 			{% endfor%}
@@ -476,45 +473,19 @@
 	</div>
 </div>
 
-
-<div class="modal fade" id="modalqrcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4>{% trans "QR kodea" %}</h4>
-			</div>
-
-			<div id="qr_code">
-				{% qr_from_text request.get_full_path "l" %}
-				<!--<img src="node.qr">-->
-				<p>	<a href="{{request.get_full_path}}">http://ondarebideak.dss2016.eu{{request.get_full_path}}</a></p>
-				<!--<p>	<a href='{% qr_from_text request.get_full_path "l" %}' download>{% trans "Gorde irudia" %}</a></p>-->
-			</div>			
-		</div>
-
-	</div>
-</div>
-
-
-
-
 {% endblock %}
 
-
 {% block pageEndScripts %}
-		<!-- TTS -->
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts_berezia.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
+<!-- TTS -->
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts_berezia.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
 {% endblock pageEndScripts %}
 

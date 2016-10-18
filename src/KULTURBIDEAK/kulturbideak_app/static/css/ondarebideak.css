@@ -7,6 +7,11 @@ body {
 	text-align:center;
 }
 
+#qr_code_create_link span{
+	font-size:24px;
+}
+
+
 .d3label{
 	text-decoration: none;
 	color:#000000;
@@ -470,6 +475,7 @@ img.ob_thumbnail {
 }
 .eskuma {
 	float: right;
+	text-align:right;
 }
 .ezkerra {
 	float: left;

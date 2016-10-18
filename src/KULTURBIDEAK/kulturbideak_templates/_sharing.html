@@ -10,7 +10,7 @@
 <script type="text/javascript">SocialShareKit.init();</script>
 
 <div class="share_titulu eskuma">
-	<a class="titulu-kolorea eskuma" type="button" href="#">{% trans "Konpartitu" %}!</a>
+	<span class="titulu-kolorea eskuma">{% trans "Konpartitu" %}!</span>
 </div>
 
 <div class="share_buttons eskuma">
@@ -23,3 +23,16 @@
 		<!--{% qr_from_mail "m.lopezdelacalle@elhuyar.com" "s" %}-->
 	</div>
 </div>
+
+
+<!-- QR code link-->
+<div class="share_titulu eskuma">
+	<span class="titulu-kolorea eskuma">{% trans "Eraman itema mundu errealera" %}!</span>
+</div>
+<div class="share_titulu eskuma">
+	<a id="qr_code_create_link" href="" data-toggle="modal" data-target="#modalqrcode" class="titulu-kolorea eskuma"> QR <span>&nbsp;</span><span class="glyphicon glyphicon-qrcode" aria-hidden="true"> </span> </a>
+</div>
+
+<!-- QR code modal --> 
+{% include "_QR_modal.html" %}
+<!-- END QR code modal -->
