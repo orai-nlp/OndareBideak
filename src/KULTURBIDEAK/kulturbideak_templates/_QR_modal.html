@@ -1,0 +1,26 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+<!-- QR code modal window -->
+<div class="modal fade" id="modalqrcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4>{% trans "QR kodea" %}</h4>
+			</div>
+
+			<div id="qr_code">
+				{% qr_from_text request.get_full_path "l" %}
+				<!--<img src="node.qr">-->
+				<p>	<a href="{{request.get_full_path}}">http://ondarebideak.dss2016.eu{{request.get_full_path}}</a></p>
+				<!--<p>	<a href='{% qr_from_text request.get_full_path "l" %}' download>{% trans "Gorde irudia" %}</a></p>-->
+			</div>			
+		</div>
+
+	</div>
+</div>
