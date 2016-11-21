@@ -155,10 +155,11 @@ img.ob_thumbnail {
 	opacity: 0;
 	-webkit-transition: height 1s, opacity 1s ease-in-out;
 	transition: height 1s, opacity 1s ease-in-out;
+	width: 100%; /* lan-eremua isterakoan izkina batera ez joateko gehitu da*/
 }
 
 .open {
-	height: 300px !important;
+	height: 450px !important;
 	opacity: 100 !important;
 }
 
@@ -166,15 +167,16 @@ img.ob_thumbnail {
 	overflow: hidden !important;
 }
 
+
 .ws_box {
 
 	cursor: move;
 	display: inline-block;
-	height: 50px;
-	margin: 10px;
+	height: 100px; /* MAD */
+	margin: 4px;/* MAD */
 	padding: 10px;
 	vertical-align: top;
-	width: 95px;
+	width: 97px;/* MAD */
 }
 
 .wsb_image {
@@ -383,11 +385,38 @@ img.ob_thumbnail {
 	font-size: 9pt;
 	text-align: right;
 }
-.pathBotoia {
-	text-align: right;
-	position: relative;
-	alignment-adjust: right;
+
+#ws_botoia_barruan{
+	position:relative;
+	height:10px;
 }
+
+#ws_botoia_kanpoan{
+	
+	/*text-align: center;*/
+	width:100%;
+	height:100%;
+	position:absolute;
+	vertical-align:middle;
+	text-align:center;"
+}
+
+
+.pathBotoia {
+	position:absolute; 
+	right:125px;
+	top:3px;
+}
+.pathBotoia_kanpoan{
+	/*background-color:"wheat";*/
+	margin-left:auto;
+	margin-right:auto;
+	display:block;
+	margin-top:0%;
+	margin-bottom:0%;
+}
+
+
 .footer {
 	bottom: 0;
 	position: fixed;
@@ -951,4 +980,36 @@ span.helptext {
     .navbar-header {
         float:none;
     }
+}
+
+.asistentea{
+	background: transparent none repeat scroll 0 0;
+    color: rgb(223, 170, 0) !important;
+    font: bold 20px Arial;
+    height: 86px;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    width: 134px;
+}
+.asistentea_ws{
+	background: transparent none repeat scroll 0 0;
+    color: rgb(223, 170, 0) !important;
+    font: bold 17px Arial;
+    /*height: 86px;*/
+    padding: 2;
+    text-align: center;
+    vertical-align: middle;
+    /*width: 134px;*/
+}
+
+.asistentea_EzDago{
+	background: transparent none repeat scroll 0 0;
+    color: rgb(223, 170, 0) !important;
+    font: bold 17px Arial;
+    /*height: 86px;*/
+    padding: 2;
+    text-align: center;
+    vertical-align: middle;
+    /*width: 134px;*/
 }

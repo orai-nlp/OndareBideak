@@ -25,6 +25,7 @@
 <div class="info">
 	<p>Ibilbideko item baten <b>narrazioa gehitzeko</b> egin klik bikoitza itemaren gainean</p>
 </div>
+<!--<a class="asistentea" data-toggle="modal" data-target="#modalNolaSortu"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Ikusi hemen bilbidea sortzeko pausuak</a>-->
 
 <!-- <div id="narrazioa">
 	<p id="narra_p" class="info"></p>
@@ -112,6 +113,8 @@
 
 <!--Fin Ventana modal-->
 
+
+
 <!--Modala narrazioa gehitzeko -->
 <div class="modal fade" id="narrazio_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -139,6 +142,35 @@
     </div>
   </div>
 </div>
+
+<!--Modala Ibilbidea sortzeko azalpenak -->
+<div class="modal fade" id="modalNolaSortu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>{% trans "Ibilbidea sortzeko pausuak:" %}</h4>
+      </div>
+      <div class="modal-body">
+       	<p>1-{% trans "Jetsi lan-eremutik arbelera itemak: gainean kokatu eta geziari klikatu." %}</p>
+       	<p>2-{% trans "Itemak ibilbidean kokatu: item bat beste baten gainean kokatu eta askatuz eta azpikoaren jarraian kokatuko da. Nahi duzun beste aldatu ahalko duzu itemen posizioa." %} </p>
+       	<p>3-{% trans "Itemei interpretazio edota narrazio pertsonala eman (aukerazkoa): itemen gainean klik bikoitza egin eta agertuko den lehioan idatzi. " %}</p>
+       	<p>4-{% trans "'Gorde ibilbidea' botoia sakatu eta eskatzen diren datuak bete." %}</p>
+       	<p>-{% trans "Gogoratu: datuak modu egoki eta osatuan betetzeak ondoren ibilbidea bilatzen lagunduko du." %}</p>
+		</ br>
+		<p>-{% trans "Azalpen gehiago behar baldin badituzu, <a href=''>ikusi tutorial-bideoa</a>" %}</p>
+		
+		
+		  <div class="modal-footer">
+		 	 <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>        
+    	  </div>
+
+      </div><!--modal-body -->
+      </div><!--modal-content -->
+    </div><!--modal-dialog-->
+</div>
+
+
 
 
 

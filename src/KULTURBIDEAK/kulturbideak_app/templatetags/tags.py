@@ -115,6 +115,9 @@ def correct_wikification_url_tags(value):
 
 @register.filter
 def choose_title_language(interfaceLang, item):
+    
+    if item is None:
+        return ""
      
     titulua=item.dc_title
     titulu_es=""
@@ -165,19 +168,21 @@ def choose_title_language(interfaceLang, item):
             return titulu_eu          
         else:        
             return titulua
-    if interfaceLang == "es":
+    elif interfaceLang == "es":
         if titulu_es != "":
             return titulu_es          
         else:        
             return titulua
                 
-    if interfaceLang == "en":
+    elif interfaceLang == "en":
          
         if titulu_en != "":
             return titulu_en          
         else:        
             return titulua
-        
+    else:
+        return titulua
+            
         
         
 
@@ -458,6 +463,8 @@ def choose_language_text_not_target(Lang, item):
 @register.filter
 def choose_description_language(interfaceLang, item):
     
+    if item is None:
+        return ""
     
     deskribapena=item.dc_description
     deskribapena_es=""
@@ -557,19 +564,19 @@ def choose_description_language(interfaceLang, item):
         else:        
             return deskribapena
         
-    if interfaceLang == "es":
+    elif interfaceLang == "es":
         if deskribapena_es != "":
             return deskribapena_es          
         else:        
             return deskribapena
                 
-    if interfaceLang == "en":
-         
+    elif interfaceLang == "en":         
         if deskribapena_en != "":
             return deskribapena_en          
         else:        
             return deskribapena
-    
+    else:
+        return deskribapena
     
     
 @register.filter(name='to_int')

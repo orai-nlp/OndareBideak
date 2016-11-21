@@ -7,6 +7,7 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 
+<!--
 {% if autoplay == 1 %}
 
 <script>
@@ -16,10 +17,18 @@
 
     var orria = orr.replace("&amp;", "&");
     var sec = 10000;
+   
     doSetTimeOutAutoplay(orria, sec); 
 </script>
 
-{%endif%} <!--  autoplay-->
+
+{%endif%}
+-->
+<script>
+  //Autoplay-ak erabiltzen du aldagai hau, hurrengo orrira noiz berdideratu behar duen jakiteko
+  var isTTSReading = false;
+</script>
+
 
 <div class="container">
 	<div class="row">
@@ -51,10 +60,14 @@
 				</button>
 
 				{% if autoplay == 1 %}
-				<a id="autoplay" class="btn btn-common" href="#" onclick="stopTimeOutAutoplay();return false;"> <span id="autoplay-icon" class="glyphicon glyphicon-pause" aria-hidden="true"></span> {% trans "STOP AUTOPLAY" %} </a>
+				<!-- onclick="stopTimeOutAutoplay();return false;" -->
+				<a id="autoplay" class="btn btn-common" href="#" onclick="window.location = stopOrria;return false;"> <span id="autoplay-icon" class="glyphicon glyphicon-pause" aria-hidden="true"></span> {% trans "STOP AUTOPLAY" %} </a>
 				{% else %}
 				<a id="autoplay" class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"> <span id="autoplay-icon" class="glyphicon glyphicon-play" aria-hidden="true"></span> {% trans "AUTOPLAY" %} </a>
 				{% endif %}
+
+			
+
 
 			</div>
 
@@ -73,7 +86,7 @@
 						<a href="#" id="aurreraparagrafoabotoia" onClick="TTS.aurreraparagrafoa(); return false;" class="audiobotoia" title="Hurrengo paragrafora" style="display:none"></a>
 						<a href="#" id="amaierarabotoia" onClick="TTS.amaierara(); return false;" class="audiobotoia" title="Amaierara" style="display:none"></a>
 						<a href="#" id="joanbotoia" onClick="TTS.joan(); return false;" class="audiobotoia" title="Zati zehatz batera joateko, klik egin bertan eta jarraitu botoia sakatu" style="display:none"></a>
-						<a href="#" id="azalpentestua" class="audiobotoia" onClick="TTS.entzun(); return false;" title="Edukia entzun"><span id="entzuntestua" class="ezkerrean">Orria entzun</span></a>
+						<a href="#" id="azalpentestua" class="audiobotoia" onClick="TTS.entzun(); return false;" title="Edukia entzun"><span id="entzuntestua" class="ezkerrean">{% trans "Orria entzun" %}</span></a>
 						<a href="#" id="aboutbotoia" onClick="TTS.about(); return false;" class="audiobotoia" title="Honi buruz" accesskey="h" style="display:none"></a>
 					</div>
 					<div id="bolumenakontrola" class="audiobotoia ezkerrean" title="Bolumena" style="display:none">
@@ -473,6 +486,8 @@
 	</div>
 </div>
 
+
+
 {% endblock %}
 
 {% block pageEndScripts %}
@@ -487,5 +502,65 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
+
+
+{% if autoplay == 1 %}
+
+<script>
+  //Orriaren goikaldea erazagutu da aldagaia
+  //var isTTSReading = false;
+
+
+
+  var orr = "{{autoplaypage}}";
+  var stopOrr=orr; //Stop botoiak kargatu behar duen orria
+  orr=orr+"&autoplay=1&offset="+{{offset}};
+  
+  var stopOrria = stopOrr.replace("&amp;", "&");
+  var orria = orr.replace("&amp;", "&");
+  //var sec = 1000;
+  //var autoplayTimeout;
+
+  function waitForIt()
+  {
+     //console.log("wait?");
+     if (isTTSReading) {
+        //console.log("yes");
+        setTimeout(function(){waitForIt()},100);
+     }
+     else
+     {
+        //console.log("no wait");
+        //go do that thing
+        window.location = orria;
+        //doSetTimeOutAutoplay(orria, sec); 
+     }
+  }
+
+  function entzunEtaHurrengoraPasa()
+  {
+
+      isTTSReading =true;
+
+      TTS.entzun();
+      waitForIt();
+
+  }
+     
+    //ORRIA ENTZUN
+    entzunEtaHurrengoraPasa();
+
+    //document.getElementById("azalpentestua").click();
+    //doSetTimeOutAutoplay(orria, sec);
+</script>
+
+{%endif%} <!--  autoplay-->
+
+
+
+
 {% endblock pageEndScripts %}
+
+
+
 

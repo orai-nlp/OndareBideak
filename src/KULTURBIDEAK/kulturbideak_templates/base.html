@@ -21,7 +21,7 @@
 
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
 		
-		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/raphael-min.js"></script>
+		
 		{# Load CSS and JavaScript #}
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/kulturbideak.js"></script>
@@ -86,7 +86,7 @@
             {% if non == 'itema_gehitu' %}
 
             function load_map(map, options) {
-                console.log('itema gehitu kkkkk')
+                console.log('itema gehitu')
                 global_map = map;
 
                 // zentratu mapa erabiltzaileak
@@ -178,6 +178,7 @@
             }
 
             {% elif  non == 'fitxaE'  %}
+            console.log('hornitzailea editatu')
             function load_map(map, options) {
 
                 global_map = map;
@@ -230,6 +231,7 @@
 
             }
             {% elif  non == 'fitxaI'  %}
+            console.log('hornitzailea ikusi')
             function load_map(map, options) {
                 console.log('itema i kekeke')
                 map.panTo(new L.LatLng({{
@@ -245,8 +247,8 @@
             addTo(map).openPopup();
 
             }
-
-            {% else %}
+ 			{% elif  non == 'erakutsi_item'  %}
+           
             function load_map(map, options) {
                 console.log('itema bestela kkkkk')
                 //Erakusteko bakarrik
@@ -263,6 +265,9 @@
             addTo(map).openPopup();
 
             }
+             {% else %}
+             
+             //Ez kargatu maparen funtziorik
             {% endif %}
 
 		</script>
@@ -298,14 +303,35 @@
 		<!-- WORKSPACE -->
 		<div id="workspace">
 			<div id="workspace_boxes" ondrop="ws_drop(event)" ondragover="allowDrop(event)">
-				<a type="button" class="btn btn-default btn-xs pathBotoia" href="sortu_ibilbidea">{% trans "sortu ibilbidea" %} <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> </a>
-			</div>
-			<button type="button" class="btn btn-default btn-xs" onclick="toggle_workspace();">
-				<span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
-				{% trans "Lan eremua" %}
-			</button>
-		</div>
+					
+					{% if "sortu_ibilbidea" in request.get_full_path %}
+					
+						<div class="asistentea_ws" id="ws_botoia_barruan">
+					
+					 		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Jetsi beheko arbelera nahi dituzun itemak. Itemaren gainean ipini sagua eta geziari klikatu.
 
+						</div>
+					
+					{%else%}
+					<div id="ws_botoia_barruan">
+					
+					<div class="asistentea_ws"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Item nahikoa aukeratu dituzu? sortu ibilbidea hemen sakatuta:
+				
+					<a type="button" class="btn btn-default btn-xs pathBotoia" href="sortu_ibilbidea">{% trans "sortu ibilbidea" %} <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> </a>
+				
+					</div>
+				
+					</div>
+				 {%endif%}
+			</div>
+			<div id="ws_botoia_kanpoan">
+				<button type="button" class="btn btn-default btn-xs pathBotoia_kanpoan " onclick="toggle_workspace();">
+					<span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
+					{% trans "Lan eremua" %}
+				</button>
+			</div>
+		</div>
+		
 		<!-- END WORKSPACE -->
 		{%else%}
 	<body onload="initialize_notlogged();">

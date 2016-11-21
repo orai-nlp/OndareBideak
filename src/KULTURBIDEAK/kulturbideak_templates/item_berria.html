@@ -22,7 +22,7 @@
 				{% if user.is_authenticated %}
 				<h3 class="titulu-kolorea">{% trans "Kudeaketa Aukerak" %}</h3>
 
-				<button class="btn btn-default gehitu-botoia" type="button" title="{% trans 'Lan eremura gehitu' %}" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
+				<button class="btn btn-default gehitu-botoia" type="button" title="{% trans 'Lan eremura gehitu' %}" onclick="create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
 
 					{% trans "Gehitu" %}
 					<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
@@ -134,6 +134,7 @@
 				{%if itemPaths %}
 				<!-- class="crossingPaths"-->
 				<div class="">
+							
 					<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} ({{itemPaths.count}})</h3>
 					{% for node in itemPaths %}
 					{% if forloop.counter < 4 %}
@@ -144,10 +145,17 @@
 					{% if itemPaths|length  >= 4 %} <!-- ONDOREN >= 4 JARRI-->
 					<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
 					{%endif%}
-
+					</ br>
+					<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Animatu ibilbideetako bat ikusi eta bozkatzera!</div>
+					
+	
 				</div>
 				{% else %}
-				<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; - </h3>
+				<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Izan lehena item honekin ibilbide bat sortzen!</div>
+				
+				<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; -
+							
+				</h3>
 				{%endif%}
 			</div>
 

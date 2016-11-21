@@ -224,7 +224,7 @@ def itemak_hasiera(request):
     db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
     db_lizentziak_text ="_".join(db_lizentziak)
 
-    non="fitxaE"
+    non="" #??fitxaE
     
     z='i'
     if request.GET.get('z'):
@@ -3733,10 +3733,8 @@ def ibilbideak_hasiera(request):
     search_models_paths=[path]
     search_models_items=[item]
     items = SearchQuerySet().all().models(*search_models_items)
-    paths = SearchQuerySet().all().models(*search_models_paths)
-    
-  
-    
+    paths = SearchQuerySet().all().models(*search_models_paths).order_by('-path_creation_date')
+        
      
     #PAGINATOR PATHS
     paginator = Paginator(paths, 26)    
@@ -4740,12 +4738,12 @@ def autoplay_hasieratik(request):
             #path_id_str=map(lambda x: str(x),path_id)
                     
             berria = 'nabigatu?path_id='+path_id_str+'&item_id='+nodoID_str;
-            print berria
           
             autoplaypages.append(berria)
                       
-        #
-        
+        #Bestela TTSarekin 1.goa errepikatzen da
+        autoplaypages.pop(0)
+
         #Hasierako nodo bat lortu
         momentukoNodea = node.objects.filter(fk_path_id=momentukoPatha, paths_start=1)[0]
         item_id=momentukoNodea.fk_item_id.id
@@ -4954,7 +4952,9 @@ def nabigatu(request):
         
     if 'offset' in request.GET:
         offset=request.GET['offset']
-       
+    
+
+    '''
     if(autoplay == '1'):
         
        
@@ -4977,8 +4977,24 @@ def nabigatu(request):
             berria = 'nabigatu?path_id='+path_id_str+'&item_id='+nodoID_str;
            
             autoplaypages.append(berria)
-    
-       
+    '''
+    momentukoPatha=path.objects.get(id=path_id)                                                                                
+    #Ibilbidearen Hasierak hartu                                                                                                  
+    nodes = []                                                                                                                    
+    erroak= node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)                                                        
+    for erroa in erroak:                                                                                                          
+        nodes = nodes + get_tree(erroa)                                                                                           
+        #Autonabigaziorako orrien path-ak sortu                                                                                      
+        autoplaypages=[]                                                                                                            
+  
+        for nodoa in nodes:                                                                                                         
+            nodoID_str=str(nodoa.fk_item_id.id)                                                                                      
+            path_id_str=str(path_id)                                                                                                
+            berria = 'nabigatu?path_id='+path_id_str+'&item_id='+nodoID_str;                                                      
+            autoplaypages.append(berria)                              
+
+
+    if(autoplay == '1'):
         path_len=len(autoplaypages)
         path_len_ken=path_len-1
         if int(offset) == path_len_ken:            
@@ -5007,17 +5023,49 @@ def nabigatu(request):
     hurrengoak_list=[]
     hasieraBakarra=0
     #node taulatik "hurrengoak" tuplak hartu 
+    '''
     if(hurrengoak != ""):
         hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
     elif(hasieraNodoak.count()==1):       
-        #hurrengoak_list=hasieraNodoak.fk_item_id
         hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
         hasieraBakarra=1
     else:
         hasieraBakarra=0       
         hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
-    
-   
+    '''    
+    ##NABIGAZIOAN ALDAKETAK
+    if(hurrengoak != ""):
+        hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
+        
+    else:
+        momentukoId=momentukoNodea.fk_item_id.id
+        bilatuUrl = 'nabigatu?path_id='+path_id_str+'&item_id='+str(momentukoId)
+        indexa=autoplaypages.index(bilatuUrl)  
+        indexa=int(indexa)+1
+        if(indexa<len(autoplaypages)):
+            hurrengoUrl=autoplaypages[indexa]
+        else:
+            hurrengoUrl=""
+
+
+        if (hurrengoUrl != ""):
+                    
+            hurrengoID_str=hurrengoUrl.split("item_id=")    
+            hurrengoak=hurrengoID_str[1]
+            hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
+     
+             
+        else:
+            #Lehen egiten zena egin
+            if(hasieraNodoak.count()==1):
+                hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
+                hasieraBakarra=1
+                
+            else:
+                hasieraBakarra=0
+                hurrengoak_list=map(lambda x: x.fk_item_id.id,list(hasieraNodoak))
+
+        
     hurrengoak=node.objects.filter(fk_path_id=momentukoPatha,fk_item_id__id__in=hurrengoak_list)
     aurrekoak_list=[]
     #node taulatik "aurrekoak" tuplak hartu
@@ -6738,8 +6786,10 @@ def gorde_ibilbidea(request):
     
 def ajax_workspace_item_gehitu(request):
     
-    #0: unknown error; else: workspace item created;
+    #0: unknown error or itema errepikatua; else: workspace item created;
     #fk_usr_id=1
+    
+    print "ajax_workspace_item_gehitu"
         
     request_answer= 0
     if request.is_ajax() and request.method == 'POST':
@@ -6759,8 +6809,13 @@ def ajax_workspace_item_gehitu(request):
         workspacea=workspace.objects.get(fk_usr_id=request.user)       
         itema=item.objects.get(id=item_id)
         
-        #KONPONDU? fk_item=itema,
-        ws_item_berria = workspace_item(fk_item_id=itema,
+        #Begiratu ea itema workspace-an jadanik badagoen
+        wscount=workspace_item.objects.filter(fk_item_id=itema,fk_workspace_id = workspacea).count()
+        print "COUNT"
+        print wscount	
+        if wscount==0:     
+        	#KONPONDU? fk_item=itema,
+       		ws_item_berria = workspace_item(fk_item_id=itema,
                                         uri =uri,
                                         fk_workspace_id = workspacea,
                                         dc_source = dc_source,
@@ -6769,10 +6824,12 @@ def ajax_workspace_item_gehitu(request):
                                         type = type,
                                         paths_thumbnail = thumbnail)
     
+    		ws_item_berria.save()
+        	request_answer = ws_item_berria.fk_item_id.id
+        
+        #else:
+		#request_answer= 0
     
-        ws_item_berria.save()
-        request_answer = ws_item_berria.fk_item_id
-        #request_answer = ws_item_berria.id
     return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
 
 def ajax_workspace_item_borratu(request):

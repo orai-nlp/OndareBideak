@@ -28,10 +28,25 @@ function insertLineBreaksD3(d) {
 //function to unescape html entities
 function htmlDecode(input){
   var e = document.createElement('div');
-  e.innerHTML = input;
-  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+  var pre_cleaning = input.replace(/&amp;/g,"&").replace(/&amp;/g,"&");
+  e.innerHTML = pre_cleaning;   
+  var result ="";
+  if (e.childNodes.length === 0)
+  {
+      return result;
+  }
+  else if (e.childNodes[0].nodeValue)
+  {
+      //console.log("arrunta "+e.childNodes[0].nodeValue);
+      result = e.childNodes[0].nodeValue;      
+      return result.replace(/http:\/\/www.http\/\//, "http://");
+  }
+  else
+  {
+      //console.log("aldaketarik ez");
+      return input;
+  }
 }
-
 
 //Maddalen: Nodoen titulutik etiketak garbitu eta Moztu 
 
@@ -61,7 +76,7 @@ function tituluaGarbitu (titulua,moztu){
        }
     
     var myRegexpEN = new RegExp("<div class=\"titulu_en\">(.*?)</div>");
-    var match_en = myRegexpES.exec(titulua);     
+    var match_en = myRegexpEN.exec(titulua);     
     if (match_en){
         titulu_en=match_en[1];
        }

@@ -16,7 +16,8 @@ function doSetTimeOutAutoplay(url,sec)
 }
 
 function stopTimeOutAutoplay(){
-    console.log("stopppppp");
+
+
     $('#autoplay-icon').className='glyphicon glyphicon-play';
     //$('#autoplay')="<span id=\"autoplay-icon\" class=\"glyphicon glyphicon-play\" aria-hidden=\"true\"></span> AUTOPLAY";
      clearTimeout(autoplayTimeout);    

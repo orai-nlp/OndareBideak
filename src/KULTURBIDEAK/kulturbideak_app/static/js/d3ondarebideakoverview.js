@@ -74,7 +74,7 @@ function tituluaGarbitu (titulua,moztu){
        }
     
     var myRegexpEN = new RegExp("<div class=\"titulu_en\">(.*?)</div>");
-    var match_en = myRegexpES.exec(titulua);     
+    var match_en = myRegexpEN.exec(titulua);     
     if (match_en){
         titulu_en=match_en[1];
        }

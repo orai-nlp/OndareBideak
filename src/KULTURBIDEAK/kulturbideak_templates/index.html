@@ -158,7 +158,7 @@
 						</form>
 
 					</div><!-- /input-group -->
-					<div class="col-sm-4 col-md-4"></div>
+					<div class="col-sm-4 col-md-4"><!--<a class="asistentea" data-toggle="modal" data-target="#modalNola"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Nola bilatu?</a>--></div>
 				</div><!-- bilaketa kutxa -->
 
 				<!-- Counters -->
@@ -301,16 +301,16 @@
 				<div class="row">
 					<div class="col-md-6  wow fadeInRight animated">
 						<p class="about_us_p">
-							OndareBideak proiektuak ondare digitala atzitu, erabili eta interpretatzeko modu berriak eskaintzen dizkio erabiltzaileari.
+						  {% trans "OndareBideak proiektuak ondare digitala atzitu, erabili eta interpretatzeko modu berriak eskaintzen dizkio erabiltzaileari." %}
 						</p>
 
 						<p class="about_us_p">
-							Liburutegi, museo eta artxibategietako ondarea gero eta gehiago digitalizatuta dago, eta lekuan bertan ez ezik atari digitalen bidez ere kontsulta dezakegu. Tamalez, biltegi digital hauetan dagoen informazio kopuru erraldoiak oso zaila egiten du bisitariarentzat bertako edukiak modu eraginkorrean atzitzea. Edukiek ez dute ikusgarritasunik horrenbesteko materialen artean eta askotan biltegiak objektu inerteen gordailu huts bihurtzen dira. Museo eta galerietan egoera bestelakoa da, ondarea antolatu egiten baita eta bisitaria aukeratutako edukietan zehar gidatu.
+						  {% trans "Liburutegi, museo eta artxibategietako ondarea gero eta gehiago digitalizatuta dago, eta lekuan bertan ez ezik atari digitalen bidez ere kontsulta dezakegu. Tamalez, biltegi digital hauetan dagoen informazio kopuru erraldoiak oso zaila egiten du bisitariarentzat bertako edukiak modu eraginkorrean atzitzea. Edukiek ez dute ikusgarritasunik horrenbesteko materialen artean eta askotan biltegiak objektu inerteen gordailu huts bihurtzen dira. Museo eta galerietan egoera bestelakoa da, ondarea antolatu egiten baita eta bisitaria aukeratutako edukietan zehar gidatu." %}
 						</p>
 					</div>
 					<div class="col-md-6  wow fadeInRight animated">
 						<p class="about_us_p">
-							Gurera etorrita, Donostialdean kultura aldetik ikusgarri diren obra eta elementu digital andana dago. Ondare horri bizia emateko sortu da, hain zuzen ere, OndareBideak proiektua. Horretarako eduki horien gaineko plataforma digital bat garatu dugu, “museo digitala”. Bertan, adituek sortutako “erakusketa digitalak” ikusi eta jarraitu ahal izango ditu bisitariak, baita sare sozialen bidez partekatu eta gustokoenen aldeko bozka eman ere. Horrekin batera, ibilbide propioak sortzeko aukera emango du webguneak, lan kulturalen irakurketa eta interpretazio pertsonaletarako bidea eskainiz. Ibilbideak bakoitza erabiltzailearen erakusketa pertsonala izango da, otutzen zaion edozein irizpideren araberakoa izan daiteke, adibidez: gai orokor bat (Arkitektura, Musika), garai historiko jakin bat (XIX. mendea), leku jakin bati lotua (Ulia edo Urgull), pertsonaia ezagunei buruzkoak (Aita Donostia, Bilintx), edo gure gustoko lekuei buruzko ibilbide bat.
+						 {% trans "Gurera etorrita, Donostialdean kultura aldetik ikusgarri diren obra eta elementu digital andana dago. Ondare horri bizia emateko sortu da, hain zuzen ere, OndareBideak proiektua. Horretarako eduki horien gaineko plataforma digital bat garatu dugu, “museo digitala”. Bertan, adituek sortutako “erakusketa digitalak” ikusi eta jarraitu ahal izango ditu bisitariak, baita sare sozialen bidez partekatu eta gustokoenen aldeko bozka eman ere. Horrekin batera, ibilbide propioak sortzeko aukera emango du webguneak, lan kulturalen irakurketa eta interpretazio pertsonaletarako bidea eskainiz. Ibilbideak bakoitza erabiltzailearen erakusketa pertsonala izango da, otutzen zaion edozein irizpideren araberakoa izan daiteke, adibidez: gai orokor bat (Arkitektura, Musika), garai historiko jakin bat (XIX. mendea), leku jakin bati lotua (Ulia edo Urgull), pertsonaia ezagunei buruzkoak (Aita Donostia, Bilintx), edo gure gustoko lekuei buruzko ibilbide bat." %}
 						</p>
 					</div>
 				</div>
@@ -476,7 +476,38 @@
 		<script src="{{STATIC_URL}}js/brandy/owl.carousel.js"></script>
 		<script src="{{STATIC_URL}}js/brandy/wow.js"></script>
 		<script src="{{STATIC_URL}}js/brandy/script.js"></script>
-
+		
 	</body>
 
+		<!-- Modal -->
+		<div id="modalNola" class="modal fade" role="dialog">
+ 		 <div class="modal-dialog">
+
+  		  <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Nola bilatu?</h4>
+      </div>
+      <div class="modal-body">
+        <p> Lehendabizi galdera zein hizkuntzatan burutuko duzun aukeratu: eu (euskera), es (gaztelania), en (ingelesa) eta ondoren bilatzeko botoiari sakatu</p>
+        </ br>
+        <p>Adibideak:</p>
+        <p>eu: Haizearen orrazia</p>
+        <p>es: Peine del viento</p>
+        
+        </ br>
+        </ br>
+        
+        <p>Oharra: helburu informazio guztia hizkuntza guztietara itzuli da indexazio prozesuan zehar, beraz, jatorrian
+        eskatutako hizkuntzan dauden itemez gain beste hizkuntza batean dauden itemak ere azaldu daitezke bilaketaren emaitza gisa
+         </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 </html>

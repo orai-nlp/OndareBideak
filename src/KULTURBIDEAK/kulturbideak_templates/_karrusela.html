@@ -11,151 +11,161 @@
 
 <!-- 4 sticky banner posts -->
 <div class="slideshow-home hide-for-small">
-   <!-- testuak -->
-   <ul id="main_navi">
-   	<!-- Ekitaldi proposamena -->
-    <li  class="{% if forloop.first %}active {%endif%}karrusel_event">
-     <div class="arrow"></div>
-      <div class="post">
-        <h3><a href="http://www.gipuzkoakultura.eus/index.php/eu/museoak-eta-ondareak/105-actividades/2311-etxetik-kanpo-jornadas-europeas-de-patrimonio-2016.html" class="karrusel_title" title="{% trans 'Ekitaldi proposamena' %}">
-        	<span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span>
-			<span class="karrusel_span">{% trans "Ekitaldia" %}:</span> {% trans "Europako Ondare Jardunaldiak" %}</a></h3>
-        <p>{% trans "Migrazioak eta kultur ondarea. Gure lurraldean gertatutako migrazioei buruzko kultur ekintza programa zabal eta anitza, guztiei zuzendua." %}</p>
-      </div>
-    </li> 
-    <!-- Ibilbide proposamena -->
-    <li  class="{% if forloop.first %}active {%endif%}karrusel_path">
-     <div class="arrow"></div>
-      <div class="post">
-        <h3><a href="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id={{egunekoPath.id}}" class="karrusel_title" title="{% trans 'Ibilbide proposamena' %}">
-        	<span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span>
-			<span class="karrusel_span">{% trans "Ibilbide bat" %}:</span> {{ egunekoPath.dc_title }}</a></h3>
-        <p>{{egunekoPath.dc_description}}</p>
-      </div>
-    </li> 
-    <!-- Item proposamena -->
-    <li  class="{% if forloop.first %}active {%endif%}karrusel_item">
-     <div class="arrow"></div>
-      <div class="post">
-        <h3><a href="http://ondarebideak.dss2016.eu/erakutsi_item?id={{egunekoItem.id}}" class="karrusel_title" title="{% trans 'Item proposamena' %}">
-        	<span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span>
-			<span class="karrusel_span">{% trans "Item bat" %}: </span>{{ LANGUAGE_CODE|choose_title_language:egunekoItem|format_html|safe}}
-        	</a></h3>
-        <p>{{ LANGUAGE_CODE|choose_description_language:egunekoItem|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}</p>
-      </div>
-    </li> 
-    <!-- Hornitzaile proposamena -->
-    <li class="{% if forloop.first %}active {%endif%}karrusel_provider">
-     <div class="arrow"></div>
-      <div class="post">
-        <h3><a href="http://ondarebideak.dss2016.eu/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h" class="karrusel_title" title="{% trans 'Erakunde proposamena' %}">
-        	<span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span>
-			<span class="karrusel_span">{% trans "Erakundea" %}:</span> {{egunekoHornitzaile.izena}}</a></h3>
-        <p>{{egunekoHornitzaile.deskribapena}}</p>
-      </div>
-    </li>     
-   </ul>
-   
-   <!-- irudiak -->
-   <div id="main">
-     <div id="pages">      
-     <!-- Ekitaldi proposamena -->
-      <div class="page">
-       <div class="navi"></div>
-         <div class="scrollable">
-          <div class="items">
-             <div class="item">
-                <a href="http://www.gipuzkoakultura.eus/index.php/eu/museoak-eta-ondareak/105-actividades/2311-etxetik-kanpo-jornadas-europeas-de-patrimonio-2016.html"><img src="{{MEDIA_URL}}EOJ_azpititulu.png" class="attachment-medium wp-post-image" title="{% trans 'Europako Ondare Jardunaldiak' %}" /></a>
-             </div>
-          </div>
-         </div>
-       </div>
-      <!-- Ibilbide proposamena -->
-      <div class="page">
-       <div class="navi"></div>
-         <div class="scrollable">
-          <div class="items">
-             <div class="item">
-                <a href="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id={{egunekoPath.id}}"><img src="{% if egunekoPath.paths_thumbnail %}{{egunekoPath.paths_thumbnail}}{% else %}/uploads/NoIrudiBide.png{% endif %}" class="attachment-medium wp-post-image" title="{{egunekoPath.dc_title}}" /></a>
-             </div>
-          </div>
-         </div>
-       </div>
-        <!-- Item proposamena -->
-      <div class="page">
-       <div class="navi"></div>
-         <div class="scrollable">
-          <div class="items">
-             <div class="item">
-                <a href="http://ondarebideak.dss2016.eu/erakutsi_item?id={{egunekoItem.id}}"><img src="{{egunekoItem.edm_object|clean_http_prefix}}" class="attachment-medium wp-post-image" title="{{egunekoItem.dc_title}}" /></a>
-             </div>
-          </div>
-         </div>
-       </div>
-        <!-- Hornitzaile proposamena -->
-      <div class="page">
-       <div class="navi"></div>
-         <div class="scrollable">
-          <div class="items">
-             <div class="item">
-                <a href="http://ondarebideak.dss2016.eu/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h">
-             	{% if egunekoHornitzaile.argazkia %}
-             	<img src="{{egunekoHornitzaile.argazkia|clean_http_prefix}}" class="attachment-medium wp-post-image" title="{{egunekoHornitzaile.izena}}" />
-             	{% else %}
-             	<img src="{{egunekoHornitzaile.ikonoa|clean_http_prefix}}" class="attachment-medium wp-post-image small_karrusel_img" title="{{egunekoHornitzaile.izena}}" />
-             	{% endif %}
-             	</a>
-             </div>
-          </div>
-         </div>
-       </div> 
-     </div> <!-- karrusel irudiak -->
-   </div>
+	<!-- testuak -->
+	<ul id="main_navi">
+		<!-- Ekitaldi proposamena -->
+		<li  class="{% if forloop.first %}active {%endif%}karrusel_event">
+			<div class="arrow"></div>
+			<div class="post">
+				<h3><a href="http://www.gipuzkoakultura.eus/index.php/eu/museoak-eta-ondareak/105-actividades/2311-etxetik-kanpo-jornadas-europeas-de-patrimonio-2016.html" class="karrusel_title" title="{% trans 'Ekitaldi proposamena' %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans "Ekitaldia" %}:</span> {% trans "Europako Ondare Jardunaldiak" %}</a></h3>
+				<p>
+					{% trans "Migrazioak eta kultur ondarea. Gure lurraldean gertatutako migrazioei buruzko kultur ekintza programa zabal eta anitza, guztiei zuzendua." %}
+				</p>
+			</div>
+		</li>
+		<!-- Ibilbide proposamena -->
+		<li  class="{% if forloop.first %}active {%endif%}karrusel_path">
+			<div class="arrow"></div>
+			<div class="post">
+				<h3><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{egunekoPath.id}}" class="karrusel_title" title="{% trans 'Ibilbide proposamena' %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans "Ibilbide bat" %}:</span> {{ egunekoPath.dc_title }}</a></h3>
+				<p>
+					{{egunekoPath.dc_description}}
+				</p>
+			</div>
+		</li>
+		<!-- Item proposamena -->
+		<li  class="{% if forloop.first %}active {%endif%}karrusel_item">
+			<div class="arrow"></div>
+			<div class="post">
+				<h3><a href="{{BASE_URL}}/erakutsi_item?id={{egunekoItem.id}}" class="karrusel_title" title="{% trans 'Item proposamena' %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans "Item bat" %}: </span>{{ LANGUAGE_CODE|choose_title_language:egunekoItem|format_html|safe}} </a></h3>
+				<p>
+					{{ LANGUAGE_CODE|choose_description_language:egunekoItem|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
+				</p>
+			</div>
+		</li>
+		<!-- Hornitzaile proposamena -->
+		<li class="{% if forloop.first %}active {%endif%}karrusel_provider">
+			<div class="arrow"></div>
+			<div class="post">
+				<h3><a href="{{BASE_URL}}/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h" class="karrusel_title" title="{% trans 'Erakunde proposamena' %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans "Erakundea" %}:</span> {{egunekoHornitzaile.izena}}</a></h3>
+				<p>
+					{{egunekoHornitzaile.deskribapena}}
+				</p>
+			</div>
+		</li>
+	</ul>
+
+	<!-- irudiak -->
+	<div id="main">
+		<div id="pages">
+			<!-- Ekitaldi proposamena -->
+			<div class="page">
+				<div class="navi"></div>
+				<div class="scrollable">
+					<div class="items">
+						<div class="item">
+							<a href="http://www.gipuzkoakultura.eus/index.php/eu/museoak-eta-ondareak/105-actividades/2311-etxetik-kanpo-jornadas-europeas-de-patrimonio-2016.html"><img src="{{MEDIA_URL}}EOJ_azpititulu.png" class="attachment-medium wp-post-image" title="{% trans 'Europako Ondare Jardunaldiak' %}" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Ibilbide proposamena -->
+			<div class="page">
+				<div class="navi"></div>
+				<div class="scrollable">
+					<div class="items">
+						<div class="item">
+							<a href="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id={{egunekoPath.id}}"><img src="{% if egunekoPath.paths_thumbnail %}{{egunekoPath.paths_thumbnail}}{% else %}/uploads/NoIrudiBide.png{% endif %}" class="attachment-medium wp-post-image" title="{{egunekoPath.dc_title}}" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Item proposamena -->
+			<div class="page">
+				<div class="navi"></div>
+				<div class="scrollable">
+					<div class="items">
+						<div class="item">
+							<a href="http://ondarebideak.dss2016.eu/erakutsi_item?id={{egunekoItem.id}}"><img src="{{egunekoItem.edm_object|clean_http_prefix}}" class="attachment-medium wp-post-image" title="{{egunekoItem.dc_title}}" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Hornitzaile proposamena -->
+			<div class="page">
+				<div class="navi"></div>
+				<div class="scrollable">
+					<div class="items">
+						<div class="item">
+							<a href="http://ondarebideak.dss2016.eu/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h"> {% if egunekoHornitzaile.argazkia %} <img src="{{egunekoHornitzaile.argazkia|clean_http_prefix}}" class="attachment-medium wp-post-image" title="{{egunekoHornitzaile.izena}}" /> {% else %} <img src="{{egunekoHornitzaile.ikonoa|clean_http_prefix}}" class="attachment-medium wp-post-image small_karrusel_img" title="{{egunekoHornitzaile.izena}}" /> {% endif %} </a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- karrusel irudiak -->
+	</div>
 </div>
 <!-- /4 sticky banner posts -->
-              
+
 <script>
-  jQuery.noConflict();
-  jQuery(document).ready(function($){
-  function setMainContentOpacity(num_opacity){
-      $('.slideshow-home, .thumbs, .social, .previous, .archives, .footer').css('opacity', num_opacity);
-      }
-
-           
-      $(".panelItem").click(function(event){
-          var linkTo = $(this).find("a").attr("href");
-          aeonUtil.openLink(linkTo, event);
-        return false;
-       });
+    jQuery.noConflict();
+    jQuery(document).ready(function($) {
+        function setMainContentOpacity(num_opacity) {
+            $('.slideshow-home, .thumbs, .social, .previous, .archives, .footer').css('opacity', num_opacity);
+        }
         
-      $('.nobubble').click(function(event){
-                          event.stopImmediatePropagation();
-                      });
-                                            
-    // main vertical scroll
-    $("#main").scrollable({
-      
-    next: '.boom', prev: '.boom',
+	$('#main_navi li .post').click(function(event) {
+            var linkTo = $(this).find("a").attr("href");
+            //aeonUtil.openLink(linkTo, event);
+            //window.open(linkTo); //orri berri batean zabaltzeko
+            window.location.href =linkTo;
+            return false;
+        });
 
-    // basic settings
-    vertical: true,
-    keyboard: false,
-    circular: true,
-    touch: false,
-    clickable: false
+        $(".item").click(function(event) {
+            var linkTo = $(this).find("a").attr("href");
+            //aeonUtil.openLink(linkTo, event);
+            window.location.href =linkTo;
+            return false;
+        });
 
-    // main navigator (thumbnail images)
-    }).autoscroll({ autoplay: true, autopause: true, interval: 5000 }).navigator("#main_navi");
-    
-    $('#main_navi li').hover(function () {
-      $(this).click();
-    }, function () { });
+		
 
-    $(".photogallery").scrollable().navigator(".navi").hover(function(){
-          $('.browse').fadeIn();
-      }, function(){
-          $('.browse').fadeOut();
-      });
-     });
+        $('.nobubble').click(function(event) {
+            event.stopImmediatePropagation();
+        });
+
+        // main vertical scroll
+        $("#main").scrollable({
+
+            next : '.boom',
+            prev : '.boom',
+
+            // basic settings
+            vertical : true,
+            keyboard : false,
+            circular : true,
+            touch : false,
+            clickable : false
+
+            // main navigator (thumbnail images)
+        }).autoscroll({
+            autoplay : true,
+            autopause : true,
+            interval : 5000
+        }).navigator("#main_navi");
+
+        /*$('#main_navi li').hover(function() {
+            $(this).click();
+        }, function() {console.log("post klik");
+         });*/
+
+        $(".photogallery").scrollable().navigator(".navi").hover(function() {
+            $('.browse').fadeIn();
+        }, function() {
+            $('.browse').fadeOut();
+        });
+    }); 
 </script>
-          
+
