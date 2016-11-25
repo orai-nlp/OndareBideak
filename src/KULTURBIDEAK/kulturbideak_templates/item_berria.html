@@ -68,10 +68,10 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Hornitzailea" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_provider%}
-							{{momentukoItema.edm_provider}}
+						<span class="eremu-str"> {% if momentukoItema.edm_dataprovider%}
+							{{momentukoItema.edm_dataprovider}} ({{momentukoItema.edm_provider}})
 							{%else%}
-							-
+							{{momentukoItema.edm_provider}}
 							{% endif %} </span>
 
 					</li>

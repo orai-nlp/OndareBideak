@@ -198,8 +198,8 @@ um_pages }}</p>-->
 	</div>
 
  	{% if items %}
-		<div class="asistentea_EzDago"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;{% trans "Gehitu lan-eremura guztoko itemak eta sortu ibilbidea. Animatu!" %}</div>
- 		<!-- <a href=''> Ikusi bideoa</a> eta -->
+		<div class="asistentea_EzDago"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;{% trans "Gehitu lan-eremura guztoko itemak eta sortu ibilbidea." %}<a href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv"> Ikusi bideoa </a>{% trans " eta Animatu!"%}</div>
+ 		
  	{%endif%}
  	{% for item in items %}
  	
@@ -415,7 +415,7 @@ um_pages }}</p>-->
 	<p class="asistentea_EzDago"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></p>
 	<p class="asistentea_EzDago">{% trans "Gogoratu! zuk zeuk sor dezakezu gai horri edo beste gai bati buruzko ibilbidea." %}</p>
 	<p class="asistentea_EzDago">{% trans "Horretarako, erregistratu eta jarraitu ibilbidea sortzeko pausuak." %}</p>
-	<p class="asistentea_EzDago">{% trans "<a href=''>Ikusi Bideoa.</a>" %}</p>
+	<p class="asistentea_EzDago"><a href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv"> {% trans "Ikusi bideoa" %} </a></p>
 	<p class="asistentea_EzDago">{% trans "Animatu!" %}</p>
 {% endfor %}
 

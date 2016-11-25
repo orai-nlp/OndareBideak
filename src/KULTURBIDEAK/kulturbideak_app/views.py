@@ -4228,9 +4228,12 @@ def filtro_search(request):
                 items=items.filter(item_id__in=bozkatuenak_ids)
      
         #Besteak filtroa
-        if (besteakF != ""):  
+        print "BESTE FILTRORIK?"
+        print bEgun
+        if (besteakF != ""):
+        	
             if bEgun=="egunekoa":
-                items=items.filter(egunekoa=1)
+                items=items.filter(egunekoa=True)
             if bProp == "proposatutakoa":
                 items=items.filter(proposatutakoa=1)
             if bWikify=="wikifikatua":
@@ -6939,10 +6942,10 @@ def ajax_path_irudia_eguneratu (request):
     
     #import pdb
     #pdb.set_trace()
-    print request.FILES
-    print request.POST
+    #print request.FILES
+    #print request.POST
     #print request.POST.FILES
-    print request.GET
+    #print request.GET
 
     fileName='1'
 

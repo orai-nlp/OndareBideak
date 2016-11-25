@@ -158,7 +158,9 @@
 						</form>
 
 					</div><!-- /input-group -->
-					<div class="col-sm-4 col-md-4"><!--<a class="asistentea" data-toggle="modal" data-target="#modalNola"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Nola bilatu?</a>--></div>
+					<!--<div class="col-sm-4 col-md-4"><a class="asistentea" data-toggle="modal" data-target="#modalNola"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Nola bilatu?</a></div>-->
+				
+					<div class="col-sm-4 col-md-4"><a class="asistentea" href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Nola sortu ibilbidea?" %} </a></div>
 				</div><!-- bilaketa kutxa -->
 
 				<!-- Counters -->
@@ -480,11 +482,12 @@
 	</body>
 
 		<!-- Modal -->
-		<div id="modalNola" class="modal fade" role="dialog">
+		<div id="modalNola" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		
  		 <div class="modal-dialog">
 
   		  <!-- Modal content-->
-    <div class="modal-content">
+   		 <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Nola bilatu?</h4>
