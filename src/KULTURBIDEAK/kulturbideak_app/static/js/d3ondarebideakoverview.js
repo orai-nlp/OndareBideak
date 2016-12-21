@@ -183,11 +183,11 @@ var i = 0;
 var duration = 750;
 var viewerWidth =  0;
 var viewerHeight = width;
-var newHeight = 4;
+var newHeight = 4;//4
 //Nodoen tamaina
-var radio = 20;
+var radio = 30;//Maddalen aldatzen...lehen 20 zegoen
 //Link-en luzera
-var luzera = radio +20
+var luzera = radio +20;
 //var luzera = 45;
 
 var tree = d3.layout.tree()
@@ -377,7 +377,7 @@ function update(source) {
 */
   nodeEnter.append("foreignObject")
       .attr("x", function(d) { 
-          return -radio-luzera/2; }) // lehen 35: -35
+          return -radio-luzera/2+15; }) // lehen 35: -35, Maddalen:+15 gehitu dut
       .attr("y", function(d) {
             return radio; //lehen 30 : 30
     })

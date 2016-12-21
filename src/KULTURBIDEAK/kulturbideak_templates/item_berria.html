@@ -21,7 +21,6 @@
 			<div class="path-info overflow">
 				{% if user.is_authenticated %}
 				<h3 class="titulu-kolorea">{% trans "Kudeaketa Aukerak" %}</h3>
-
 				<button class="btn btn-default gehitu-botoia" type="button" title="{% trans 'Lan eremura gehitu' %}" onclick="create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
 
 					{% trans "Gehitu" %}
@@ -146,12 +145,12 @@
 					<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
 					{%endif%}
 					</ br>
-					<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Animatu ibilbideetako bat ikusi eta bozkatzera!</div>
+					<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Animatu ibilbideetako bat ikusi eta bozkatzera!" %}</div>
 					
 	
 				</div>
 				{% else %}
-				<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Izan lehena item honekin ibilbide bat sortzen!</div>
+				<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Izan lehena item honekin ibilbide bat sortzen!" %}</div>
 				
 				<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; -
 							
@@ -209,6 +208,27 @@
 			<!-- item preview -->
 
 			<div id="item_preview">
+				<!--BIDEOA BADA-->
+				{% if momentukoItema.edm_type == "VIDEO" and momentukoItema.edm_isshownby %}
+					<!--					
+					<video width="320" height="240" controls>
+  						<source src="{{momentukoItema.edm_isshownby}}" type="video/mp4">
+  						<source src="{{momentukoItema.edm_isshownby}}" type="video/ogg">
+  						<source src="{{momentukoItema.edm_isshownby}}" type="video/x-flv">
+  						Your browser does not support the video tag.
+					</video>
+					-->
+				{%endif%}
+			
+				<!-- AUDIOA BADA-->
+				{% if momentukoItema.edm_type == "SOUND" and momentukoItema.edm_object%}
+					
+					<audio controls>
+  						<!--<source src="{{momentukoItema.edm_object}}" type="audio/ogg">-->
+  						<source src="{{momentukoItema.edm_object}}" type="audio/mpeg">					
+					</audio>
+				
+				{%endif%}
 				{% include "_item_preview.html" %}
 				<div id="license_info" class="path-info overflow">
 

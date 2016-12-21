@@ -1079,6 +1079,63 @@ def eguneko_itema_kendu(request):
         
         return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
+    elif nondik.startswith("path"):
+        print "nondik ba? ikusi path"
+        item_tupla = item.objects.get(pk=item_id)
+        path_id=nondik[4:]
+            
+   
+        herrialdea=item_tupla.edm_country
+        hizkuntza=item_tupla.dc_language
+        kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.edm_rights
+        urtea=item_tupla.edm_year 
+        viewAtSource=item_tupla.edm_isshownat
+        irudia=item_tupla.edm_object
+        hornitzailea=item_tupla.edm_provider
+        #hornitzailea=item_tupla.dc_creator
+        geoloc_longitude=item_tupla.geoloc_longitude
+        geoloc_latitude=item_tupla.geoloc_latitude
+       
+        
+        botatuDu=0
+        botoKopurua=0
+        if(votes_item.objects.filter(item=item_id,user_id=request.user.id)):
+            botatuDu=1   
+            botoKopurua=item_tupla.get_votes()
+        
+        #MORE LIKE THIS
+        #print "MORE LIKE THIS KALKULATZEN" 
+        mlt=[] 
+        #search_models_items=[item]
+        #mlt = SearchQuerySet().more_like_this(item_tupla)
+        mlt = SearchQuerySet().more_like_this(item_tupla)
+        #print mlt.count()
+        #print "MORE LIKE THIS KALKULATZEN BUKATU DU" 
+        mlt = mlt[:10]
+   
+          
+        #print mlt.count() # 5        
+        #print mlt[0].object.dc_title
+        
+        #QR-a sortzeko
+        qrUrl="http://ondarebideak.org/nabigatu?path_id="+path_id+"&item_id="+item_id
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=item_tupla)
+        
+        #LORTU ITEMAREN KOMENTARIOAK
+        comments = item_tupla.get_comments()
+      
+        comment_form = CommentForm() 
+        comment_parent_form = CommentParentForm()
+        print "item.html deitu baino lehen"
+    
+        non="nabigazio_item"
+        
+        
+        return render_to_response('nabigazio_item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+
     else:
         
         #editatu
@@ -1930,6 +1987,63 @@ def eguneko_itema_gehitu(request):
         
         
         return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+
+    elif nondik.startswith("path"):
+        print "nondik ba? ikusi path"
+        item_tupla = item.objects.get(pk=item_id)
+        path_id=nondik[4:]
+            
+   
+        herrialdea=item_tupla.edm_country
+        hizkuntza=item_tupla.dc_language
+        kategoria=item_tupla.dc_type
+        eskubideak=item_tupla.edm_rights
+        urtea=item_tupla.edm_year 
+        viewAtSource=item_tupla.edm_isshownat
+        irudia=item_tupla.edm_object
+        hornitzailea=item_tupla.edm_provider
+        #hornitzailea=item_tupla.dc_creator
+        geoloc_longitude=item_tupla.geoloc_longitude
+        geoloc_latitude=item_tupla.geoloc_latitude
+       
+        
+        botatuDu=0
+        botoKopurua=0
+        if(votes_item.objects.filter(item=item_id,user_id=request.user.id)):
+            botatuDu=1   
+            botoKopurua=item_tupla.get_votes()
+        
+        #MORE LIKE THIS
+        #print "MORE LIKE THIS KALKULATZEN" 
+        mlt=[] 
+        #search_models_items=[item]
+        #mlt = SearchQuerySet().more_like_this(item_tupla)
+        mlt = SearchQuerySet().more_like_this(item_tupla)
+        #print mlt.count()
+        #print "MORE LIKE THIS KALKULATZEN BUKATU DU" 
+        mlt = mlt[:10]
+   
+          
+        #print mlt.count() # 5        
+        #print mlt[0].object.dc_title
+        
+        #QR-a sortzeko
+        qrUrl="http://ondarebideak.org/nabigatu?path_id="+path_id+"&item_id="+item_id
+        
+        #Itema erabiltzen duten path-ak lortu
+        itemPaths=node.objects.filter(fk_item_id=item_tupla)
+        
+        #LORTU ITEMAREN KOMENTARIOAK
+        comments = item_tupla.get_comments()
+      
+        comment_form = CommentForm() 
+        comment_parent_form = CommentParentForm()
+        print "item.html deitu baino lehen"
+    
+        non="nabigazio_item"
+        
+        
+        return render_to_response('nabigazio_item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
     else:
         
         #editatu

@@ -80,8 +80,7 @@ class item(models.Model):
     geoloc_latitude = models.FloatField(null=True)
     aberastua = models.BooleanField(default=False)
     ob_language=models.TextField()
-    # idxfti=models.TSVectorField('dc_title')
-    #objects = ProposalManager()
+    ob_thumbnail=models.TextField()
     
     def __unicode__(self):
         return self.dc_title

@@ -10,6 +10,8 @@
 			<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
 	</object>
+	 {% elif momentukoItema.ob_thumbnail %} 
+	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
 	 {% elif momentukoItema.edm_object %} 
 	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
 	 {% elif momentukoItema.edm_isshownat %}

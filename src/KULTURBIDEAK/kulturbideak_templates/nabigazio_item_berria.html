@@ -27,6 +27,14 @@
 <script>
   //Autoplay-ak erabiltzen du aldagai hau, hurrengo orrira noiz berdideratu behar duen jakiteko
   var isTTSReading = false;
+  
+  //"Entzun Orria" sakatzerakoan narrazio osoa irakur dezan erabiltzen da
+  var desk_osoa = "{{momentukoNodea.dc_description }}";
+  
+  //tts_berezia.js-ek erabiltzen du ze hizkuntzatan irakurri jakiteko, bukaeran hizkuntza: aldagaiean
+  var path_hizkuntza="{{momentukoPatha.language}}";
+
+  
 </script>
 
 
@@ -114,6 +122,51 @@
 			</div><!-- tts -->
 
 			<hr />
+			
+			<!-- <div class="path-info overflow">
+				{% if user.is_authenticated %}
+				<h3 class="titulu-kolorea">{% trans "Kudeaketa Aukerak" %}</h3>
+
+				<button class="btn btn-default gehitu-botoia" type="button"
+					title="{% trans 'Lan eremura gehitu' %}"
+					onclick="create_workspace_box({{id}}, {{ request.user.id }});"
+					style="line-height: 0.8;">
+
+					{% trans "Gehitu" %} <span class="glyphicon glyphicon-arrow-up"
+						aria-hidden="true"></span>
+				</button>
+
+				{% if request.user|has_group:'hornitzailea' %}
+				<!--egunekoa bihurtu-->
+				<!--{% if momentukoItema.egunekoa == 0 %} <a
+					class="btn btn-warning egunekoa-botoia"
+					title="{% trans 'Gehitu eguneko itema' %}" type="button"
+					href="{{BASE_URL}}/eguneko_itema_gehitu?id={{momentukoItema.id}}&nondik=path{{path_id}}">
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				</a> {%endif%} {% if momentukoItema.egunekoa == 1 %} <a
+					class="btn btn-warning egunekoa-botoia"
+					title="{% trans 'Kendu eguneko itema' %}" type="button"
+					href="{{BASE_URL}}/eguneko_itema_kendu?id={{momentukoItema.id}}&nondik=path{{path_id}}">
+					<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+				</a> {%endif%} {%endif%}
+				<!-- Baldintza hau aldatu datu-basean itemak erabiltzailearekin lotutakoan -->
+
+				<!--{% if user.id == item.fk_ob_user.id %}
+
+				<!--editatu-->
+				<!--<a class="btn btn-default" type="button"
+					title="{% trans 'itema editatu' %}"
+					href="{{BASE_URL}}/editatu_itema?id={{item.id}}"> <span
+					class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+				</a>
+				<!-- ezabatu -->
+				<!--<a class="btn btn-danger" type="button"
+					title="{% trans 'itema ezabatu' %}"
+					onClick="deleteItem({{item.id}})"> <span
+					class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+				</a> {%endif%} {%endif%}
+			</div>
+			 -->
 			
 			<!-- item_infobox -->
 			<div id="item_infobox" class="path-info overflow">
@@ -264,13 +317,19 @@
 			</div>
 
 			<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
-
+			
 			<div class="path-info overflow ">
 				<div id="description" class="item-info-description">
 
 					<div class="clearfix"></div>
-					<span class="comment more item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
-
+					{% if autoplay == 1 %}
+						<span id="item-narrazioa" class="comment item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+					
+					{% else %}
+						<span  id="item-narrazioa" class="comment more item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+					
+					{%endif%}
+					
 				</div>
 			</div>
 
