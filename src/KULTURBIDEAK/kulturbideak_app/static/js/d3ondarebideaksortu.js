@@ -203,13 +203,19 @@ function click() {
 }
 //dblclick funtzioa: klik bikoitza egitean narrazioa gehitzeko textarea eta botoia gaitu egiten dira.
 function dblclick(d){
-    document.getElementById("narra_textarea").value = d.narrazioa;
+    //document.getElementById("narra_textarea").value = d.narrazioa;
+    CKEDITOR.instances.narra_textarea.setData(d.narrazioa);
     $("#narrazio_modal").modal('show');
     $('#narrazio_modal').on('shown', function() {
         $("#narra_textarea").focus();
     })
     document.getElementById("narra_botoia").onclick = function () {
-        d.narrazioa = document.getElementById("narra_textarea").value;
+        //Lehen, textarea normalakin horrela egiten zen
+        //d.narrazioa = document.getElementById("narra_textarea").value;
+        
+        //CKEDITOR-aren textarearen balioa hartzeko
+   		d.narrazioa =CKEDITOR.instances.narra_textarea.getData();
+       
         $("#narrazio_modal").modal('hide');
     };
 }

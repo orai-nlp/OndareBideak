@@ -11,9 +11,6 @@
 <link href="{{ STATIC_URL }}css/social-share-kit.css" rel="stylesheet">
 {% endblock %}
 
-
-
-
 {% block content %}
 
 <div class="container">
@@ -233,7 +230,7 @@
                     </div>
                     
                     
-                    
+                   
                     
                     
                     
@@ -352,7 +349,7 @@
 
 
                 <p class="lead">{% trans "Deskribapena" %} *</p>
-                <p><span id="id_summary">{{hornitzailea.deskribapena}}</span>
+                <p><span id="id_summary">{{hornitzailea.deskribapena |safe}}</span>
                         <a href="#" data-toggle="modal" data-target="#summary_modal" aria-hidden="true"><span class="glyphicon glyphicon-pencil edit_icon" aria-hidden="true"></span></a>
                     </p>
                                 
@@ -365,13 +362,48 @@
                             <h4 class="modal-summary" id="myModalLabel">{% trans "Deskribapena editatu" %}</h4>
                           </div>
                           <div class="modal-body">
+                          
+                          <div id="narrazioa">
+	    				  <p id="narra_p" class="info"></p>
+            			  <textarea id="id_desk" name="narra_textarea" maxlength="5000" cols="75" rows="5"></textarea>
+	   						<script type="text/javascript" >
+	   						var h_des="{{hornitzailea.deskribapena |lerroJauziakKendu |safe}}";
+	   						
+	 						//var h_des_html=htmlDecode(h_des);
+	 				
+	 						  </script>
+            				<script type="text/javascript" >
+      		  				// Replace the <textarea id="narra_textarea"> with a CKEditor
+       			 			// instance, using default configuration.
+       			 			CKEDITOR.replace( 'id_desk' );
+       			 			CKEDITOR.instances.id_desk.setData(h_des);
+    						</script>
+	    
+	    					</div>
+                          <!--
                             <div class="form-group">
-                               <!--TEXT AREA -->
+                              
                                 <div class="col-md-12">
                                 	<textarea id="id_desk" class="form-control"  placeholder="Hornitzailearen deskribapena" name="deskribapena" rows="4" cols="50">
+									
 									</textarea>
+								
+									<script type="text/javascript" >
+										
+              						jQuery(document).ready(function() {
+  										CKEDITOR.replace("id_desk")
+ 									});
+                						//CKEDITOR.replace('id_desk');
+                						//var desk_html = htmlDecode("{{hornitzailea.deskribapena}}");
+                						//CKEDITOR.instances.id_desk.setData(desk_html);
+            							
+
+            						
+            						</script>
+								
 								</div>
                             </div>
+                            -->
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default" onmousedown="$(this).click();return false;" data-dismiss="modal">{% trans "Itxi" %}</button>

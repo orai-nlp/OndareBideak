@@ -205,7 +205,8 @@ img.ob_thumbnail {
 	font-size: 11pt;
 	font-weight: bold;
 	float: right;
-	margin: 3px;
+	margin: 2px;
+	color: #c03035;
 }
 
 .ws_box:hover .wsb_button {
@@ -216,6 +217,23 @@ img.ob_thumbnail {
 	border: 1px dotted #808080;
 	background: #d3d3d3;
 }
+
+.wsb_typeImage{
+	cursor: pointer;
+	display: inline-block;
+	font-size: 12pt;
+	/*font-weight: bold;*/
+	float: right;
+	margin: 2px;
+	color:#31708f;
+	/*border: 1px dotted #808080;*/
+	/*background: #d3d3d3;*/
+}
+
+.ws_box:hover .wsb_typeImage {
+	visibility: hidden;
+}
+
 
 #path_boxes_egunekoa {
 	width: 98%;
@@ -732,6 +750,26 @@ circle .unselectedNode {
 	font-weight: 300;
 	line-height: 22px;
 }
+
+
+
+.path-info-description p {
+    color: #000;
+    font-family: "dosis",sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 22px;
+}
+
+.item-info-description p {
+    color: #000;
+    font-family: "dosis",sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 22px;
+}
+
+
 .navbar-default li {
 	font-size: 14px;
 	padding: 0 15px 0 0;
@@ -842,6 +880,10 @@ p.uppercase {
 p.letratipoa {
 	font-family: "dosis" !important;
 }
+.letratipoa p{
+	font-family: "dosis" !important;
+}
+
 .center {
 	text-align: center;
 }

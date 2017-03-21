@@ -25,6 +25,7 @@ from django.shortcuts import render_to_response
 from KULTURBIDEAK.kulturbideak_app.models import item
 from KULTURBIDEAK.kulturbideak_app.models import path
 from KULTURBIDEAK.kulturbideak_app.models import node
+#from KULTURBIDEAK.kulturbideak_app.models import node_tmp
 from KULTURBIDEAK.kulturbideak_app.models import hornitzailea
 from KULTURBIDEAK.kulturbideak_app.models import workspace_item
 from django.contrib.auth.models import User,Group
@@ -122,8 +123,9 @@ def hasiera(request):
     #Hornitzaileak
     hornitzaileKop = hornitzailea.objects.count()
     #hornitzaile bat erakutsi
-    egunekoHornitzaile = hornitzailea.objects.order_by('?')[:1]
-    egunekoHornitzaile = egunekoHornitzaile[0]; 
+    #egunekoHornitzaile = hornitzailea.objects.order_by('?')[:1]
+    #egunekoHornitzaile = egunekoHornitzaile[0];
+    egunekoHornitzaile = hornitzailea.objects.get(fk_user__id=58)
     #Erabiltzaileak
     erabiltzaileKop = usr.objects.count()
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
@@ -1034,7 +1036,7 @@ def eguneko_itema_kendu(request):
         eskubideak=item_tupla.edm_rights
         urtea=item_tupla.edm_year 
         viewAtSource=item_tupla.edm_isshownat
-        irudia=item_tupla.edm_object
+        irudia=item_tupla.ob_thumbnail
         hornitzailea=item_tupla.edm_provider
         #hornitzailea=item_tupla.dc_creator
         geoloc_longitude=item_tupla.geoloc_longitude
@@ -1091,7 +1093,7 @@ def eguneko_itema_kendu(request):
         eskubideak=item_tupla.edm_rights
         urtea=item_tupla.edm_year 
         viewAtSource=item_tupla.edm_isshownat
-        irudia=item_tupla.edm_object
+        irudia=item_tupla.ob_thumbnail
         hornitzailea=item_tupla.edm_provider
         #hornitzailea=item_tupla.dc_creator
         geoloc_longitude=item_tupla.geoloc_longitude
@@ -1150,7 +1152,6 @@ def eguneko_itema_kendu(request):
        
         mota=item_tupla.edm_type
         if("TEXT" in mota):
-            print "bai, TEXT da"
             mota=1
             mot="TEXT"
         elif("VIDEO" in mota):
@@ -1228,13 +1229,14 @@ def eguneko_itema_kendu(request):
         eskubideak=item_tupla.edm_rights
         urtea=item_tupla.dc_date 
         viewAtSource=item_tupla.edm_isshownat
-        irudia=item_tupla.edm_object
+        irudia=item_tupla.ob_thumbnail
+        objektua=item_tupla.edm_object
         hornitzailea=item_tupla.edm_provider
         sortzailea=item_tupla.dc_creator
         gaia = item_tupla.dc_subject
         herrialdea =item_tupla.edm_country
         jatorrizkoa =item_tupla.edm_isshownat
-        irudia=item_tupla.edm_object
+        irudia=item_tupla.ob_thumbnail
         
         geoloc_longitude=item_tupla.geoloc_longitude
         geoloc_latitude=item_tupla.geoloc_latitude
@@ -1244,8 +1246,8 @@ def eguneko_itema_kendu(request):
        
         #itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'eu':eu, 'es':es, 'en':en, 'data':data,'mota':mota,'lizentzia':lizentzia,'herrialdea':herrialdea})
         #return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':ob_language,'viewAtSource':viewAtSource},context_instance=RequestContext(request))
-        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'mota':mota, 'herrialdea':herrialdea , 'jatorrizkoa': jatorrizkoa, 'sortzailea':sortzailea,'gaia':gaia, 'lizentzia':lizentzia, 'data':data,'eu':eu,'es':es,'en':en})
-        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'viewAtSource':viewAtSource,'mota':mot,'liz':liz},context_instance=RequestContext(request))
+        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'mota':mota,'objektua':objektua, 'herrialdea':herrialdea , 'jatorrizkoa': jatorrizkoa, 'sortzailea':sortzailea,'gaia':gaia, 'lizentzia':lizentzia, 'data':data,'eu':eu,'es':es,'en':en})
+        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'viewAtSource':viewAtSource,'mota':mot,'liz':liz,'objektua':objektua},context_instance=RequestContext(request))
 
         
        
@@ -1943,7 +1945,7 @@ def eguneko_itema_gehitu(request):
         eskubideak=item_tupla.edm_rights
         urtea=item_tupla.edm_year 
         viewAtSource=item_tupla.edm_isshownat
-        irudia=item_tupla.edm_object
+        irudia=item_tupla.ob_thumbnail
         hornitzailea=item_tupla.edm_provider
         #hornitzailea=item_tupla.dc_creator
         geoloc_longitude=item_tupla.geoloc_longitude
@@ -2000,7 +2002,7 @@ def eguneko_itema_gehitu(request):
         eskubideak=item_tupla.edm_rights
         urtea=item_tupla.edm_year 
         viewAtSource=item_tupla.edm_isshownat
-        irudia=item_tupla.edm_object
+        irudia=item_tupla.ob_thumbnail
         hornitzailea=item_tupla.edm_provider
         #hornitzailea=item_tupla.dc_creator
         geoloc_longitude=item_tupla.geoloc_longitude
@@ -2148,8 +2150,7 @@ def eguneko_itema_gehitu(request):
         gaia = item_tupla.dc_subject
         herrialdea =item_tupla.edm_country
         jatorrizkoa =item_tupla.edm_isshownat
-        irudia=item_tupla.edm_object
-        
+        irudia=item_tupla.ob_thumbnail
         geoloc_longitude=item_tupla.geoloc_longitude
         geoloc_latitude=item_tupla.geoloc_latitude
         
@@ -3755,24 +3756,7 @@ def ibilbideak_hasiera(request):
      
     #DB-an GALDERA EGIN EGUNEKO/RANDOM/AZKENAK/IKUSIENA PATHA LORTZEKO   
     #DB-an GALDERA EGIN EGUNEKO IBILBIDEA LORTZEKO
-    '''
-    paths=[]
-    paths=path.objects.order_by('-creation_date')
-    
-    paginator = Paginator(paths, 26)
-    
-    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
-    
-    page = request.GET.get('page')
-    try:
-        paths = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        paths = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        paths = paginator.page(paginator.num_pages)
-    '''
+   
     
     
     #Egunekoak
@@ -3797,11 +3781,11 @@ def ibilbideak_hasiera(request):
     
     #Egunekoak
     eguneko_ibilbideak=[]
-    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
+    eguneko_ibilbideak=path.objects.filter(egunekoa=1).exclude(acces='1')
     
     #Azkenak
     azken_ibilbideak=[]
-    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
+    azken_ibilbideak=path.objects.order_by('-creation_date').exclude(acces='1')[:10]
     
     #Bozkatuenak
     ibilbide_bozkatuenak=[]
@@ -3812,7 +3796,7 @@ def ibilbideak_hasiera(request):
             id = bozkatuena.path.id
             path_ids.append(id)
        
-        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+        ibilbide_bozkatuenak=path.objects.filter(id__in=path_ids) 
     
     non="fitxaE"
     
@@ -3847,7 +3831,7 @@ def ibilbideak_hasiera(request):
     search_models_paths=[path]
     search_models_items=[item]
     items = SearchQuerySet().all().models(*search_models_items)
-    paths = SearchQuerySet().all().models(*search_models_paths).order_by('-path_creation_date')
+    paths = SearchQuerySet().all().models(*search_models_paths).exclude(acces='1').order_by('-path_creation_date')
         
      
     #PAGINATOR PATHS
@@ -3936,7 +3920,15 @@ def autocomplete(request):
     
     #print suggestions
     suggestions_id = [result.item_id for result in sqs]
-    suggestions_img = [result.edm_object for result in sqs]
+    #suggestions_img = [result.edm_object for result in sqs]
+    
+    suggestions_img=[]
+    for result in sqs:
+    	if result.ob_thumbnail:
+    	    suggestions_img.append(result.ob_thumbnail)
+    	else:
+    		suggestions_img.append(result.edm_object)
+    
     #suggestions_src = [result.edm_provider for result in sqs]
     suggestions_src=[]
     for result in sqs:
@@ -4009,6 +4001,9 @@ def cross_search(request):
         items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
         paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
 
+    
+    #'Zirriborroak' (acces=1) diren ibilbideak baztertu
+    paths=paths.exclude(acces="1")   
     
     #PAGINATOR ITEMS
     paginator = Paginator(items, 26)    
@@ -4129,7 +4124,10 @@ def hornitzaile_search(request):
     #paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_erab).models(*search_models_paths)
     paths = SearchQuerySet().all().filter(path_fk_user_id=hornitzaile_id).models(*search_models_paths)
 
-      
+    #'Zirriborroak' (acces=1) diren ibilbideak baztertu
+    paths=paths.exclude(acces="1")   
+     
+    
     #PAGINATOR ITEMS
     paginator = Paginator(items, 26)    
     type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
@@ -4183,14 +4181,16 @@ def hornitzaile_search(request):
     #Datu-baseko lizentziak lortu
     db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
     db_lizentziak_text ="_".join(db_lizentziak)
+    
+    non='fitxaI'
  
-    return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'non':non,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'h':hornitzaile_izena,'geoloc_latitude':geoloc_latitude,'geoloc_longitude':geoloc_longitude,'hornitzailea':hornitzaile,'horniF':horniF,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 
 def filtro_search(request):
     
     #Hona iristeko 4 aukera daude:
-    #bilakera arrunt baten filtroetatik
+    #bilaketa arrunt baten filtroetatik
     #Menu nagusiko itemak edo ibilbideak sakatuta. Kasu honetan galdera="" eta z-ren balioak kontutan hartu
     #Hornitzaile bat kontsultatzetik. Kasu honetan  'hornitzailea' in request.GET  eta galdera hutsa da
     #Nire itemak ala Nire ibilbideak kontsultatzeko aukeratik ('nireak' aldagaiarekin kontrolatzen dugu aukera honetatik datorren)
@@ -4378,6 +4378,11 @@ def filtro_search(request):
             #galdera arrunt batetik dator
             paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
        
+        #'Zirriborroak' (acces=1) diren ibilbideak baztertu
+    	paths=paths.acces(acces="1")   
+        
+        
+        
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -4519,6 +4524,9 @@ def filtro_search(request):
             #galdera arrunt batetik dator
             paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
         
+        #'Zirriborroak' (acces=1) diren ibilbideak baztertu
+        paths=paths.exclude(acces="1")   
+        
         #hizkuntza filtroa
         if hizkuntzakF != "":       
             paths =paths.filter(SQ(language=hEu)|SQ(language=hEs)|SQ(language=hEn))
@@ -4644,6 +4652,9 @@ def filtro_search(request):
         else:
             #galdera arrunt batetik dator
             paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+        
+        #'Zirriborroak' (acces=1) diren ibilbideak baztertu
+        paths=paths.exclude(acces="1")   
         
         #hizkuntza filtroa
         if hizkuntzakF != "":       
@@ -5769,7 +5780,7 @@ def erakutsi_item(request):
     eskubideak=item_tupla.edm_rights
     urtea=item_tupla.edm_year 
     viewAtSource=item_tupla.edm_isshownat
-    irudia=item_tupla.edm_object
+    irudia=item_tupla.ob_thumbnail
     hornitzailea=item_tupla.edm_provider
     #hornitzailea=item_tupla.dc_creator
     geoloc_longitude=item_tupla.geoloc_longitude
@@ -5836,7 +5847,7 @@ def botoa_eman_item(request):
     eskubideak=item_tupla.edm_rights
     urtea=item_tupla.edm_year 
     viewAtSource=item_tupla.uri
-    irudia=item_tupla.edm_object
+    irudia=item_tupla.ob_thumbnail
     #hornitzailea=item_tupla.edm_provider
     hornitzailea=item_tupla.dc_creator
         
@@ -5938,7 +5949,7 @@ def botoa_kendu_item(request):
     eskubideak=item_tupla.edm_rights
     urtea=item_tupla.edm_year 
     viewAtSource=item_tupla.uri
-    irudia=item_tupla.edm_object
+    irudia=item_tupla.ob_thumbnail
     #hornitzailea=item_tupla.edm_provider
     hornitzailea=item_tupla.dc_creator
         
@@ -6048,13 +6059,21 @@ def editatu_itema(request):
         
         irudia_url=""
         user_id=request.user.id
-        if(request.FILES):
+        #OB_THUMBNAIL
+        if(request.FILES.get('irudia')):
         
             #edm_object=request.FILES['irudia'].name 
             fileObject= request.FILES.get('irudia')
             fname, fext = os.path.splitext(fileObject.name)
             fileName='item_img_'+str(user_id)+'_'+randomword(5)+fext
             irudia_url=MEDIA_URL+str(fileName)#izen berekoak gainidatzi egingo dira bestela
+        
+        #EDM_OBJECT
+        if(request.FILES.get('objektua')): 
+            fileObject2= request.FILES.get('objektua')
+            fname2, fext2 = os.path.splitext(fileObject2.name)
+            objektufileName='item_obj_'+str(user_id)+'_'+randomword(5)+fext2
+            objektu_url=MEDIA_URL+str(objektufileName)#izen berekoak gainidatzi egingo dira bestela
         
         '''
         #HIZKUNZA 
@@ -6188,25 +6207,46 @@ Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
             item_db=item.objects.get(id=item_id)
             longitude=item_db.geoloc_longitude
        
+        
+        #OB_THUMBNAIL
         if(irudia_url!=""):
             #Irudia igo
-            edm_object= fileName
-            handle_uploaded_file(request.FILES['irudia'],edm_object)
-            #item.objects.filter(id=item_id).update(egunekoa = 0,proposatutakoa=1)         
-            #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
-            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,ob_language=ob_language, edm_language=ob_language,edm_object=irudia_url,edm_country=edm_country)
+            ob_thumbnail= fileName
+            handle_uploaded_file(request.FILES['irudia'],ob_thumbnail)
+            
+            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,ob_language=ob_language, edm_language=ob_language,ob_thumbnail=irudia_url,edm_country=edm_country)
             
             #Item-a duten Ibilbideko nodoen argazkia ALDATU. node TAULAN, fk_item_id ALDAGAIA =item_id
-            irudia_update=MEDIA_URL+edm_object              
+            irudia_update=MEDIA_URL+ob_thumbnail            
             node.objects.filter(fk_item_id=item_id).update(paths_thumbnail=irudia_update)
 
         else:
             #Datu-basean irudi zaharra mantendu
             item_tupla = item.objects.get(pk=item_id)
-            irudia_url=item_tupla.edm_object
-            #item_berria = item(id=item_id,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,dc_language=dc_language, edm_language=edm_language,edm_object=irudia_url,edm_country=edm_country)
-            item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+            irudia_url=item_tupla.ob_thumbnail
+            item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,ob_thumbnail=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
    
+        #EDM_OBJECT
+        if(objektu_url!=""):
+            #Objektua igo
+            edm_object= objektufileName
+            handle_uploaded_file(request.FILES['objektua'],edm_object)
+            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,dc_creator=dc_creator, edm_provider=edm_provider,dc_date=dc_date,ob_language=ob_language, edm_language=ob_language,edm_object=objektu_url,edm_country=edm_country)
+            
+            #Item-a duten Ibilbideko nodoen objektua ALDAT? node TAULAN, fk_item_id ALDAGAIA =item_id
+            #objektua_update=MEDIA_URL+edm_object              
+            #node.objects.filter(fk_item_id=item_id).update(objektua=objektua_update)
+
+        else:
+            #Datu-basean objektu zaharra mantendu
+            item_tupla = item.objects.get(pk=item_id)
+            objektu_url=item_tupla.edm_object
+            item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,edm_object=objektu_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+   
+        
+        
+        
+        
         
         #item_berria.save()   
          
@@ -6321,7 +6361,7 @@ Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
         gaia = item_tupla.dc_subject
         herrialdea =item_tupla.edm_country
         jatorrizkoa =item_tupla.edm_isshownat
-        irudia=item_tupla.edm_object
+        irudia=item_tupla.ob_thumbnail
         
         geoloc_longitude=item_tupla.geoloc_longitude
         geoloc_latitude=item_tupla.geoloc_latitude
@@ -6632,9 +6672,11 @@ def nire_ibilbideak_erakutsi(request):
     
 def itema_gehitu(request):
     
-    itema=ItemGehituForm(request.POST, request.FILES)
     
+    itema=ItemGehituForm(request.POST, request.FILES)
+    print itema.errors 
     if itema.is_valid():
+    	print "ITEMA IS_VALID"
         #Datu-basean item-a gehitu
         irudi_izena_random =randomword(10); 
         erabiltzailea=request.user
@@ -6650,13 +6692,26 @@ def itema_gehitu(request):
         dc_date=request.POST['data']
         irudia_url=""
         user_id=request.user.id
-        if(request.FILES):
-            #edm_object=request.FILES['irudia'].name 
+        
+       
+        if(request.FILES.get('irudia')):
+        
+        	#IRUDIA (ob_thumbnail)
+             
             fileObject= request.FILES.get('irudia')
             fname, fext = os.path.splitext(fileObject.name)
             fileName='item_img_'+str(user_id)+'_'+randomword(5)+fext
             irudia_url=MEDIA_URL+str(fileName)#izen berekoak gainidatzi egingo dira bestela
-      
+      	
+      	if(request.FILES.get('objektua')):
+      		#OBJEKTUA (edm_object)
+      		objektua=request.FILES.get('objektua')
+      		fname2, fext2 = os.path.splitext(objektua.name)
+      		objectfileName='item_obj_'+str(user_id)+'_'+randomword(5)+fext2
+      		objektu_url=MEDIA_URL+str(objectfileName)#izen berekoak gainidatzi egingo dira bestela
+      	
+      		
+      		
         #dc_language=request.POST['hizkuntza']
         #edm_language=request.POST['hizkuntza']
         '''
@@ -6678,8 +6733,8 @@ def itema_gehitu(request):
             ob_language=ob_language +" es"
         if request.POST.get('en'):
             ob_language=ob_language +" en"
+    
         
-   
         edm_type=request.POST['mota']
         if(edm_type=="4"):
             edm_type="SOUND"        
@@ -6693,7 +6748,7 @@ def itema_gehitu(request):
         else:
             edm_type="TEXT"
          
-           
+        
         #LIZENTZIA
         if(edm_rights=="1"):
             #Public Domain Mark
@@ -6751,16 +6806,24 @@ def itema_gehitu(request):
         else:
             edm_provider= "herritarra"
         
-     
+     	
         #Gaurko data hartu
         #dc_date=datetime.datetime.now()  
         #edm_year=datetime.datetime.now()  
        
-        
+        #ob_thumbnail
         if(irudia_url!=""):
-            #Irudia igo
-            edm_object=fileName #izen berekoak gainidatzi egingo dira bestela
-            handle_uploaded_file(request.FILES['irudia'],edm_object)
+            #Irudia igo : OB_thumbnail !!
+            ob_thumbnail=fileName #izen berekoak gainidatzi egingo dira bestela
+            handle_uploaded_file(request.FILES['irudia'],ob_thumbnail)
+         
+        #edm_object
+        if(objektu_url!=""):
+            #objektua igo : EDM_OBJECT !!
+            edm_object=objectfileName #izen berekoak gainidatzi egingo dira bestela
+            handle_uploaded_file(request.FILES['objektua'],edm_object)    
+            
+         
         
         latitude=0.0
         longitude=0.0
@@ -6769,7 +6832,10 @@ def itema_gehitu(request):
         if request.POST['longitude']:
             longitude=request.POST['longitude']
    
-        item_berria = item(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_date=dc_date,edm_year=dc_date,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,ob_language=ob_language, edm_language=ob_language,edm_object=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+   
+        print "ITEMA DATU_BASEAN SARTU AURRETIK"
+   		
+        item_berria = item(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_date=dc_date,edm_year=dc_date,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,ob_language=ob_language, edm_language=ob_language,edm_object=objektu_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude,ob_thumbnail=irudia_url)
         item_berria.save()   
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
@@ -6777,6 +6843,8 @@ def itema_gehitu(request):
          
         return render_to_response('base.html',{'mezua':"item berria gehitu da"},context_instance=RequestContext(request))
     else:
+    
+    	print "ELSE"
         # language==interface language
         
         if(request.LANGUAGE_CODE=="eu"):
@@ -6963,6 +7031,8 @@ def ajax_workspace_item_borratu(request):
     return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
 '''
 def ajax_path_berria_gorde(request):
+
+    
     
     request_answer= 0
     print request.GET
@@ -6975,11 +7045,10 @@ def ajax_path_berria_gorde(request):
         dc_subject=request.POST.get('dc_subject')
         dc_description=request.POST.get('dc_description')
         paths_thumbnail = request.POST.get('paths_thumbnail')
+        acces = request.POST.get('acces')
+       
         
-        ##fileObject= request.FILES.get('fileObject')
-        print paths_thumbnail
-        print dc_title
-        ##
+        
         paths_thumbnail_url=MEDIA_URL+paths_thumbnail
         print paths_thumbnail_url
         #Irudia igo
@@ -7144,6 +7213,7 @@ def ajax_path_berria_gorde(request):
         dc_description=request.POST.get('dc_description')
         paths_thumbnail = request.POST.get('paths_thumbnail')
         language=request.POST.get('hizkuntza')
+        acces=request.POST.get('acces')
         
         ######paths_thumbnail=str(azken_id)+paths_thumbnail
        
@@ -7174,7 +7244,8 @@ def ajax_path_berria_gorde(request):
                                         dc_subject = dc_subject,
                                         dc_description = dc_description,
                                         paths_thumbnail = paths_thumbnail_url,
-                                        language=language)
+                                        language=language,
+                                        acces=acces)
     
     
         path_berria.save() #AUTOMATIKOKI SOLR INDIZEA ERE EGUNERATZEN DA
@@ -7188,15 +7259,17 @@ def ajax_path_berria_gorde(request):
 
 def ajax_path_eguneratu(request):
     
-    print request.POST
+
     path_id=request.POST.get('path_id')
-    fk_usr_id=request.user.id
+    #fk_usr_id=request.user.id
     dc_title=request.POST.get('dc_title')
     dc_subject=request.POST.get('dc_subject')
     dc_description=request.POST.get('dc_description')
     paths_thumbnail = request.POST.get('paths_thumbnail')
     language=request.POST.get('hizkuntza')
+    acces=request.POST.get('acces')
     
+
     
     #erabiltzaileak ibilbidearen irudia eguneratu ez baldin badu zaharra hartu
     if paths_thumbnail=='' or paths_thumbnail =="1":
@@ -7208,18 +7281,25 @@ def ajax_path_eguneratu(request):
         
         #paths_thumbnail_url=MEDIA_URL+str(path_id)+str(fk_usr_id)+paths_thumbnail     
         paths_thumbnail_url=MEDIA_URL+paths_thumbnail
-     
-  
-      
+
+    path_old=path.objects.get(id=path_id)
+    fk_usr_id_old= path_old.fk_user_id
+    
+    proposatutakoa_old=path_old.proposatutakoa
+    egunekoa_old=path_old.egunekoa
+    #request.user
     path_eguneratua = path(id=path_id,
-                           fk_user_id = request.user,
+                           fk_user_id = fk_usr_id_old,
                            dc_title = dc_title,
                            dc_subject = dc_subject,
                            dc_description = dc_description,
                            paths_thumbnail = paths_thumbnail_url,
                            tstamp = timezone.now(),
                            creation_date = timezone.now(),
-                           language=language)
+                           proposatutakoa = proposatutakoa_old,
+                           egunekoa = egunekoa_old,
+                           language=language,
+                           acces=acces)
     
     
     path_eguneratua.save()
@@ -7227,6 +7307,25 @@ def ajax_path_eguneratu(request):
         
     #Haystack update_index EGIN!!!
     #update_index.Command().handle()
+    
+    
+    # Ibilbide honen nodoen kopia egin => node_tmp taulan
+    nodes_to_cp=node.objects.filter(fk_path_id__id=path_id)
+    
+    #Aurretik egon daitezkeen nodoak ezabatu
+    if node_tmp.objects.filter(fk_path_id__id=path_id):
+        node_tmp.objects.filter(fk_path_id__id=path_id).delete()
+    
+    print "nodoz nodo node_tmp-n sartu"
+    for node_to_cp in nodes_to_cp:
+    	print "nodo bat:"
+    	print node_to_cp
+        tmp_entry = node_tmp(fk_item_id=node_to_cp.fk_item_id, uri=node_to_cp.uri,fk_path_id=node_to_cp.fk_path_id,
+        dc_source=node_to_cp.dc_source,dc_title=node_to_cp.dc_title,dc_description=node_to_cp.dc_description,
+        type=node_to_cp.type,paths_thumbnail=node_to_cp.paths_thumbnail,paths_prev=node_to_cp.paths_prev,paths_next= node_to_cp.paths_next,
+        paths_start=node_to_cp.paths_start,isdeleted=node_to_cp.isdeleted,tstamp=node_to_cp.tstamp,geoloc_longitude=node_to_cp.geoloc_longitude,geoloc_latitude=node_to_cp.geoloc_latitude )
+    
+        tmp_entry.save()
     
     # Ezabatu path-eko nodo guztiak
     node.objects.filter(fk_path_id__id=path_id).delete()
@@ -7496,6 +7595,9 @@ def ajax_edit_deskribapena(request):
         deskribapena = request.GET.get('deskribapena')
         user_id=request.user.id
        
+        print "HORNITZAILE FITXAKO DESKRIBAPENA EDITATU!!!"
+        print deskribapena
+        
         if not request.user.is_anonymous():
             
             hornitzailea.objects.filter(fk_user__id=user_id).update(deskribapena=deskribapena)

@@ -3,9 +3,35 @@ from django import template
 from settings import *
 import re
 import HTMLParser
+import requests
 
 from django.contrib.auth.models import User, Group
 register = template.Library()
+
+@register.filter
+def lerroJauziakKendu(sarrera):
+
+	return sarrera.replace("\n","");
+
+
+@register.filter
+def urlpath_exists(path):
+	
+	try:
+		r = requests.head(path)
+   		if str(r.status_code) == '404':
+   			return "False"
+   		else:
+   			#200
+   			return "True" 
+   		#return r.status_code
+        # returns the int of the status code. Find more at httpstatusrappers.com :)                                                       
+	except requests.ConnectionError:
+    	#print("failed to connect")
+		return "False"
+
+
+
 
 @register.filter
 def is_in(id,list): 

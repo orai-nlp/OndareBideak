@@ -5,8 +5,8 @@
 		{% load bootstrap3 %}
 		
 		<!-- Google Font -->
-		<link href='http://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
 		<!-- TTS -->
 		{% if not request.mobile or request.tablet %}
@@ -49,6 +49,27 @@
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3.min.js"></script>
 
+		<!-- VIDEO PLAYERRA-->
+		
+		
+		<script src="{{STATIC_URL}}mediaelement3.1.2/mediaelement-and-player.js"></script>
+		<link href="{{STATIC_URL}}mediaelement3.1.2/mediaelementplayer.css" rel="stylesheet">
+
+		
+		<script type="text/javascript" src="{{STATIC_URL}}hdflvplayer4.1/swfobject.js"></script>
+		
+		<!-- CKEDITOR-->
+		<script type="text/javascript" src="{{ STATIC_URL }}js/ckeditor/ckeditor.js"></script>
+		
+		<!--
+		<script src="/home/ubuntu/.npm/mediaelement/3.1.2/package/build/mediaelement-and-player.min.js"></script>
+		<link href="/home/ubuntu/.npm/mediaelement/3.1.2/package/build/mediaelementplayer.css" rel="stylesheet">
+		-->
+		<!--
+		<script src="https://cdn.jsdelivr.net/mediaelement/latest/mediaelement-and-player.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/mediaelement/latest/mediaelementplayer.css" rel="stylesheet">
+		-->
+		
 		<link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
 
 		<!-- Style -->
@@ -127,33 +148,21 @@
             function load_map(map, options) {
 
                 global_map = map;
-
+        
                 if(markers.length>0 || {{ geoloc_latitude }} !=0.0)
                 {
                     //Mapa zentratu
-                    map.panTo(new L.LatLng({{
-                    geoloc_latitude | correct_float_format
-                }
-            }, { {
-                    geoloc_longitude | correct_float_format
-                }
-            }));
+                    map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }}, {{geoloc_longitude | correct_float_format}}));
 
-            //Geolokalizazio zaharra beste kolore batekin erakutsi
-            var greenIcon = new LeafIcon({
-                iconUrl : '{{STATIC_URL}}img/leaf-green.png'
-            });
-            L.marker([{{ geoloc_latitude|correct_float_format }}, { {
-                    geoloc_longitude | correct_float_format
-                }
-            }], { icon:greenIcon
-            }).
-            addTo(map).openPopup();
+            		//Geolokalizazio zaharra beste kolore batekin erakutsi
+            		var greenIcon = new LeafIcon({iconUrl : '{{STATIC_URL}}img/leaf-green.png'});
 
-            }
+            		L.marker([{{ geoloc_latitude | correct_float_format }}, {{ geoloc_longitude | correct_float_format }}], {icon:greenIcon}).addTo(map).openPopup();
 
-            // maparen click eventoa
-            map.on('click', function(e) {
+            	}
+
+            	// maparen click eventoa
+            	map.on('click', function(e) {
                 if (markers.length > 0) {
                     map.removeLayer(markers[0]);
                     markers = [];
@@ -167,7 +176,7 @@
                     map.removeLayer(this);
                     layer_array = jQuery.grep(layer_array, function(value) {
                         return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
-                    });
+             	    });
                 }).addTo(map);
                 layer_array.push([e.latlng.lat, e.latlng.lng]);
                 markers.push(marker);
@@ -183,28 +192,17 @@
 
                 global_map = map;
 
-                if(markers.length>0 || {{
-                hornitzailea.geoloc_latitude
-            }} !=0.0) {
+                if(markers.length>0 || {{ hornitzailea.geoloc_latitude }} !=0.0) 
+                {
                 //Mapa zentratu
-                map.panTo(new L.LatLng({{
-                hornitzailea.geoloc_latitude | correct_float_format
-            }}, { {
-                    hornitzailea.geoloc_longitude | correct_float_format
-                }
-            }));
+                map.panTo(new L.LatLng({{ hornitzailea.geoloc_latitude | correct_float_format }}, {{ hornitzailea.geoloc_longitude | correct_float_format }}));
 
-            //Geolokalizazio zaharra beste kolore batekin erakutsi
-            var greenIcon = new LeafIcon({
-                iconUrl : '{{STATIC_URL}}img/leaf-green.png'
-            });
-            L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, { {
-                    hornitzailea.geoloc_longitude | correct_float_format
-                }
-            }], { icon:greenIcon
-            }).
-            addTo(map).openPopup();
-            }
+            	//Geolokalizazio zaharra beste kolore batekin erakutsi
+            	var greenIcon = new LeafIcon({
+                	iconUrl : '{{STATIC_URL}}img/leaf-green.png'
+            	});
+            	L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, {{ hornitzailea.geoloc_longitude | correct_float_format }}], { icon:greenIcon }).addTo(map).openPopup();
+            	}
 
             // maparen click eventoa
             map.on('click', function(e) {
@@ -231,40 +229,22 @@
 
             }
             {% elif  non == 'fitxaI'  %}
-            console.log('hornitzailea ikusi')
+            console.log('hornitzailea ikusi');
             function load_map(map, options) {
-                console.log('itema i kekeke')
-                map.panTo(new L.LatLng({{
-                hornitzailea.geoloc_latitude | correct_float_format
-            }}, { {
-                    hornitzailea.geoloc_longitude | correct_float_format
-                }
-            }));
-            L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, { {
-                    hornitzailea.geoloc_longitude | correct_float_format
-                }
-            }]).
-            addTo(map).openPopup();
+              
+                map.panTo(new L.LatLng({{ hornitzailea.geoloc_latitude | correct_float_format }}, {{ hornitzailea.geoloc_longitude | correct_float_format }}));
+           		L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, {{ hornitzailea.geoloc_longitude | correct_float_format }}]).addTo(map).openPopup();
 
             }
  			{% elif  non == 'erakutsi_item'  %}
            
             function load_map(map, options) {
-                console.log('itema bestela kkkkk')
+                console.log('itema bestela kkkkk');
                 //Erakusteko bakarrik
-                map.panTo(new L.LatLng({{
-                geoloc_latitude | correct_float_format
-            }}, { {
-                    geoloc_longitude | correct_float_format
-                }
-            }));
-            L.marker([{{ geoloc_latitude|correct_float_format }}, { {
-                    geoloc_longitude | correct_float_format
-                }
-            }]).
-            addTo(map).openPopup();
+                map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }}, {{ geoloc_longitude | correct_float_format }}));
+                L.marker([{{ geoloc_latitude|correct_float_format }}, {{ geoloc_longitude | correct_float_format }}]).addTo(map).openPopup();
 
-            }
+              }
              {% else %}
              
              //Ez kargatu maparen funtziorik

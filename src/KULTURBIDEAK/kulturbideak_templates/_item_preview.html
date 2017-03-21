@@ -9,13 +9,12 @@
 		<iframe src="{{momentukoItema.edm_isshownby}}" style="border: none;" width="100%" height="60%">
 			<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
-	</object>
+	</object>	 
+	{% elif momentukoItema.edm_isshownat %}
+	 <iframe id="preview_frame" style="width:100%;height:300px;" src="{{momentukoItema.edm_isshownat}}"></iframe>
 	 {% elif momentukoItema.ob_thumbnail %} 
 	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
-	 {% elif momentukoItema.edm_object %} 
-	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
-	 {% elif momentukoItema.edm_isshownat %}
-	 <iframe id="preview_frame" style="width:100%;height:300px;" src="{{momentukoItema.edm_isshownat}}"></iframe>
+	 
 	 {%else%}
 	<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 	{%endif%} 
@@ -23,4 +22,7 @@
 
 
 
-
+<!-- kendu egin dut
+ elif momentukoItema.edm_object 	
+	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">	 
+	 -->

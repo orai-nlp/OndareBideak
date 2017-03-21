@@ -30,6 +30,7 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     egunekoa = indexes.BooleanField(model_attr='egunekoa')
     aberastua = indexes.BooleanField(model_attr='aberastua')
     ob_language = indexes.CharField(model_attr='ob_language')
+    ob_thumbnail = indexes.CharField(model_attr='ob_thumbnail')
     #item_user_id = indexes.CharField(model_attr='fk_ob_user')
     item_user_id =indexes.EdgeNgramField(use_template=True,template_name='search/indexes/kulturbideak_app/item_user.txt')
     # We add this for autocomplete.
@@ -110,6 +111,7 @@ class pathIndex(indexes.SearchIndex, indexes.Indexable):
     path_creation_date  = indexes.DateField(model_attr='creation_date')
     path_proposatutakoa = indexes.BooleanField(model_attr='proposatutakoa')
     path_egunekoa = indexes.BooleanField(model_attr='egunekoa')
+    acces =  indexes.CharField(model_attr='acces')
     
     # LANGUAGE FIELDS:
     text_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_eu.txt')

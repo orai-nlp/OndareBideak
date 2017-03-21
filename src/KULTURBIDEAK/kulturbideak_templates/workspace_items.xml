@@ -2,13 +2,14 @@
 <answer>
 	{% for item in items %}
 		<item>
-	    	<id>{{ item.fk_item_id_id }}</id>
+	    	<id>{{ item.fk_item_id.id }}</id>
 	    	{% if item.dc_title %}
 	    	<titulua>{{ item.dc_title }}</titulua>
 	    	{%else%}
 	    	<titulua>none</titulua>
 	    	{%endif%}
 	    	<irudia>{{ item.paths_thumbnail }}</irudia>
+	    	<mota>{{ item.fk_item_id.edm_type }}</mota>
     	</item>
     {% endfor %}
 </answer>

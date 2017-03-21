@@ -430,6 +430,31 @@ class node (models.Model):
     geoloc_longitude = models.FloatField(null=True)
     geoloc_latitude = models.FloatField(null=True)
     
+
+
+
+#Description: ibilbide bat eguneratu bitartean node-en segurtasun kopia gordetzeko.    
+class node_tmp (models.Model):
+    fk_item_id = models.ForeignKey(item)
+    uri = models.CharField(max_length=3000) # Automatically generated uri at the time of creating a new record
+    fk_path_id = models.ForeignKey(path)
+    dc_source = models.CharField(max_length=1000)
+    dc_title = models.TextField()
+    dc_description = models.TextField()
+    type = models.CharField(max_length=1000) # For example: image, text etc.
+    paths_thumbnail = models.CharField(max_length=1000) # Filename of a thumbnail explicitly chosen for the  espective node. Not derived from the item.
+    paths_prev = models.CharField(max_length=1000) # komaz bereizitako lista bat  PATHS: Array of node URIs for nodes that are "before" the present node within a path. Introduced to support branching paths.
+    paths_next = models.CharField(max_length=1000) # komaz bereizitako lista bat  PATHS: Array of node URIs for nodes that are "before" the present node within a path. Introduced to support branching paths.
+    paths_start =models.BooleanField(default=False) # A boolean value that is set to true on any node where a path can start, i.e. where there are no node identifiers in paths_prev.
+    isdeleted =models.BooleanField(default=False) # A boolean value that indicates whether a node has been deleted. True =deleted, false = not deleted.    
+    tstamp = models.DateField(auto_now_add=True)
+    geoloc_longitude = models.FloatField(null=True)
+    geoloc_latitude = models.FloatField(null=True)
+    
+
+    
+
+    
 #Description: Rating scale for paths and other resources identifiable by a URI. 1 = dislikes, 2 =likes.
 #class rating_scale (models.Model):
     #id = models.IntegerField(primary_key=True)

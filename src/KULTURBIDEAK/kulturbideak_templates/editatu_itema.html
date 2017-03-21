@@ -15,9 +15,9 @@
     </div>
   <div class="col-md-3">
     <a class="img-responsive bilaketaEmaitza  thumbnail" href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" target="{% if item.edm_isshownby %}_blank{%endif%}" >
-      {% if item.edm_object %}
-      <!--<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">-->
-      <img  alt="{{item.dc_title}}" src="{{item.edm_object}}">
+      {% if item.ob_thumbnail %}
+      <!--<img  alt="{{item.dc_title}}" src="{% if item.ob_thumbnail %} {{item.ob_thumbnail}} {%else%} /uploads/NoIrudiItem.png {% endif %}">-->
+      <img  alt="{{item.dc_title}}" src="{{item.ob_thumbnail}}">
       {%elif item.edm_isshownby%}
      
      	 <iframe id="frame" src="{{item.edm_isshownby}}">
@@ -339,6 +339,10 @@
 		
 		<label for="id_mota">{% trans "Mota" %}:</label>
 		{{itema.mota}}
+		<br />
+		
+		<label for="id_mota"> Ondare-objektua:</label>
+		{{itema.objektua}}
 		<br />
 		
 		<label for="id_irudia">{% trans "Irudia" %}:</label>

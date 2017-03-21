@@ -311,6 +311,18 @@ function update(source) {
      return "/nabigatu?path_id="+path_id+"&item_id="+d.id; })
       .on('click', click);
       
+      
+   //Nodoari motaren arabera irudi bat gehitu.
+   nodeEnter.append("image")
+            .attr("id",function(d) { 
+                var z = "z"+d.id;
+                return z; })
+           	.attr("xlink:href", function(d) {if (d.mota=='IMAGE'){return "/uploads/glyphicons-12-camera.png";}else if(d.mota=='TEXT'){return "/uploads/glyphicons-37-file.png";}else if(d.mota=='SOUND'){return "/uploads/glyphicons-77-headphones.png";}else if(d.mota=='VIDEO'){return "/uploads/glyphicons-9-film.png";}else{return "";}})          	 
+            .attr("x", function(d) { return -50;})
+            .attr("y", function(d) { return -20;})
+            .attr("height", 15)
+            .attr("width", 15)
+      
 
   //Nodoen Gainean Sagua jarritakoan Nodoaren Titulu osoa erakutsiko da        
 	nodeEnter.append("svg:title").text(function(d) {

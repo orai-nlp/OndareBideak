@@ -219,17 +219,24 @@ function sortu(data){
         };
 	
     }*/
+    
     function dblclick(d){	
-	document.getElementById("narra_textarea").value = d.narrazioa;
+	//document.getElementById("narra_textarea").value = d.narrazioa;
+	//CKEDITOR.instances.narra_textarea.setData(d.narrazioa);
+	var narrazio_html = htmlDecode(d.narrazioa);
+   	//CKEDITOR.instances.narra_textarea.setHtml(narrazio_html);
+    CKEDITOR.instances.narra_textarea.setData(narrazio_html);
 	$("#narrazio_modal").modal('show');
 	$('#narrazio_modal').on('shown', function() {
             $("#narra_textarea").focus();
 	});
 	document.getElementById("narra_botoia").onclick = function () { 
-            d.narrazioa = document.getElementById("narra_textarea").value;                                                                 
+            //d.narrazioa = document.getElementById("narra_textarea").value;  
+            d.narrazioa = CKEDITOR.instances.narra_textarea.getData();                                                       
 	    $("#narrazio_modal").modal('hide');
         };
     }
+    
     
     //pan funtzioa:noaren posizioaren aldaketa
     function pan(unekoNodoa, direction) {

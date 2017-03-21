@@ -224,11 +224,14 @@ class ItemGehituForm(Form):
     # date : momentukoa
     gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
     herrialdea=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("herrialdea"),"type":"text", "class":"form-control"}))
-    data = DateField(required=False,widget=TextInput(attrs={"placeholder":_("data")}))
+    #data = DateField(required=False,widget=TextInput(attrs={"placeholder":_("data")}))
+    data = CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("data"),"type":"text", "class":"form-control"}))
     jatorrizkoa=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Jatorrizko Url-a"),"type":"text", "class":"form-control"}))
     eskubideak=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("Objektuaren eskubideen inguruko egin beharreko azalpenak edo kontutan hartu beharreko xehetasunak. Testu librea."),"type":"text", "class":"form-control"}))
     lizentzia=ChoiceField(required=False,  choices=LIZENTZIA_CHOICES)
     mota=ChoiceField(required=False,  choices=MOTA_CHOICES)
+    #text, audio, video, image
+    objektua= forms.FileField()
     irudia=ImageField(max_length=32,required=False)
     #hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
 
@@ -266,8 +269,11 @@ class ItemEditatuForm(Form):
     # date : momentukoa
     gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
     herrialdea=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("herrialdea"),"type":"text", "class":"form-control"}))
-    data = DateField(required=False,widget=TextInput(attrs={"placeholder":_("data")}))
+    #data = DateField(required=False,widget=TextInput(attrs={"placeholder":_("data")}))
+    data = CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("data"),"type":"text", "class":"form-control"}))    
     mota=ChoiceField(required=False,  choices=MOTA_CHOICES)
+    #text, audio, video, image
+    objektua= forms.FileField()
     jatorrizkoa=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Jatorrizko Url-a"),"type":"text", "class":"form-control"}))  
     eskubideak=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("Objektuaren eskubideen inguruko egin beharreko azalpenak edo kontutan hartu beharreko xehetasunak. Testu librea."),"type":"text", "class":"form-control"}))
     lizentzia=ChoiceField(required=False,  choices=LIZENTZIA_CHOICES)

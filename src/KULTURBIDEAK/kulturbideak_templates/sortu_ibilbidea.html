@@ -27,14 +27,7 @@
 </div>
 <a class="asistentea" data-toggle="modal" data-target="#modalNolaSortu"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Ibilbidea sortzeko pausuak ikusi nahi dituzu?</a>
 
-<!-- <div id="narrazioa">
-	<p id="narra_p" class="info"></p>
-	<textarea id="narra_textarea" name="narra_textarea" maxlength="5000" cols="81" rows="5" disabled="true"></textarea>
-	
-	<button id="narra_botoia" class="btn btn-info" name="narra_botoia" disabled="true"><span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span> Gorde Narrazioa</button>
 
-
-</div>-->
  
  <div id="path_boxes"></div>
 <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3ondarebideaksortu.js"></script>
@@ -86,6 +79,19 @@
 								  </select>
 								   </div>
                             </div>
+                            <div class="form-group">
+                            	<label for="exampleInputAcces1">Edizio baimenak</label><br/><br/>
+                            	<div class="input-group">
+                            	 <select id="acces" name="acces">
+  									<option value="1" selected>Ez publikatu oraindik</option>
+  									<option value="2">Publikatu. Zuk bakarrik editagarria</option>
+  									<option value="3">Publikatu. Hornitzaileek bakarrik editagarria</option>
+  									<option value="4">Publikatu. Guztiek editagarria</option>
+  
+								  </select>
+								   </div>
+                            </div>
+                            
                             <br/>
                             <form id="form2" enctype="multipart/form-data" role="form">
                             <span class="btn btn-info fileinput-button">
@@ -129,6 +135,13 @@
             <div id="narrazioa">
 	            <p id="narra_p" class="info"></p>
               <textarea id="narra_textarea" name="narra_textarea" maxlength="5000" cols="75" rows="5"></textarea>
+            
+            <script type="text/javascript" >
+      		  // Replace the <textarea id="narra_textarea"> with a CKEditor
+       			 // instance, using default configuration.
+       			 CKEDITOR.replace( 'narra_textarea' );
+    		</script>
+            
             </div>
 
 	        <div class="modal-footer">

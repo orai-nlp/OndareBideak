@@ -199,6 +199,7 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
         }
 
         var narrazioa="{{node.dc_description|convert_newline2br}}";
+		
 	var aita_id="{{node.paths_prev}}";
 
   
@@ -258,7 +259,19 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
   									<option value="en">en</option>
   
 								  </select>
-							</div>
+								</div>
+                            </div>
+                            <div class="form-group">
+                            	<label for="exampleInputAcces1">Edizio baimenak</label><br/><br/>
+                            	<div class="input-group">
+                            	 <select id="acces" name="acces">
+  									<option value="1" selected>Ez publikatu oraindik</option>
+  									<option value="2">Publikatu. Zuk bakarrik editagarria</option>
+  									<option value="3">Publikatu. Hornitzaileek bakarrik editagarria</option>
+  									<option value="4">Publikatu. Guztiek editagarria</option>
+  
+								  </select>
+								   </div>
                             </div>
                             <br/>
                             <form id="formEguneratu" enctype="multipart/form-data" role="form">
@@ -302,7 +315,14 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
           <div class="panel-body">
 	    <div id="narrazioa">
 	      <p id="narra_p" class="info"></p>
-              <textarea id="narra_textarea" name="narra_textarea" maxlength="5000" cols="75" rows="5"></textarea>
+            <textarea id="narra_textarea" name="narra_textarea" maxlength="5000" cols="75" rows="5"></textarea>
+	   
+            <script type="text/javascript" >
+      		  // Replace the <textarea id="narra_textarea"> with a CKEditor
+       			 // instance, using default configuration.
+       			 CKEDITOR.replace( 'narra_textarea' );
+    		</script>
+	    
 	    </div>
 
 	    <div class="modal-footer">

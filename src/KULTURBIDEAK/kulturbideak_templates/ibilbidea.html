@@ -199,7 +199,7 @@
 					</script>
 					{% for node in path_nodeak%}
 					<script type="text/javascript">
-						var id = "{{node.fk_item_id_id}}";
+						var id = "{{node.fk_item_id.id}}"; //??node.fk_item_id_id
 						//path_node[0];
 						var titulua = "{{node.dc_title}}";
 						//path_node[1];
@@ -214,11 +214,13 @@
 						if (aita_id == "") {
 							aita_id = 0;
 						}
+						var mota = "{{node.fk_item_id.edm_type}}";
 						var obj = {
 							id : id,
 							name : titulua,
 							irudia : irudia,
-							parent : aita_id
+							parent : aita_id,
+							mota : mota
 						};
 						ibilbide_data.push(obj);
 

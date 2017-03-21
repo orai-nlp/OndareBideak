@@ -18,8 +18,21 @@
 
 				<div class="">
 					<a class="thumbnail bilaketaEmaitza"  href="{{BASE_URL}}/erakutsi_item?id={{antzekoa.item_id}}" >
-						{% if antzekoa.edm_object %}
-							<img width="90%" alt="{{antzekoa.dc_title}}" src="{{ antzekoa.edm_object|clean_http_prefix }}">
+						
+						{% if antzekoa.ob_thumbnail %}
+						
+							{% if antzekoa.ob_thumbnail|urlpath_exists == 'True' %}
+						  		<img width="90%" alt="{{antzekoa.dc_title}}" src="{{ antzekoa.ob_thumbnail|clean_http_prefix }}">
+						  	{%else%}
+						  		<img  alt="{{antzekoa.dc_title}}" src="/uploads/NoIrudiItem.png">
+						  	{%endif%}
+						{% elif antzekoa.edm_object %}
+							{% if antzekoa.edm_object|urlpath_exists == 'True' %}
+								<img width="90%" alt="{{antzekoa.dc_title}}" src="{{ antzekoa.edm_object|clean_http_prefix }}">
+							{%else%}
+						  		<img  alt="{{antzekoa.dc_title}}" src="/uploads/NoIrudiItem.png">
+						  	{%endif%}
+						
 						{% elif antzekoa.edm_isshownat %}
 						<iframe id="preview_frame" style="width:100%;height:300px;" src="{{antzekoa.edm_isshownat}}"></iframe>
 						{%else%}

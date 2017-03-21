@@ -36,6 +36,30 @@ function readURL(input) {
 }
 
 /////////////////////////////////////////////////////////////
+//function to unescape html entities
+function htmlDecode(input){
+  var e = document.createElement('div');
+  var pre_cleaning = input.replace(/&amp;/g,"&").replace(/&amp;/g,"&");
+  e.innerHTML = pre_cleaning;   
+  var result ="";
+  if (e.childNodes.length === 0)
+  {
+      return result;
+  }
+  else if (e.childNodes[0].nodeValue)
+  {
+      //console.log("arrunta "+e.childNodes[0].nodeValue);
+      result = e.childNodes[0].nodeValue;      
+      return result.replace(/http:\/\/www.http\/\//, "http://");
+  }
+  else
+  {
+      //console.log("aldaketarik ez");
+      return input;
+  }
+}
+
+
 
 function load_errorlist_changes(){
     $(document).ready(function(){
@@ -836,8 +860,12 @@ function save_title(){
     });
 }
 function save_summary(){
-	var deskribapena = $("#id_desk").val();
-   
+	
+	//Lehen, textarea normalakin horrela egiten zen
+	//var deskribapena = $("#id_desk").val();
+	 
+   //CKEDITOR-aren textarearen balioa hartzeko
+    var deskribapena =CKEDITOR.instances.id_desk.getData();
    
     $.ajax({
           url: '/ajax_edit_deskribapena',
@@ -848,11 +876,17 @@ function save_summary(){
             var response=data;
            
             if (response != ""){
-            	$('#id_desk').text(data); 
-            	$('#id_summary').text(data); 
+            	
+            	
+            	//var data_html = htmlDecode(data);
+   				//CKEDITOR.instances.id_desk.setData(data_html);
+            	
+            	// $('#id_desk').text(data); 
+            	//$('#id_summary').text(data); 
             	         
                 //remove_error_messages("#area_modal");
                 $("#summary_modal").modal('hide');
+                location.reload(); //Aldaketak ikusteko
                 //$("#id_arloa").html(response); //BEGIRATU HAU, html kodea ordezkatzen du
                 }
             else{
