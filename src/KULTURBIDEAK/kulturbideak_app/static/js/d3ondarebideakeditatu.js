@@ -222,9 +222,7 @@ function sortu(data){
     
     function dblclick(d){	
 	//document.getElementById("narra_textarea").value = d.narrazioa;
-	//CKEDITOR.instances.narra_textarea.setData(d.narrazioa);
 	var narrazio_html = htmlDecode(d.narrazioa);
-   	//CKEDITOR.instances.narra_textarea.setHtml(narrazio_html);
     CKEDITOR.instances.narra_textarea.setData(narrazio_html);
 	$("#narrazio_modal").modal('show');
 	$('#narrazio_modal').on('shown', function() {
@@ -557,7 +555,7 @@ function sortu(data){
                 var z = "z"+d.id;
                 return z; })
             .attr("xlink:href","http://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png")
-            .attr("x", function(d) { return -40;})
+            .attr("x", function(d) { return -45;})
             .attr("y", function(d) { return -20;})
             .attr("height", 15)
             .attr("width", 15)
@@ -584,7 +582,19 @@ function sortu(data){
                         alert("Nodoa ez da ezabatu.");
                     }            
                 }
-            });   
+            }); 
+            
+          //Nodoari motaren arabera irudi bat gehitu.
+   		
+   		nodeEnter.append("image")
+            .attr("id",function(d) { 
+                var z = "z"+d.id;
+                return z; })
+           	.attr("xlink:href", function(d) {if (d.mota=='IMAGE'){return "/uploads/glyphicons-12-camera.png";}else if(d.mota=='TEXT'){return "/uploads/glyphicons-37-file.png";}else if(d.mota=='SOUND'){return "/uploads/glyphicons-77-headphones.png";}else if(d.mota=='VIDEO'){return "/uploads/glyphicons-9-film.png";}else{return "";}})          	 
+            .attr("x", function(d) { return 25;})
+            .attr("y", function(d) { return -35;})
+            .attr("height", 15)
+            .attr("width", 15)  
 	
 	  	//Nodoen Gainean Sagua jarritakoan Nodoaren Titulu osoa erakutsiko da        
 		nodeEnter.append("svg:title").text(function(d) {

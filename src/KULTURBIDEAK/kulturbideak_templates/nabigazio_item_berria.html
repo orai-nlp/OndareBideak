@@ -29,7 +29,15 @@
   var isTTSReading = false;
   
   //"Entzun Orria" sakatzerakoan narrazio osoa irakur dezan erabiltzen da
-  var desk_osoa = "{{momentukoNodea.dc_description }}";
+  var desk_osoa = "{{momentukoNodea.dc_description |lerroJauziakKendu| format_html | format_html | replace_quotes| safe }}"
+  			.replace(/<\/?[^>]+(>|$)/g,"");  
+  if (!desk_osoa|| desk_osoa === ""){
+	  desk_osoa ="{{momentukoNodea.dc_description |lerroJauziakKendu | safe}}";
+  }
+
+  // |safe|htmlEtiketakGarbitu
+  //alert(desk_osoa);
+  
   
   //tts_berezia.js-ek erabiltzen du ze hizkuntzatan irakurri jakiteko, bukaeran hizkuntza: aldagaiean
   var path_hizkuntza="{{momentukoPatha.language}}";
@@ -255,7 +263,8 @@
 				<div class="">
 					<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} ({{itemPaths.count}})</h3>
 					{% for node in itemPaths %}
-					{% if forloop.counter < 4 %}
+					{% if forloop.counter < 4 and node.fk_path_id.acces != "0" %}
+					
 					<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}"> <span class="glyphicon glyphicon-map-marker" aria-hidden="true"> </span>&nbsp;{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
 					{%endif%}
 					{%endfor%}
@@ -323,10 +332,12 @@
 
 					<div class="clearfix"></div>
 					{% if autoplay == 1 %}
-						<span id="item-narrazioa" class="comment item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+						<span id="item-narrazioa" class="comment item-narrazio">{{momentukoNodea.dc_description | format_html| format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
 					
 					{% else %}
-						<span  id="item-narrazioa" class="comment more item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+				
+						<!--<span  id="item-narrazioa" class="comment more item-narrazio">{{momentukoNodea.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>-->
+						<span  id="item-narrazioa" class="comment more item-narrazio">{{momentukoNodea.dc_description | format_html |format_html| safe}}</span>
 					
 					{%endif%}
 					
@@ -352,8 +363,6 @@
 			<!-- TESTUA BADA -->
 				{% if momentukoItema.edm_type == "TEXT" %}
 					
-					<!-- eta  objektua baldin badu-->
-					{%if momentukoItema.edm_object%}
 					
 						<ul class="nav  navbar-default">
 							<li class="ezkerra">
@@ -361,20 +370,9 @@
 								{% trans "Testua" %}:
 							</li>
 						</ul>
-	
-						<a id="item_img" class="img-responsive nabigItem thumbnail" href="{{momentukoItema.edm_object }}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
-     					{% if '.pdf' in momentukoItema.edm_object %}
-							<object data="{{momentukoItema.edm_object}}" type="application/pdf" width="100%" height="60%">
-							<iframe src="{{momentukoItema.edm_object}}" style="border: none;" width="100%" height="60%">
-							<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
-							</iframe>		
-							</object>
-						</a>
-						{%endif%}
-					
-					{%else%}
+
 						{% include "_item_preview.html" %}
-					{%endif%}
+					
 				{%endif%}
 				
 			
@@ -625,9 +623,12 @@
                 //path_node[0];
                 var titulua = htmlDecode("{{node.dc_title}}");
                 //path_node[1];
-                var irudia = htmlDecode("{{node.paths_thumbnail}}");
-                //path_node[2];
-                if (irudia == " ") {
+            	var irudia = htmlDecode("{{node.fk_item_id.ob_thumbnail}}");												
+				if (!irudia || irudia === "") {
+					irudia = htmlDecode("{{node.fk_item_id.edm_object}}");
+				}
+				//path_node[2];
+                if (!irudia || irudia === "") {
                     irudia = "/uploads/NoIrudiItem.png";
                 }
 
@@ -636,12 +637,16 @@
                 if (aita_id == "") {
                     aita_id = 0;
                 }
-                var obj = {
-                    id : id,
-                    name : titulua,
-                    irudia : irudia,
-                    parent : aita_id
-                };
+                var mota = "{{node.fk_item_id.edm_type}}";
+				
+				var obj = {
+					id : id,
+					name : titulua,
+					irudia : irudia,
+					parent : aita_id,
+					mota : mota
+				};
+                
                 ibilbide_data.push(obj);
 
 			</script>

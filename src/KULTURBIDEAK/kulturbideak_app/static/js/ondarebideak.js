@@ -92,6 +92,28 @@ function tituluaGarbitu (titulua,moztu){
 
 }
 
+function getBrowserInfo()
+{
+	var ua = navigator.userAgent, tem,
+	M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	if(/trident/i.test(M[1]))
+	{
+		tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+		return 'IE '+(tem[1] || '');
+	}
+	if(M[1]=== 'Chrome')
+	{
+		tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+		if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+	}
+	M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+	if((tem= ua.match(/version\/(\d+)/i))!= null) 
+		M.splice(1, 1, tem[1]);
+	return M.join(' ');
+}
+
+
+
 /***************************
 *    End of Utils
 ****************************/
@@ -611,6 +633,7 @@ function add_me_to_the_SVG(element,item_id){
 	
 //if (document.getElementById("path_boxes").children[0].children[0].innerHTML == "Created with Raphaël 2.1.2"){
     if (document.getElementById("path_boxes").children[0].innerHTML == "emptySVG"){
+
 	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
 	if (data.length == 0){
 			var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://ondarebideak.dss2016.eu/uploads/festivalCineDonostia.jpeg", "parent":'' };
@@ -618,18 +641,71 @@ function add_me_to_the_SVG(element,item_id){
 	}
 	var id = element.id.substring(7,element.id.length);
 	var irudia = element.children[3].src;// ws_box-ei type irudia gehitu aurretik children[2]
-	var titulua = element.children[4].firstChild.data; // ws_box-ei type irudia gehitu aurretik children[3]
+	var titulua = element.children[4].firstChild.data; // ws_box-ei motaren irudia gehitu aurretik children[3]
+	var mota = element.children[1].firstChild.attributes[0].nodeValue
+	//glyphicon glyphicon-camera  		--> IMAGE
+	//glyphicon glyphicon-file    		--> TEXT
+	//glyphicon glyphicon-headphones    --> SOUND
+	//glyphicon glyphicon-film		    --> VIDEO
+	if(mota == 'glyphicon glyphicon-camera')
+	{
+		mota='IMAGE';
+	}
+	else if(mota == 'glyphicon glyphicon-file')
+	{
+		mota='TEXT';
+	}
+	else if(mota == 'glyphicon glyphicon-headphones')
+	{
+		mota='SOUND';
+	}
+	else if(mota == 'glyphicon glyphicon-film')
+	{
+		mota='VIDEO';
+	}
+	else
+	{
+		mota='';
+	}
+    
 	//var svg = document.getElementById("path_boxes").children;
-	var obj={id: id, name: titulua , irudia: irudia, parent:0};
+	var obj={id: id, name: titulua , irudia: irudia, parent:0, mota: mota};
 	data.push(obj);
 	sortu(data);//funtzio hau d3ondarebideaksortu.js barruan dago.
 	remove_me(element,item_id);
 } else {
+	
     var id = element.id.substring(7,element.id.length);
-	var irudia = element.children[3].src;// ws_box-ei type irudia gehitu aurretik children[2]
+	var irudia = element.children[3].src;// ws_box-ei motaren irudia gehitu aurretik children[2]
 	var titulua = element.children[4].firstChild.data;//children[3]
+	var mota = element.children[1].firstChild.attributes[0].nodeValue
+	//glyphicon glyphicon-camera  		--> IMAGE
+	//glyphicon glyphicon-file    		--> TEXT
+	//glyphicon glyphicon-headphones    --> SOUND
+	//glyphicon glyphicon-film		    --> VIDEO
+	if(mota == 'glyphicon glyphicon-camera')
+	{
+		mota='IMAGE';
+	}
+	else if(mota == 'glyphicon glyphicon-file')
+	{
+		mota='TEXT';
+	}
+	else if(mota == 'glyphicon glyphicon-headphones')
+	{
+		mota='SOUND';
+	}
+	else if(mota == 'glyphicon glyphicon-film')
+	{
+		mota='VIDEO';
+	}
+	else
+	{
+		mota='';
+	}
+	
 	//var svg = document.getElementById("path_boxes").children;
-	var obj={id: id, name: titulua , irudia: irudia, parent:0};
+	var obj={id: id, name: titulua , irudia: irudia, parent:0, mota: mota};
 	data.push(obj);
 	sortu(data);
 	remove_me(element,item_id);
@@ -976,23 +1052,77 @@ $('#form').submit(function(e) {
    
 });
 */
+
+
+
+//Ibilbidearen edizio aukerak AJAX bidez aldatzen ditu datu-basean
 $(document).ready(function(){
+	
 $('#pathEdizioAukerakEguneratu').submit(function(e) {
-	var pathId = $(this).data('id');
-	var pathId = $(this).attr("#data-id");
-	alert(pathId);
-	$('#modalEdizioAukerak').modal('hide');
- });
-
-
-});
-/*
-$("#accesAldatu").live('click',function(){
  
-  alert($(this).attr("#data-id"));
+
+
+   var path_id = document.getElementById("pathId").value;
+   var edizioZbk = document.getElementById("acces").value;
+   
   
+   
+   var form = $(this);      
+   var formdata = false;
+   if(window.FormData){
+     formdata = new FormData(form[0]);
+                   
+     }
+	
+   var formAction = form.attr('action');
+
+                $.ajax({
+                    type        : 'POST',
+                    url         : '../ajax_path_edizio_aukerak_aldatu',
+                    cache       : false,
+                    data        : formdata ? formdata : form.serialize(),
+                    contentType : false,
+                    processData : false,
+					dataType	: 'html',
+					
+                    success: function(data,status,xhr)  {
+                        if(response != 'error') {
+                           
+                            var response = $(data+" p").text();
+                         
+                           
+                           $('#modalEdizioAukerak').modal('hide');
+                        } else {
+                            $('#messages').addClass('alert alert-danger').text(response);
+                        }
+                    }
+                });
+                e.preventDefault();
+           
+   
+   
+  
+   
+   
+   
+   
+
+  
+ });
+   
 });
-*/
+
+
+
+
+$(document).ready(function(){
+   $(".announce").click(function(){ // Click to only happen on announce links
+   	 
+     $("#pathId").val($(this).data('id'));
+     $('#modalEdizioAukerak').modal('show');
+  
+   });
+});
 
 $(document).ready(function(){
 $('#form2').submit(function(e) {
@@ -1022,6 +1152,9 @@ $('#form2').submit(function(e) {
                             var response = $(data+" p").text();
                             //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK
                            create_path_on_db(response);
+                           //Mezua idatzi pantailan
+                           $('.info').prepend("<div id='interaction_message' class='alert alert-info'> Ibilbidea ongi sortu da</div>");
+                          	
                            
                            //$('#myModal').modal('hide');
                         } else {
@@ -1065,8 +1198,10 @@ $('#formEguneratu').submit(function(e) {
                             // OP requested to close the modal
                             var response = $(data+" p").text();
                             //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK,HIZK
-                           update_path_on_db(path_id,response);
-                           
+                           update_path_on_db(path_id,response);                           
+                          	$('.info').prepend("<div id='interaction_message' class='alert alert-info'> Ibilbidea ongi eguneratu da</div>");
+                          	//window.location.reload(true);
+                          	document.getElementById("create_path_button").setAttribute("disabled","disabled");
                            //$('#myModal').modal('hide');
                         } else {
                             $('#messages').addClass('alert alert-danger').text(response);
@@ -1291,7 +1426,7 @@ function create_path_node_answer(xmlHttp)
                	$('#modalwindow').modal('hide'); //JQUERY      	
             	//pantaila nagusiko botoia desgaitu
             	document.getElementById("create_path_button").setAttribute("disabled","disabled");
-            	//HEMEN node_tmp-ko tuplak ezbatu beharko lirateke
+               	//HEMEN node_tmp-ko tuplak ezbatu beharko lirateke
             	
             	
 			}
@@ -2857,3 +2992,64 @@ setInterval(function(){blink()}, 1000);
     	//.fadeTo(100, 0.1).fadeTo(200, 1.0);
         $("#div_you_want_to_blink").fadeTo(1000, 0.5).fadeTo(2000, 1.0);
     }
+    
+    
+/**
+ * ADMIN : berria edition modal opening
+ */
+function load_berria_form(id) {
+    // load from AJAX
+    $.ajax({
+        method : 'GET',
+        url : '/berria_form',
+        dataType : 'html',
+        data : {
+            id : id
+        }
+    }).done(function(data) {
+        $('.erabmodal-container').parent().html(data);
+    });
+}    
+
+
+/**
+ * ADMIN : user edition modal opening
+ */
+function load_erab_form(id) {
+    // load from AJAX
+    $.ajax({
+        method : 'GET',
+        url : '/erab_form',
+        dataType : 'html',
+        data : {
+            id : id
+        }
+    }).done(function(data) {
+        $('.erabmodal-container').parent().html(data);
+    });
+}    
+    
+/**
+ * ADMIN : user password reseting opening
+ */
+function load_changePass_confirmation(id) {
+ 	
+ 	var conf = confirm("Ziur zaude erabiltzaile honen pasahitza berrasieratu nahi duzula?");
+    if(conf == true){
+        alert("Ados...pasahitz berria sortuko da eta erabiltzaileari postaz abisatuko zaio ");
+        var url = 'admin_reset_user_password?id='+id;   	
+    	window.location.href=url;
+    }
+}  
+
+/**
+*ADMIN: aldatu hornitzailearen eguneko egoera
+*/
+
+function aldatu_hornitzaile_egoera(id)
+{
+	var url = 'admin_eguneko_hornitzaileak_kudeatu?id='+id;   	
+    window.location.href=url;
+}
+
+

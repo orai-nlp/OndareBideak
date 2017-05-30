@@ -3,26 +3,97 @@
 {% load qr_tags %}
 {% load tags%}
 
-<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >
-     {% if '.pdf' in momentukoItema.edm_isshownby %}
-	<object data="{{momentukoItema.edm_isshownby}}" type="application/pdf" width="100%" height="60%">
-		<iframe src="{{momentukoItema.edm_isshownby}}" style="border: none;" width="100%" height="60%">
-			<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
+{%if momentukoItema.edm_object%}
+	{% if '.pdf' in momentukoItema.edm_object %}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{{momentukoItema.edm_object }}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" > 					
+		<object data="{{momentukoItema.edm_object}}" type="application/pdf" width="100%" height="60%">
+		<iframe id="kk" src="{{momentukoItema.edm_object|proxyPassHttp }}" style="border: none;" width="100%" height="60%">
+		<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
-	</object>	 
-	{% elif momentukoItema.edm_isshownat %}
-	 <iframe id="preview_frame" style="width:100%;height:300px;" src="{{momentukoItema.edm_isshownat}}"></iframe>
-	 {% elif momentukoItema.ob_thumbnail %} 
-	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
-	 
-	 {%else%}
-	<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
-	{%endif%} 
-</a>
+		</object>
+		</a>
+	{% elif '.html' in momentukoItema.edm_object %}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		</a>
+	{%else%}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{{momentukoItema.edm_object }}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" > 					
+		<object data="{{momentukoItema.edm_object}}" type="application/pdf" width="100%" height="60%">
+		<iframe id="kk" src="{{momentukoItema.edm_object|proxyPassHttp }}" style="border: none;" width="100%" height="60%">
+		<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
+		</iframe>		
+		</object>
+		</a>
+		<!--ALA?-->
+		<!--
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		</a>
+		-->
+	{%endif%}
+
+{%elif momentukoItema.edm_isshownby%}		
+
+	{% if '.pdf' in momentukoItema.edm_isshownby %}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{{momentukoItema.edm_isshownby }}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" > 					
+		<object data="{{momentukoItema.edm_isshownby}}" type="application/pdf" width="100%" height="60%">
+		<iframe id="kk" src="{{momentukoItema.edm_isshownby|proxyPassHttp }}" style="border: none;" width="100%" height="60%">
+		<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
+		</iframe>		
+		</object>
+		</a>
+	{% elif '.html' in momentukoItema.edm_isshownby %}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		</a>
+	{%else%}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{{momentukoItema.edm_isshownby }}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" > 					
+		<object data="{{momentukoItema.edm_isshownby}}" type="application/pdf" width="100%" height="60%">
+		<iframe id="kk" src="{{momentukoItema.edm_isshownby|proxyPassHttp }}" style="border: none;" width="100%" height="60%">
+		<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
+		</iframe>		
+		</object>
+		</a>
+		<!--ALA?-->
+		<!--
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		</a>
+		-->
+	{%endif%}
+	
+{%elif momentukoItema.edm_isshownat%}	
 
 
-
-<!-- kendu egin dut
- elif momentukoItema.edm_object 	
-	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">	 
-	 -->
+	{% if '.pdf' in momentukoItema.edm_isshownat %}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{{momentukoItema.edm_isshownat }}" target="{% if momentukoItema.edm_isshownat %}_blank{%endif%}" > 					
+		<object data="{{momentukoItema.edm_isshownat}}" type="application/pdf" width="100%" height="60%">
+		<iframe id="kk" src="{{momentukoItema.edm_isshownat|proxyPassHttp }}" style="border: none;" width="100%" height="60%">
+		<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
+		</iframe>		
+		</object>
+		</a>
+	{% elif '.html' in momentukoItema.edm_isshownat %}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_isshownat %}{{momentukoItema.edm_isshownat}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownat %}_blank{%endif%}" >
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		</a>
+	{%else%}
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{{momentukoItema.edm_isshownat }}" target="{% if momentukoItema.edm_isshownat %}_blank{%endif%}" > 					
+		<object data="{{momentukoItema.edm_isshownat}}" type="application/pdf" width="100%" height="60%">
+		<iframe id="kk" src="{{momentukoItema.edm_isshownat|proxyPassHttp }}" style="border: none;" width="100%" height="60%">
+		<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
+		</iframe>		
+		</object>
+		</a>
+		<!--ALA?-->
+		<!--
+		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_isshownat %}{{momentukoItema.edm_isshownat}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownat %}_blank{%endif%}" >
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		</a>
+		-->
+	{%endif%}
+{%else%}
+	<a id="item_img" class="img-responsive nabigItem thumbnail" href="# " target="" >
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="/uploads/NoIrudiItem.png">		
+   	</a>
+{%endif%}

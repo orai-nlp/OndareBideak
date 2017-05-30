@@ -4,13 +4,13 @@ from django.contrib.auth import login as auth_login
 from django.template import RequestContext, loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, render, redirect
-from django.forms.formsets import formset_factory
 from django.utils.translation import ugettext as _,get_language
 from itertools import islice, chain
 from django.utils import simplejson
 from django.template import Context, Template
 from django.utils import timezone
 from django.core.mail import send_mail
+from django.http import Http404
 
 #from utils import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -70,6 +70,8 @@ from oaiharvestandstore_django import oaiharveststore
 import re
 import random
 
+
+
 nodeLoadError=""
 
 def randomword(length):
@@ -96,7 +98,6 @@ def get_tree(el_node):
 
 def hasiera(request):
      
-   
     #Kontadoreko kopuruak lortu datu-basetik
     #Itemak
     itemKop = item.objects.count()
@@ -107,9 +108,9 @@ def hasiera(request):
         
     egunekoItem = egunekoItem[0] 
     #Ibilbideak
-    ibilbideKop = path.objects.count()   
+    ibilbideKop = path.objects.filter(acces__in=("2","3","4")).count()   
     #Karruselerako Ibilbideak
-    ibilbideak = path.objects.order_by('?')[:5]
+    ibilbideak = path.objects.order_by('?').exclude(acces=1)[:5]
     #eguneko patha
     egunekoPath = path.objects.filter(egunekoa=1).order_by('?')[:1]
     ## eguneko path-ik ez badago hartu karruseleko lehena
@@ -126,10 +127,14 @@ def hasiera(request):
     #egunekoHornitzaile = hornitzailea.objects.order_by('?')[:1]
     #egunekoHornitzaile = egunekoHornitzaile[0];
     egunekoHornitzaile = hornitzailea.objects.get(fk_user__id=58)
+    #eguneko hornitzaileen artetik bat ausaz hartu
+    egunekoHornitzaile = hornitzailea.objects.filter(egunekoa=1).order_by('?')[0]
     #Erabiltzaileak
     erabiltzaileKop = usr.objects.count()
+    #Hasierako pantailan erakutsi behar den berria hartu datu-basetik
+    erakBerria=berria.objects.get(erakutsi=1)
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    return render_to_response('index.html',{'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop},context_instance=RequestContext(request))
+    return render_to_response('index.html',{'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'erakBerria':erakBerria},context_instance=RequestContext(request))
 
  
 
@@ -151,7 +156,7 @@ def hasiera_old(request):
    
 def itemak_hasiera(request):
     
-    print "itemak_hasiera"
+    #print "itemak_hasiera"
     #DB-an GALDERA EGIN EGUNEKO/RANDOM/AZKENAK ITEMAK LORTZEKO 
     #Itemen hasierako pantailan erakutsi behar diren Itemen informazioa datu-basetik lortu eta pasa
     '''
@@ -215,7 +220,7 @@ def itemak_hasiera(request):
     #ALDAKETA-CROSS-SEARCH
     
     #Datu-baseko hornitzaileak lortu                                                                                             
-    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
     #Datu-baseko motak lortu                                                                                                     
@@ -223,8 +228,8 @@ def itemak_hasiera(request):
     db_motak_text ="_".join(db_motak)
 
     #Datu-baseko lizentziak lortu                                                                                                
-    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-    db_lizentziak_text ="_".join(db_lizentziak)
+    db_lizentziak=lizentzia.objects.all()
+    db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
 
     non="" #??fitxaE
     
@@ -346,14 +351,286 @@ def eguneko_ibilbideak(request):
     return render_to_response('eguneko_ibilbideak.html',{'ibilbideak':ibilbideak},context_instance=RequestContext(request))
 
 
+def admin_hornitzaile_fitxa_editatu(request):
+    
+    non="fitxaE"
+    erabId=request.GET.get('erabId')
+    user_id=int(erabId)
+    hornitzaile =hornitzailea.objects.get(fk_user__id=user_id)
+    return render_to_response('hornitzaile_fitxa_editatu.html',{'non':non,"hornitzailea":hornitzaile},context_instance=RequestContext(request))
+
+
 def hornitzaile_fitxa_editatu(request):
     
-        #INPLEMENTATU
+    #INPLEMENTATU
     non="fitxaE"
     user_id=request.user.id
     hornitzaile =hornitzailea.objects.get(fk_user__id=user_id)
     return render_to_response('hornitzaile_fitxa_editatu.html',{'non':non,"hornitzailea":hornitzaile},context_instance=RequestContext(request))
     #return render_to_response('proposal.html',{'non':non,"hornitzailea":hornitzaile},context_instance=RequestContext(request))
+
+
+
+def get_user(request):
+    """Get user from DB to edit in user form"""
+    userid = request.GET.get('id')
+    user = User.objects.get(id=int(userid))
+    user_form = UserForm(initial={"userid":userid,"izena":user.first_name,"abizena":user.last_name,"username":user.username,"posta":user.email})
+    return render_to_response('user_form.html', {'user_form':user_form}, context_instance = RequestContext(request))
+
+
+
+def admin_reset_user_password(request):
+    
+    userid = request.GET.get('id')
+    user = User.objects.get(id=int(userid))
+    posta=user.email
+    
+ 	#Ausazko pasahitza sortu 
+ 	#datu-basean aldatu
+    pasahitzBerria=randomword(8)  
+    user.set_password(pasahitzBerria)                   
+    user.save()
+ 	
+ 	#erabiltzaileari eta guri mezua bidali
+    mezua=_("Erabiltzaile honen pasahitza berrasieratu da:")+str(user.username)+"\n"+_("Erabiltzaileak aldatu bitartean pasahitza berria hau da:")+str(pasahitzBerria)
+    send_mail('OndareBideak - Erabiltzaile baten pasahitza berrasieratu da', mezua, 'ondarebideak@elhuyar.eus',['ondarebideak@elhuyar.eus'], fail_silently=False)   
+    mezua_erab=_("Zure pasahitza aldatu da.")+"\n"+_("Hau da zure pasahitz berria:")+"\n"+str(pasahitzBerria)+"\n"+_("Ahalik eta azkarren aldatzea gomendatzen dizugu.")
+    send_mail('OndareBideak - zure pasahitza aldatu da', mezua_erab, posta,[posta], fail_silently=False)
+       
+    hornitzaileak = []
+    hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3)
+    hornitzaileak_id = []
+    hornitzaileak_id = [x.fk_user.id for x in hornitzaileak]
+    erabiltzaileak = User.objects.all()
+    user_form = UserForm()
+    non='fitxaE'
+    return render_to_response('admin_erabiltzaileak_kudeatu.html',{'non':non,'erabiltzaileak':erabiltzaileak,'hornitzaileak':hornitzaileak,'hornitzaileak_id':hornitzaileak_id,'user_form':user_form},context_instance=RequestContext(request))
+	
+   
+
+
+def admin_erabiltzaileak_kudeatu(request):
+
+    if 'save_user' in request.POST:
+        user_form = UserForm(request.POST)
+        if user_form.is_valid():
+            cd = user_form.cleaned_data   
+            user = User.objects.get(id=int(cd.get('userid')))
+            user.first_name = cd.get("izena")
+            user.last_name = cd.get("abizena")
+            user.username = cd.get("username")
+            user.email= cd.get("posta") 
+            user.save()
+            
+        else:
+    		print "admin_erabiltzaileak_kudeatu: form is not valid"
+    		#raise Http404 
+    
+    hornitzaileak = []
+    hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3)
+    hornitzaileak_id = []
+    hornitzaileak_id = [x.fk_user.id for x in hornitzaileak]
+    
+    erabiltzaileak = User.objects.all()
+    user_form = UserForm()
+	
+    non='fitxaE'
+    return render_to_response('admin_erabiltzaileak_kudeatu.html',{'non':non,'erabiltzaileak':erabiltzaileak,'hornitzaileak':hornitzaileak,'hornitzaileak_id':hornitzaileak_id,'user_form':user_form},context_instance=RequestContext(request))
+
+
+def get_berria(request):
+	"""Get berria from DB to edit in user form"""
+	berriaid = request.GET.get('id')
+	berri = berria.objects.get(id=int(berriaid))
+	erakutsi=berri.erakutsi
+	irudia=berri.argazkia
+	berria_form = BerriaForm(initial={"berriaid":berriaid,"titulua_eu":berri.title_eu,"desk_eu":berri.desk_eu,"titulua_es":berri.title_es,"desk_es":berri.desk_es,"titulua_en":berri.title_en,"desk_en":berri.desk_en,"titulua_fr":berri.title_fr,"desk_fr":berri.desk_fr,"url":berri.url,"irudia":irudia,"publikatu":erakutsi})
+	return render_to_response('berria_form.html', {'berria_form':berria_form}, context_instance = RequestContext(request))
+    
+
+
+def admin_berriak_kudeatu(request):
+
+	if 'save_berria' in request.POST:
+		berria_form = BerriaForm(request.POST,request.FILES)
+
+		if berria_form.is_valid():
+			##EDITATU
+			cd = berria_form.cleaned_data    
+			berri = berria.objects.get(id=int(cd.get('berriaid')))
+			if cd.get("titulua_eu"):
+				berri.title_eu = cd.get("titulua_eu")
+			if cd.get("desk_eu"):
+				berri.desk_eu = cd.get("desk_eu")
+			if cd.get("titulua_es"):
+				berri.title_es = cd.get("titulua_es")
+			if cd.get("desk_es"):
+				berri.desk_es = cd.get("desk_es")
+			if cd.get("titulua_en"):
+				berri.title_en = cd.get("titulua_en")
+			if cd.get("desk_en"):
+				berri.desk_en = cd.get("desk_en")
+			if cd.get("titulua_fr"):
+				berri.title_fr = cd.get("titulua_fr")
+			if cd.get("desk_fr"):
+				berri.desk_fr = cd.get("desk_fr")
+			
+			berri.url = cd.get("url")
+			
+			irudia_url=''
+
+			if(request.FILES.get('irudia')):    
+				fileObject= request.FILES.get('irudia')
+				fname, fext = os.path.splitext(fileObject.name)
+				fileName='karrusel_img_'+randomword(5)+fname+fext
+				irudia_url=MEDIA_URL+str(fileName)#izen berekoak gainidatzi egingo dira bestela
+				berri.argazkia=irudia_url
+				
+			
+			if request.POST.get('publikatu'):
+				#GUZTIEI erakutsi=0 JARRI!!!!BAKARRA ERAKUTSIKO DA (?)
+				berri_guztiak = berria.objects.all()
+				berri_guztiak.update(erakutsi=False)
+			
+				berri.erakutsi=1
+				
+			else:
+				berri.erakutsi=0
+            	
+			
+			#Gaurko data hartu
+			data=datetime.datetime.now()  
+			berri.data=data  
+       
+			#Irudia igo
+			if(irudia_url!=""):
+				handle_uploaded_file(request.FILES['irudia'],fileName)
+			
+			#GORDE	BERRIA EDITATUTA	
+			berri.save()
+            
+		else:
+			#BERRIA SORTU
+			print "Berria sortu!"
+			if request.POST.get('berriaid')=='':
+				print "Berria id hutsa da"
+				title_eu=request.POST.get('titulua_eu')
+				desk_eu=request.POST.get('desk_eu')
+				print "title_eu"
+				print title_eu
+				print "desk_eu"
+				print desk_eu
+				title_es=request.POST.get('titulua_es')
+				desk_es=request.POST.get('desk_es')
+				
+				title_en=request.POST.get('titulua_en')
+				desk_en=request.POST.get('desk_en')
+				
+				title_fr=request.POST.get('titulua_fr')
+				desk_fr=request.POST.get('desk_fr')
+				
+				url=request.POST.get('url')
+				
+				irudia_url=''
+
+				if(request.FILES.get('irudia')):    
+					fileObject= request.FILES.get('irudia')
+					fname, fext = os.path.splitext(fileObject.name)
+					fileName='karrusel_img_'+randomword(5)+fname+fext
+					irudia_url=MEDIA_URL+str(fileName)#izen berekoak gainidatzi egingo dira bestela
+				
+			
+				if request.POST.get('publikatu'):
+					#GUZTIEI erakutsi=0 JARRI!!!!BAKARRA ERAKUTSIKO DA (?)
+					berri_guztiak = berria.objects.all()
+					berri_guztiak.update(erakutsi=False)
+					
+					erakutsi=1
+				else:
+					erakutsi=0
+								
+				#Gaurko data hartu
+				data=datetime.datetime.now()  
+       
+				#Irudia igo
+				if(irudia_url!=""):
+					handle_uploaded_file(request.FILES['irudia'],fileName)
+					
+				#Sortu berria datu-basean
+				berri_berria = berria(title_eu=title_eu,desk_eu=desk_eu,title_es=title_es,desk_es=desk_es,title_en=title_en,desk_en=desk_en,title_fr=title_fr,desk_fr=desk_fr,url=url,argazkia=irudia_url,data=data,erakutsi=erakutsi)
+				berri_berria.save()
+
+	berriak = []
+	berriak = berria.objects.all()
+	berria_form = BerriaForm()
+	
+	non='fitxaE'
+	return render_to_response('admin_berriak_kudeatu.html',{'non':non,'berriak':berriak,'berria_form':berria_form},context_instance=RequestContext(request))
+	
+def admin_eguneko_hornitzaileak_kudeatu(request):
+
+	if request.GET.get('id'):
+		#Aldatu eguneko egoera
+		horni_id=request.GET.get('id')
+		horni_id_int=int(horni_id)
+		momentukoHornitzailea=hornitzailea.objects.get(id=horni_id_int)
+		egunekoaDa=momentukoHornitzailea.egunekoa
+		if(egunekoaDa ==1):
+			momentukoHornitzailea.egunekoa=0
+			momentukoHornitzailea.save()     
+		else:
+			momentukoHornitzailea.egunekoa=1
+			momentukoHornitzailea.save() 
+	
+	hornitzaileak =hornitzailea.objects.all()
+	
+	non='fitxaE'
+	return render_to_response('admin_eguneko_hornitzaileak_kudeatu.html',{'hornitzaileak':hornitzaileak},context_instance=RequestContext(request))
+	
+def admin_hornitzaile_bihurtu (request):
+
+	if request.GET.get('erabId'):
+	
+		userid=request.GET.get('erabId')
+		erabiltzailea = User.objects.get(id=int(userid))
+		erabiltzaile_emaila=erabiltzailea.email
+		
+		
+		#3 taldea eman
+		group = Group.objects.get(name='hornitzailea') 
+		group.user_set.add(erabiltzailea)
+        
+		#2 taldea kendu
+		group = Group.objects.get(name='herritarra') 
+		group.user_set.remove(erabiltzailea)
+		
+		#Hornitzaile-fitxa 'hutsa' sortu
+		hornitzaile_izena=erabiltzailea.username
+		hornitzaile_fitxa=hornitzailea(fk_user=erabiltzailea,izena=hornitzaile_izena)
+		hornitzaile_fitxa.save()
+		
+		#Emaila bidali		
+		mezua=_("Hornitzailearen izena:")+str(hornitzaile_izena)+".\n"+_("Hornitzailea da hemendik aurrera. Datu-basean burutu dira egin beharreko aldaketak.")
+		send_mail('OndareBideak - Hornitzaile berria sortu da', mezua, 'ondarebideak@elhuyar.eus',['ondarebideak@elhuyar.eus'], fail_silently=False)
+        
+		#Emaila bidali erabiltzaileari
+		mezua=str(hornitzaile_izena)+":\n"+_("OndareBideak sisteman hornitzailea zara hemendik aurrera. Edozein zalantza idatzi hona: ondarebideak@elhuyar.eus")
+		send_mail('OndareBideak - Hornitzaile izateko baimenak jaso dituzu', mezua, 'ondarebideak@elhuyar.eus',[erabiltzaile_emaila], fail_silently=False)
+            
+	
+	hornitzaileak = []
+	hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3)
+	hornitzaileak_id = []
+	hornitzaileak_id = [x.fk_user.id for x in hornitzaileak]
+    
+	erabiltzaileak = User.objects.all()
+	user_form = UserForm()
+	
+	non='fitxaE'
+	return render_to_response('admin_erabiltzaileak_kudeatu.html',{'non':non,'erabiltzaileak':erabiltzaileak,'hornitzaileak':hornitzaileak,'hornitzaileak_id':hornitzaileak_id,'user_form':user_form},context_instance=RequestContext(request))
+	
+
 
 def eguneko_itema_kendu(request):
     
@@ -1004,7 +1281,7 @@ def eguneko_itema_kendu(request):
         z="i"
         
         #Datu-baseko hornitzaileak lortu                                                                                           
-        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
         db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
         #Datu-baseko motak lortu                                                                                                    
@@ -1012,9 +1289,9 @@ def eguneko_itema_kendu(request):
         db_motak_text ="_".join(db_motak)
 
         #Datu-baseko lizentziak lortu                                                                                               
-        db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-        db_lizentziak_text ="_".join(db_lizentziak)
-
+        db_lizentziak=lizentzia.objects.all()
+        db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
+    
         if  hornitzaile_izena !="":
             
             geoloc_longitude=hornitzailea_obj.geoloc_longitude
@@ -1871,7 +2148,7 @@ def eguneko_itema_gehitu(request):
         z="i"
 
         #Datu-baseko hornitzaileak lortu                                                                                           
-        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
         db_hornitzaileak_text ="_".join(db_hornitzaileak)
         
         #Datu-baseko motak lortu                                                                                                   
@@ -1879,8 +2156,8 @@ def eguneko_itema_gehitu(request):
         db_motak_text ="_".join(db_motak)
     
         #Datu-baseko lizentziak lortu                                                                                              
-        db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-        db_lizentziak_text ="_".join(db_lizentziak)
+        db_lizentziak=lizentzia.objects.all()
+        db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
         
         
         #ITEMAK
@@ -1983,7 +2260,7 @@ def eguneko_itema_gehitu(request):
       
         comment_form = CommentForm() 
         comment_parent_form = CommentParentForm()
-        print "item.html deitu baino lehen"
+        #print "item.html deitu baino lehen"
     
         non="erakutsi_item"
         
@@ -2040,7 +2317,7 @@ def eguneko_itema_gehitu(request):
       
         comment_form = CommentForm() 
         comment_parent_form = CommentParentForm()
-        print "item.html deitu baino lehen"
+        #print "item.html deitu baino lehen"
     
         non="nabigazio_item"
         
@@ -2827,7 +3104,7 @@ def eguneko_ibilbidea_gehitu(request):
         z="p"
 
         #Datu-baseko hornitzaileak lortu                                                                                             
-        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
         db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
         #Datu-baseko motak lortu                                                                                                     
@@ -2835,8 +3112,8 @@ def eguneko_ibilbidea_gehitu(request):
         db_motak_text ="_".join(db_motak)
 
         #Datu-baseko lizentziak lortu                                                                                                
-        db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-        db_lizentziak_text ="_".join(db_lizentziak)
+        db_lizentziak=lizentzia.objects.all()
+        db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak)) 
         
         if hornitzaile_izena !="":
             
@@ -3621,7 +3898,7 @@ def eguneko_ibilbidea_kendu(request):
 
         #Datu-baseko hornitzaileak lortu                                                                                         
                                                                                                                         
-        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+        db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
         db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
         #Datu-baseko motak lortu                                                                                                   
@@ -3629,8 +3906,8 @@ def eguneko_ibilbidea_kendu(request):
         db_motak_text ="_".join(db_motak)
 
         #Datu-baseko lizentziak lortu                                                                                               
-        db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-        db_lizentziak_text ="_".join(db_lizentziak)
+        db_lizentziak=lizentzia.objects.all()
+        db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
 
         if hornitzaile_izena !="":
             
@@ -3751,7 +4028,7 @@ def eguneko_ibilbidea_kendu(request):
 def ibilbideak_hasiera(request):
     
     
-    print "ibilbideak_hasiera"
+    #print "ibilbideak_hasiera"
     #Ibilbideen hasierako pantailan erakutsi behar diren Ibilbideen informazioa datu-basetik lortu eta pasa
      
     #DB-an GALDERA EGIN EGUNEKO/RANDOM/AZKENAK/IKUSIENA PATHA LORTZEKO   
@@ -3801,7 +4078,7 @@ def ibilbideak_hasiera(request):
     non="fitxaE"
     
     #Datu-baseko hornitzaileak lortu                                                                                             
-    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
     #Datu-baseko motak lortu                                                                                                     
@@ -3809,8 +4086,8 @@ def ibilbideak_hasiera(request):
     db_motak_text ="_".join(db_motak)
 
     #Datu-baseko lizentziak lortu                                                                                                
-    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-    db_lizentziak_text ="_".join(db_lizentziak)
+    db_lizentziak=lizentzia.objects.all()
+    db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
     
     
     z='p'
@@ -3831,7 +4108,11 @@ def ibilbideak_hasiera(request):
     search_models_paths=[path]
     search_models_items=[item]
     items = SearchQuerySet().all().models(*search_models_items)
-    paths = SearchQuerySet().all().models(*search_models_paths).exclude(acces='1').order_by('-path_creation_date')
+    #ADMIN BADA, GUZTIAK HARTU, ACCESS =1 DUTENAK ERE BAI
+    if request.user.is_superuser:
+    	paths = SearchQuerySet().all().models(*search_models_paths).order_by('-path_creation_date')
+    else:
+    	paths = SearchQuerySet().all().models(*search_models_paths).exclude(acces='1').order_by('-path_creation_date')
         
      
     #PAGINATOR PATHS
@@ -4079,7 +4360,7 @@ def cross_search(request):
     
     
     #Datu-baseko hornitzaileak lortu
-    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
     
     #Datu-baseko motak lortu
@@ -4087,8 +4368,8 @@ def cross_search(request):
     db_motak_text ="_".join(db_motak)
     
     #Datu-baseko lizentziak lortu
-    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-    db_lizentziak_text ="_".join(db_lizentziak)
+    db_lizentziak=lizentzia.objects.all()
+    db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
     
     
     bilaketa_filtroak=1
@@ -4171,7 +4452,7 @@ def hornitzaile_search(request):
     bilaketa_filtroak=1
     
     #Datu-baseko hornitzaileak lortu
-    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
     
     #Datu-baseko motak lortu
@@ -4179,8 +4460,8 @@ def hornitzaile_search(request):
     db_motak_text ="_".join(db_motak)
     
     #Datu-baseko lizentziak lortu
-    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-    db_lizentziak_text ="_".join(db_lizentziak)
+    db_lizentziak=lizentzia.objects.all()
+    db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
     
     non='fitxaI'
  
@@ -4215,7 +4496,8 @@ def filtro_search(request):
     besteakF=request.GET['besteakF']
     besteaF=[]
     
-    nireak=request.GET['nireak']
+  
+    nireak=request.GET.get('nireak','')
     
     items=[]
     paths=[]
@@ -4379,7 +4661,9 @@ def filtro_search(request):
             paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
        
         #'Zirriborroak' (acces=1) diren ibilbideak baztertu
-    	paths=paths.acces(acces="1")   
+        if paths:
+        	#print paths[0].acces
+    		paths=paths.exclude(acces="1")
         
         
         
@@ -4525,7 +4809,8 @@ def filtro_search(request):
             paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
         
         #'Zirriborroak' (acces=1) diren ibilbideak baztertu
-        paths=paths.exclude(acces="1")   
+        if paths:
+        	paths=paths.exclude(acces="1")   
         
         #hizkuntza filtroa
         if hizkuntzakF != "":       
@@ -4654,7 +4939,8 @@ def filtro_search(request):
             paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
         
         #'Zirriborroak' (acces=1) diren ibilbideak baztertu
-        paths=paths.exclude(acces="1")   
+        if paths:
+       		paths=paths.exclude(acces="1")   
         
         #hizkuntza filtroa
         if hizkuntzakF != "":       
@@ -4733,7 +5019,7 @@ def filtro_search(request):
     
     #Datu-basetik filtro aukerak lortu
     #Datu-baseko hornitzaileak lortu
-    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
     
     #Datu-baseko motak lortu
@@ -4741,8 +5027,8 @@ def filtro_search(request):
     db_motak_text ="_".join(db_motak)
     
     #Datu-baseko lizentziak lortu
-    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-    db_lizentziak_text ="_".join(db_lizentziak)
+    db_lizentziak=lizentzia.objects.all()
+    db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
     
     if hornitzaile_izena:
         hornitzaile = hornitzailea.objects.get(fk_user__username=hornitzaile_izena)
@@ -4753,7 +5039,7 @@ def filtro_search(request):
 
 def nabigazioa_hasi(request):
     
-    print "nabigazioa_hasi"
+    #print "nabigazioa_hasi"
     if 'path_id' in request.GET:
         path_id=request.GET['path_id']
         
@@ -4927,7 +5213,7 @@ def autoplay_hasieratik(request):
         botoKopuruaItem=momentukoItema.get_votes()
     
         autoplay=1
-        offset=0
+        offset=1 
         autoplaypage=autoplaypages[0]
         
         #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
@@ -5529,7 +5815,7 @@ def db_erregistratu_erabiltzailea(cd):
         if cd["hornitzailea"]:
             hornitzaile_izena=cd["honitzaile_izena"]
             mezua=_("Hornitzailearen izena:")+str(hornitzaile_izena)+".\n"+_("Ondorengoa egin datu-basean:")+" update auth_user_groups set group_id=3 where user_id="+str(erabiltzailea.id)+"\n"+_("Bidali mezua hornitzaileari: ")+str(erabiltzailea.email)
-            send_mail('OndareBideak - Hornitzaile izateko eskaera', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
+            send_mail('OndareBideak - Hornitzaile izateko eskaera', mezua, 'ondarebideak@elhuyar.eus',['ondarebideak@elhuyar.eus'], fail_silently=False)
             
             #Hornitzailearen fitxa (hutsa) sortuko dugu datu-basean
             hornitzaile_fitxa=hornitzailea(fk_user=erabiltzailea,izena=hornitzaile_izena)
@@ -5739,7 +6025,6 @@ def editatu_ibilbidea(request):
             # print "ERROA:"+sarrera'''
             
     
-    
     return render_to_response('editatu_ibilbidea.html',{'momentukoPatha':ibilbidea,'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
 
 
@@ -5818,7 +6103,7 @@ def erakutsi_item(request):
       
     comment_form = CommentForm() 
     comment_parent_form = CommentParentForm()
-    print "item.html deitu baino lehen"
+    #print "item.html deitu baino lehen"
     
     non="erakutsi_item"
 
@@ -6075,6 +6360,9 @@ def editatu_itema(request):
             objektufileName='item_obj_'+str(user_id)+'_'+randomword(5)+fext2
             objektu_url=MEDIA_URL+str(objektufileName)#izen berekoak gainidatzi egingo dira bestela
         
+        else:
+            objektu_url=""
+        
         '''
         #HIZKUNZA 
         dc_language=request.POST['hizkuntza']
@@ -6224,7 +6512,9 @@ Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
             #Datu-basean irudi zaharra mantendu
             item_tupla = item.objects.get(pk=item_id)
             irudia_url=item_tupla.ob_thumbnail
-            item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,ob_thumbnail=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+            #item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,ob_thumbnail=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+   			#erabiltzaile ez aldatu
+            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,ob_thumbnail=irudia_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
    
         #EDM_OBJECT
         if(objektu_url!=""):
@@ -6241,7 +6531,9 @@ Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
             #Datu-basean objektu zaharra mantendu
             item_tupla = item.objects.get(pk=item_id)
             objektu_url=item_tupla.edm_object
-            item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,edm_object=objektu_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+            #item.objects.filter(id=item_id).update(fk_ob_user=erabiltzailea,uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,edm_object=objektu_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
+            #erabiltzaile ez aldatu
+            item.objects.filter(id=item_id).update(uri=uri, dc_title=dc_title, dc_description=dc_description,dc_subject=dc_subject,dc_rights=dc_rights,edm_rights=edm_rights,edm_isshownat=edm_isshownat,dc_creator=dc_creator, edm_provider=edm_provider,edm_type=edm_type,dc_date=dc_date,edm_year=edm_year,ob_language=ob_language, edm_language=ob_language,edm_object=objektu_url,edm_country=edm_country,geoloc_longitude=longitude,geoloc_latitude=latitude)
    
         
         
@@ -6456,7 +6748,7 @@ def nire_itemak_erakutsi(request):
         
     
     #Datu-baseko hornitzaileak lortu                                                                                             
-    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
     #Datu-baseko motak lortu                                                                                                     
@@ -6464,8 +6756,8 @@ def nire_itemak_erakutsi(request):
     db_motak_text ="_".join(db_motak)
 
     #Datu-baseko lizentziak lortu                                                                                                
-    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-    db_lizentziak_text ="_".join(db_lizentziak)
+    db_lizentziak=lizentzia.objects.all()
+    db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
 
     non="fitxaE"
     
@@ -6550,6 +6842,7 @@ def nire_ibilbideak_erakutsi(request):
     return render_to_response('nire_ibilbideak.html',{'non':non,'paths':ibilbideak},context_instance=RequestContext(request))
    
 '''
+
 def nire_ibilbideak_erakutsi(request):
 
     userName=request.user.username
@@ -6600,7 +6893,7 @@ def nire_ibilbideak_erakutsi(request):
     non="fitxaE"
     
     #Datu-baseko hornitzaileak lortu                                                                                             
-    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct())
+    db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
 
     #Datu-baseko motak lortu                                                                                                     
@@ -6608,8 +6901,8 @@ def nire_ibilbideak_erakutsi(request):
     db_motak_text ="_".join(db_motak)
 
     #Datu-baseko lizentziak lortu                                                                                                
-    db_lizentziak=map(lambda x: x['edm_rights'],item.objects.values('edm_rights').distinct())
-    db_lizentziak_text ="_".join(db_lizentziak)
+    db_lizentziak=lizentzia.objects.all()
+    db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
     
     
     z='p'
@@ -6676,7 +6969,6 @@ def itema_gehitu(request):
     itema=ItemGehituForm(request.POST, request.FILES)
     print itema.errors 
     if itema.is_valid():
-    	print "ITEMA IS_VALID"
         #Datu-basean item-a gehitu
         irudi_izena_random =randomword(10); 
         erabiltzailea=request.user
@@ -6905,6 +7197,42 @@ def sortu_ibilbidea(request):
    
     
     return render_to_response('sortu_ibilbidea.html',{'ws_item_zerrenda': ws_item_zerrenda},context_instance=RequestContext(request))
+
+
+
+    
+    
+	 
+def ajax_path_edizio_aukerak_aldatu(request):
+    
+    #AJAX bidez bidali dira parametroak
+    path_id=request.POST['pathId']
+    acces_zbk=request.POST['acces']   
+
+    path_old = path.objects.get(id=path_id)
+    
+    path_eguneratua = path(id=path_id,
+    					   fk_user_id=path_old.fk_user_id,
+    					   uri=path_old.uri,
+    					   dc_title=path_old.dc_title,
+    					   dc_subject=path_old.dc_subject,
+    					   dc_description=path_old.dc_description,
+    					   acces=acces_zbk,
+    					   paths_thumbnail=path_old.paths_thumbnail,
+    					   tstamp=path_old.tstamp,
+    					   creation_date=path_old.creation_date,
+    					   proposatutakoa=path_old.proposatutakoa,
+    					   egunekoa=path_old.egunekoa,
+    					   language=path_old.language
+    					   )
+        
+    
+    path_eguneratua.save()
+    
+    request_answer=1
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    
+
 
 def ajax_load_ws(request):
     
@@ -7191,6 +7519,7 @@ def ajax_path_irudia_gorde_proba (request):
 
 def ajax_path_berria_gorde(request):
     
+    #print "ajax_path_berria_gorde"
     request_answer= 1
   
     if request.is_ajax() and request.method == 'POST':
@@ -7221,8 +7550,8 @@ def ajax_path_berria_gorde(request):
         #fileObject= request.GET.get('fileObject')
         #print fileObject
         ##
-        print "paths_thumbnail"
-        print paths_thumbnail
+        #print "paths_thumbnail"
+        #print paths_thumbnail
         if paths_thumbnail =="" or paths_thumbnail =="0":
             paths_thumbnail_url="/uploads/NoIrudiItem.png"
         else:
@@ -7453,7 +7782,8 @@ def ajax_path_node_eguneratu(request):
         
        
     return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
- 
+
+
  
 #################AJAX HORNITZAILE FITXA ##############
 '''

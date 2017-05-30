@@ -7,6 +7,7 @@
 
 <div class="container">
 	<div class="row">
+	
 		<div class="col-md-1"></div>
 		<div class="col-md-3">
 			{% if momentukoPatha.paths_thumbnail %}
@@ -41,7 +42,7 @@
 		</div>
 		<div class="col-md-6">
 			<div class="path-name overflow titulu-kolorea">
-				<h2 class="bold">{{momentukoPatha.dc_title}} </h2>
+				<h2 class="bold">{{momentukoPatha.dc_title}}</h2>
 				<ul class="nav navbar-nav navbar-default">
 					<li>
 						<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
@@ -106,26 +107,40 @@
 			{% if user.is_authenticated %}
 			<div class="path-info overflow">
 				<h3 class="titulu-kolorea">Kudeaketa Aukerak</h3>
-				<!--ikusi
+				<!--ikusi -->
 				<a class="btn btn-primary" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
 				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 				</a>
-				-->
-				{% if request.user|has_group:'hornitzailea' %}
-				<!--egunekoa bihurtu-->
-				{% if momentukoPatha.egunekoa == 0 %}
-				<a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbide bihurtu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{momentukoPatha.id}}&nondik=ikusi" > <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </a>
-				{%endif%}
-				{% if momentukoPatha.egunekoa == 1 %}
-				<a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbidea ezabatu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{momentukoPatha.id}}&nondik=ikusi" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> </a>
+				
+				{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
+					<!--egunekoa bihurtu-->
+					{% if momentukoPatha.egunekoa == 0 %}
+						<a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbide bihurtu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{momentukoPatha.id}}&nondik=ikusi" > <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </a>
+					{%endif%}
+					{% if momentukoPatha.egunekoa == 1 %}
+						<a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbidea ezabatu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{momentukoPatha.id}}&nondik=ikusi" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> </a>
+
+					{%endif%}
 
 				{%endif%}
-
-				{%endif%}
-				{% if user.id == momentukoPatha.fk_user_id.id %}
-
+				
 				<!--editatu-->
-				<a class="btn btn-default" type="button" title="Editatu ibilbidea" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}" > <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+				{% if user.is_authenticated %}
+				<!-- editatzeko aukera: ibilbidearen autorea da, supererabiltzailea da ala acces= 4 du-->
+    	        {% if user.id == momentukoPatha.fk_user_id.id  or user.is_superuser or momentukoPatha.acces == '4' %}
+     		       <a class="btn btn-default" type="button" title="Editatu ibilbidea" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}" >
+      			        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+      			   </a>
+      			{%endif%}
+      			<!-- editatzeko aukera: acces==3 du eta hornitzailea da -->
+      			{%if momentukoPatha.acces == '3' and request.user|has_group:'hornitzailea'%}
+      				<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.path_id}}" >
+      			        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+      			   </a>			
+      			{%endif%}
+            {%endif%}
+				
+				{% if user.id == momentukoPatha.fk_user_id.id or user.is_superuser%}
 				<!-- ezabatu"-->
 				<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{momentukoPatha.id}})"  > <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
 				{%endif%}
@@ -203,7 +218,10 @@
 						//path_node[0];
 						var titulua = "{{node.dc_title}}";
 						//path_node[1];
-						var irudia = htmlDecode("{{node.paths_thumbnail}}");
+						var irudia = htmlDecode("{{node.fk_item_id.ob_thumbnail}}");												
+						if (!irudia || irudia === "") {
+							irudia = htmlDecode("{{node.fk_item_id.edm_object}}");
+						}
 						//path_node[2];
 						if (!irudia || irudia === "") {
 							irudia = "/uploads/NoIrudiItem.png";

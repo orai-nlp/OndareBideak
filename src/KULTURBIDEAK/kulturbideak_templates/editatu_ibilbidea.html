@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% load tags%}
 {% load i18n %}
+{% load leaflet_tags %}
+{% block mapFunctions %}
 
+{% endblock %} 
 
 {% block content %}
 
@@ -189,14 +192,17 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
 </script>
 {% for node in path_nodeak%}
 <script type="text/javascript">
-  var id="{{node.fk_item_id_id}}";//path_node[0];
+ 	var id="{{node.fk_item_id_id}}";//path_node[0];
 	var titulua="{{node.dc_title}}";//path_node[1];
-	var irudia=htmlDecode("{{node.paths_thumbnail}}");//path_node[2];
-	//console.log(irudia+" --- {{node.paths_thumbnail}}");
-        if (irudia == " ")
-        {
-           irudia="/uploads/NoIrudiItem.png";
-        }
+	var irudia = htmlDecode("{{node.fk_item_id.ob_thumbnail}}");												
+	if (!irudia || irudia === "") {
+		irudia = htmlDecode("{{node.fk_item_id.edm_object}}");
+	}
+	//path_node[2];
+	if (!irudia || irudia === "")
+	{
+    	irudia="/uploads/NoIrudiItem.png";
+    }
 
         var narrazioa="{{node.dc_description|convert_newline2br}}";
 		
@@ -207,7 +213,8 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
 	if (aita_id== ""){
 		aita_id = 0;
 	} 
-	var obj={id: id, name: titulua , irudia: irudia, narrazioa: narrazioa, parent:aita_id};
+	var mota = "{{node.fk_item_id.edm_type}}";
+	var obj={id: id, name: titulua , irudia: irudia, narrazioa: narrazioa, parent:aita_id, mota: mota };
   ibilbide_data.push(obj);
 
 </script>
@@ -254,9 +261,9 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
                             	<label for="exampleInputLang1">Hizkuntza</label><br/><br/>
                             	<div class="input-group">
                             	 <select id="hizkuntza" name="hizkuntza">
-  									<option value="eu" selected>eu</option>
-  									<option value="es">es</option>
-  									<option value="en">en</option>
+  									<option value="eu" {% if momentukoPatha.language == "eu" %} selected {%endif%}>eu</option>
+  									<option value="es" {% if momentukoPatha.language == "es" %} selected {%endif%}>es</option>
+  									<option value="en" {% if momentukoPatha.language == "en" %} selected {%endif%}>en</option>
   
 								  </select>
 								</div>
@@ -265,10 +272,10 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
                             	<label for="exampleInputAcces1">Edizio baimenak</label><br/><br/>
                             	<div class="input-group">
                             	 <select id="acces" name="acces">
-  									<option value="1" selected>Ez publikatu oraindik</option>
-  									<option value="2">Publikatu. Zuk bakarrik editagarria</option>
-  									<option value="3">Publikatu. Hornitzaileek bakarrik editagarria</option>
-  									<option value="4">Publikatu. Guztiek editagarria</option>
+  									<option value="1" {% if momentukoPatha.acces == "1" %} selected {%endif%}>Ez publikatu oraindik</option>
+  									<option value="2" {% if momentukoPatha.acces == "2" %} selected {%endif%}>Publikatu. Zuk bakarrik editagarria</option>
+  									<option value="3" {% if momentukoPatha.acces == "3" %} selected {%endif%}>Publikatu. Hornitzaileek bakarrik editagarria</option>
+  									<option value="4" {% if momentukoPatha.acces == "4" %} selected {%endif%}>Publikatu. Guztiek editagarria</option>
   
 								  </select>
 								   </div>
@@ -302,7 +309,7 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
 <!--Fin Ventana modal-->
 
 
-<!--Modala narrazioa gehitzeko -->
+<!--Modala narrazioa eta geolokalizazioa gehitzeko nodoei-->
 <div class="modal fade" id="narrazio_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -324,13 +331,25 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
     		</script>
 	    
 	    </div>
+	    <br/>
+	    <!--
+	
+		<label>Geolokalizazioa:</label>
+		
+		<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
+		<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
+           
+		{% leaflet_map "yourmap" callback="load_map_hutsa" %}
+				
+	    -->
+	    
 
 	    <div class="modal-footer">
 	      <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Utzi" %}</button>
               <button id="narra_botoia" class="btn btn-info" name="narra_botoia"><span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>{% trans "Gorde" %}</button>
               <!--<button type="submit" class="btn btn-primary">{% trans "Gorde" %}</button>-->
             </div>
-	  </div>
+	  </div><!-- panel-body-->
 	</div>
       </div>
     </div>

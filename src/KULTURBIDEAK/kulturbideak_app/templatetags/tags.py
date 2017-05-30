@@ -9,9 +9,18 @@ from django.contrib.auth.models import User, Group
 register = template.Library()
 
 @register.filter
+def proxyPassHttp(url):	
+	return re.sub('^\s*http://','/kanpora/', url)
+
+@register.filter
 def lerroJauziakKendu(sarrera):
 
 	return sarrera.replace("\n","");
+
+@register.filter
+def htmlEtiketakGarbitu(sarrera):
+
+	return sarrera.replace("/<\/?[^>]+(>|$)/g", "");
 
 
 @register.filter
@@ -62,6 +71,11 @@ def add_ekm_prefix_to_desc(value):
     value=value.replace('href="/aunamendi/', 'href="http://www.euskomedia.org/aunamendi/')
     
     return value
+
+@register.filter
+def get_substring(value): 
+    short_value=value[:100]
+    return short_value
 
 @register.filter
 def convert_newline2br(value): 
@@ -209,8 +223,62 @@ def choose_title_language(interfaceLang, item):
     else:
         return titulua
             
-        
-        
+@register.filter       
+def choose_karrusel_desk_language(interfaceLang, berria):
+
+	desc_eu=berria.desk_eu
+	desc_es=berria.desk_es
+	desc_en=berria.desk_en
+	desc_fr=berria.desk_fr
+    
+	if interfaceLang == "eu": 
+		return desc_eu          
+	elif interfaceLang == "es":
+		if desc_es != "":
+			return desc_es          
+		else:        
+			return desc_eu    
+	elif interfaceLang == "en":     
+		if desc_en != "":
+			return desc_en          
+		else:        
+			return desc_eu
+	elif interfaceLang == "fr":     
+		if desc_fr != "":
+			return desc_fr          
+		else:        
+			return desc_eu
+	else:
+		return desc_eu
+
+@register.filter       
+def choose_karrusel_titulu_language(interfaceLang, berria):
+
+	titulu_eu=berria.title_eu
+	titulu_es=berria.title_es
+	titulu_en=berria.title_en
+	titulu_fr=berria.title_fr
+    
+	if interfaceLang == "eu": 
+		return titulu_eu          
+	elif interfaceLang == "es":
+		if titulu_es != "":
+			return titulu_es          
+		else:        
+			return titulu_eu    
+	elif interfaceLang == "en":     
+		if titulu_en != "":
+			return titulu_en          
+		else:        
+			return titulu_eu
+	elif interfaceLang == "fr":     
+		if titulu_fr != "":
+			return titulu_fr          
+		else:        
+			return titulu_eu
+	else:
+		return titulu_eu
+
 
 @register.filter
 def choose_language_text(Lang, item):

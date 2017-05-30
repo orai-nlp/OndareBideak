@@ -175,17 +175,17 @@
 		<div class="lizentziaFiltroak" id="lizentziaFiltroak" style="display:none;">
 			
 			<input type="hidden" id="db_lizentziak_text" name="db_lizentziak_text" value="{{db_lizentziak_text}}">
-					
+										
 			{%for db_lizentzia in db_lizentziak%}
-				{%if db_lizentzia in lizentziaF%}
+				{%if db_lizentzia.url in lizentziaF%}
 					&nbsp;&nbsp;				
-					<input type="checkbox" id="{{db_lizentzia}}" name="{{db_lizentzia}}" value="{{db_lizentzia}}" onclick="bilaketaFiltratu_db()" checked>
-					{{db_lizentzia}}
+					<input type="checkbox" id="{{ db_lizentzia.url }}" name="{{db_lizentzia.url}}" value="{{db_lizentzia.url}}" onclick="bilaketaFiltratu_db()" checked>
+					{{ db_lizentzia.izena }}
 					<br>
 				{%else%}
 					&nbsp;&nbsp;
-					<input type="checkbox" id="{{db_lizentzia}}" name="{{db_lizentzia}}" value="{{db_lizentzia}}" onclick="bilaketaFiltratu_db()">
-					{{db_lizentzia}}
+					<input type="checkbox" id="{{db_lizentzia.url}}" name="{{db_lizentzia.url}}" value="{{db_lizentzia.url}}" onclick="bilaketaFiltratu_db()">
+					{{db_lizentzia.izena}}
 					<br>
 	
 				{%endif%}

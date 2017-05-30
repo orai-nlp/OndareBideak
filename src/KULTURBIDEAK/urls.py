@@ -75,7 +75,15 @@ from KULTURBIDEAK.kulturbideak_app.views import ezabatu_ibilbidea
 from KULTURBIDEAK.kulturbideak_app.views import ezabatu_itema
 from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbidea_gehitu
 from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbidea_kendu
-
+from KULTURBIDEAK.kulturbideak_app.views import ajax_path_edizio_aukerak_aldatu
+from KULTURBIDEAK.kulturbideak_app.views import admin_hornitzaile_fitxa_editatu
+from KULTURBIDEAK.kulturbideak_app.views import admin_erabiltzaileak_kudeatu
+from KULTURBIDEAK.kulturbideak_app.views import admin_berriak_kudeatu
+from KULTURBIDEAK.kulturbideak_app.views import get_user
+from KULTURBIDEAK.kulturbideak_app.views import get_berria
+from KULTURBIDEAK.kulturbideak_app.views import admin_reset_user_password
+from KULTURBIDEAK.kulturbideak_app.views import admin_eguneko_hornitzaileak_kudeatu
+from KULTURBIDEAK.kulturbideak_app.views import admin_hornitzaile_bihurtu
 from django.contrib import admin
 
 #MAddalen
@@ -143,7 +151,13 @@ urlpatterns = patterns('',
     url(r'hornitzaile_search',hornitzaile_search),
     url(r'filtro_search',filtro_search),
     url(r'eguneko_itemak',eguneko_itemak),
-    url(r'eguneko_itema_kendu',eguneko_itema_kendu),
+    url(r'eguneko_itema_kendu',eguneko_itema_kendu),    
+    url(r'admin_reset_user_password',admin_reset_user_password),
+    url(r'admin_hornitzaile_fitxa_editatu',admin_hornitzaile_fitxa_editatu),
+    url(r'admin_erabiltzaileak_kudeatu',admin_erabiltzaileak_kudeatu), 
+    url(r'admin_berriak_kudeatu',admin_berriak_kudeatu),
+    url(r'admin_eguneko_hornitzaileak_kudeatu',admin_eguneko_hornitzaileak_kudeatu),
+    url(r'admin_hornitzaile_bihurtu',admin_hornitzaile_bihurtu),
     url(r'hornitzaile_fitxa_editatu',hornitzaile_fitxa_editatu), 
     url(r'ajax_edit_arloa',ajax_edit_arloa), 
     url(r'ajax_edit_where',ajax_edit_where),
@@ -166,7 +180,11 @@ urlpatterns = patterns('',
     url(r'ezabatu_itema',ezabatu_itema),
     url(r'eguneko_ibilbidea_gehitu',eguneko_ibilbidea_gehitu),
     url(r'eguneko_ibilbidea_kendu',eguneko_ibilbidea_kendu),
-            
+    url(r'ajax_path_edizio_aukerak_aldatu',ajax_path_edizio_aukerak_aldatu), 
+    url(r'erab_form',get_user),
+    url(r'berria_form',get_berria),
+    
+    
     (r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
                                
     (r'^search/', include('haystack.urls')),

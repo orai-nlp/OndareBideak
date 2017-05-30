@@ -33,14 +33,42 @@
                                 <p>
               {% trans "2017an ere item eta ibilbide berriak egongo dira zuen eskura!" %}
               -->
-              
+             <!--
+			  
 				<h3><a href="http://www.soinuenea.eus/" title="{% trans 'Hornitzaile berria: Soinuenea' %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans "Hornitzaile berria: Soinuenea" %}</span></a></h3>
                      <p>
                       {% trans "<b>Soinueneako soinutresnen bilduma</b> gehitu dugu Ondarebideakera. Munduan zeharreko <b>1532</b> instrumentu musikalen audio eta irudiak dauzkazu kontsultagarri.<b>Musika interesatzen zaizu?</b> animatu eta kontaiguzu zure istorioa Soinueneako item kultural hauek erabilita!" %}
 			 		</p>		
-			 
-			
+			  -->
+			  <!--
+             <h3><a href="http://goiena.eus/elgeta/1491911042233" title="{% trans 'Intxortetako Gudaren 80. urteurrena' %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans "Intxortetako Gudaren 80. urteurrena" %}</span></a></h3>
+                     <p>
+                      {% trans "Intxorta text" %}
+			 		</p>		
+			 -->
+			 <!--
+			 <h3><a href="" title="{% trans 'Gernikako bonbardaketaren 80. urteurrena' %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans "Gernikako bonbardaketaren 80. urteurrena" %}</span></a></h3>
+                     <p>
+                      {% trans "Gernika text" %}
+			 		</p>	
 			</div>
+			-->
+			<!--
+			 <h3><a href="" title="{% trans erakBerria.title_eu %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans erakBerria.title_eu %}</span></a></h3>
+                     <p>
+                      {% trans "Gernika text" %}
+			 		</p>	
+			</div>
+			
+			-->
+			<!--DATU BASETIK HARTZEN DA BERRIA -->
+			 <h3><a href="{{ erakBerria.url }}" title="{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}</span></a></h3>
+                     <p>
+                     {{ LANGUAGE_CODE|choose_karrusel_desk_language:erakBerria|format_html|safe}}
+                     
+			 		</p>	
+			</div>
+		
 		</li>
 		<!-- Ibilbide proposamena -->
 		<li  class="{% if forloop.first %}active {%endif%}karrusel_path">
@@ -83,10 +111,14 @@
 				<div class="scrollable">
 					<div class="items">
 						<div class="item">
-                             			<!--<a href="http://www.gipuzkoakultura.eus/index.php/eu/museoak-eta-ondareak/105-actividades/2311-etxetik-kanpo-jornadas-europeas-de-patrimonio-2016.html"><img src="{{MEDIA_URL}}EOJ_azpititulu.png" class="attachment-medium wp-post-image" title="{% trans 'Europako Ondare Jardunaldiak' %}" /></a>-->
+                        <!--<a href="http://www.gipuzkoakultura.eus/index.php/eu/museoak-eta-ondareak/105-actividades/2311-etxetik-kanpo-jornadas-europeas-de-patrimonio-2016.html"><img src="{{MEDIA_URL}}EOJ_azpititulu.png" class="attachment-medium wp-post-image" title="{% trans 'Europako Ondare Jardunaldiak' %}" /></a>-->
 						<!--<a href="http://www.aranzadi.eus/actualidad/el-proyecto-ondarebideak-oferta-dos-recorridos-culturales-en-san-sebastian-y-pasaia"><img src="{{MEDIA_URL}}ob_ekitaldia_aranzadi.jpg" class="attachment-medium wp-post-image" title="{% trans 'Bi Ibilbide Fisiko' %}" /></a>-->
 						<!--<a href=""><img src="{{MEDIA_URL}}urteberrion.jpg" class="attachment-medium wp-post-image" title="{% trans 'Zorionak eta Urte Berri On!' %}" /></a>-->
-						<a href=""><img src="{{MEDIA_URL}}soinuenea_hasiera.jpg" class="attachment-medium wp-post-image" title="{% trans 'Soinuenea' %}" /></a>
+						<!--<a href=""><img src="{{MEDIA_URL}}soinuenea_hasiera.jpg" class="attachment-medium wp-post-image" title="{% trans 'Soinuenea' %}" /></a>-->
+						<!--<a href=""><img src="{{MEDIA_URL}}gernika3.jpeg" class="attachment-medium wp-post-image" title="{% trans 'Gernika' %}" /></a>-->
+						
+						<a href="{{erakBerria.url}}"><img src="{{erakBerria.argazkia}}" class="attachment-medium wp-post-image" title="" /></a>
+						
 						</div>
 					</div>
 				</div>
@@ -108,7 +140,7 @@
 				<div class="scrollable">
 					<div class="items">
 						<div class="item">
-							<a href="http://ondarebideak.dss2016.eu/erakutsi_item?id={{egunekoItem.id}}"><img src="{{egunekoItem.ob_thumbnail|clean_http_prefix}}" class="attachment-medium wp-post-image" title="{{egunekoItem.dc_title}}" /></a>
+							<a href="http://ondarebideak.dss2016.eu/erakutsi_item?id={{egunekoItem.id}}"><img src="{% if egunekoItem.ob_thumbnail%} {{egunekoItem.ob_thumbnail|clean_http_prefix}} {% elif egunekoItem.edm_object %} {{egunekoItem.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}" class="attachment-medium wp-post-image" title="{{egunekoItem.dc_title}}" /></a>
 						</div>
 					</div>
 				</div>

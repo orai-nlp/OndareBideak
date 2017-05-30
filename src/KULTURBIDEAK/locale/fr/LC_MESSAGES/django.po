@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-29 10:57+0100\n"
+"POT-Creation-Date: 2017-04-26 16:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,14 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: base_kanpokoa.html:3054 kulturbideak_templates/base.html:320
+#: base_kanpokoa.html:3054 kulturbideak_templates/base.html:398
 #: kulturbideak_templates/base_lokal.html:2567
 #: kulturbideak_templates/base_old.html:119
 #: kulturbideak_templates/base_zerbitzarian.html:120
 msgid "sortu ibilbidea"
 msgstr "créer itinéraire"
 
-#: base_kanpokoa.html:3062 kulturbideak_templates/base.html:330
+#: base_kanpokoa.html:3062 kulturbideak_templates/base.html:408
 #: kulturbideak_templates/base_lokal.html:2575
 #: kulturbideak_templates/base_old.html:127
 #: kulturbideak_templates/base_zerbitzarian.html:128
@@ -33,7 +33,7 @@ msgid "Lan eremua"
 msgstr "Espace de travail"
 
 #: base_kanpokoa.html:3086 base_kanpokoa.html.py:3371
-#: kulturbideak_templates/_navbar.html:144
+#: kulturbideak_templates/_navbar.html:146
 #: kulturbideak_templates/base_lokal.html:2599
 #: kulturbideak_templates/base_lokal.html:2887
 #: kulturbideak_templates/base_old.html:151
@@ -45,7 +45,7 @@ msgid "Nire itemak"
 msgstr "Mes items"
 
 #: base_kanpokoa.html:3087 base_kanpokoa.html.py:3372
-#: kulturbideak_templates/_navbar.html:147
+#: kulturbideak_templates/_navbar.html:149
 #: kulturbideak_templates/base_lokal.html:2600
 #: kulturbideak_templates/base_lokal.html:2888
 #: kulturbideak_templates/base_old.html:152
@@ -57,7 +57,7 @@ msgid "Nire ibilbideak"
 msgstr "Mes itinéraires"
 
 #: base_kanpokoa.html:3088 base_kanpokoa.html.py:3375 base_kanpokoa.html:3409
-#: kulturbideak_templates/_navbar.html:156
+#: kulturbideak_templates/_navbar.html:158
 #: kulturbideak_templates/base_lokal.html:2601
 #: kulturbideak_templates/base_lokal.html:2891
 #: kulturbideak_templates/base_lokal.html:2925
@@ -72,7 +72,7 @@ msgid "Item berria gehitu"
 msgstr "Ajouter un nouveau item"
 
 #: base_kanpokoa.html:3092 base_kanpokoa.html.py:3379
-#: kulturbideak_templates/_navbar.html:160
+#: kulturbideak_templates/_navbar.html:162
 #: kulturbideak_templates/base_lokal.html:2605
 #: kulturbideak_templates/base_lokal.html:2895
 #: kulturbideak_templates/base_old.html:157
@@ -84,7 +84,7 @@ msgid "Profila"
 msgstr "Profil"
 
 #: base_kanpokoa.html:3093 base_kanpokoa.html.py:3380
-#: kulturbideak_templates/_navbar.html:163
+#: kulturbideak_templates/_navbar.html:165
 #: kulturbideak_templates/base_lokal.html:2606
 #: kulturbideak_templates/base_lokal.html:2896
 #: kulturbideak_templates/base_old.html:158
@@ -96,8 +96,9 @@ msgid "Pasahitza Aldatu"
 msgstr "Changer le mot de passe"
 
 #: base_kanpokoa.html:3095 base_kanpokoa.html.py:3101 base_kanpokoa.html:3367
-#: base_kanpokoa.html.py:3382 kulturbideak_templates/_navbar.html:138
-#: kulturbideak_templates/_navbar.html:174
+#: base_kanpokoa.html.py:3382 kulturbideak_templates/_navbar.html:139
+#: kulturbideak_templates/_navbar.html:176
+#: kulturbideak_templates/_navbar.html:186
 #: kulturbideak_templates/base_lokal.html:2608
 #: kulturbideak_templates/base_lokal.html:2614
 #: kulturbideak_templates/base_lokal.html:2883
@@ -116,7 +117,7 @@ msgid "Irten"
 msgstr "Sortir"
 
 #: base_kanpokoa.html:3105 base_kanpokoa.html.py:3391
-#: kulturbideak_templates/_navbar.html:180
+#: kulturbideak_templates/_navbar.html:199
 #: kulturbideak_templates/base_lokal.html:2618
 #: kulturbideak_templates/base_lokal.html:2907
 #: kulturbideak_templates/base_old.html:170
@@ -129,7 +130,7 @@ msgid "Erregistratu"
 msgstr "S'inscrire"
 
 #: base_kanpokoa.html:3107 base_kanpokoa.html.py:3394
-#: kulturbideak_templates/_navbar.html:184
+#: kulturbideak_templates/_navbar.html:203
 #: kulturbideak_templates/base_lokal.html:2620
 #: kulturbideak_templates/base_lokal.html:2910
 #: kulturbideak_templates/base_old.html:172
@@ -151,12 +152,12 @@ msgstr "Login"
 #: kulturbideak_templates/base_zerbitzarian.html:193
 #: kulturbideak_templates/base_zerbitzarian.html:314
 #: kulturbideak_templates/base_zerbitzarian.html:402
-#: kulturbideak_templates/index.html:124
+#: kulturbideak_templates/index.html:125
 #: kulturbideak_templates/index_brandy.html:222
 msgid "Bilatu ..."
 msgstr "Rechercher"
 
-#: base_kanpokoa.html:3374 kulturbideak_templates/_navbar.html:152
+#: base_kanpokoa.html:3374 kulturbideak_templates/_navbar.html:154
 #: kulturbideak_templates/base_lokal.html:2890
 #: kulturbideak_templates/base_old.html:370
 #: kulturbideak_templates/base_zerbitzarian.html:352
@@ -164,7 +165,7 @@ msgstr "Rechercher"
 msgid "OAI-PMH bidezko itemen bilketa"
 msgstr "Importer des items via le protocole OAI-PMH"
 
-#: base_kanpokoa.html:3445 kulturbideak_templates/base.html:408
+#: base_kanpokoa.html:3445 kulturbideak_templates/base.html:486
 #: kulturbideak_templates/base_lokal.html:2961
 #: kulturbideak_templates/base_old.html:443
 #: kulturbideak_templates/base_zerbitzarian.html:424
@@ -182,8 +183,8 @@ msgstr "Pays:"
 #: kulturbideak_templates/base_lokal.html:3002
 #: kulturbideak_templates/base_old.html:606
 #: kulturbideak_templates/base_zerbitzarian.html:502
-#: kulturbideak_templates/cross_search.html:371
-#: kulturbideak_templates/cross_search.html:373
+#: kulturbideak_templates/cross_search.html:379
+#: kulturbideak_templates/cross_search.html:381
 msgid "Hizkuntza:"
 msgstr "Langue:"
 
@@ -256,10 +257,10 @@ msgid "Eskubideak:"
 msgstr "Droits:"
 
 #: kulturbideak_app/editatu_itema_kanpokoa.html:39
-#: kulturbideak_templates/base.html:888
+#: kulturbideak_templates/base.html:966
 #: kulturbideak_templates/editatu_itema.html:196
-#: kulturbideak_templates/item_berria.html:246
-#: kulturbideak_templates/nabigazio_item_berria.html:294
+#: kulturbideak_templates/item_berria.html:392
+#: kulturbideak_templates/nabigazio_item_berria.html:472
 msgid "Ikusi jatorrizkoa"
 msgstr "Voir l'original"
 
@@ -283,38 +284,66 @@ msgstr "L'utilisateur n'est pas inscrit"
 msgid "Pasahitza ez da zuzena"
 msgstr "Le mot de passe n'est pas correct"
 
-#: kulturbideak_app/forms.py:89 kulturbideak_app/forms.py:162
+#: kulturbideak_app/forms.py:80 kulturbideak_app/forms.py:148
+#: kulturbideak_app/forms.py:221
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:21
 msgid "Izena"
 msgstr "Prénom"
 
-#: kulturbideak_app/forms.py:90 kulturbideak_app/forms.py:163
+#: kulturbideak_app/forms.py:81 kulturbideak_app/forms.py:149
+#: kulturbideak_app/forms.py:222
 msgid "Abizenak"
 msgstr "Nom"
 
-#: kulturbideak_app/forms.py:91 kulturbideak_app/forms.py:164
+#: kulturbideak_app/forms.py:82 kulturbideak_app/forms.py:150
+#: kulturbideak_app/forms.py:223
 msgid "Erabiltzailea"
 msgstr "Utilisateur"
 
-#: kulturbideak_app/forms.py:94
+#: kulturbideak_app/forms.py:105 kulturbideak_app/forms.py:173
+#: kulturbideak_app/forms.py:225
+msgid "Helbide elektronikoa"
+msgstr "Courrier électronique"
+
+#: kulturbideak_app/forms.py:106 kulturbideak_app/forms.py:174
+msgid "Pasahitza"
+msgstr "Mot de passe"
+
+#: kulturbideak_app/forms.py:107 kulturbideak_app/forms.py:175
+#: kulturbideak_app/forms.py:261
+msgid "Errepikatu pasahitza"
+msgstr "Répéter le mot de passe"
+
+#: kulturbideak_app/forms.py:119 kulturbideak_app/forms.py:194
+msgid "Erabiltzaile izen hau dagoeneko erregistratua dago"
+msgstr "Ce nom d'utilisateur est déjà enregistré"
+
+#: kulturbideak_app/forms.py:126 kulturbideak_app/forms.py:201
+#: kulturbideak_app/forms.py:266
+msgid "Pasahitzak ezberdinak dira"
+msgstr "Les mots de passe sont différents"
+
+#: kulturbideak_app/forms.py:153
 msgid "hornitzailea"
 msgstr "fournisseur"
 
-#: kulturbideak_app/forms.py:98 kulturbideak_templates/_search_filters.html:62
-#: kulturbideak_templates/base.html:469 kulturbideak_templates/base.html:827
+#: kulturbideak_app/forms.py:157
+#: kulturbideak_templates/_search_filters.html:62
+#: kulturbideak_templates/base.html:547 kulturbideak_templates/base.html:905
 #: kulturbideak_templates/base_old.html:473
 #: kulturbideak_templates/base_zerbitzarian.html:443
-#: kulturbideak_templates/cross_search.html:241
+#: kulturbideak_templates/cross_search.html:248
 #: kulturbideak_templates/editatu_itema.html:118
 #: kulturbideak_templates/eguneko_itemak.html:57
-#: kulturbideak_templates/item_berria.html:70
-#: kulturbideak_templates/itemak_hasiera.html:115
-#: kulturbideak_templates/nabigazio_item_berria.html:135
+#: kulturbideak_templates/item_berria.html:69
+#: kulturbideak_templates/itemak_hasiera.html:116
+#: kulturbideak_templates/nabigazio_item_berria.html:196
 #: kulturbideak_templates/nire_itemak.html:53
 #: kulturbideak_templates/search/search.html:31
 msgid "Hornitzailea"
 msgstr "Fournisseur"
 
-#: kulturbideak_app/forms.py:100
+#: kulturbideak_app/forms.py:159
 msgid ""
 "* Kultur erakunde baten izenean zatoz? Markatu lauki hau bete hurrengo "
 "eremua. Plataformak aukera gehigarriak eskainiko dizkizu."
@@ -323,47 +352,27 @@ msgstr ""
 "case et complétez ce champ. La plate-forme vous montrera des options "
 "supplémentaires."
 
-#: kulturbideak_app/forms.py:105
+#: kulturbideak_app/forms.py:164
 msgid "Hornitzailearen izena"
 msgstr "Nom du fournisseur"
 
-#: kulturbideak_app/forms.py:109
+#: kulturbideak_app/forms.py:168
 msgid "Kultur item digitalen erakunde hornitzailearen izena"
 msgstr "Nom de l'institution fournisseuse des items culturels numériques"
 
-#: kulturbideak_app/forms.py:114 kulturbideak_app/forms.py:166
-msgid "Helbide elektronikoa"
-msgstr "Courrier électronique"
-
-#: kulturbideak_app/forms.py:115
-msgid "Pasahitza"
-msgstr "Mot de passe"
-
-#: kulturbideak_app/forms.py:116 kulturbideak_app/forms.py:202
-msgid "Errepikatu pasahitza"
-msgstr "Répéter le mot de passe"
-
-#: kulturbideak_app/forms.py:135
-msgid "Erabiltzaile izen hau dagoeneko erregistratua dago"
-msgstr "Ce nom d'utilisateur est déjà enregistré"
-
-#: kulturbideak_app/forms.py:142 kulturbideak_app/forms.py:207
-msgid "Pasahitzak ezberdinak dira"
-msgstr "Les mots de passe sont différents"
-
-#: kulturbideak_app/forms.py:201
+#: kulturbideak_app/forms.py:260
 msgid "Pasahitz berria"
 msgstr "Nouveau mot de passe"
 
-#: kulturbideak_app/forms.py:221 kulturbideak_app/forms.py:262
+#: kulturbideak_app/forms.py:280 kulturbideak_app/forms.py:324
 msgid "titulua"
 msgstr "titre"
 
-#: kulturbideak_app/forms.py:222 kulturbideak_app/forms.py:264
+#: kulturbideak_app/forms.py:281 kulturbideak_app/forms.py:326
 msgid "deskribapena"
 msgstr "description"
 
-#: kulturbideak_app/forms.py:223 kulturbideak_app/forms.py:265
+#: kulturbideak_app/forms.py:282 kulturbideak_app/forms.py:327
 msgid ""
 "objektu digitalaren sortzailearen izena ipini, bestela balio lehenetsi "
 "bezala 'Herritarra' agertuko da"
@@ -371,23 +380,23 @@ msgstr ""
 "Écrivez le nom du créateur de l'objet numérique, si non on montrera "
 "'citoyen' comme valeur par defaut"
 
-#: kulturbideak_app/forms.py:225 kulturbideak_app/forms.py:267
+#: kulturbideak_app/forms.py:284 kulturbideak_app/forms.py:329
 msgid "gaia"
 msgstr "sujet"
 
-#: kulturbideak_app/forms.py:226 kulturbideak_app/forms.py:268
+#: kulturbideak_app/forms.py:285 kulturbideak_app/forms.py:330
 msgid "herrialdea"
 msgstr "pays"
 
-#: kulturbideak_app/forms.py:227 kulturbideak_app/forms.py:269
+#: kulturbideak_app/forms.py:287 kulturbideak_app/forms.py:332
 msgid "data"
 msgstr "date"
 
-#: kulturbideak_app/forms.py:228 kulturbideak_app/forms.py:271
+#: kulturbideak_app/forms.py:288 kulturbideak_app/forms.py:336
 msgid "Jatorrizko Url-a"
 msgstr "URL original"
 
-#: kulturbideak_app/forms.py:229 kulturbideak_app/forms.py:272
+#: kulturbideak_app/forms.py:289 kulturbideak_app/forms.py:337
 msgid ""
 "Objektuaren eskubideen inguruko egin beharreko azalpenak edo kontutan hartu "
 "beharreko xehetasunak. Testu librea."
@@ -395,68 +404,68 @@ msgstr ""
 "Explications eta détails à tenir en compte en ce qui concerne les termes "
 "d'utilisation de l'objet. Texte libre."
 
-#: kulturbideak_app/forms.py:236 kulturbideak_app/forms.py:278
+#: kulturbideak_app/forms.py:298 kulturbideak_app/forms.py:343
 msgid "eu"
 msgstr ""
 
-#: kulturbideak_app/forms.py:239 kulturbideak_app/forms.py:281
+#: kulturbideak_app/forms.py:301 kulturbideak_app/forms.py:346
 msgid "Euskera"
 msgstr "Basque"
 
-#: kulturbideak_app/forms.py:243 kulturbideak_app/forms.py:285
+#: kulturbideak_app/forms.py:305 kulturbideak_app/forms.py:350
 msgid "es"
 msgstr ""
 
-#: kulturbideak_app/forms.py:246 kulturbideak_app/forms.py:288
+#: kulturbideak_app/forms.py:308 kulturbideak_app/forms.py:353
 msgid "Gaztelania"
 msgstr "Espagnol"
 
-#: kulturbideak_app/forms.py:250 kulturbideak_app/forms.py:292
+#: kulturbideak_app/forms.py:312 kulturbideak_app/forms.py:357
 msgid "en"
 msgstr ""
 
-#: kulturbideak_app/forms.py:253 kulturbideak_app/forms.py:295
+#: kulturbideak_app/forms.py:315 kulturbideak_app/forms.py:360
 msgid "Ingelesa"
 msgstr "Anglais"
 
-#: kulturbideak_app/forms.py:307 kulturbideak_app/forms.py:311
-#: kulturbideak_app/forms.py:320 kulturbideak_app/forms.py:324
+#: kulturbideak_app/forms.py:372 kulturbideak_app/forms.py:376
+#: kulturbideak_app/forms.py:385 kulturbideak_app/forms.py:389
 msgid "Comment"
 msgstr "Commentaire"
 
-#: kulturbideak_app/forms.py:330 kulturbideak_app/forms.py:334
+#: kulturbideak_app/forms.py:395 kulturbideak_app/forms.py:399
 msgid "parent_id"
 msgstr ""
 
-#: kulturbideak_app/forms.py:354
+#: kulturbideak_app/forms.py:419
 msgid "Image file too large ( > "
 msgstr "Taille de l'image trop grande"
 
-#: kulturbideak_app/forms.py:363
+#: kulturbideak_app/forms.py:428
 msgid "coodinates"
 msgstr "coordonnées"
 
-#: kulturbideak_app/forms.py:367
+#: kulturbideak_app/forms.py:432
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-#: kulturbideak_app/views.py:5313
+#: kulturbideak_app/views.py:5510
 msgid "Ongi etorri OndareBideak sistemara"
 msgstr "Bienvenu(e) à la plate-forme OndareBideak"
 
-#: kulturbideak_app/views.py:5349 kulturbideak_app/views.py:5406
+#: kulturbideak_app/views.py:5546 kulturbideak_app/views.py:5603
 msgid "Hornitzailearen izena:"
 msgstr "Nom du fournisseur:"
 
-#: kulturbideak_app/views.py:5349
+#: kulturbideak_app/views.py:5546
 msgid "OAI Url-a"
 msgstr "URL du OAI"
 
-#: kulturbideak_app/views.py:5349 kulturbideak_app/views.py:5406
+#: kulturbideak_app/views.py:5546 kulturbideak_app/views.py:5603
 msgid "Bidali mezua hornitzaileari: "
 msgstr "Envoyer un message au fournisseur:"
 
-#: kulturbideak_app/views.py:5351
+#: kulturbideak_app/views.py:5548
 msgid ""
 "Zure eskaera jaso dugu. Itemen bilketa prest dagoenean jasoko duzu posta "
 "elektroniko bat."
@@ -464,7 +473,7 @@ msgstr ""
 "Votre demande a bien été reçue. Dès que le moissonnage des items soit fini, "
 "vous recevrez un courrier éléctronique"
 
-#: kulturbideak_app/views.py:5382
+#: kulturbideak_app/views.py:5579
 msgid ""
 "OndareBideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt "
 "bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. "
@@ -478,37 +487,33 @@ msgstr ""
 "un courrier électronique. N'hésitez pas à nous contacter si vous avez des "
 "questions: ondarebideak@elhuyar.com"
 
-#: kulturbideak_app/views.py:5384
+#: kulturbideak_app/views.py:5581
 msgid "OndareBideak sisteman Erregistratu zara"
 msgstr "Vous vous êtes inscrit dans la plate-forme OndareBideak"
 
-#: kulturbideak_app/views.py:5406
+#: kulturbideak_app/views.py:5603
 msgid "Ondorengoa egin datu-basean:"
 msgstr "Exécutez cette action sur la base de données"
 
-#: kulturbideak_app/views.py:5491
+#: kulturbideak_app/views.py:5688
 msgid "Zure erabiltzaile Perfila eguneratu duzu"
 msgstr "Vous avez actualisé votre profil d'utilisateur"
 
-#: kulturbideak_app/views.py:5531
+#: kulturbideak_app/views.py:5728
 msgid "Zure Pasahitza aldatu da"
 msgstr "votre mot de passe a été changé"
 
-#: kulturbideak_app/views.py:5564
+#: kulturbideak_app/views.py:5761
 msgid "Kultur Itema ezabatu da"
 msgstr "L'item culturel a été effacé"
 
-#: kulturbideak_app/views.py:5579
+#: kulturbideak_app/views.py:5776
 msgid "Ibilbidea ezabatu da"
 msgstr "L'itinérarie a été effacé"
 
 #: kulturbideak_templates/_QR_modal.html:14
 msgid "QR kodea"
 msgstr "Code QR"
-
-#: kulturbideak_templates/_QR_modal.html:21
-msgid "Gorde irudia"
-msgstr "Sauvegardez l'image"
 
 #: kulturbideak_templates/_comments.html:16
 msgid "Idatzi iruzkin bat"
@@ -530,16 +535,16 @@ msgstr "Envoyer"
 
 #: kulturbideak_templates/_comments.html:84
 #: kulturbideak_templates/_comments.html:91
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:100
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:125
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:150
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:175
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:203
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:228
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:263
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:293
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:331
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:377
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:97
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:122
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:147
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:172
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:200
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:225
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:260
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:290
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:328
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:409
 msgid "Itxi"
 msgstr "Fermer"
 
@@ -600,23 +605,23 @@ msgstr "Les plus récents"
 #: kulturbideak_templates/ibilbideak_hasiera.html:170
 #: kulturbideak_templates/ibilbideak_hasiera.html:209
 #: kulturbideak_templates/ibilbideak_hasiera.html:248
-#: kulturbideak_templates/itemak_hasiera.html:257
-#: kulturbideak_templates/sortu_ibilbidea.html:165
+#: kulturbideak_templates/itemak_hasiera.html:258
+#: kulturbideak_templates/sortu_ibilbidea.html:190
 msgid "Atera"
 msgstr "Sortir"
 
 #: kulturbideak_templates/_karrusela.html:21
-#: kulturbideak_templates/_karrusela.html:26
+#: kulturbideak_templates/_karrusela.html:27
 msgid "Ekitaldi proposamena"
 msgstr "Proposition d'événement"
 
 #: kulturbideak_templates/_karrusela.html:21
-#: kulturbideak_templates/_karrusela.html:26
+#: kulturbideak_templates/_karrusela.html:27
 msgid "Ekitaldia"
 msgstr "Événement"
 
 #: kulturbideak_templates/_karrusela.html:21
-#: kulturbideak_templates/_karrusela.html:72
+#: kulturbideak_templates/_karrusela.html:96
 msgid "Europako Ondare Jardunaldiak"
 msgstr "Journées Européennes du Patrimoine"
 
@@ -629,46 +634,105 @@ msgstr ""
 "destiné à tout public, autour des flux migratoires qui ont eu lieu dans "
 "notre territoire."
 
-#: kulturbideak_templates/_karrusela.html:26
+#: kulturbideak_templates/_karrusela.html:27
 #, fuzzy
 msgid "Bi Ibilbide fisiko"
 msgstr "Mes itinéraires"
 
-#: kulturbideak_templates/_karrusela.html:28
+#: kulturbideak_templates/_karrusela.html:29
 msgid ""
 "Ondare digital horri bizia emateko, bai hezkuntza zentroei eta baita "
 "hiritarrei ere zuzendutako bi ibilbide fisiko antolatu dira, Aranzadiko "
 "adituen laguntzarekin."
-msgstr "On a organisé, avec l'aide des experts de la Société Aranzadi, deux parcours physiques adressés aux centres scolaires comme aux citoyens, afin de donner vie à ce patrimoine numérique."
+msgstr ""
+"On a organisé, avec l'aide des experts de la Société Aranzadi, deux parcours "
+"physiques adressés aux centres scolaires comme aux citoyens, afin de donner "
+"vie à ce patrimoine numérique."
 
-#: kulturbideak_templates/_karrusela.html:35
+#: kulturbideak_templates/_karrusela.html:32
+msgid "Zorionak eta Urte berri on!"
+msgstr ""
+
+#: kulturbideak_templates/_karrusela.html:34
+msgid "2017an ere item eta ibilbide berriak egongo dira zuen eskura!"
+msgstr ""
+
+#: kulturbideak_templates/_karrusela.html:38
+#, fuzzy
+msgid "Hornitzaile berria: Soinuenea"
+msgstr "Nom du fournisseur"
+
+#: kulturbideak_templates/_karrusela.html:40
+msgid ""
+"<b>Soinueneako soinutresnen bilduma</b> gehitu dugu Ondarebideakera. Munduan "
+"zeharreko <b>1532</b> instrumentu musikalen audio eta irudiak dauzkazu "
+"kontsultagarri.<b>Musika interesatzen zaizu?</b> animatu eta kontaiguzu zure "
+"istorioa Soinueneako item kultural hauek erabilita!"
+msgstr ""
+
+#: kulturbideak_templates/_karrusela.html:44
+msgid "Intxortetako Gudaren 80. urteurrena"
+msgstr "80 anniversaire de la bataille des Intxortas"
+
+#: kulturbideak_templates/_karrusela.html:46
+msgid "Intxorta text"
+msgstr ""
+"Avez-vous été à Elgeta le week-end? Vas-y et partage tes photos avec nous!"
+"Comment? Inscris-toi, crée un nouveau item et ça y est!<br/>Télécharge tes "
+"photos sur Ondarebideak et partage-les! <b>#elgeta80 #batallaintxorta</b>"
+
+#: kulturbideak_templates/_karrusela.html:49
+msgid "Gernikako bonbardaketaren 80. urteurrena"
+msgstr "80 anniversaire du bombardement de Guernica"
+
+#: kulturbideak_templates/_karrusela.html:51
+msgid "Gernika text"
+msgstr "Ça fait déjà 80 ans du 26 abril 1937. Mais personne n'oublie. On s'en souviendra toujours <b>#Gernika80 #BombardeoGernika</b>"
+
+#: kulturbideak_templates/_karrusela.html:59
 msgid "Ibilbide proposamena"
 msgstr "Proposition d'itinéraire"
 
-#: kulturbideak_templates/_karrusela.html:35
+#: kulturbideak_templates/_karrusela.html:59
 msgid "Ibilbide bat"
 msgstr "Un Itinéraire"
 
-#: kulturbideak_templates/_karrusela.html:45
+#: kulturbideak_templates/_karrusela.html:69
 msgid "Item proposamena"
 msgstr "Item proposé"
 
-#: kulturbideak_templates/_karrusela.html:45
+#: kulturbideak_templates/_karrusela.html:69
 msgid "Item bat"
 msgstr "Un Item"
 
-#: kulturbideak_templates/_karrusela.html:55
+#: kulturbideak_templates/_karrusela.html:79
 msgid "Erakunde proposamena"
 msgstr "Institution proposée"
 
-#: kulturbideak_templates/_karrusela.html:55
+#: kulturbideak_templates/_karrusela.html:79
 msgid "Erakundea"
 msgstr "Institution culturelle"
 
-#: kulturbideak_templates/_karrusela.html:73
+#: kulturbideak_templates/_karrusela.html:97
 #, fuzzy
 msgid "Bi Ibilbide Fisiko"
 msgstr "Mes itinéraires"
+
+#: kulturbideak_templates/_karrusela.html:98
+msgid "Zorionak eta Urte Berri On!"
+msgstr ""
+
+#: kulturbideak_templates/_karrusela.html:99
+msgid "Soinuenea"
+msgstr ""
+
+#: kulturbideak_templates/_karrusela.html:100
+#, fuzzy
+msgid "Intxorta"
+msgstr ""
+"Avez-vous été à Elgeta le week-end? Vas-y et partage tes photos avec nous!"
+"Comment? Inscris-toi, crée un nouveau item et ça y est!<br/>Télécharge tes "
+"photos sur Ondarebideak et partage-les! <b>#elgeta80 #batallaintxorta</b>"
 
 #: kulturbideak_templates/_navbar.html:54
 msgid "ITEMAK"
@@ -692,30 +756,36 @@ msgstr "Qu'est-ce que c'est?"
 msgid "Adibideak"
 msgstr "Exemples"
 
-#: kulturbideak_templates/_navbar.html:168
+#: kulturbideak_templates/_navbar.html:170
+#: kulturbideak_templates/_navbar.html:190
 #: kulturbideak_templates/index_brandy.html:148
 msgid "Hornitzaile fitxa editatu"
 msgstr "Éditer la fiche de fournisseur"
 
+#: kulturbideak_templates/_navbar.html:183
+#, fuzzy
+msgid "Erabiltzaileak kudeatu"
+msgstr "Utilisateur"
+
 #: kulturbideak_templates/_search_filters.html:12
-#: kulturbideak_templates/base.html:419
+#: kulturbideak_templates/base.html:497
 #: kulturbideak_templates/base_old.html:452
 #: kulturbideak_templates/base_zerbitzarian.html:433
 msgid "Bilaketa Filtroak"
 msgstr "Filtres de recherche"
 
 #: kulturbideak_templates/_search_filters.html:17
-#: kulturbideak_templates/base.html:424 kulturbideak_templates/base.html:847
+#: kulturbideak_templates/base.html:502 kulturbideak_templates/base.html:925
 #: kulturbideak_templates/base_old.html:456
 #: kulturbideak_templates/base_zerbitzarian.html:437
-#: kulturbideak_templates/cross_search.html:253
+#: kulturbideak_templates/cross_search.html:260
 #: kulturbideak_templates/editatu_itema.html:144
 #: kulturbideak_templates/eguneko_itemak.html:60
 #: kulturbideak_templates/ibilbideak_hasiera.html:97
 #: kulturbideak_templates/ibilbideak_hasiera.html:100
-#: kulturbideak_templates/item_berria.html:90
-#: kulturbideak_templates/itemak_hasiera.html:118
-#: kulturbideak_templates/nabigazio_item_berria.html:155
+#: kulturbideak_templates/item_berria.html:89
+#: kulturbideak_templates/itemak_hasiera.html:119
+#: kulturbideak_templates/nabigazio_item_berria.html:216
 #: kulturbideak_templates/nire_ibilbideak.html:41
 #: kulturbideak_templates/nire_ibilbideak.html:44
 #: kulturbideak_templates/nire_itemak.html:57
@@ -724,39 +794,39 @@ msgid "Hizkuntza"
 msgstr "Langue"
 
 #: kulturbideak_templates/_search_filters.html:91
-#: kulturbideak_templates/base.html:503 kulturbideak_templates/base.html:877
+#: kulturbideak_templates/base.html:581 kulturbideak_templates/base.html:955
 #: kulturbideak_templates/base_old.html:485
 #: kulturbideak_templates/base_zerbitzarian.html:448
-#: kulturbideak_templates/cross_search.html:256
+#: kulturbideak_templates/cross_search.html:263
 #: kulturbideak_templates/editatu_itema.html:183
 #: kulturbideak_templates/editatu_itema.html:340
 #: kulturbideak_templates/eguneko_itemak.html:69
-#: kulturbideak_templates/item_berria.html:120
-#: kulturbideak_templates/itemak_hasiera.html:127
-#: kulturbideak_templates/nabigazio_item_berria.html:185
+#: kulturbideak_templates/item_berria.html:119
+#: kulturbideak_templates/itemak_hasiera.html:128
+#: kulturbideak_templates/nabigazio_item_berria.html:246
 #: kulturbideak_templates/nire_itemak.html:68
 msgid "Mota"
 msgstr "Type"
 
 #: kulturbideak_templates/_search_filters.html:122
-#: kulturbideak_templates/base.html:559
+#: kulturbideak_templates/base.html:637
 #: kulturbideak_templates/base_old.html:507
 #: kulturbideak_templates/base_zerbitzarian.html:453
 msgid "Ordena"
 msgstr "Ordre"
 
 #: kulturbideak_templates/_search_filters.html:167
-#: kulturbideak_templates/base.html:604 kulturbideak_templates/base.html:753
+#: kulturbideak_templates/base.html:682 kulturbideak_templates/base.html:831
 #: kulturbideak_templates/base_old.html:525
 #: kulturbideak_templates/editatu_itema.html:36
 #: kulturbideak_templates/editatu_itema.html:336
-#: kulturbideak_templates/item_berria.html:238
-#: kulturbideak_templates/nabigazio_item_berria.html:286
+#: kulturbideak_templates/item_berria.html:384
+#: kulturbideak_templates/nabigazio_item_berria.html:464
 msgid "Lizentzia"
 msgstr "Licence"
 
 #: kulturbideak_templates/_search_filters.html:198
-#: kulturbideak_templates/base.html:649
+#: kulturbideak_templates/base.html:727
 #: kulturbideak_templates/base_old.html:542
 #: kulturbideak_templates/base_zerbitzarian.html:457
 msgid "Beste batzuk"
@@ -774,57 +844,128 @@ msgstr "Enmenez cet item au monde réel"
 msgid "ANTZEKO ITEMAK"
 msgstr "ITEMS SIMILAIRES"
 
-#: kulturbideak_templates/base.html:812
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:20
+msgid "Id"
+msgstr ""
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:22
+#, fuzzy
+msgid "Abizena"
+msgstr "Nom"
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:23
+msgid "Username"
+msgstr ""
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:24
+msgid "Posta"
+msgstr ""
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:25
+#, fuzzy
+msgid "Hornitzailea da?"
+msgstr "Fournisseur"
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:26
+#, fuzzy
+msgid "Hornitzaile-izena"
+msgstr "Nom du fournisseur"
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:27
+#, fuzzy
+msgid "Azken konexioa"
+msgstr "Les plus récents"
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:28
+#, fuzzy
+msgid "Noiz erregistratua"
+msgstr "S'inscrire"
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:30
+#, fuzzy
+msgid "Editatu"
+msgstr "Éditer domaine"
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:31
+#, fuzzy
+msgid "Editatu hornitzaile-fitxa"
+msgstr "Fiche du fournisseur"
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:69
+msgid "Datuak eguneratzen..."
+msgstr ""
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:79
+#: kulturbideak_templates/user_form.html:8
+#, fuzzy
+msgid "Kudeatu Erabiltzailea"
+msgstr "Utilisateur"
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:84
+msgid ""
+"Error when storing the user, make sure all fields are correctly fulfilled."
+msgstr ""
+
+#: kulturbideak_templates/admin_erabiltzaileak_kudeatu.html:88
+#: kulturbideak_templates/editatu_ibilbidea.html:349
+#: kulturbideak_templates/editatu_ibilbidea.html:350
+#: kulturbideak_templates/sortu_ibilbidea.html:161
+#: kulturbideak_templates/sortu_ibilbidea.html:162
+#: kulturbideak_templates/user_form.html:15
+msgid "Gorde"
+msgstr "Garder"
+
+#: kulturbideak_templates/base.html:890
 #: kulturbideak_templates/editatu_itema.html:101
-#: kulturbideak_templates/item_berria.html:55
-#: kulturbideak_templates/nabigazio_item_berria.html:120
+#: kulturbideak_templates/item_berria.html:54
+#: kulturbideak_templates/nabigazio_item_berria.html:181
 msgid "EZAUGARRIAK"
 msgstr "CARACTÉRISTIQUES"
 
-#: kulturbideak_templates/base.html:816
-#: kulturbideak_templates/cross_search.html:244
+#: kulturbideak_templates/base.html:894
+#: kulturbideak_templates/cross_search.html:251
 #: kulturbideak_templates/editatu_itema.html:105
 #: kulturbideak_templates/editatu_itema.html:316
 #: kulturbideak_templates/eguneko_itemak.html:66
-#: kulturbideak_templates/item_berria.html:59
-#: kulturbideak_templates/itemak_hasiera.html:124
-#: kulturbideak_templates/nabigazio_item_berria.html:124
+#: kulturbideak_templates/item_berria.html:58
+#: kulturbideak_templates/itemak_hasiera.html:125
+#: kulturbideak_templates/nabigazio_item_berria.html:185
 #: kulturbideak_templates/nire_itemak.html:65
 #: kulturbideak_templates/search/search.html:34
 msgid "Sortzailea"
 msgstr "Créateur"
 
-#: kulturbideak_templates/base.html:837
-#: kulturbideak_templates/cross_search.html:247
+#: kulturbideak_templates/base.html:915
+#: kulturbideak_templates/cross_search.html:254
 #: kulturbideak_templates/editatu_itema.html:131
 #: kulturbideak_templates/editatu_itema.html:319
 #: kulturbideak_templates/ibilbideak_hasiera.html:105
 #: kulturbideak_templates/ibilbideak_hasiera.html:108
-#: kulturbideak_templates/item_berria.html:80
-#: kulturbideak_templates/nabigazio_item_berria.html:145
+#: kulturbideak_templates/item_berria.html:79
+#: kulturbideak_templates/nabigazio_item_berria.html:206
 #: kulturbideak_templates/nire_ibilbideak.html:49
 #: kulturbideak_templates/nire_ibilbideak.html:52
 msgid "Gaia"
 msgstr "Sujet"
 
-#: kulturbideak_templates/base.html:857
-#: kulturbideak_templates/cross_search.html:250
+#: kulturbideak_templates/base.html:935
+#: kulturbideak_templates/cross_search.html:257
 #: kulturbideak_templates/editatu_itema.html:157
 #: kulturbideak_templates/editatu_itema.html:322
 #: kulturbideak_templates/eguneko_itemak.html:63
-#: kulturbideak_templates/item_berria.html:100
-#: kulturbideak_templates/itemak_hasiera.html:121
-#: kulturbideak_templates/nabigazio_item_berria.html:165
+#: kulturbideak_templates/item_berria.html:99
+#: kulturbideak_templates/itemak_hasiera.html:122
+#: kulturbideak_templates/nabigazio_item_berria.html:226
 #: kulturbideak_templates/nire_itemak.html:61
 #: kulturbideak_templates/search/search.html:33
 msgid "Herrialdea"
 msgstr "Pays"
 
-#: kulturbideak_templates/base.html:867
+#: kulturbideak_templates/base.html:945
 #: kulturbideak_templates/editatu_itema.html:170
 #: kulturbideak_templates/editatu_itema.html:325
-#: kulturbideak_templates/item_berria.html:110
-#: kulturbideak_templates/nabigazio_item_berria.html:175
+#: kulturbideak_templates/item_berria.html:109
+#: kulturbideak_templates/nabigazio_item_berria.html:236
 msgid "Data"
 msgstr "Date"
 
@@ -852,113 +993,118 @@ msgstr "Itinéraires"
 
 #: kulturbideak_templates/cross_search.html:129
 #: kulturbideak_templates/editatu_itema.html:313
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:354
-#: kulturbideak_templates/hornitzailea_ikusi.html:70
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:351
+#: kulturbideak_templates/hornitzailea_ikusi.html:71
 msgid "Deskribapena"
 msgstr "Description"
 
-#: kulturbideak_templates/cross_search.html:201
-msgid "Gehitu lan-eremura guztoko itemak eta sortu ibilbidea."
-msgstr "Ajoutez à l'espace de travail les items que vous aimez et créez un parcours"
+#: kulturbideak_templates/cross_search.html:203
+#, fuzzy
+msgid "Gehitu lan-eremura gustoko itemak eta sortu ibilbidea."
+msgstr ""
+"Ajoutez à l'espace de travail les items que vous aimez et créez un parcours"
 
-#: kulturbideak_templates/cross_search.html:201
+#: kulturbideak_templates/cross_search.html:203
+#: kulturbideak_templates/cross_search.html:441
+msgid "Ikusi bideoa"
+msgstr "Voir la vidéo"
+
+#: kulturbideak_templates/cross_search.html:203
 msgid " eta Animatu!"
 msgstr "Allez-y!"
 
-#: kulturbideak_templates/cross_search.html:266
+#: kulturbideak_templates/cross_search.html:273
 #: kulturbideak_templates/item_berria.html:25
+#: kulturbideak_templates/nabigazio_item_berria.html:139
 msgid "Lan eremura gehitu"
 msgstr "Ajouter à l'espace de travail"
 
-#: kulturbideak_templates/cross_search.html:303
-#: kulturbideak_templates/cross_search.html:414
+#: kulturbideak_templates/cross_search.html:310
+#: kulturbideak_templates/cross_search.html:437
 #: kulturbideak_templates/eguneko_ibilbideak.html:79
 #: kulturbideak_templates/eguneko_itemak.html:95
 #: kulturbideak_templates/ibilbideak_hasiera.html:135
-#: kulturbideak_templates/itemak_hasiera.html:178
+#: kulturbideak_templates/itemak_hasiera.html:179
 #: kulturbideak_templates/search/search.html:99
 msgid "Ez da erantzunik aurkitu."
 msgstr "On n'a pas trouvé de réponses"
 
-#: kulturbideak_templates/cross_search.html:305
+#: kulturbideak_templates/cross_search.html:312
 msgid ""
 "Gogoratu! zuk zeuk igo ditzakezu gai horri edo beste gai bati buruzko itemak."
-msgstr "Souvenez-vous! Vous pouvez charger des items liés à ce sujet ou à d'autres "
+msgstr ""
+"Souvenez-vous! Vous pouvez charger des items liés à ce sujet ou à d'autres "
 
-#: kulturbideak_templates/cross_search.html:306
+#: kulturbideak_templates/cross_search.html:313
 msgid ""
 "Horretarako, erregistratu eta erabiltzailearen menuan <i>'Item berria "
 "gehitu'</i> sakatu."
-msgstr "Pour cela, enregistrez-vous et, dans le menu d'utilisateur, ajoutez 'Nouveau item'"
+msgstr ""
+"Pour cela, enregistrez-vous et, dans le menu d'utilisateur, ajoutez 'Nouveau "
+"item'"
 
-#: kulturbideak_templates/cross_search.html:307
-#: kulturbideak_templates/cross_search.html:419
+#: kulturbideak_templates/cross_search.html:314
+#: kulturbideak_templates/cross_search.html:442
 msgid "Animatu!"
 msgstr "Allez-y!"
 
-#: kulturbideak_templates/cross_search.html:377
-#: kulturbideak_templates/cross_search.html:379
+#: kulturbideak_templates/cross_search.html:385
+#: kulturbideak_templates/cross_search.html:387
 msgid "Gaia:"
 msgstr "Sujet:"
 
-#: kulturbideak_templates/cross_search.html:416
+#: kulturbideak_templates/cross_search.html:439
 msgid ""
 "Gogoratu! zuk zeuk sor dezakezu gai horri edo beste gai bati buruzko "
 "ibilbidea."
-msgstr "Souvenez-vous! Vous pouvez créer des itinéraires liés à ce sujet ou à d'autres "
+msgstr ""
+"Souvenez-vous! Vous pouvez créer des itinéraires liés à ce sujet ou à "
+"d'autres "
 
-#: kulturbideak_templates/cross_search.html:417
+#: kulturbideak_templates/cross_search.html:440
 msgid "Horretarako, erregistratu eta jarraitu ibilbidea sortzeko pausuak."
-msgstr "Pour cela, enregistrez-vous et suivez les étapes pour créer l'itinéraire "
+msgstr ""
+"Pour cela, enregistrez-vous et suivez les étapes pour créer l'itinéraire "
 
-#: kulturbideak_templates/cross_search.html:418
-msgid "Ikusi bideoa"
-msgstr "Voir la vidéo"
-
-#: kulturbideak_templates/editatu_ibilbidea.html:309
-#: kulturbideak_templates/sortu_ibilbidea.html:135
+#: kulturbideak_templates/editatu_ibilbidea.html:348
+#: kulturbideak_templates/sortu_ibilbidea.html:160
 msgid "Utzi"
 msgstr "Annuler"
 
-#: kulturbideak_templates/editatu_ibilbidea.html:310
-#: kulturbideak_templates/editatu_ibilbidea.html:311
-#: kulturbideak_templates/sortu_ibilbidea.html:136
-#: kulturbideak_templates/sortu_ibilbidea.html:137
-msgid "Gorde"
-msgstr "Garder"
-
 #: kulturbideak_templates/editatu_itema.html:202
-#: kulturbideak_templates/item_berria.html:254
+#: kulturbideak_templates/item_berria.html:402
 msgid "Bestelako informazioa"
 msgstr "Information supplémentaire"
 
 #: kulturbideak_templates/editatu_itema.html:207
-#: kulturbideak_templates/item_berria.html:259
+#: kulturbideak_templates/item_berria.html:407
 msgid "Adituek Proposatutakoa"
 msgstr "Proposition des experts"
 
 #: kulturbideak_templates/editatu_itema.html:214
-#: kulturbideak_templates/item_berria.html:266
+#: kulturbideak_templates/item_berria.html:414
 msgid "Egunekoa"
 msgstr "Item du jour"
 
 #: kulturbideak_templates/editatu_itema.html:225
-#: kulturbideak_templates/item_berria.html:23
-#: kulturbideak_templates/itemak_hasiera.html:129
+#: kulturbideak_templates/item_berria.html:24
+#: kulturbideak_templates/itemak_hasiera.html:130
+#: kulturbideak_templates/nabigazio_item_berria.html:136
 msgid "Kudeaketa Aukerak"
 msgstr "Options de gestion"
 
 #: kulturbideak_templates/editatu_itema.html:229
 #: kulturbideak_templates/item_berria.html:27
+#: kulturbideak_templates/nabigazio_item_berria.html:143
 msgid "Gehitu"
 msgstr "Ajouter"
 
 #: kulturbideak_templates/editatu_itema.html:270
 #: kulturbideak_templates/editatu_itema.html:284
-#: kulturbideak_templates/item_berria.html:138
-#: kulturbideak_templates/item_berria.html:156
-#: kulturbideak_templates/nabigazio_item_berria.html:203
-#: kulturbideak_templates/nabigazio_item_berria.html:216
+#: kulturbideak_templates/item_berria.html:137
+#: kulturbideak_templates/item_berria.html:155
+#: kulturbideak_templates/nabigazio_item_berria.html:264
+#: kulturbideak_templates/nabigazio_item_berria.html:278
 msgid "Ze ibilbidetan?"
 msgstr "Dans quels itinéraires?"
 
@@ -974,11 +1120,11 @@ msgstr "URL original"
 msgid "Eskubideak"
 msgstr "Droits"
 
-#: kulturbideak_templates/editatu_itema.html:344
+#: kulturbideak_templates/editatu_itema.html:348
 msgid "Irudia"
 msgstr "Image"
 
-#: kulturbideak_templates/editatu_itema.html:348
+#: kulturbideak_templates/editatu_itema.html:352
 msgid "Hizkuntzak"
 msgstr "Langues"
 
@@ -986,109 +1132,110 @@ msgstr "Langues"
 msgid "Ongi etorri OndareBideak proiektura"
 msgstr "Bienvenu(e) au projet OndareBideak"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:27
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:24
 msgid "Arloa"
 msgstr "Domaine"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:33
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:30
 msgid "Kokapena"
 msgstr "Localisation"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:40
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:37
 msgid "Telefonoa"
 msgstr "Téléphone"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:46
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:43
 msgid "Posta Elektronikoa"
 msgstr "Courrier électronique"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:52
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:49
 msgid "Webgunea"
 msgstr "Page web"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:58
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:55
 msgid "Ordutegia"
 msgstr "Horaire"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:65
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:62
 msgid "Erantsitako Fitxategiak"
 msgstr "Fichiers joints"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:67
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:340
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:64
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:337
 msgid "Ikonoa"
 msgstr "Icône"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:72
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:391
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:69
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:423
 msgid "Argazkia"
 msgstr "Image"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:89
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:86
 msgid "Editatu arloa"
 msgstr "Éditer domaine"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:101
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:126
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:151
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:176
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:204
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:229
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:332
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:378
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:98
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:123
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:148
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:173
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:201
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:226
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:329
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:410
+#: kulturbideak_templates/user_form.html:20
 msgid "Gorde Aldaketak"
 msgstr "Sauvegarder les modifications"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:114
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:111
 msgid "Editatu telefonoa"
 msgstr "Éditer le téléphone"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:139
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:136
 msgid "Editatu posta elektronikoa"
 msgstr "Éditer le courrier électronique"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:164
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:161
 msgid "Editatu webgunea"
 msgstr "Éditer la page web"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:192
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:189
 msgid "Editatu ordutegia"
 msgstr "Éditer l'horaire"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:215
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:212
 msgid "Kokalekua editatu"
 msgstr "Éditer la localisation"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:250
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:280
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:247
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:277
 msgid "Irudia Igo"
 msgstr "Charger l'image"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:264
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:294
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:261
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:291
 msgid "Aldaketak Gorde"
 msgstr "Sauvegarder les modifications"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:320
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:317
 msgid "Editatu Izena"
 msgstr "Éditer le prénom"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:344
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:348
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:396
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:401
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:341
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:345
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:428
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:433
 msgid "Igo Argazkia"
 msgstr "Charger l'image"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:365
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:362
 msgid "Deskribapena editatu"
 msgstr "Éditer la description"
 
-#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:423
+#: kulturbideak_templates/hornitzaile_fitxa_editatu.html:455
 msgid "Sortu"
 msgstr "Créer"
 
-#: kulturbideak_templates/hornitzaileak_hasiera.html:43
+#: kulturbideak_templates/hornitzaileak_hasiera.html:44
 msgid "Ikusi Hornitzailea"
 msgstr "Voir Fournisseur"
 
@@ -1100,42 +1247,42 @@ msgstr "Tous les itinéraires"
 msgid "Aditua"
 msgstr "Expert"
 
-#: kulturbideak_templates/index.html:109
+#: kulturbideak_templates/index.html:110
 #: kulturbideak_templates/index_brandy.html:177
 msgid "Ondare digitala atzitu, erabili eta interpretatzeko modu berri bat"
 msgstr ""
 "Une nouvelle façon d'accéder, utiliser et interpréter le patrimoine numérique"
 
-#: kulturbideak_templates/index.html:163
+#: kulturbideak_templates/index.html:164
 msgid "Nola sortu ibilbidea?"
 msgstr "Comment créer itinéraire"
 
-#: kulturbideak_templates/index.html:173
+#: kulturbideak_templates/index.html:174
 #: kulturbideak_templates/index_brandy.html:186
 msgid "Item"
 msgstr "Item"
 
-#: kulturbideak_templates/index.html:180
+#: kulturbideak_templates/index.html:181
 #: kulturbideak_templates/index_brandy.html:193
 msgid "Ibilbide"
 msgstr "Itinéraire"
 
-#: kulturbideak_templates/index.html:187
+#: kulturbideak_templates/index.html:188
 #: kulturbideak_templates/index_brandy.html:200
 msgid "Ondare Erakunde"
 msgstr "Institutions culturelles"
 
-#: kulturbideak_templates/index.html:195
+#: kulturbideak_templates/index.html:196
 #: kulturbideak_templates/index_brandy.html:207
 msgid "Erabiltzaile"
 msgstr "Utilisateur"
 
-#: kulturbideak_templates/index.html:296
+#: kulturbideak_templates/index.html:297
 #: kulturbideak_templates/index_brandy.html:353
 msgid "Zer da OndareBideak?"
 msgstr "Qu'est-ce que c'est OndareBideak?"
 
-#: kulturbideak_templates/index.html:306
+#: kulturbideak_templates/index.html:307
 msgid ""
 "OndareBideak proiektuak ondare digitala atzitu, erabili eta interpretatzeko "
 "modu berriak eskaintzen dizkio erabiltzaileari."
@@ -1143,7 +1290,7 @@ msgstr ""
 "OndareBideak propose une nouvelle façon d'accéder, utiliser et interpréter "
 "le patrimoine numérique"
 
-#: kulturbideak_templates/index.html:310
+#: kulturbideak_templates/index.html:311
 msgid ""
 "Liburutegi, museo eta artxibategietako ondarea gero eta gehiago "
 "digitalizatuta dago, eta lekuan bertan ez ezik atari digitalen bidez ere "
@@ -1164,7 +1311,7 @@ msgstr ""
 "On organise le patrimoine et on guide le visiteur parmi les contenus qu'on a "
 "préalablement choisi."
 
-#: kulturbideak_templates/index.html:315
+#: kulturbideak_templates/index.html:316
 msgid ""
 "Gurera etorrita, Donostialdean kultura aldetik ikusgarri diren obra eta "
 "elementu digital andana dago. Ondare horri bizia emateko sortu da, hain "
@@ -1195,12 +1342,12 @@ msgstr ""
 "(Aita Donostia, Bilintx) ou des parcours qui montrent nos coins les plus "
 "aimés."
 
-#: kulturbideak_templates/index.html:385
+#: kulturbideak_templates/index.html:386
 #: kulturbideak_templates/index_brandy.html:472
 msgid "Ibilbide Adibideak"
 msgstr "Exemples d'itinéraires"
 
-#: kulturbideak_templates/index.html:388
+#: kulturbideak_templates/index.html:389
 #: kulturbideak_templates/index_brandy.html:474
 msgid ""
 "Hemen OndareBideak-en barruan sortu daitezkeen erakusketa digitalen edo "
@@ -1209,12 +1356,12 @@ msgstr ""
 "Voilà des exemples des itinéraires ou des expositions virtuelles crées à "
 "OndareBideak"
 
-#: kulturbideak_templates/index.html:390
+#: kulturbideak_templates/index.html:391
 #: kulturbideak_templates/index_brandy.html:474
 msgid "Hasi kulturaz gozatzen!"
 msgstr "Profitez de la culture! Allez-y!"
 
-#: kulturbideak_templates/index.html:411
+#: kulturbideak_templates/index.html:412
 #: kulturbideak_templates/index_brandy.html:490
 #: kulturbideak_templates/index_brandy.html:513
 #: kulturbideak_templates/index_brandy.html:542
@@ -1222,7 +1369,7 @@ msgstr "Profitez de la culture! Allez-y!"
 msgid "Ikusi"
 msgstr "Voir"
 
-#: kulturbideak_templates/index.html:412
+#: kulturbideak_templates/index.html:413
 #: kulturbideak_templates/index_brandy.html:497
 #: kulturbideak_templates/index_brandy.html:520
 #: kulturbideak_templates/index_brandy.html:549
@@ -1230,37 +1377,63 @@ msgstr "Voir"
 msgid "Entzun"
 msgstr "Écouter"
 
-#: kulturbideak_templates/index.html:433
+#: kulturbideak_templates/index.html:434
 #: kulturbideak_templates/index_brandy.html:610
 msgid "Garatzaileak"
 msgstr "Développeurs"
 
 #: kulturbideak_templates/item_berria.html:34
+#: kulturbideak_templates/nabigazio_item_berria.html:151
 msgid "Gehitu eguneko itema"
 msgstr "Ajouter l'item du jour"
 
 #: kulturbideak_templates/item_berria.html:37
+#: kulturbideak_templates/nabigazio_item_berria.html:156
 msgid "Kendu eguneko itema"
 msgstr "Enlever l'item du jour"
 
-#: kulturbideak_templates/item_berria.html:47
+#: kulturbideak_templates/item_berria.html:46
+#: kulturbideak_templates/nabigazio_item_berria.html:166
 msgid "itema editatu"
 msgstr "Éditer l'item"
 
-#: kulturbideak_templates/item_berria.html:49
+#: kulturbideak_templates/item_berria.html:48
+#: kulturbideak_templates/nabigazio_item_berria.html:172
 msgid "itema ezabatu"
 msgstr "Effacer l'item"
 
-#: kulturbideak_templates/item_berria.html:149
+#: kulturbideak_templates/item_berria.html:148
 msgid "Animatu ibilbideetako bat ikusi eta bozkatzera!"
 msgstr "Jetez un coup d'oeil aux itinéraires et votez. Allez-y!"
 
-#: kulturbideak_templates/item_berria.html:154
+#: kulturbideak_templates/item_berria.html:153
 msgid "Izan lehena item honekin ibilbide bat sortzen!"
 msgstr "Soyez le premier à créer un itinéraire avec cet item"
 
-#: kulturbideak_templates/item_berria.html:284
-#: kulturbideak_templates/nabigazio_item_berria.html:369
+#: kulturbideak_templates/item_berria.html:238
+#: kulturbideak_templates/item_berria.html:264
+msgid "Klikatu beheko irudian testua zabaltzeko"
+msgstr ""
+
+#: kulturbideak_templates/item_berria.html:279
+#: kulturbideak_templates/nabigazio_item_berria.html:399
+#, fuzzy
+msgid "Ikusi irudia"
+msgstr "Voir la vidéo"
+
+#: kulturbideak_templates/item_berria.html:299
+#: kulturbideak_templates/nabigazio_item_berria.html:419
+#, fuzzy
+msgid "Entzun audioa"
+msgstr "Écouter"
+
+#: kulturbideak_templates/item_berria.html:319
+#: kulturbideak_templates/nabigazio_item_berria.html:439
+msgid "Bideoa"
+msgstr ""
+
+#: kulturbideak_templates/item_berria.html:432
+#: kulturbideak_templates/nabigazio_item_berria.html:547
 msgid "Kultur itema gustoko duzu?"
 msgstr "Aimez-vous l'item culturel?"
 
@@ -1272,47 +1445,51 @@ msgstr "TOUS LES ITEMS CULTURELLES"
 msgid "Sartu"
 msgstr "Entrer"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:37
+#: kulturbideak_templates/nabigazio_item_berria.html:53
 msgid "IBILBIDEA"
 msgstr "ITINÉRAIRE"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:59
+#: kulturbideak_templates/nabigazio_item_berria.html:75
 msgid "HEMEN ZAUDE"
 msgstr "VOUS ÊTES ICI"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:64
+#: kulturbideak_templates/nabigazio_item_berria.html:80
 msgid "STOP AUTOPLAY"
 msgstr ""
 
-#: kulturbideak_templates/nabigazio_item_berria.html:66
+#: kulturbideak_templates/nabigazio_item_berria.html:82
 msgid "AUTOPLAY"
 msgstr ""
 
-#: kulturbideak_templates/nabigazio_item_berria.html:89
+#: kulturbideak_templates/nabigazio_item_berria.html:105
 msgid "Orria entzun"
 msgstr "Écouter la page"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:223
+#: kulturbideak_templates/nabigazio_item_berria.html:285
 msgid "Eraman itema mundu errealera!"
 msgstr "Emmenez l'item au monde réel"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:304
+#: kulturbideak_templates/nabigazio_item_berria.html:372
+msgid "Testua"
+msgstr ""
+
+#: kulturbideak_templates/nabigazio_item_berria.html:482
 msgid "NABIGATU"
 msgstr "Naviguer"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:310
+#: kulturbideak_templates/nabigazio_item_berria.html:488
 msgid "Atzera"
 msgstr "Précédent"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:326
+#: kulturbideak_templates/nabigazio_item_berria.html:504
 msgid "Nondik jo nahi duzu Aurrera?"
 msgstr "Par où voulez-vous continuer?"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:350
+#: kulturbideak_templates/nabigazio_item_berria.html:528
 msgid "Jatorrizko deskribapena"
 msgstr "Description originale"
 
-#: kulturbideak_templates/nabigazio_item_berria.html:440
+#: kulturbideak_templates/nabigazio_item_berria.html:618
 msgid "Ibilbidearen mapa"
 msgstr "Plan de l'itinéraire"
 
@@ -1344,44 +1521,58 @@ msgstr "Modifier"
 msgid "Eguneratu"
 msgstr "Actualiser"
 
-#: kulturbideak_templates/sortu_ibilbidea.html:152
+#: kulturbideak_templates/sortu_ibilbidea.html:177
 msgid "Ibilbidea sortzeko pausuak:"
 msgstr "Itinéraires les plus votés"
 
-#: kulturbideak_templates/sortu_ibilbidea.html:155
+#: kulturbideak_templates/sortu_ibilbidea.html:180
 msgid "Jetsi lan-eremutik arbelera itemak: gainean kokatu eta geziari klikatu."
-msgstr "Téléchargez les items de l'espace de travail au tableau: situez-vous dessus eta cliquez sur la flèche"
+msgstr ""
+"Téléchargez les items de l'espace de travail au tableau: situez-vous dessus "
+"eta cliquez sur la flèche"
 
-#: kulturbideak_templates/sortu_ibilbidea.html:156
+#: kulturbideak_templates/sortu_ibilbidea.html:181
 msgid ""
 "Itemak ibilbidean kokatu: item bat beste baten gainean kokatu eta askatuz "
 "eta azpikoaren jarraian kokatuko da. Nahi duzun beste aldatu ahalko duzu "
 "itemen posizioa."
-msgstr "Placez les items dans l'itinéraire: si vous placez un item au-dessus d'un autre et le lâchez, il se mettra à la suite de celui qui est dessous. Vous pourrez changer la position des items autant de fois que vous voudrez"
+msgstr ""
+"Placez les items dans l'itinéraire: si vous placez un item au-dessus d'un "
+"autre et le lâchez, il se mettra à la suite de celui qui est dessous. Vous "
+"pourrez changer la position des items autant de fois que vous voudrez"
 
-#: kulturbideak_templates/sortu_ibilbidea.html:157
+#: kulturbideak_templates/sortu_ibilbidea.html:182
 msgid ""
 "Itemei interpretazio edota narrazio pertsonala eman (aukerazkoa): itemen "
 "gainean klik bikoitza egin eta agertuko den lehioan idatzi. "
-msgstr "Ajouter une interprétation ou narration personnel aux items (optionnel): cliquez deux fois sur l'item et écrivez dans la fenêtre qui va apparaître"
+msgstr ""
+"Ajouter une interprétation ou narration personnel aux items (optionnel): "
+"cliquez deux fois sur l'item et écrivez dans la fenêtre qui va apparaître"
 
-#: kulturbideak_templates/sortu_ibilbidea.html:158
+#: kulturbideak_templates/sortu_ibilbidea.html:183
 msgid "'Gorde ibilbidea' botoia sakatu eta eskatzen diren datuak bete."
-msgstr "Cliquez sur le bouton'Sauvegarder itinéraire' et remplissez les données demandées."
+msgstr ""
+"Cliquez sur le bouton'Sauvegarder itinéraire' et remplissez les données "
+"demandées."
 
-#: kulturbideak_templates/sortu_ibilbidea.html:159
+#: kulturbideak_templates/sortu_ibilbidea.html:184
 msgid ""
 "Gogoratu: datuak modu egoki eta osatuan betetzeak ondoren ibilbidea bilatzen "
 "lagunduko du."
-msgstr "Souvenez-vous: si vous introduisez des données appropriés et complets, la recherche de l'itinéraire sera plus efficace"
+msgstr ""
+"Souvenez-vous: si vous introduisez des données appropriés et complets, la "
+"recherche de l'itinéraire sera plus efficace"
 
-#: kulturbideak_templates/sortu_ibilbidea.html:161
+#: kulturbideak_templates/sortu_ibilbidea.html:186
 msgid "Azalpen gehiago behar baldin badituzu,"
 msgstr "Si vous avez besoin d'autres explications,"
 
-#: kulturbideak_templates/sortu_ibilbidea.html:161
+#: kulturbideak_templates/sortu_ibilbidea.html:186
 msgid "ikusi tutorial-bideoa"
 msgstr "Voir la vidéo"
+
+#~ msgid "Gorde irudia"
+#~ msgstr "Sauvegardez l'image"
 
 #~ msgid "Geolokalizazioa"
 #~ msgstr "Géolocalisation"

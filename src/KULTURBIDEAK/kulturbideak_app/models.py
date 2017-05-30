@@ -178,6 +178,23 @@ class itemComment(models.Model):
     def get_subcomments(self):
         return self.itemcomment_set.all()
 
+
+#Hasierako pantailan agertuko diren berriak gordeko dira hemen
+class berria(models.Model):
+	title_eu = models.CharField(max_length=1000)
+	desk_eu = models.CharField(max_length=1000)
+	title_es = models.CharField(max_length=1000)
+	desk_es = models.CharField(max_length=1000)
+	title_en = models.CharField(max_length=1000)
+	desk_en = models.CharField(max_length=1000)
+	title_fr = models.CharField(max_length=1000)
+	desk_fr = models.CharField(max_length=1000)
+	url = models.CharField(max_length=1000)
+	argazkia = models.CharField(max_length=1000)
+	data = models.DateField(auto_now = True, null = True)
+	erakutsi = models.BooleanField(default=False)
+	
+
     
 #Description:Links between Items and external background resources (e.g. Wikipedia) as derived from semantic processing.
 #class item_link(models.Model):
@@ -580,7 +597,7 @@ class hornitzailea(models.Model):
     helbidea = models.CharField(max_length=1000)
     geoloc_longitude = models.FloatField(null=True)
     geoloc_latitude = models.FloatField(null=True)
-    
+    egunekoa = models.BooleanField(default=False)
     
     
 class ProfileManager(models.Manager):

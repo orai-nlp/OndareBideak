@@ -227,7 +227,7 @@ header{
 /* Large screens ----------- */
 @media only screen and (min-width : 1600px) {
 	#karrusela {
-		padding: 0px 100px;
+		padding: 0px 270px;
 	}
 	
 }

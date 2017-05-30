@@ -24,6 +24,7 @@ i {
 	font-style:italic;
 }
 
+
 .page_head {
 	height: 200px;
 }
@@ -198,6 +199,9 @@ img.ob_thumbnail {
 	pointer-events: none;
 }
 
+.saveberria{
+	float: right;
+}
 .wsb_button {
 	cursor: pointer;
 	display: inline-block;
@@ -1055,3 +1059,155 @@ span.helptext {
     vertical-align: middle;
     /*width: 134px;*/
 }
+.kud_irudia{
+	color: #c03035;
+	font-size: 20px;
+}
+
+/**
+ * 	Keyword and mention management tables' (datatables) styles
+ */
+
+/* datatable filters*/
+.dataTables_length, .dataTables_filter {
+	/*display: block;*/
+	margin-right:5%;
+	line-height: 16px !important;
+}
+
+.dataTables_toolbar{
+	width: 100%;
+	clear:both;
+	display:inline-block;
+}
+
+.dataTables_buttons{
+	float:right;
+}
+
+/*table#src_kwrds, table#mentions{
+	border-collapse: collapse;
+	border-style:hidden;
+}*/
+
+table#src_kwrds td {
+	text-align: center;
+	width: 7%;
+}
+
+table#src_kwrds tbody td {
+	color: black !important;
+}
+
+table#src_kwrds .mk_id, .mk_edit {
+	width: 4%;
+}
+
+table#src_kwrds .mk_scrntg, .mk_term {
+	width: 9%;
+}
+#mentions .mm_id, tbody .mm_kpol, tbody .mm_kpol, tbody .mm_lang, tbody .mm_date, tbody .mm_source, thead .mm_text {
+	text-align: center;
+}
+
+thead tr:first-child {
+	font-size: 15px;
+	height: 40px;
+}
+
+.kwrds {
+	float: right;
+	padding-right: 10px;
+}
+
+.green {
+    color: green;
+}
+
+.fa {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-feature-settings: normal;
+    font-kerning: auto;
+    font-language-override: normal;
+    font-size: inherit;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-synthesis: weight style;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-rendering: auto;
+}
+.red {
+    color: #590423;
+}
+
+tbody td {
+    border-bottom: 2px solid #337ab7;
+    padding: 0px 1px !important;
+}
+table {
+    font-size: 13px;
+}
+
+.profile_menu_button {
+    background-color: #e6e6e6;
+    background-image: linear-gradient(to bottom, #dfdfdf 0%, #e6e6e6 100%);
+    border: 1px solid #c8c8c8;
+    border-radius: 5px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.125) inset;
+    margin: 0 2px;
+    padding: 2px 8px;
+}
+ul {
+    list-style: outside none none;
+}
+.zirriborro-tag {
+    position: relative;
+    color: #fff;
+    display: inline-block;
+    padding: 5px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    font-weight: 900;
+} 
+ 
+.zirriborro-tag p{
+ 	margin: 0px;
+ }
+ 
+.zirriborro-tag p span {
+    position: absolute;
+    display: inline-block;
+    right: -30px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.2), inset 0px 5px 30px rgba(255,255,255,0.2);
+    text-align: center;
+    text-transform: uppercase;
+    top: 18px;
+    background: #d9534f; /*#d93131;*/
+    color: #ffffff !important;
+    width: 100px;
+    padding: 0px 10px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    font-size: 100%;
+} 
+
+.zutabe_desk{
+	/+width:30% !important;*/
+	min-width:30%;
+  	max-width:50%;
+  	overflow: hidden;
+}
+
+.horni-table{
+	width:90% !important;
+}
+
+
+
+

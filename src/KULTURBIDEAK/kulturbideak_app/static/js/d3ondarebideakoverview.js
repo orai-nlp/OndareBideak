@@ -117,6 +117,25 @@ function tituluaGarbitu (titulua,moztu){
 
 }
 
+function getBrowserInfo()
+{
+	var ua = navigator.userAgent, tem,
+	M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	if(/trident/i.test(M[1]))
+	{
+		tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+		return 'IE '+(tem[1] || '');
+	}
+	if(M[1]=== 'Chrome')
+	{
+		tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+		if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+	}
+	M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+	if((tem= ua.match(/version\/(\d+)/i))!= null) 
+		M.splice(1, 1, tem[1]);
+	return M.join(' ');
+}
 
 
 /***************************
@@ -318,8 +337,8 @@ function update(source) {
                 var z = "z"+d.id;
                 return z; })
            	.attr("xlink:href", function(d) {if (d.mota=='IMAGE'){return "/uploads/glyphicons-12-camera.png";}else if(d.mota=='TEXT'){return "/uploads/glyphicons-37-file.png";}else if(d.mota=='SOUND'){return "/uploads/glyphicons-77-headphones.png";}else if(d.mota=='VIDEO'){return "/uploads/glyphicons-9-film.png";}else{return "";}})          	 
-            .attr("x", function(d) { return -50;})
-            .attr("y", function(d) { return -20;})
+            .attr("x", function(d) { return 25;})
+            .attr("y", function(d) { return -35;})
             .attr("height", 15)
             .attr("width", 15)
       
@@ -479,6 +498,8 @@ function update(source) {
                 });
             })
             .remove();            
+        
+
 
 //NODOEN POSIZIOA (transform="translate(dx0,dy0)")
 //PAUSO HONETAN NODOAK dx,dx0,dy eta dy0 baloreak ditu.
@@ -500,4 +521,5 @@ function update(source) {
         .append("path")
             .attr("d", "M0,-5L10,0L0,5");
 
+        link.each(function() {this.parentNode.insertBefore(this, this); });    
 }

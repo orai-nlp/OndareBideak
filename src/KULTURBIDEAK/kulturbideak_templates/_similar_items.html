@@ -27,7 +27,8 @@
 						  		<img  alt="{{antzekoa.dc_title}}" src="/uploads/NoIrudiItem.png">
 						  	{%endif%}
 						{% elif antzekoa.edm_object %}
-							{% if antzekoa.edm_object|urlpath_exists == 'True' %}
+							{% if antzekoa.edm_object|urlpath_exists == 'True' and 'SOUND' not in antzekoa.edm_type and 'VIDEO' not in antzekoa.edm_type%}
+						 
 								<img width="90%" alt="{{antzekoa.dc_title}}" src="{{ antzekoa.edm_object|clean_http_prefix }}">
 							{%else%}
 						  		<img  alt="{{antzekoa.dc_title}}" src="/uploads/NoIrudiItem.png">

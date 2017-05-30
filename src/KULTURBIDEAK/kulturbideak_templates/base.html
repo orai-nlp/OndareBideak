@@ -61,6 +61,10 @@
 		<!-- CKEDITOR-->
 		<script type="text/javascript" src="{{ STATIC_URL }}js/ckeditor/ckeditor.js"></script>
 		
+		
+		
+		{% block modals %}
+		{% endblock modals %}
 		<!--
 		<script src="/home/ubuntu/.npm/mediaelement/3.1.2/package/build/mediaelement-and-player.min.js"></script>
 		<link href="/home/ubuntu/.npm/mediaelement/3.1.2/package/build/mediaelementplayer.css" rel="stylesheet">
@@ -94,11 +98,105 @@
 		<script type="text/javascript">
             //AUTOPLAY
 		</script>
+		
+		<script type="text/javascript">
+			var global_map;
+            var layer_array = Array();
+            var LeafIcon = L.Icon.extend({});
+            var markers = [];
+            
+			//NODOENTZAKO MAPA FUNTZIOAK
+			//itema_gehitu
+			  function load_map_hutsa(map, options) {
+                console.log('itema gehitu')
+                global_map = map;
+				alert("kkkh");
+                // zentratu mapa erabiltzaileak
+                if (markers.length > 0) {
+                    map.panTo(new L.LatLng(markers[0].getLatLng().lat, markers[0].getLatLng().lng));
+                    //document.getElementById("latitude").value = markers[0].getLatLng().lat;
+                    //document.getElementById("longitude").value = markers[0].getLatLng().lng;
+                    //alert(document.getElementById("longitude").value);
+                }
+
+                // maparen click eventoa
+                //map.on('click', function(e) {if(markers.length >0){map.removeLayer(markers[0]);markers=[];}; var marker = L.marker(e.latlng, { title: "Resource Location",alt: "Resource Location",riseOnHover: true,draggable: true}).on("click",function(e) {map.removeLayer(this);layer_array=jQuery.grep(layer_array, function(value) {return $(value).not([e.latlng.lat,e.latlng.lng]).length === 0 && $([e.latlng.lat,e.latlng.lng]).not(value).length === 0});}).addTo(map);layer_array.push([e.latlng.lat,e.latlng.lng]);markers.push(marker);});
+                map.on('click', function(e) {
+                    if (markers.length > 0) {
+                        map.removeLayer(markers[0]);
+                        markers = [];
+                    };
+                    var marker = L.marker(e.latlng, {
+                        title : "Resource Location",
+                        alt : "Resource Location",
+                        riseOnHover : true,
+                        draggable : true
+                    }).on("click", function(e) {
+                        map.removeLayer(this);
+                        layer_array = jQuery.grep(layer_array, function(value) {
+                            return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
+                        });
+                    }).addTo(map);
+                    layer_array.push([e.latlng.lat, e.latlng.lng]);
+                    markers.push(marker);
+                    document.getElementById("latitude").value = e.latlng.lat;
+                    document.getElementById("longitude").value = e.latlng.lng;
+                });
+
+            }
+			
+			
+			//nodo_editatu
+			function load_map_nodo_editatu(map, options) {
+
+                global_map = map;
+        
+                if(markers.length>0 || {{ geoloc_latitude }} !=0.0)
+                {
+                    //Mapa zentratu
+                    map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }}, {{geoloc_longitude | correct_float_format}}));
+
+            		//Geolokalizazio zaharra beste kolore batekin erakutsi
+            		var greenIcon = new LeafIcon({iconUrl : '{{STATIC_URL}}img/leaf-green.png'});
+
+            		L.marker([{{ geoloc_latitude | correct_float_format }}, {{ geoloc_longitude | correct_float_format }}], {icon:greenIcon}).addTo(map).openPopup();
+
+            	}
+
+            	// maparen click eventoa
+            	map.on('click', function(e) {
+                if (markers.length > 0) {
+                    map.removeLayer(markers[0]);
+                    markers = [];
+                };
+                var marker = L.marker(e.latlng, {
+                    title : "Resource Location",
+                    alt : "Resource Location",
+                    riseOnHover : true,
+                    draggable : true
+                }).on("click", function(e) {
+                    map.removeLayer(this);
+                    layer_array = jQuery.grep(layer_array, function(value) {
+                        return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
+             	    });
+                }).addTo(map);
+                layer_array.push([e.latlng.lat, e.latlng.lng]);
+                markers.push(marker);
+                document.getElementById("latitude").value = e.latlng.lat;
+                document.getElementById("longitude").value = e.latlng.lng;
+            });
+
+            }
+			
+			
+		</script>
+		
+		
 
 		{% block mapFunctions %}
 		<script type="text/javascript">
             //MAPA FUNTZIOAK
-
+			
             var global_map;
             var layer_array = Array();
             var LeafIcon = L.Icon.extend({});
@@ -908,8 +1006,10 @@
 
 								<div id="messages"></div>
 								{% for node in itemPaths %}
-								<label for="exampleInputEmail1"><a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a></label>
-								<br/>
+									{%if  node.fk_path_id.acces != "0" %}
+										<label for="exampleInputEmail1"><a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a></label>
+										<br/>
+									{%endif%}
 								{%endfor%}
 								<br/>
 								<div class="modal-footer">

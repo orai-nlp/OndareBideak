@@ -134,11 +134,13 @@
 				<hr>
 				{% endif %}
 				{% if user.is_authenticated %}
+				
 				<li>
 					<a href="irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> {% trans "Irten" %}</a>
 				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>
+					{% if not user.is_superuser %}
 					<ul class="dropdown-menu">
 						<li>
 							<a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a>
@@ -174,7 +176,30 @@
 							<a href="irten">{% trans "Irten" %} <!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
 						</li>
 					</ul>
+					<!--Administratzailea baldin bada kudeaketa-aukerak erakutsi -->
+            		{% else %}
+            		<ul class="dropdown-menu">
+						<li>
+							<a href="{{BASE_URL}}/admin_erabiltzaileak_kudeatu">{% trans "Erabiltzaileak kudeatu" %}</a>
+						</li>
+						<li>
+							<a href="{{BASE_URL}}/admin_berriak_kudeatu">{% trans "Berriak kudeatu" %}</a>
+						</li>
+						<li>
+							<a href="{{BASE_URL}}/admin_eguneko_hornitzaileak_kudeatu">{% trans "Eguneko hornitzaileak kudeatu" %}</a>
+						</li>
+						<li>
+							<a href="irten">{% trans "Irten" %} <!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
+						</li>
+            		<!--
+            		<p class="kud_irudia"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></p>
+            		<a class="btn btn-common" href="{{BASE_URL}}/admin_hornitzaile_fitxa_editatu?hid={{hornitzaile.fk_user.id}}">{% trans "Hornitzaile fitxa editatu" %} <span class="glyphicon glyphicon-chevron-right"></span></a>
+            		-->
+            		</ul>
+            		{%endif%}
+            	
 				</li>
+				
 				{% else %}
 				<li>
 					<a href="erregistratu"><b>{% trans "Erregistratu" %}</b> </a>

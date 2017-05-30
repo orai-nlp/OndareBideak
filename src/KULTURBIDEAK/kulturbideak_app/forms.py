@@ -75,7 +75,95 @@ class LoginForm(Form):
         except:
             raise forms.ValidationError(error_message)
         
-        
+class BerriaForm(forms.Form):
+    
+   
+    berriaid=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("id"),"type":"text", "class":"form-control","id":"InputId","readonly":"readonly"}))
+    titulua_eu=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Titulua (EU)"),"type":"text", "class":"form-control","id":"InputTitleEU"}),required=True)
+    #desk_eu=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("Deskribapena (EU)"),"type":"text", "class":"form-control","id":"InputDeskEU"}),required=True)
+    desk_eu = forms.CharField(max_length=1000,
+            label = _("deskribapena"),
+            required = False,
+            widget=forms.Textarea(attrs={"type":"text", 
+                                    "class":"form-control",
+                                    "placeholder":_("deskribapena"),
+                                    "rows":"3",
+                                 })
+    )
+    
+    titulua_es=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Titulua (ES)"),"type":"text", "class":"form-control","id":"InputTitleES"}),required=False)
+    #desk_es=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("Deskribapena (ES)"),"type":"text", "class":"form-control","id":"InputDeskES"}),required=False)
+    desk_es = forms.CharField(max_length=1000,
+            label = _("deskribapena"),
+            required = False,
+            widget=forms.Textarea(attrs={"type":"text", 
+                                    "class":"form-control",
+                                    "placeholder":_("deskribapena"),
+                                    "rows":"3",
+                                 })
+    )
+    
+    
+    titulua_en=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Titulua (EN)"),"type":"text", "class":"form-control","id":"InputTitleEN"}),required=False)
+    #desk_en=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("Deskribapena (EN)"),"type":"text", "class":"form-control","id":"InputDeskEN"}),required=False)
+    desk_en = forms.CharField(max_length=1000,
+            label = _("deskribapena"),
+            required = False,
+            widget=forms.Textarea(attrs={"type":"text", 
+                                    "class":"form-control",
+                                    "placeholder":_("deskribapena"),
+                                    "rows":"3",
+                                 })
+    )
+    titulua_fr=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Titulua (FR)"),"type":"text", "class":"form-control","id":"InputTitleFR"}),required=False)
+    #desk_fr=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("Deskribapena (FR)"),"type":"text", "class":"form-control","id":"InputDeskFR"}),required=False)
+    desk_fr = forms.CharField(max_length=1000,
+            label = _("deskribapena"),
+            required = False,
+            widget=forms.Textarea(attrs={"type":"text", 
+                                    "class":"form-control",
+                                    "placeholder":_("deskribapena"),
+                                    "rows":"3",
+                                 })
+    )
+    
+    url=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Url-a"),"type":"text", "class":"form-control","id":"InputUrl"}),required=False)
+    irudia=ImageField(max_length=32,required=False)
+    publikatu = forms.BooleanField(
+        label = _("Publikatu"),
+        required = False,
+        widget=forms.CheckboxInput(attrs={"type":"check", 
+                                "placeholder":_("Publikatu")
+                                })
+    )
+
+
+class UserForm(forms.Form):
+    
+   
+    userid=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("id"),"type":"text", "class":"form-control","id":"InputId","readonly":"readonly"}))
+    izena=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Izena"),"type":"text", "class":"form-control","id":"InputName"}))
+    abizena=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Abizenak"),"type":"text", "class":"form-control","id":"InputName2"}))
+    username=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Erabiltzailea"),"type":"text", "class":"form-control","id":"InputUser"}))
+    posta=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Helbide elektronikoa"),"type":"text", "class":"form-control","id":"InputEmail"}))
+    '''
+    class Meta:
+        model = User
+        fields = ["id","first_name", "last_name","username", "email"]
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+      
+    '''
+    def clean_username(self):
+        cleaned_data = self.cleaned_data
+        error_message=_("Erabiltzaile izen hau dagoeneko erregistratua dago")
+        if User.objects.filter(username=cleaned_data['username']).count() > 1:
+            raise forms.ValidationError(error_message)
+        else:
+            return cleaned_data['username']
+     
+     
+   
 class CreateUserForm(forms.Form):
     '''
     posta=forms.CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Helbide elektronikoa"),"type":"text", "class":"form-control","id":"InputEmail"}))
