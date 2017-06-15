@@ -297,12 +297,9 @@
   								<source src="{{momentukoItema.edm_object}}" type="video/mp4">
   							</video>
 							
-						{% elif '.flv' in momentukoItema.edm_object and "EuskoMedia Fundazioa" not in momentukoItema.edm_provider %}
-							<!--MEDIAELEMENT
-							<video width="640" height="480" controls="true" class="mejs-player">
-   							 <source src="{{momentukoItema.edm_object}}" type="video/flv" />
-							</video>
-							-->
+						{% elif '.flv' in momentukoItema.edm_object %}
+							<!-- Lehen : and "EuskoMedia Fundazioa" not in momentukoItema.edm_provider-->
+							
 						
 							<!-- HD FLV PLAYER : Orokorrean ondo dabil-->			
 							
@@ -316,16 +313,14 @@
 							s1.write ('mediaspace');
 							</script>
 							
+							
+						<!-- elif '.flv' in momentukoItema.edm_object and 'EuskoMedia Fundazioa' in momentukoItema.edm_provider -->
+							<!-- Lehen hau erabiltzen genuen, EM bideoak erreproduzitzeko, baina orain https, eduki-misto errorea ematenn du -->
 							<!--
-							<div class="multimedia Centrado">
-							<embed src="http://www.euskonews.com/mediaplayer.swf" allowscriptaccess="always" allowfullscreen="true" flashvars="height=349&width=610&file=http://www.euskomedia.org/MusicGaler/71_retegi.flv&image=http://www.euskomedia.org/MusicGaler/foto/71_retegi.jpg" width="610" height="349">
-							</div>
-							-->
-						{% elif '.flv' in momentukoItema.edm_object and 'EuskoMedia Fundazioa' in momentukoItema.edm_provider %}
 							<div class="multimedia Centrado">
 							<embed src="http://www.euskonews.com/mediaplayer.swf" allowscriptaccess="always" allowfullscreen="true" flashvars="height=349&width=610&file={{momentukoItema.edm_object}}&image={{momentukoItema.ob_thumbnail}}" width="640" height="360">
 							</div>
-							
+							-->
 						{% else %}
 						
 							<video width="640" height="480" controls>

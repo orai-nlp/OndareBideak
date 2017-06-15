@@ -96,7 +96,7 @@
 			<div class="post">
 				<h3><a href="{{BASE_URL}}/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h" class="karrusel_title" title="{% trans 'Erakunde proposamena' %}"> <span class="glyphicon glyphicon-menu-right karrusel_span" aria-hidden="true"></span> <span class="karrusel_span">{% trans "Erakundea" %}:</span> {{egunekoHornitzaile.izena}}</a></h3>
 				<p>
-					{{egunekoHornitzaile.deskribapena}}
+					{{egunekoHornitzaile.deskribapena |format_html| safe}}
 				</p>
 			</div>
 		</li>

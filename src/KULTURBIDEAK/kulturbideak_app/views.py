@@ -605,10 +605,13 @@ def admin_hornitzaile_bihurtu (request):
 		group = Group.objects.get(name='herritarra') 
 		group.user_set.remove(erabiltzailea)
 		
-		#Hornitzaile-fitxa 'hutsa' sortu
+		#Hornitzaile-fitxa 'hutsa' sortu EZ BALDIN BADAUKA 
+		#Erabiltzaile "herritar" moduan erregistratu bada ez du edukiko, baina "hornitzaile" izateko eskaera egin badu, edukiko du fitxa hutsa
+		num_results = hornitzailea.objects.filter(fk_user=erabiltzailea).count()
 		hornitzaile_izena=erabiltzailea.username
-		hornitzaile_fitxa=hornitzailea(fk_user=erabiltzailea,izena=hornitzaile_izena)
-		hornitzaile_fitxa.save()
+		if num_results == 0:	
+			hornitzaile_fitxa=hornitzailea(fk_user=erabiltzailea,izena=hornitzaile_izena)
+			hornitzaile_fitxa.save()
 		
 		#Emaila bidali		
 		mezua=_("Hornitzailearen izena:")+str(hornitzaile_izena)+".\n"+_("Hornitzailea da hemendik aurrera. Datu-basean burutu dira egin beharreko aldaketak.")

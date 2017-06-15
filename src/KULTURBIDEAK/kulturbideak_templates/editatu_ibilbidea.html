@@ -328,6 +328,23 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://obprototipoa.elhuyar.eus
       		  // Replace the <textarea id="narra_textarea"> with a CKEditor
        			 // instance, using default configuration.
        			 CKEDITOR.replace( 'narra_textarea' );
+       			 
+       			 
+       			 
+       			  //Beheko kode hau gehitu da, ze bestela, CKEDITOR-a modal batean zabaltzean linkak ezin ziren sartu
+
+$.fn.modal.Constructor.prototype.enforceFocus = function () {
+    var $modalElement = this.$element;
+    $(document).on('focusin.modal', function (e) {
+        var $parent = $(e.target.parentNode);
+        if ($modalElement[0] !== e.target && !$modalElement.has(e.target).length
+            // add whatever conditions you need here:
+            &&
+            !$parent.hasClass('cke_dialog_ui_input_select') && !$parent.hasClass('cke_dialog_ui_input_text')) {
+            $modalElement.focus()
+        }
+    })
+};
     		</script>
 	    
 	    </div>
