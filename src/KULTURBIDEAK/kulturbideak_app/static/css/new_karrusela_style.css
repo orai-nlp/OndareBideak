@@ -1,0 +1,287 @@
+/*
+Fade content bs-carousel with hero headers
+Code snippet by maridlcrmn (Follow me on Twitter @maridlcrmn) for Bootsnipp.com
+Image credits: unsplash.com
+*/
+
+/********************************/
+/*       Fade Bs-carousel       */
+/********************************/
+.fade-carousel {
+    position: relative;
+    height: 48vh;
+}
+
+/* Maddalen: karruselaren altuera */
+.fade-carousel .carousel-inner .item {
+    height: 48vh;
+}
+.fade-carousel .carousel-indicators > li {
+    margin: 0 2px;
+    background-color: #333333;
+    border-color: #333333;
+    opacity: .7;
+}
+.fade-carousel .carousel-indicators > li.active {
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+}
+ .carousel-indicators-new {
+ 	bottom:-58px !important;
+ 	/*left:-605px;*/
+ }
+
+/*Maddalen berria */
+ .carousel-inner {
+    padding-left: 95px !important;
+   /* padding-top: 35px !important;*/
+   
+    width: 95% !important;
+ }
+
+.laukia {
+
+	 height: 48vh;/* inherit slide-1..ena*/
+	 width: 100% !important;
+}
+
+.laukia img {
+	height: 48vh;
+    overflow: hidden;
+    width: 100%;
+
+
+}
+
+.karratua {
+	height: 48vh;
+
+}
+/* boostrap-eko defektuzkoa aldatzen du*/
+.col-md-5 {
+    width: 45.667% !important;
+    padding-right: 0px;
+}
+
+.fondo-horia {
+	background-color:#FFDA3E;
+}
+.fondo-gorria {
+	background-color:#FF563D;
+}
+.fondo-urdina {
+	background-color:#40D7FF;
+}
+.fondo-berdea {
+	background-color:#5AED64;
+}
+
+.fondo-neutroa {
+	background-color:#333333;
+}
+
+.karrusel-zer {
+	color: #333333;
+    font-family: walsheim-bold-web;
+    font-size: 17px;
+    margin-bottom: 19px;
+    margin-top: 21px;
+    text-align: center;
+
+}
+.karrusel-zer-argia {
+	color: #ffffff;
+    font-family: walsheim-bold-web;
+    font-size: 17px;
+    margin-bottom: 19px;
+    margin-top: 21px;
+    text-align: center;
+
+}
+.marra-horia {
+    border-bottom: 3px solid #FFDA3E; 
+}
+
+.marra-iluna {
+    border-bottom: 3px solid #333333; 
+}
+
+.letra-arina {
+
+	font-family: walsheim-web !important;
+}
+
+.mota-irudia img {
+	height: 15px;
+ 	width: 15px;
+
+}
+
+.karrusel-data {
+	color: #ffffff;
+    font-family: walsheim-ligth-web;
+    font-size: 23px;
+    margin-bottom: 19px;
+    margin-top: 5px;
+    /*text-align: center;*/
+}
+
+.karrusel-title {
+	color: #333333;
+    font-family: walsheim-bold-web;
+    font-size: 32px;
+    margin-bottom: 19px;
+    margin-top: -10px;
+}
+
+.karrusel-describapena {
+	color: #333333;
+    font-family: walsheim-light-web;
+    font-size: 17px;
+    margin-bottom: 19px;
+    margin-top: -10px;
+}
+
+.karrusel-gehiago {
+	color: #333333;
+    font-family: walsheim-web;
+    font-size: 15px;
+    margin-top: 15px;
+   
+
+}
+
+.karrusel-gehiago a{
+	color: #333333; 
+
+}
+
+.karrusel-title-argia {
+	color: #ffffff;
+    font-family: walsheim-bold-web;
+    font-size: 32px;
+    margin-bottom: 19px;
+    margin-top: -10px;
+}
+
+.karrusel-title-berria-argia {
+	color: #ffffff;
+    font-family: walsheim-bold-web;
+    font-size: 25px;
+    margin-bottom: 19px;
+    margin-top: -10px;
+}
+
+.karrusel-describapena-argia {
+	color: #ffffff;
+    font-family: walsheim-light-web;
+    font-size: 17px;
+    margin-bottom: 19px;
+    margin-top: -10px;
+}
+karrusel-describapena-argia p {
+
+	color: #ffffff;
+    font-family: walsheim-light-web;
+    font-size: 17px;
+    margin-bottom: 19px;
+    margin-top: -10px;
+
+}
+
+.karrusel-gehiago-argia {
+	color: #ffffff;
+    font-family: walsheim-web;
+    font-size: 15px;
+    margin-top: 15px;
+   
+
+}
+.karrusel-gehiago-argia a {
+	color: #ffffff;
+    
+    margin-top: 25px;
+}
+
+/********************************/
+/*          Hero Headers        */
+/********************************/
+
+/*
+.hero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.75);
+    
+      -webkit-transform: translate3d(-50%,-50%,0);
+         -moz-transform: translate3d(-50%,-50%,0);
+          -ms-transform: translate3d(-50%,-50%,0);
+           -o-transform: translate3d(-50%,-50%,0);
+              transform: translate3d(-50%,-50%,0);
+}
+
+.hero h1 {
+    font-size: 6em;    
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.fade-carousel .carousel-inner .item .hero {
+    opacity: 0;
+    -webkit-transition: 2s all ease-in-out .1s;
+       -moz-transition: 2s all ease-in-out .1s; 
+        -ms-transition: 2s all ease-in-out .1s; 
+         -o-transition: 2s all ease-in-out .1s; 
+            transition: 2s all ease-in-out .1s; 
+}
+.fade-carousel .carousel-inner .item.active .hero {
+    opacity: 1;
+    -webkit-transition: 2s all ease-in-out .1s;
+       -moz-transition: 2s all ease-in-out .1s; 
+        -ms-transition: 2s all ease-in-out .1s; 
+         -o-transition: 2s all ease-in-out .1s; 
+            transition: 2s all ease-in-out .1s;    
+}
+*/
+/********************************/
+/*            Overlay           */
+/********************************/
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 35%;   
+    padding-top:45px;
+    background-color:#f8f8f8;
+   
+}
+
+/********************************/
+/*       Slides backgrounds     */
+/********************************/
+.fade-carousel .slides .slide-1, 
+.fade-carousel .slides .slide-2,
+.fade-carousel .slides .slide-3 {
+  height: 60vh;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+
+/********************************/
+/*          Media Queries       */
+/********************************/
+@media screen and (min-width: 980px){
+    .hero { width: 980px; }    
+}
+@media screen and (max-width: 640px){
+    .hero h1 { font-size: 4em; }    
+}

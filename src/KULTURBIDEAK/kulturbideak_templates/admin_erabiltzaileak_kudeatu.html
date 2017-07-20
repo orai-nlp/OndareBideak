@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load tags %}
+
+{% block additional_css %}
+
+<link href="{{ STATIC_URL }}css/datatables.min.css" rel="stylesheet">
+
+<link href="{{ STATIC_URL }}css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock additional_css %}
+
+
+
+
+
+{% block content %}
+<table id="src_kwrds">
+	<thead>
+		<tr>
+			<td class=".mk_id">{% trans "Id" %}</td>
+			<td>{% trans "Izena" %}</td>
+			<td>{% trans "Abizena" %}</td>
+			<td>{% trans "Username" %}</td>
+			<td>{% trans "Posta" %}</td>
+			<td>{% trans "Hornitzailea da?" %}</td>
+			<td>{% trans "Hornitzaile-izena" %}</td>
+			<td>{% trans "Azken konexioa" %}</td>
+			<td>{% trans "Noiz erregistratua" %}</td>
+			
+			<td class=".mk_edit">{% trans "Editatu Profila" %}</td>
+			<td class=".mk_edit">{% trans "Editatu Pasahitza" %}</td>
+			<td class=".mk_edit">{% trans "Editatu hornitzaile-fitxa" %}</td>
+			<td class=".mk_edit">{% trans "Hornitzaile bihurtu" %}</td>
+		</tr>
+	</thead>
+	<tbody>
+
+		{% for erab in erabiltzaileak %}
+		<tr name="{{ erab.id }}">
+			<td>{{ erab.id }}</td>
+			<td>{{ erab.first_name }}</td>
+			<td>{{ erab.last_name }}</td>
+			<td>{{ erab.username }}</td>
+			<td>{{ erab.email }}</td>
+			<td><i class="fa {% if erab.id in hornitzaileak_id %} fa-check green {% else %} fa-times red{% endif %}" aria-hidden="true"></i></td>
+			{% for h in hornitzaileak %}
+				{%if h.fk_user.id == erab.id%}
+					<td>{{ h.izena }}</td>
+				{%endif%}
+			{% endfor %}
+			{% if not erab.id in hornitzaileak_id %}
+				 <td> --- </td>
+			{%endif%}
+			<td>{{ erab.last_login }}</td>
+			<td>{{ erab.date_joined }}</td>
+
+			<td><a href="#" data-toggle="modal" data-target="#erab-modal" onclick="load_erab_form('{{ erab.id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+			<td><a href="#" onclick="load_changePass_confirmation('{{ erab.id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+			{% if erab.id in hornitzaileak_id %} 
+				<td><a href="/admin_hornitzaile_fitxa_editatu?erabId={{erab.id}}"  target='_blank'><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+			{%else%}
+				<td>---</td>
+			{%endif%}
+			{% if not erab.id in hornitzaileak_id %}
+				<td><a href="/admin_hornitzaile_bihurtu?erabId={{erab.id}}"  target='_blank'><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+			{%else%}
+				 <td> --- </td>
+			{%endif%}
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
+
+
+
+{% block modals %}
+<div id="loading_modal" class="modal text-center" style="display:none;">
+	<h1>{% trans "Datuak eguneratzen..." %}</h1><img src="{{ STATIC_URL}}img/ajax-loader.gif"/>
+</div>
+
+<div class="modal fade" id="erab-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">{% trans "Kudeatu Erabiltzailea" %}</h4>
+			</div>
+			<div class="modal-body erabmodal-container">
+				<form method="POST" action="admin_erabiltzaileak_kudeatu">				
+        			{% csrf_token %}
+        			{{ form.errors }}
+					{{ form.non_field_errors }}
+					{{ user_form }}
+					<input type="submit" name="save_user" class="login loginmodal-submit" value="{% trans 'Gorde' %}">
+				</form>
+			</div>
+			<div class="modal-footer">
+				<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>-->
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock %}
+
+{% block pageEndScripts %}
+		
+		
+		<!-- DATATABLES-->
+		<script src="{{STATIC_URL}}js/datatables.min.js"></script>
+	
+		<script>
+  		  $('table').DataTable({
+        dom : 'lf<"dataTables_toolbar"<"dataTables_buttons"B>>rtip',
+        buttons : [{
+            extend : 'excel',
+            className : 'profile_menu_button',
+            text : 'Excel <i class=\"fa fa-file-excel-o\"></i>'
+        }, {
+            extend : 'pdf',
+            className : 'profile_menu_button',
+            text : 'PDF <i class=\"fa fa-file-pdf-o\"></i>'
+        }, {
+            extend : 'colvis',
+            className : 'profile_menu_button',
+            text : 'Erakutsi/Ezkutatu <i class=\"fa fa-eye\"></i>'
+        }],
+        iDisplayLength : 100
+    });
+    
+		</script>
+
+{% endblock pageEndScripts %}
+
+
+

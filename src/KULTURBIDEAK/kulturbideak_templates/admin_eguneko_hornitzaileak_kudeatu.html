@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load tags %}
+
+{% block additional_css %}
+
+<link href="{{ STATIC_URL }}css/datatables.min.css" rel="stylesheet">
+
+<link href="{{ STATIC_URL }}css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock additional_css %}
+
+
+
+
+
+{% block content %}
+<table id="src_kwrds" class="horni-table">
+	<thead>
+		<tr>
+			<td class=".mk_id">{% trans "Id" %}</td>
+			<td>{% trans "Izena" %}</td>
+			<td>{% trans "Deskribapena" %}</td>
+			<td>{% trans "Erakunde mota" %}</td>
+			<td>{% trans "Telefonoa" %}</td>
+			<td>{% trans "Emaila" %}</td>
+			<td>{% trans "Egunekoa da?" %}</td>			
+			<td class=".mk_edit">{% trans "Aldatu Egoera" %}</td>
+						
+		</tr>
+	</thead>
+	<tbody>
+
+		{% for horni in hornitzaileak %}
+		<tr name="{{ horni.id }}">
+			<td>{{ horni.id }}</td>
+			<td>{{ horni.izena }}</td>
+			<td title="{{ horni.deskribapena |format_html |safe}}" >{{ horni.deskribapena |format_html | get_substring |safe}} ...</td>
+			<td>{{ horni.erakundeMota }}</td>
+			<td>{{ horni.telefonoa }}</td>
+			<td>{{ horni.emaila }}</td>
+			<td><i class="fa {% if horni.egunekoa == 1 %} fa-check green {% else %} fa-times red{% endif %}" aria-hidden="true"></i></td>
+			<td><a href="#" data-toggle="modal" data-target="#erab-modal" onclick="aldatu_hornitzaile_egoera('{{ horni.id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+			
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
+
+
+
+
+
+{% block pageEndScripts %}
+		
+		
+		<!-- DATATABLES-->
+		<script src="{{STATIC_URL}}js/datatables.min.js"></script>
+	
+		<script>
+  		  $('table').DataTable({
+        dom : 'lf<"dataTables_toolbar"<"dataTables_buttons"B>>rtip',
+        buttons : [{
+            extend : 'excel',
+            className : 'profile_menu_button',
+            text : 'Excel <i class=\"fa fa-file-excel-o\"></i>'
+        }, {
+            extend : 'pdf',
+            className : 'profile_menu_button',
+            text : 'PDF <i class=\"fa fa-file-pdf-o\"></i>'
+        }, {
+            extend : 'colvis',
+            className : 'profile_menu_button',
+            text : 'Erakutsi/Ezkutatu <i class=\"fa fa-eye\"></i>'
+        }],
+        iDisplayLength : 100
+    });
+    
+		</script>
+
+{% endblock pageEndScripts %}
+
+
+

@@ -1,0 +1,106 @@
+/* HEADERRAREN ESTILOA*/
+
+/* boostrapen defektuzkoa aldatzeko */
+.navbar {
+	margin-bottom:0px !important;
+}
+/* boostrapen defektuzkoa aldatzeko */
+.navbar-default {
+	border-color: #f8f8f8 !important;
+}
+
+.login-icon img {
+	margin-top: -8px;
+    width: 20px;
+}
+
+
+#new-logo img
+{
+	width:117px;
+	margin-top:27px;
+	margin-bottom:18px;
+	margin-left:12px;
+}
+
+.header-main-links-med
+{
+	margin-left:52px;
+}
+.header-main-links
+{	
+	/*font-weight: 900;*/
+	
+	font-family: walsheim-bold-web;
+	font-color: #333333 !important;
+	font-size: 13px !important;
+    text-transform: uppercase;
+}
+
+
+
+/*
+.header-custom-link-underline{
+       
+    border-bottom: 3px solid black;   
+    width: 80%;
+     
+}
+*/
+
+
+.header-custom-link-underline::after{
+    position: absolute; 
+    left: 14px; 
+    bottom: 0; 
+    width: 71%; 
+    height: 1px; 
+    border-bottom: 2px solid #333333; 
+    content: ""
+}
+
+
+
+/*
+.navbar-default li {
+	font-size: 13px;
+	padding: 0 15px 0 0;
+	color: #333333  !important;
+}
+*/
+
+.navbar-default .navbar-nav > li > a {
+	color: #333333 !important;
+}
+
+.navbar-nav > li > a {
+    padding-bottom: 4px;
+    padding-top: 35px;
+}
+
+/*BILAKETA -KUTXA */
+
+.bilatzailea-kutxa {
+	padding: 21px;
+	margin-left:0px;
+	border-radius: 0px !important;
+}
+
+
+/* INTERFAZEKO HIZKUNTZA AUKERATZEKO LINKAK*/
+
+.interf-lang{
+ 	padding-right: 5px !important;
+ 	font-size: 12px !important ;
+}
+
+.header-interface-lang
+{		
+	color: #333333;
+	font-size: 14px;
+}
+
+
+
+
+

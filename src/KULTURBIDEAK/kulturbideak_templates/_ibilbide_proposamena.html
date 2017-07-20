@@ -1,0 +1,46 @@
+{% load i18n %}
+{% load tags%}
+
+<!-- CSS media query on a link element -->
+<link rel="stylesheet" media="(min-width: 600px)" href="{{STATIC_URL}}css/ibilbide_proposamena_style.css" type="text/css">
+
+
+
+
+<div class="container-fluid fondo-iluna">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-2">
+			<p class="ibilbide_propos_title" >{% trans "Azken Ibilbideak" %}</p>
+		</div>
+	</div> <!--row-->
+	<div class="row">
+		<div class="col-md-10 col-md-offset-2">
+			<p class="ibilbide_propos_desk" >{% trans "Hasi kulturaz gozatzen!" %}</p>
+		</div>
+	</div> <!--row-->
+	<div class="row ibilbide-propos_img_list"> <!--Ibilbideen irudiak -->
+		{% for path in ibilbideak %}
+		<div class="col-md-3 ibilb-padding">
+			<div class="ibilbide-img-index-tam">
+				{% if path.paths_thumbnail %}
+					
+					<a href="https://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id={{path.id}}"> <img class="img-responsive " src="{{path.paths_thumbnail}}"> </a>
+								
+					
+				{%else%}
+					<a href="https://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id={{path.id}}"> <img class="img-responsive " src="/uploads/NoIrudiBide.png"></a>
+				{%endif%}
+					<div class="img_overlay">
+						<p class="marra_overlay">&nbsp;&nbsp;&nbsp;</p>
+						<p class="title_overlay">{{path.dc_title}}</p>
+						<p class="creator_overlay"> <img class="img-user-white" src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png">{{path.fk_user_id.username}}</p>
+						
+					</div>	
+			</div>
+			
+		</div><!--row -->
+	{% endfor%}
+	</div> <!--row-->
+	
+	
+</div>

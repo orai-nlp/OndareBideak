@@ -1,0 +1,23 @@
+{% load i18n %}
+{% load tags %}
+                
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{% trans "Kudeatu Erabiltzailea" %}</h4>
+                <!--<h1 style="float:right;"><a href="#" data-toggle="modal" data-target="#login-modal">x</a></h1>-->
+            </div>
+            <div class="modal-body erabmodal-container">
+                <form method="POST" action="admin_erabiltzaileak_kudeatu">
+                    {% csrf_token %}
+                    {{ form.errors }}
+					{{ form.non_field_errors }}
+                    {{ user_form }}
+                    <input type="submit" name="save_user" class="login loginmodal-submit" value="{% trans 'Gorde' %}">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>-->
+            </div>

@@ -1,0 +1,172 @@
+{% load i18n %}
+{% load tags %}
+                
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{% trans "Kudeatu Berria" %}</h4>
+                <!--<h1 style="float:right;"><a href="#" data-toggle="modal" data-target="#login-modal">x</a></h1>-->
+            </div>
+            <div class="modal-body erabmodal-container">
+                <form method="POST" action="admin_berriak_kudeatu" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.errors }}
+					{{ form.non_field_errors }}
+                    <label for="id_publikatu">{% trans "Id" %}:</label>
+							{{ berria_form.berriaid }}
+						</br>
+						<label for="id_titulua">{% trans "Titulua" %}:</label>
+						<ul class="nav nav-tabs"  name="AdvOrBasicSearch">
+							<li  class="active"><a data-toggle="tab" href="#tituluaEU">{% trans "EU" %}</a></li>
+  							<li><a data-toggle="tab" href="#tituluaES">{% trans "ES" %}</a></li>
+  							<li><a data-toggle="tab" href="#tituluaEN">{% trans "EN" %}</a></li>
+  							<li><a data-toggle="tab" href="#tituluaFR">{% trans "FR" %}</a></li>
+  						</ul>
+						<div class="tab-content" name="AdvOrBasicSearch2">
+							<div id="tituluaEU" class="tab-pane fade in active">
+								{{ berria_form.titulua_eu }}
+							</div>
+							<div id="tituluaES" class="tab-pane fade in ">
+								{{ berria_form.titulua_es }}
+							</div>
+							<div id="tituluaEN" class="tab-pane fade in ">
+								{{ berria_form.titulua_en }}
+							</div>
+							<div id="tituluaFR" class="tab-pane fade in ">
+								{{ berria_form.titulua_fr }}
+							</div>
+							
+						</div>
+						
+						</br>
+						<label for="id_desk">{% trans "Deskribapena" %}:</label>
+						<ul class="nav nav-tabs"  name="AdvOrBasicSearch">
+							<li  class="active"><a data-toggle="tab" href="#deskEU">{% trans "EU" %}</a></li>
+  							<li><a data-toggle="tab" href="#deskES">{% trans "ES" %}</a></li>
+  							<li><a data-toggle="tab" href="#deskEN">{% trans "EN" %}</a></li>
+  							<li><a data-toggle="tab" href="#deskFR">{% trans "FR" %}</a></li>
+  						</ul>
+						<div class="tab-content" name="AdvOrBasicSearch2">
+							<div id="deskEU" class="tab-pane fade in active">
+								{{ berria_form.desk_eu}}
+								
+								 <script type="text/javascript" >
+      								  // Replace the <textarea id="narra_textarea"> with a CKEditor
+       								 // instance, using default configuration.
+       			
+       								  CKEDITOR.replace( 'desk_eu' );
+       			  
+       								  //Beheko kode hau gehitu da, ze bestela, CKEDITOR-a modal batean zabaltzean linkak ezin ziren sartu
+
+										$.fn.modal.Constructor.prototype.enforceFocus = function () {
+   										 var $modalElement = this.$element;
+  										  $(document).on('focusin.modal', function (e) {
+      									  var $parent = $(e.target.parentNode);
+     									   if ($modalElement[0] !== e.target && !$modalElement.has(e.target).length
+          									  // add whatever conditions you need here:
+          									  &&
+        								    !$parent.hasClass('cke_dialog_ui_input_select') && !$parent.hasClass('cke_dialog_ui_input_text')) {
+        								    $modalElement.focus()
+       										 }
+  											 })
+											};
+    								</script>
+							</div>
+							<div id="deskES" class="tab-pane fade in ">
+								{{ berria_form.desk_es }}
+								
+								<script type="text/javascript" >
+      								  // Replace the <textarea id="narra_textarea"> with a CKEditor
+       								 // instance, using default configuration.
+       			
+       								  CKEDITOR.replace( 'desk_es' );
+       			  
+       								  //Beheko kode hau gehitu da, ze bestela, CKEDITOR-a modal batean zabaltzean linkak ezin ziren sartu
+
+										$.fn.modal.Constructor.prototype.enforceFocus = function () {
+   										 var $modalElement = this.$element;
+  										  $(document).on('focusin.modal', function (e) {
+      									  var $parent = $(e.target.parentNode);
+     									   if ($modalElement[0] !== e.target && !$modalElement.has(e.target).length
+          									  // add whatever conditions you need here:
+          									  &&
+        								    !$parent.hasClass('cke_dialog_ui_input_select') && !$parent.hasClass('cke_dialog_ui_input_text')) {
+        								    $modalElement.focus()
+       										 }
+  											 })
+											};
+    								</script>
+						
+							</div>
+							<div id="deskEN" class="tab-pane fade in ">
+								{{ berria_form.desk_en }}
+								<script type="text/javascript" >
+      								  // Replace the <textarea id="narra_textarea"> with a CKEditor
+       								 // instance, using default configuration.
+       			
+       								  CKEDITOR.replace( 'desk_en' );
+       			  
+       								  //Beheko kode hau gehitu da, ze bestela, CKEDITOR-a modal batean zabaltzean linkak ezin ziren sartu
+
+										$.fn.modal.Constructor.prototype.enforceFocus = function () {
+   										 var $modalElement = this.$element;
+  										  $(document).on('focusin.modal', function (e) {
+      									  var $parent = $(e.target.parentNode);
+     									   if ($modalElement[0] !== e.target && !$modalElement.has(e.target).length
+          									  // add whatever conditions you need here:
+          									  &&
+        								    !$parent.hasClass('cke_dialog_ui_input_select') && !$parent.hasClass('cke_dialog_ui_input_text')) {
+        								    $modalElement.focus()
+       										 }
+  											 })
+											};
+    								</script>
+						
+							</div>
+							<div id="deskFR" class="tab-pane fade in ">
+								{{ berria_form.desk_fr }}
+								<script type="text/javascript" >
+      								  // Replace the <textarea id="narra_textarea"> with a CKEditor
+       								 // instance, using default configuration.
+       			
+       								  CKEDITOR.replace( 'desk_fr' );
+       			  
+       								  //Beheko kode hau gehitu da, ze bestela, CKEDITOR-a modal batean zabaltzean linkak ezin ziren sartu
+
+										$.fn.modal.Constructor.prototype.enforceFocus = function () {
+   										 var $modalElement = this.$element;
+  										  $(document).on('focusin.modal', function (e) {
+      									  var $parent = $(e.target.parentNode);
+     									   if ($modalElement[0] !== e.target && !$modalElement.has(e.target).length
+          									  // add whatever conditions you need here:
+          									  &&
+        								    !$parent.hasClass('cke_dialog_ui_input_select') && !$parent.hasClass('cke_dialog_ui_input_text')) {
+        								    $modalElement.focus()
+       										 }
+  											 })
+											};
+    								</script>
+						
+							</div>
+							
+						</div>
+						</br>
+						<label for="id_url">{% trans "Url" %}:</label>
+							{{ berria_form.url }}
+						</br>
+						<label for="id_irudia">{% trans "Irudia" %}:</label>
+							{{ berria_form.irudia }}
+						</br>
+						<label for="id_publikatu">{% trans "Publikatu" %}:</label>
+							{{ berria_form.publikatu }}
+							
+						
+					</br>
+                    <input type="submit" name="save_berria" class="login loginmodal-submit saveberria" value="{% trans 'Gorde' %}">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">{% trans "Gorde Aldaketak" %}</button>-->
+            </div>
