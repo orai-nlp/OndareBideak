@@ -69,3 +69,7 @@ src/KULTURBIDEAK/kulturbideak_app/media/uploads/
 *~
 *.bkp
 *.backup
+
+#solr 
+solr-4.10.4/
+solr-4.10.4.tar.gz

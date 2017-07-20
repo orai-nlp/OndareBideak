@@ -36,6 +36,7 @@ from KULTURBIDEAK.settings import *
 
 from django.utils.translation import ugettext as _
 
+from datetime import datetime
 
 from KULTURBIDEAK.kulturbideak_app.search_indexes import itemIndex
 from KULTURBIDEAK.kulturbideak_app.search_indexes import pathIndex
@@ -101,6 +102,7 @@ def hasiera(request):
     #Kontadoreko kopuruak lortu datu-basetik
     #Itemak
     itemKop = item.objects.count()
+    itemKop = itemKop / 1000
     #eguneko itema
     egunekoItem = item.objects.filter(egunekoa=1).order_by('?')[:1]
     if (not egunekoItem):
@@ -133,8 +135,9 @@ def hasiera(request):
     erabiltzaileKop = usr.objects.count()
     #Hasierako pantailan erakutsi behar den berria hartu datu-basetik
     erakBerria=berria.objects.get(erakutsi=1)
+    currentDate= datetime.datetime.now()
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    return render_to_response('index.html',{'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'erakBerria':erakBerria},context_instance=RequestContext(request))
+    return render_to_response('index.html',{'currentDate': currentDate ,'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'erakBerria':erakBerria},context_instance=RequestContext(request))
 
  
 

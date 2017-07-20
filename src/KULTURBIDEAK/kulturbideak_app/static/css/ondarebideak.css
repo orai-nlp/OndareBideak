@@ -1,5 +1,74 @@
+/* LETRA TIPO BERRIAK*/
+@font-face {
+    font-family: "walsheim-web";
+    src: url("../fonts/gt-walsheim-web.ttf") format("truetype");
+}
+@font-face {
+    font-family: "walsheim-light-web";
+    src: url("../fonts/gt-walsheim-light-web.ttf") format("truetype");
+}
+@font-face {
+    font-family: "walsheim-bold-web";
+    src: url("../fonts/gt-walsheim-bold-web.ttf") format("truetype");
+}
+
+
+/* KOLOREAK */
+
+.kolore-gorria {
+
+	color:#FF563D;
+}
+.kolore-gorria img{
+
+	color:#FF563D;
+}
+.kolore-horia {
+
+	color:#FFDA3E;
+}
+.kolore-urdina {
+
+	color:#40D7FF;
+}
+.kolore-berdea {
+	color:#5AED64;
+}
+
+/* hasierako patailan: data, gehiago ikusiren gezia...*/
+.kolore-txuria { 
+	
+	color:#FFFFFF;
+}
+.kolore-beltza { 
+	
+	color:#000000;
+}
+/*
+kolore grisak: -bat argiena
+*/
+.kolore-gris-bat { 
+	
+	color:#CCCCCC;
+}
+.kolore-gris-bi { 
+	
+	color:#999999;
+}
+.kolore-gris-hiru { 
+	
+	color:#666666;
+}
+.kolore-gris-lau { 
+	
+	color:#333333;
+}
+
+
+
 body {
-	font-family: Verdana, Arial, sans-serif;
+	font-family: walsheim-web, Verdana, Arial, sans-serif;
+	color:#333333;
 }
 
 
@@ -17,7 +86,7 @@ body {
 	color:#000000;
 	font-size: 14px;
 	line-height:19px;
-	font-family: 'Dosis', sans-serif;
+	font-family: walsheim-web,Dosis, sans-serif;
 }
 
 i {
@@ -43,9 +112,7 @@ i {
 	background-size: contain;
 }
 
-#brand-logo img {
-	width:230px;
-}
+
 
 #SERVICE {
 	padding-top: 20px !important;
@@ -132,7 +199,7 @@ i {
 .emaitzaInfo {
 	text-align: right;
 	color: #337ab7;
-	font-family: "dosis" !important;
+	font-family: walsheim-web, dosis !important;
 }
 img.ob_thumbnail {
 	width: 120px !important;
@@ -340,7 +407,7 @@ img.ob_thumbnail {
 .orria, .orria2 {
 	display: block;
 	margin: 0 auto;
-	padding-top:140px;
+	padding-top:40px;
 	/*text-align: center;*/
 }
 	
@@ -484,7 +551,7 @@ img.ob_thumbnail {
 	color: #928a83;
 }
 .ulNon li.active a {
-	font-family: "MetaBold", Helvetica, Arial, Verdana, sans-serif;
+	font-family: walsheim-web, "MetaBold", Helvetica, Arial, Verdana, sans-serif;
 	color: #60554b;
 }
 .ibilbide-panela {
@@ -511,7 +578,7 @@ img.ob_thumbnail {
 }
 .laguntza {
 	color: #9e8012;
-	font-family: "Dosis" !important;
+	font-family: walsheim-web, Dosis !important;
 }
 .filtroak {
 	color: #9e8012;
@@ -579,18 +646,25 @@ img.ob_thumbnail {
 }
 /* HEADERRAREN ESTILOA*/
 
+/* Maddalen
+#brand-logo img {
+	width:230px;
+	
+}
+
 .navbar-brand{
 	margin-top:25px;
 }
 
 .index-brand{
-	margin-left:200px;	
+	margin-left:200px;
 }
 
 #brand-logo.index-brand img {
 	margin-top:10px;
 }
-
+*/
+/* Maddalen
 #hizkuntza_aukeraketa_id{
 	position:absolute;
 	width:150px;	
@@ -609,9 +683,11 @@ img.ob_thumbnail {
 	line-height: 14px;
 }
 
+
 .last_li {
 	border-right:0px !important;	
 }
+*/
 .navbar-default-berria .navbar-brand-berria {
 	color: #31708f !important;
 }
@@ -622,17 +698,21 @@ img.ob_thumbnail {
 	line-height: 0;
 	padding: 20px !important;
 }
-
+/* Maddalen
 .navbar-default .navbar-nav > li > a {
 	color: #31708f !important;
 }
+
 .navbar-nav > li > a {
 	padding-bottom: 15px !important;
 	padding-top: 35px !important;
 }
+
 .bilatzailea-kutxa {
 	padding: 20px;
+	margin-left:15px;
 }
+*/
 .kolorea {
 	background-color: #31708f !important;
 	border-color: #31708f !important;
@@ -714,7 +794,7 @@ circle .unselectedNode {
 .btn-common {
 	border: 0px solid #0099ae;/* 1px solid #0099ae;*/
 	color: #0099ae;
-	font-family: "Open Sans", sans-serif;
+	font-family: walsheim-web, "Open Sans", sans-serif;
 	font-size: 12px;
 	font-weight: 300;
 	padding: 0px;/*7px 15px;*/
@@ -726,7 +806,7 @@ circle .unselectedNode {
 	margin-top: 0;
 	/*color: #686868;*/
 	font-size: 24px;
-	font-family: "dosis" !important;
+	font-family: walsheim-web,"dosis" !important;
 	font-weight: 300;
 }
 .path-name2 h2 {
@@ -734,7 +814,7 @@ circle .unselectedNode {
 	margin-top: 0;
 	/*color: #686868;*/
 	font-size: 30px;
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-weight: 400;
 }
 .overflow {
@@ -742,14 +822,14 @@ circle .unselectedNode {
 }
 .path-info h3 {
 	font-size: 17px;
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-weight: 300;
 }
 
 .item-info-description,.path-info-description {
 	color: #000;
 	/*font-family: "Lato",sans-serif;*/
-	font-family: "dosis", sans-serif;
+	font-family: walsheim-web, "dosis", sans-serif;
 	font-size: 18px;
 	font-weight: 300;
 	line-height: 22px;
@@ -759,7 +839,7 @@ circle .unselectedNode {
 
 .path-info-description p {
     color: #000;
-    font-family: "dosis",sans-serif;
+    font-family: walsheim-web, "dosis",sans-serif;
     font-size: 18px;
     font-weight: 300;
     line-height: 22px;
@@ -767,19 +847,20 @@ circle .unselectedNode {
 
 .item-info-description p {
     color: #000;
-    font-family: "dosis",sans-serif;
+    font-family: walsheim-web, "dosis",sans-serif;
     font-size: 18px;
     font-weight: 300;
     line-height: 22px;
 }
 
-
+/* Maddalen
 .navbar-default li {
 	font-size: 14px;
 	padding: 0 15px 0 0;
 	color: #c03035;
 	text-decoration: none;
 }
+*/
 .ibilbide-irudia {
 
 	height: 128px;
@@ -810,7 +891,7 @@ circle .unselectedNode {
 	height: 550px;
 }
 .autocomplete-galdera {
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 24px;
 	font-weight: 300;
 	margin-bottom: 15px;
@@ -838,7 +919,7 @@ circle .unselectedNode {
 	color: #0099ae !important;
 }
 .antzekoTitulua {
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 24px;
 	font-weight: 300;
 	margin-bottom: 15px;
@@ -847,45 +928,45 @@ circle .unselectedNode {
 }
 h3.uppercase {
 	text-transform: uppercase;
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 24px;
 }
 h3.bilaketa {
 
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 17px;
 	font-weight: 300;
 }
 h4.mota {
 
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 19px;
 	font-weight: 200;
 	color: #c03035;
 }
 h4.mota2 {
 
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 18px;
 	font-weight: 200;
 	/*color: #c03035;*/
 }
 h1.dosis {
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 24px;
 }
 
 p.uppercase {
 	text-transform: uppercase;
 	text-align: center;
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 24px;
 }
 p.letratipoa {
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 }
 .letratipoa p{
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 }
 
 .center {
@@ -894,13 +975,13 @@ p.letratipoa {
 h2.uppercase {
 	text-transform: uppercase;
 	text-align: center;
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 18px;
 	font-weight: 100;
 }
 .antzekoItemTitulua {
 	font-size: 17px;
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-weight: 300;
 	text-align: center;
 }
@@ -921,7 +1002,7 @@ h2.uppercase {
 }
 
 .bilaketaTitulua {
-	font-family: "dosis" !important;
+	font-family: walsheim-web, "dosis" !important;
 	font-size: 20px;
 	font-weight: 300;
 	margin-bottom: 15px;
@@ -1126,7 +1207,7 @@ thead tr:first-child {
 
 .fa {
     display: inline-block;
-    font-family: FontAwesome;
+    font-family: walsheim-web, FontAwesome;
     font-feature-settings: normal;
     font-kerning: auto;
     font-language-override: normal;
@@ -1170,7 +1251,7 @@ ul {
     display: inline-block;
     padding: 5px;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    font-family: walsheim-web, Arial, sans-serif;
     font-weight: 900;
 } 
  

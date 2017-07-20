@@ -76,6 +76,11 @@ def add_ekm_prefix_to_desc(value):
 def get_substring(value): 
     short_value=value[:100]
     return short_value
+    
+@register.filter
+def get_substring_150(value): 
+    short_value=value[:150]
+    return short_value
 
 @register.filter
 def convert_newline2br(value): 
