@@ -16,19 +16,15 @@
 /* KOLOREAK */
 
 .kolore-gorria {
-
 	color:#FF563D;
 }
 .kolore-gorria img{
-
 	color:#FF563D;
 }
 .kolore-horia {
-
 	color:#FFDA3E;
 }
 .kolore-urdina {
-
 	color:#40D7FF;
 }
 .kolore-berdea {
@@ -64,7 +60,11 @@ kolore grisak: -bat argiena
 	color:#333333;
 }
 
-
+/* estilo orokorrak, normalean definitutako klaseek dituztenak gainidazteko*/
+ .top-padding-0 {
+ 	padding-top: 0;
+ }
+ /* END estilo orokorrak*/
 
 body {
 	font-family: walsheim-web, Verdana, Arial, sans-serif;
@@ -1020,6 +1020,30 @@ h2.uppercase {
 .modal-dialog {
 	width: 75%;
 }
+
+.modal-content {
+	-webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    border-top: solid 5px #FFDA3E !important;
+    border-bottom: solid 5px #FF563D !important;
+    border-left: solid 5px #40D7FF !important;
+    border-right: solid 5px #5AED64 !important;
+     
+}
+
+.modal-title{
+	color:black !important;
+	font-weight: bold !important;
+}
+
+.modal-body h4 {
+	color:#666666 !important;
+	margin:10px 0px 20px 0px;
+}
+
+/* End of modal dialog styles*/
+
 
 /* mapa geografikoarentzako estiloak*/
 #geo_map {

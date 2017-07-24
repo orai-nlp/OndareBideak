@@ -140,7 +140,7 @@ def hasiera(request):
     return render_to_response('index.html',{'currentDate': currentDate ,'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'erakBerria':erakBerria},context_instance=RequestContext(request))
 
  
-
+'''
 def hasiera_old(request):
     
     
@@ -155,7 +155,7 @@ def hasiera_old(request):
     erabiltzaileKop = usr.objects.count()
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
     return render_to_response('index_brandy.html',{'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop},context_instance=RequestContext(request))
-
+'''
    
 def itemak_hasiera(request):
     

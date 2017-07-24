@@ -38,7 +38,7 @@
 						<span style="font-size:2em;color:  #0099ae" class="glyphicon glyphicon-time" aria-hidden="true"></span>
 						
 						</a>
-						<h2 class="uppercase">{% trans "Azkenekoak" %}</h2>
+						<h2 class="uppercase">{% trans "Berrienak" %}</h2>
 					
 				</div>				
 			</div>
@@ -69,22 +69,21 @@
         <div class="modal-content">         
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4>Hauek dira adituek proposatutako eguneko kultur itemak eta ibilbideak</h4>
+                <h4 class="modal-title">{% trans "Adituen proposamenak" %}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">               
-                    <div class="panel-body">
+                    <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>
-                    		<h4>KULTUR ITEMAK</h4>                                                    
+                    		<h4>{% trans "Kultur itemak" %}</h4>                                                    
                             {% for item in eguneko_itemak %}
-                            	{% if item.dc_title%}								
-								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>				
-								{%endif%}
+                            	{% include "_item_search_thumbnail.html" %}                            	
 							{%endfor%}
 							<br/>	
-                			<h4>IBILBIDEAK</h4>
+                			<h4>{% trans "Ibilbideak" %}</h4>
            					{% for ibilbide in eguneko_ibilbideak %}
+           						
            						{% if ibilbide.dc_title%}
 								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
 								{%endif%}
@@ -115,21 +114,21 @@
         <div class="modal-content">         
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4>Hauek dira bozka gehien jaso dituzten Kultur itemak eta ibilbideak</h4>
+                <h4 class="modal-title">{% trans "Bozkatuenak" %}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">               
-                    <div class="panel-body">
+                    <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>
-                    		<h4>KULTUR ITEMAK</h4>                                                     
+                    		<h4>{% trans "Kultur itemak" %}</h4>                                                     
                             {% for item in item_bozkatuenak %}	
                             	{% if item.dc_title%}							
 								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>				
 								{%endif%}
 							{%endfor%}                    
                             <br/>	
-                            <h4>IBILBIDEAK</h4>
+                            <h4>{% trans "Ibilbideak" %}</h4>
                             {% for ibilbide in ibilbide_bozkatuenak %}
                             	{% if ibilbide.dc_title%}
 								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
@@ -159,21 +158,21 @@
         <div class="modal-content">         
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4>Hauek dira erabiltzaileek sortutako azken Kultur itemak eta ibilbideak</h4>
+                <h4 class="modal-title">{% trans "Berrienak" %}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">               
-                    <div class="panel-body">
+                    <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>  
-                    		<h4>KULTUR ITEMAK</h4>                                                            
+                    		<h4>{% trans "Kultur itemak" %}</h4>                                                            
                             {% for item in azken_itemak %}
                             	{% if item.dc_title%}					
 								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>
 								{%endif%}				
 							{%endfor%}                      
                             <br/>
-                            <h4>IBILBIDEAK</h4> 
+                            <h4>{% trans "Ibilbideak" %}</h4> 
                             {% for ibilbide in azken_ibilbideak %}
                             	{% if ibilbide.dc_title%}
 								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>

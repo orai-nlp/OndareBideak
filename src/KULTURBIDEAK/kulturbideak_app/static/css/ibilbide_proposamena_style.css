@@ -36,10 +36,11 @@
     left: 0;
     opacity: 0;
     */
+    background: rgba(70, 75, 78, 0.57) none repeat scroll 0 0;
     position: absolute;
     top: 33px;
     transition: all 1s ease 0s;
-    width: 100%;
+    width: 80%;
 }
 
 .marra_overlay {
