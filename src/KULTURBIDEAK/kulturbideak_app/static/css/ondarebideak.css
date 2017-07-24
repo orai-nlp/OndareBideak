@@ -828,8 +828,7 @@ circle .unselectedNode {
 
 .item-info-description,.path-info-description {
 	color: #000;
-	/*font-family: "Lato",sans-serif;*/
-	font-family: walsheim-web, "dosis", sans-serif;
+	font-family: walsheim-web;
 	font-size: 18px;
 	font-weight: 300;
 	line-height: 22px;
