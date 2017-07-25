@@ -477,6 +477,7 @@ um_pages }}</p>-->
      </div>
 {% endif %}
 
+
 <!-- Ventana Modal -->
 <div class="modal fade modalEdizioAukerak" id="modalEdizioAukerak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -518,14 +519,142 @@ um_pages }}</p>-->
         </div>
     </div>
 </div>
-
- 
-
 <!--Fin Ventana modal-->
 
 
 
+<!-- modalEgunekoak-->
 
+<div class="modal fade" id="modalEgunekoak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{% trans "Adituen proposamenak" %}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body top-padding-0">
+                    	
+                    		<div id="messages"></div>
+                    		<h4>{% trans "Kultur itemak" %}</h4>                                                    
+                            {% for item in eguneko_itemak %}
+                            	{% include "_item_search_thumbnail.html" %}                            	
+							{%endfor%}
+							<br/>	
+                			<h4>{% trans "Ibilbideak" %}</h4>
+           					{% for ibilbide in eguneko_ibilbideak %}
+           						
+           						{% if ibilbide.dc_title%}
+								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
+								{%endif%}
+								
+							{%endfor%}              
+                            <br/>						
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
+                            </div>                            
+                            <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+ 
+
+<!-- END modalEgunekoak-->
+
+
+<!--modalBozkatuenak-->
+
+<div class="modal fade" id="modalBozkatuenak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{% trans "Bozkatuenak" %}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body top-padding-0">
+                    	
+                    		<div id="messages"></div>
+                    		<h4>{% trans "Kultur itemak" %}</h4>                                                     
+                            {% for item in item_bozkatuenak %}	
+                            	{% if item.dc_title%}							
+								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>				
+								{%endif%}
+							{%endfor%}                    
+                            <br/>	
+                            <h4>{% trans "Ibilbideak" %}</h4>
+                            {% for ibilbide in ibilbide_bozkatuenak %}
+                            	{% if ibilbide.dc_title%}
+								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
+								{%endif%}
+							{%endfor%}
+                            <br/>				
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>                                
+                            </div>                            
+                            <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+ 
+
+<!--END modalBozkatuenak-->
+
+<!--modalAzkenak-->
+
+<div class="modal fade" id="modalAzkenak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{% trans "Berrienak" %}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body top-padding-0">
+                    	
+                    		<div id="messages"></div>  
+                    		<h4>{% trans "Kultur itemak" %}</h4>                                                            
+                            {% for item in azken_itemak %}
+                            	{% if item.dc_title%}					
+								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>
+								{%endif%}				
+							{%endfor%}                      
+                            <br/>
+                            <h4>{% trans "Ibilbideak" %}</h4> 
+                            {% for ibilbide in azken_ibilbideak %}
+                            	{% if ibilbide.dc_title%}
+								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
+								{%endif%}								
+							{%endfor%}
+							<br/>           					
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
+                            </div>                            
+                            <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+ 
+
+<!--END modalAzkenak-->
 		
 {% endblock %} 
 			

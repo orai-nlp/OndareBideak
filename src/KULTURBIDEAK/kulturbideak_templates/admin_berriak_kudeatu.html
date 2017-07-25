@@ -58,10 +58,8 @@
 
 
 
-{% block modals %}
-<div id="loading_modal" class="modal text-center" style="display:none;">
-	<h1>{% trans "Datuak eguneratzen..." %}</h1><img src="{{ STATIC_URL}}img/ajax-loader.gif"/>
-</div>
+{% block customModals %}
+	
 
 <div class="modal fade" id="berria-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog" role="document">
@@ -239,7 +237,7 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-{% endblock %}
+{% endblock customModals %}
 
 {% block pageEndScripts %}
 		

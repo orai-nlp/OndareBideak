@@ -60,11 +60,33 @@ kolore grisak: -bat argiena
 	color:#333333;
 }
 
+
+
+
 /* estilo orokorrak, normalean definitutako klaseek dituztenak gainidazteko*/
  .top-padding-0 {
  	padding-top: 0;
  }
  /* END estilo orokorrak*/
+
+
+/* Ikono estiloak */
+.mota-icon {
+	width:1em;
+	margin:5px;
+	vertical-align:bottom;
+}
+
+.circle-back { 
+   background: #CCCCCC; 
+   -moz-border-radius: 50%; 
+   -webkit-border-radius: 50%; 
+   border-radius: 50%;
+   padding:10px;
+   color:black;
+   margin:10px;
+}
+/* END Ikono estiloak */
 
 body {
 	font-family: walsheim-web, Verdana, Arial, sans-serif;
@@ -411,15 +433,6 @@ img.ob_thumbnail {
 	/*text-align: center;*/
 }
 	
-.eskuma_div {
-	width: 15%;
-	min-height: 500px;
-	display: inline-block;
-	background: white;
-	vertical-align: top;
-	text-align: left;
-	color: #31708f;
-}
 .ezkerra_div {
 	width: 15%;
 	min-height: 500px;
@@ -580,9 +593,44 @@ img.ob_thumbnail {
 	color: #9e8012;
 	font-family: walsheim-web, Dosis !important;
 }
+
+/* bilaketa filtroen estiloak*/
 .filtroak {
-	color: #9e8012;
+	color: #000000;
+	text-align:left;
+	padding-left:5%;
+	vertical-align:top;
+	display: inline-block;
+	min-height: 500px;
+	margin-bottom: 20px;
+	width:90%;
 }
+
+.filter-main-title{
+	color:#999999;
+}
+
+.filter-title{
+	border-bottom: solid 1px #CCCCCC;	
+	padding-bottom:5px;
+}
+.filter-title span {
+	font-weight: 700;	
+}
+
+.filterButton {
+	background-color: Transparent;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
+	float:right;
+	color: #CCCCCC;
+}
+
+/*END bilaketa filtroen estiloak*/
+
 .thumb-128 {
 	height: 128px;
 	line-height: 128px;
@@ -776,15 +824,6 @@ circle .unselectedNode {
 	fill: none;
 	stroke: none;
 	stroke-width: 3px;
-}
-
-.filterButton {
-	background-color: Transparent;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
 }
 
 #logoa {
@@ -1018,7 +1057,7 @@ h2.uppercase {
 
 /* custom modal dialog styles*/
 .modal-dialog {
-	width: 75%;
+	width: 60%;
 }
 
 .modal-content {
@@ -1042,6 +1081,10 @@ h2.uppercase {
 	margin:10px 0px 20px 0px;
 }
 
+#login-modal {
+	width:40%;
+	left:auto;
+}
 /* End of modal dialog styles*/
 
 
@@ -1075,6 +1118,14 @@ span.helptext {
 .login-erregistratu li {
 	list-style: none;
 }
+
+.form label {
+	margin:10px 0 0 0;
+	color:#666666;
+}
+
+
+/* END erregistro formularioa*/
 
 .crop{
 	width:95%;

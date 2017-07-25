@@ -3,194 +3,24 @@
 {% load qr_tags %}
 {% load tags%}
 
-<!-- EGUNEKOAK - BOZKATUENAK - AZKENAK -->	
-<div class="container">
-<div class="row">
-	<div class="col-md-1">
-	</div>
-	
-
-    <div class="col-md-9">	
-		<!--<h2 class="titulu-kolorea antzekoTitulua">ANTZEKO ITEMAK</h2>-->	
-		
-			<div class="row">
-				
-				<div class="center col-sm-4">
-						<a class=""  href="#" data-toggle="modal" data-target="#modalEgunekoak" >
-						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiItem.png ">-->
-						<span style="font-size:2em;color: #eea236" class="glyphicon glyphicon-star" aria-hidden="true"></span>
-						</a>
-						<h2 class="uppercase">{% trans "Egunekoak" %}</h2>
-					
-				</div>
-				<div class=" center col-sm-4">
-						<a class=""  href="#" data-toggle="modal" data-target="#modalBozkatuenak">
-						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiItem.png ">-->
-						
-						<span style="font-size:2em;color: #c03035" class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-						</a>
-						<h2 class="uppercase">{% trans "Bozkatuenak" %}</h2>
-					
-				</div>
-				<div class="center col-sm-4">
-						<a class=""  href="#" data-toggle="modal" data-target="#modalAzkenak">
-						<!--<img class="autocomplete_irudia" alt="" src="/uploads/NoIrudiItem.png ">-->
-						<span style="font-size:2em;color:  #0099ae" class="glyphicon glyphicon-time" aria-hidden="true"></span>
-						
-						</a>
-						<h2 class="uppercase">{% trans "Berrienak" %}</h2>
-					
-				</div>				
-			</div>
-	
-	</div>	
-	<div class="col-md-2">
-	</div>
-	
-</div>
-</div>
+<!-- EGUNEKOAK - BOZKATUENAK - AZKENAK -->
+<ul class="">
+<li>
+	<a class="kolore-gris-lau" href="#" data-toggle="modal" data-target="#modalEgunekoak">		
+		<span><i class="fa fa-star circle-back" style="font-size: 2em;" aria-hidden="true"></i> {% trans "Egunekoak" %}</span>
+	</a>
+</li>
+<li>
+	<a class="kolore-gris-lau" href="#" data-toggle="modal"
+		data-target="#modalBozkatuenak">
+		<span><i class="fa fa-heart circle-back" style="font-size: 2em;" aria-hidden="true"></i> {% trans "Bozkatuenak" %}</span>
+	</a>
+</li>
+<li>
+	<a class="kolore-gris-lau" href="#" data-toggle="modal" data-target="#modalAzkenak">
+		<span><i class="fa fa-clock-o circle-back" style="font-size: 2em;" aria-hidden="true"></i>{% trans "Berrienak" %}</span>
+	</a>
+</li>
+</ul>
 <!-- END EGUNEKOAK - BOZKATUENAK - AZKENAK -->
 
-
-
-
-
-
-
-
-
-
-
-
-<!--Ventana modal-->
-
-<div class="modal fade" id="modalEgunekoak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">         
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Adituen proposamenak" %}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">               
-                    <div class="panel-body top-padding-0">
-                    	
-                    		<div id="messages"></div>
-                    		<h4>{% trans "Kultur itemak" %}</h4>                                                    
-                            {% for item in eguneko_itemak %}
-                            	{% include "_item_search_thumbnail.html" %}                            	
-							{%endfor%}
-							<br/>	
-                			<h4>{% trans "Ibilbideak" %}</h4>
-           					{% for ibilbide in eguneko_ibilbideak %}
-           						
-           						{% if ibilbide.dc_title%}
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
-								{%endif%}
-								
-							{%endfor%}              
-                            <br/>						
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
-                            </div>                            
-                            <p><br/></p>                    
-                    </div>                       
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
- 
-
-<!--Fin Ventana modal-->
-
-
-<!--Ventana modal-->
-
-<div class="modal fade" id="modalBozkatuenak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">         
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Bozkatuenak" %}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">               
-                    <div class="panel-body top-padding-0">
-                    	
-                    		<div id="messages"></div>
-                    		<h4>{% trans "Kultur itemak" %}</h4>                                                     
-                            {% for item in item_bozkatuenak %}	
-                            	{% if item.dc_title%}							
-								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>				
-								{%endif%}
-							{%endfor%}                    
-                            <br/>	
-                            <h4>{% trans "Ibilbideak" %}</h4>
-                            {% for ibilbide in ibilbide_bozkatuenak %}
-                            	{% if ibilbide.dc_title%}
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
-								{%endif%}
-							{%endfor%}
-                            <br/>				
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>                                
-                            </div>                            
-                            <p><br/></p>                    
-                    </div>                       
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
- 
-
-<!--Fin Ventana modal-->
-
-<!--Ventana modal-->
-
-<div class="modal fade" id="modalAzkenak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">         
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Berrienak" %}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">               
-                    <div class="panel-body top-padding-0">
-                    	
-                    		<div id="messages"></div>  
-                    		<h4>{% trans "Kultur itemak" %}</h4>                                                            
-                            {% for item in azken_itemak %}
-                            	{% if item.dc_title%}					
-								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>
-								{%endif%}				
-							{%endfor%}                      
-                            <br/>
-                            <h4>{% trans "Ibilbideak" %}</h4> 
-                            {% for ibilbide in azken_ibilbideak %}
-                            	{% if ibilbide.dc_title%}
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
-								{%endif%}								
-							{%endfor%}
-							<br/>           					
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Atera</button>                                
-                            </div>                            
-                            <p><br/></p>                    
-                    </div>                       
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
- 
-
-<!--Fin Ventana modal-->

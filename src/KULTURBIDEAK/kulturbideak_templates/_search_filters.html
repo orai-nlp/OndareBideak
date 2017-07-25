@@ -3,263 +3,261 @@
 {% load qr_tags %}
 {% load tags%}
 
-<div class="eskuma_div" align="right" >
-	
+{% if bilaketa_filtroak == 1%}
 
-	{% if bilaketa_filtroak == 1%}
+<div class="filtroak">
+	<h4 class="filter-main-title">{% trans "Bilaketa Filtroak" %} </h4>
+	<br />
+	<br />
+	
+	<p class="filter-title">
+		<span>{% trans "Mota" %} </span>
+		<button class="filterButton" id="hideMF">
+			<i class="fa fa-angle-up" aria-hidden="true"></i>
+		</button>
+		<button class="filterButton" id="showMF" style="display:none;">
+			<i class="fa fa-angle-down" aria-hidden="true"></i>
+		</button>
+	</p>
+	<div class="motaFiltroak" id="motaFiltroak">
+		
+		<input type="hidden" id="db_motak_text" name="db_motak_text" value="{{db_motak_text}}">
+				
+		{%for db_mota in db_motak%}
+			{%if db_mota in motaF%}
+				&nbsp;&nbsp;				
+				<input type="checkbox" id="{{db_mota}}" name="{{db_mota}}" value="{{db_mota}}" onclick="bilaketaFiltratu_db()" checked>
+				<img class="mota-icon" src="{{STATIC_URL}}img/newLogo/icons/{{db_mota|lower}}.png">{% trans db_mota %}
+				<br>
+			{%else%}
+				&nbsp;&nbsp;
+				<input type="checkbox" id="{{db_mota}}" name="{{db_mota}}" value="{{db_mota}}" onclick="bilaketaFiltratu_db()">
+				<img class="mota-icon" src="{{STATIC_URL}}img/newLogo/icons/{{db_mota|lower}}.png">{% trans db_mota %}
+				
+				<br>
 
-	<div class="filtroak">
-		<b>{% trans "Bilaketa Filtroak" %} </b>
-		<br />
-		<br />
-
-		<p>
-			&nbsp;<b>{% trans "Hizkuntza" %} </b>
-			<button class="filterButton" id="hideHiF">
-				<span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-			</button>
-			<button class="filterButton" id="showHiF" style="display:none;">
-				<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-			</button>
-		</p>
-		<div class="hizkFiltroak" id="hizkFiltroak">
-			{%if "eu" in hizkF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu_db()" checked>
-			eu
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu_db()">
-			eu
-			<br>
 			{%endif%}
-			{%if "es" in hizkF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="hizkuntza2F" name="hizkuntza2F" value="es" onclick="bilaketaFiltratu_db()" checked>
-			es
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="hizkuntza2F" name="hizkuntza2F" value="es" onclick="bilaketaFiltratu_db()">
-			es
-			<br>
-			{%endif%}
-			{%if "en" in hizkF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="hizkuntza3F" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu_db()" checked>
-			en
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="hizkuntza3F" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu_db()">
-			en
-			<br>
-			{%endif%}
-		</div>
-		<br />
-		<p>
-			&nbsp;<b>{% trans "Hornitzailea" %} </b>
-			<button class="filterButton" id="hideHF" style="display:none;">
-				<span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-			</button>
-			<button class="filterButton" id="showHF">
-				<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-			</button>
-		</p>
-		<div class="horFiltroak" id="horFiltroak" style="display:none;">
-			<input type="hidden" id="db_hornitzaileak_text" name="db_hornitzaileak_text" value="{{db_hornitzaileak_text}}">
-					
-			{%for db_hornitzailea in db_hornitzaileak%}
-				{%if db_hornitzailea in horniF%}
-					&nbsp;&nbsp;
-					
-					<input type="checkbox" id="{{db_hornitzailea}}" name="{{db_hornitzailea}}" value="{{db_hornitzailea}}" onclick="bilaketaFiltratu_db()" checked>
-					{{db_hornitzailea}}
-					<br>
-				{%else%}
-					&nbsp;&nbsp;
-					<input type="checkbox" id="{{db_hornitzailea}}" name="{{db_hornitzailea}}" value="{{db_hornitzailea}}" onclick="bilaketaFiltratu_db()">
-					{{db_hornitzailea}}
-					<br>
-	
-				{%endif%}
-			{% endfor %}
-		</div>
-		<br />
-		<p>
-			&nbsp;<b>{% trans "Mota" %} </b>
-			<button class="filterButton" id="hideMF">
-				<span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-			</button>
-			<button class="filterButton" id="showMF" style="display:none;">
-				<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-			</button>
-		</p>
-		<div class="motaFiltroak" id="motaFiltroak">
-			
-			<input type="hidden" id="db_motak_text" name="db_motak_text" value="{{db_motak_text}}">
-					
-			{%for db_mota in db_motak%}
-				{%if db_mota in motaF%}
-					&nbsp;&nbsp;				
-					<input type="checkbox" id="{{db_mota}}" name="{{db_mota}}" value="{{db_mota}}" onclick="bilaketaFiltratu_db()" checked>
-					{{db_mota}}
-					<br>
-				{%else%}
-					&nbsp;&nbsp;
-					<input type="checkbox" id="{{db_mota}}" name="{{db_mota}}" value="{{db_mota}}" onclick="bilaketaFiltratu_db()">
-					{{db_mota}}
-					<br>
-	
-				{%endif%}
-			{% endfor %}
-			
-			</br>
-		</div>
-		<br />
-		<p>
-			&nbsp;<b>{% trans "Ordena" %} </b>
-			<button class="filterButton" id="hideOF" style="display:none;">
-				<span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-			</button>
-			<button class="filterButton" id="showOF">
-				<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-			</button>
-		</p>
-		<div class="ordenaFiltroak" id="ordenaFiltroak" style="display:none;">
-			{%if "data" in ordenaF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="ordena1F" name="ordena1F" value="data" onclick="bilaketaFiltratu_db()" checked>
-			data (beheraka)
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="ordena1F" name="ordena1F" value="data" onclick="bilaketaFiltratu_db()">
-			data (beheraka)
-			<br>
-			{%endif%}
-			{%if "dataAsc" in ordenaF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="ordena3F" name="ordena3F" value="dataAsc" onclick="bilaketaFiltratu_db()" checked>
-			data (goraka)
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="ordena3F" name="ordena3F" value="dataAsc" onclick="bilaketaFiltratu_db()">
-			data (goraka)
-			<br>
-			{%endif%}
-			{%if "botoak" in ordenaF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="ordena2F" name="ordena2F" value="botoak" onclick="bilaketaFiltratu_db()" checked >
-			botoak
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="ordena2F" name="ordena2F" value="botoak" onclick="bilaketaFiltratu_db()" >
-			botoak
-			<br>
-			{%endif%}
-		</div>
-		<br />
-		<p>
-			&nbsp;<b>{% trans "Lizentzia" %} </b>
-			<button class="filterButton" id="hideLF" style="display:none;">
-				<span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-			</button>
-			<button class="filterButton" id="showLF">
-				<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-			</button>
-		</p>
-		<div class="lizentziaFiltroak" id="lizentziaFiltroak" style="display:none;">
-			
-			<input type="hidden" id="db_lizentziak_text" name="db_lizentziak_text" value="{{db_lizentziak_text}}">
-										
-			{%for db_lizentzia in db_lizentziak%}
-				{%if db_lizentzia.url in lizentziaF%}
-					&nbsp;&nbsp;				
-					<input type="checkbox" id="{{ db_lizentzia.url }}" name="{{db_lizentzia.url}}" value="{{db_lizentzia.url}}" onclick="bilaketaFiltratu_db()" checked>
-					{{ db_lizentzia.izena }}
-					<br>
-				{%else%}
-					&nbsp;&nbsp;
-					<input type="checkbox" id="{{db_lizentzia.url}}" name="{{db_lizentzia.url}}" value="{{db_lizentzia.url}}" onclick="bilaketaFiltratu_db()">
-					{{db_lizentzia.izena}}
-					<br>
-	
-				{%endif%}
-			{% endfor %}
-			
-			</br>
-		</div>
-		<br />
-		<p>
-			&nbsp;<b>{% trans "Beste batzuk" %} </b>
-			<button class="filterButton" id="hideBF" style="display:none;">
-				<span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-			</button>
-			<button class="filterButton" id="showBF">
-				<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-			</button>
-		</p>
-		<div class="besteFiltroak" id="besteFiltroak" style="display:none;">
-			{%if "egunekoa" in besteaF%}
-			&nbsp;&nbsp;
-			<input type="checkbox"  id="egunekoaF" name="egunekoaF" value="egunekoa" onclick="bilaketaFiltratu_db()" checked>
-			egunekoa
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox"  id="egunekoaF" name="egunekoaF" value="egunekoa" onclick="bilaketaFiltratu_db()">
-			egunekoa
-			<br>
-			{%endif%}
-			{%if "proposatutakoa" in besteaF%}
-			&nbsp;&nbsp;
-			<input type="checkbox"  id="proposatutakoaF" name="proposatutakoaF" value="proposatutakoa" onclick="bilaketaFiltratu_db()" checked>
-			proposatutakoa
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox"  id="proposatutakoaF" name="proposatutakoaF" value="proposatutakoa" onclick="bilaketaFiltratu_db()">
-			proposatutakoa
-			<br>
-			{%endif%}
-			{%if "wikifikatua" in besteaF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="wikifikatuaF" name="wikifikatuaF" value="wikifikatua" onclick="bilaketaFiltratu_db()" checked>
-			wikifikatua
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="wikifikatuaF" name="wikifikatuaF" value="wikifikatua" onclick="bilaketaFiltratu_db()">
-			wikifikatua
-			<br>
-			{%endif%}
-			{%if "irudiaDu" in besteaF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="irudiaDuF" name="irudiaDuF" value="irudiaDu" onclick="bilaketaFiltratu_db()" checked>
-			irudia du
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="irudiaDuF" name="irudiaDuF" value="irudiaDu" onclick="bilaketaFiltratu_db()">
-			irudia du
-			<br>
-			{%endif%}
-			{%if "irudiaEzDu" in besteaF%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="irudiaEzDuF" name="irudiaEzDuF" value="irudiaEzDu" onclick="bilaketaFiltratu_db()" checked>
-			irudia ez du
-			<br>
-			{%else%}
-			&nbsp;&nbsp;
-			<input type="checkbox" id="irudiaEzDuF" name="irudiaEzDuF" value="irudiaEzDu" onclick="bilaketaFiltratu_db()">
-			irudia ez du
-			<br>
-			{%endif%}
-		</div>
+		{% endfor %}
+		
+		</br>
 	</div>
-	{%endif%}
+	<br />
+	<p class="filter-title">
+		<span>{% trans "Hizkuntza" %} </span>
+		<button class="filterButton" id="hideHiF">
+			<i class="fa fa-angle-up" aria-hidden="true"></i>
+		</button>
+		<button class="filterButton" id="showHiF" style="display:none; float:right;">
+			<i class="fa fa-angle-down" aria-hidden="true"></i>
+		</button>
+	</p>
+	<div class="hizkFiltroak" id="hizkFiltroak">
+		{%if "eu" in hizkF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu_db()" checked>
+		eu
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="hizkuntza1F" name="hizkuntza1F" value="eu" onclick="bilaketaFiltratu_db()">
+		eu
+		<br>
+		{%endif%}
+		{%if "es" in hizkF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="hizkuntza2F" name="hizkuntza2F" value="es" onclick="bilaketaFiltratu_db()" checked>
+		es
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="hizkuntza2F" name="hizkuntza2F" value="es" onclick="bilaketaFiltratu_db()">
+		es
+		<br>
+		{%endif%}
+		{%if "en" in hizkF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="hizkuntza3F" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu_db()" checked>
+		en
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="hizkuntza3F" name="hizkuntza3F" value="en" onclick="bilaketaFiltratu_db()">
+		en
+		<br>
+		{%endif%}
+	</div>
+	<br />
+	<p class="filter-title">
+		<span>{% trans "Hornitzailea" %}</span>
+		<button class="filterButton" id="hideHF" style="display:none; float:right;">
+			<i class="fa fa-angle-up" aria-hidden="true"></i>
+		</button>
+		<button class="filterButton" id="showHF">
+			<i class="fa fa-angle-down" aria-hidden="true"></i>
+		</button>
+	</p>
+	<div class="horFiltroak" id="horFiltroak" style="display:none;">
+		<input type="hidden" id="db_hornitzaileak_text" name="db_hornitzaileak_text" value="{{db_hornitzaileak_text}}">
+				
+		{%for db_hornitzailea in db_hornitzaileak%}
+			{%if db_hornitzailea in horniF%}
+				&nbsp;&nbsp;
+				
+				<input type="checkbox" id="{{db_hornitzailea}}" name="{{db_hornitzailea}}" value="{{db_hornitzailea}}" onclick="bilaketaFiltratu_db()" checked>
+				 {{db_hornitzailea}}
+				<br>
+			{%else%}
+				&nbsp;&nbsp;
+				<input type="checkbox" id="{{db_hornitzailea}}" name="{{db_hornitzailea}}" value="{{db_hornitzailea}}" onclick="bilaketaFiltratu_db()">
+				 {{db_hornitzailea}}
+				<br>
+
+			{%endif%}
+		{% endfor %}
+	</div>
+	<br />
+	
+	<p class="filter-title">
+		<span>{% trans "Ordena" %} </span>
+		<button class="filterButton" id="hideOF" style="display:none;">
+			<i class="fa fa-angle-up" aria-hidden="true"></i>
+		</button>
+		<button class="filterButton" id="showOF">
+			<i class="fa fa-angle-down" aria-hidden="true"></i>
+		</button>
+	</p>
+	<div class="ordenaFiltroak" id="ordenaFiltroak" style="display:none;">
+		{%if "data" in ordenaF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="ordena1F" name="ordena1F" value="data" onclick="bilaketaFiltratu_db()" checked>
+		data (beheraka)
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="ordena1F" name="ordena1F" value="data" onclick="bilaketaFiltratu_db()">
+		data (beheraka)
+		<br>
+		{%endif%}
+		{%if "dataAsc" in ordenaF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="ordena3F" name="ordena3F" value="dataAsc" onclick="bilaketaFiltratu_db()" checked>
+		data (goraka)
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="ordena3F" name="ordena3F" value="dataAsc" onclick="bilaketaFiltratu_db()">
+		data (goraka)
+		<br>
+		{%endif%}
+		{%if "botoak" in ordenaF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="ordena2F" name="ordena2F" value="botoak" onclick="bilaketaFiltratu_db()" checked >
+		botoak
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="ordena2F" name="ordena2F" value="botoak" onclick="bilaketaFiltratu_db()" >
+		botoak
+		<br>
+		{%endif%}
+	</div>
+	<br />
+	<p class="filter-title">
+		<span>{% trans "Lizentzia" %} </span>
+		<button class="filterButton" id="hideLF" style="display:none;">
+			<i class="fa fa-angle-up" aria-hidden="true"></i>
+		</button>
+		<button class="filterButton" id="showLF">
+			<i class="fa fa-angle-down" aria-hidden="true"></i>
+		</button>
+	</p>
+	<div class="lizentziaFiltroak" id="lizentziaFiltroak" style="display:none;">
+		
+		<input type="hidden" id="db_lizentziak_text" name="db_lizentziak_text" value="{{db_lizentziak_text}}">
+									
+		{%for db_lizentzia in db_lizentziak%}
+			{%if db_lizentzia.url in lizentziaF%}
+				&nbsp;&nbsp;				
+				<input type="checkbox" id="{{ db_lizentzia.url }}" name="{{db_lizentzia.url}}" value="{{db_lizentzia.url}}" onclick="bilaketaFiltratu_db()" checked>
+				{{ db_lizentzia.izena }}
+				<br>
+			{%else%}
+				&nbsp;&nbsp;
+				<input type="checkbox" id="{{db_lizentzia.url}}" name="{{db_lizentzia.url}}" value="{{db_lizentzia.url}}" onclick="bilaketaFiltratu_db()">
+				{{db_lizentzia.izena}}
+				<br>
+
+			{%endif%}
+		{% endfor %}
+		
+		</br>
+	</div>
+	<br />
+	<p class="filter-title">
+		<span>{% trans "Beste batzuk" %} </span>
+		<button class="filterButton" id="hideBF" style="display:none;">
+			<i class="fa fa-angle-up" aria-hidden="true"></i>
+		</button>
+		<button class="filterButton" id="showBF">
+			<i class="fa fa-angle-down" aria-hidden="true"></i>
+		</button>
+	</p>
+	<div class="besteFiltroak" id="besteFiltroak" style="display:none;">
+		{%if "egunekoa" in besteaF%}
+		&nbsp;&nbsp;
+		<input type="checkbox"  id="egunekoaF" name="egunekoaF" value="egunekoa" onclick="bilaketaFiltratu_db()" checked>
+		egunekoa
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox"  id="egunekoaF" name="egunekoaF" value="egunekoa" onclick="bilaketaFiltratu_db()">
+		egunekoa
+		<br>
+		{%endif%}
+		{%if "proposatutakoa" in besteaF%}
+		&nbsp;&nbsp;
+		<input type="checkbox"  id="proposatutakoaF" name="proposatutakoaF" value="proposatutakoa" onclick="bilaketaFiltratu_db()" checked>
+		proposatutakoa
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox"  id="proposatutakoaF" name="proposatutakoaF" value="proposatutakoa" onclick="bilaketaFiltratu_db()">
+		proposatutakoa
+		<br>
+		{%endif%}
+		{%if "wikifikatua" in besteaF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="wikifikatuaF" name="wikifikatuaF" value="wikifikatua" onclick="bilaketaFiltratu_db()" checked>
+		wikifikatua
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="wikifikatuaF" name="wikifikatuaF" value="wikifikatua" onclick="bilaketaFiltratu_db()">
+		wikifikatua
+		<br>
+		{%endif%}
+		{%if "irudiaDu" in besteaF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="irudiaDuF" name="irudiaDuF" value="irudiaDu" onclick="bilaketaFiltratu_db()" checked>
+		irudia du
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="irudiaDuF" name="irudiaDuF" value="irudiaDu" onclick="bilaketaFiltratu_db()">
+		irudia du
+		<br>
+		{%endif%}
+		{%if "irudiaEzDu" in besteaF%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="irudiaEzDuF" name="irudiaEzDuF" value="irudiaEzDu" onclick="bilaketaFiltratu_db()" checked>
+		irudia ez du
+		<br>
+		{%else%}
+		&nbsp;&nbsp;
+		<input type="checkbox" id="irudiaEzDuF" name="irudiaEzDuF" value="irudiaEzDu" onclick="bilaketaFiltratu_db()">
+		irudia ez du
+		<br>
+		{%endif%}
+	</div>
 </div>
+{%endif%}

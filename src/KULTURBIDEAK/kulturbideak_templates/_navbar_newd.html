@@ -46,6 +46,7 @@
 							{% csrf_token %}
 							<div class="input-group" style="width:97%;">
 								{% trans "Bilatu ..." as the_placeholder %}
+								{% trans "Bilaketa ze hizkuntzatan?" as query_language %}
 								<!-- id=id_q-->
 								{% if bilaketaGaldera%}
 								<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
@@ -54,12 +55,19 @@
 
 								{%endif%}
 								<span class="input-group-btn">
+									
 									<button class="btn btn-default" type="submit">
 										<span class="glyphicon glyphicon-search" aria-hidden="true"></span> !
-									</button> </span>
-
+									</button> 									
+								</span>
+								<!-- <span class="input-group-btn">
+									<select id="hizkRadio" title="{{ query_language }}">
+										<option value="eu" selected="selected">eu</option>
+										<option value="es">es</option>
+										<option value="en">en</option>
+									</select>					
+								</span> -->				
 							</div>
-<!--
 							{% if radioHizkuntza == "eu" or not radioHizkuntza %}
 							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu" checked>
 							Eu
@@ -81,7 +89,7 @@
 							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en">
 							En
 							{%endif%}
-							-->
+							
 
 						</form>
 						
@@ -182,14 +190,17 @@
 				
 				{% else %}
 				<li>
-					<a href="erregistratu"><b>{% trans "Erregistratu" %}</b> </a>
+					<a href="#" data-toggle="modal" data-target="#register-modal"><b>{% trans "Erregistratu" %}</b> </a>
+					<!-- <a href="erregistratu">{% trans "Erregistratu" %}</b> </a>-->
 				</li>
 
 				<li>
 					
 					<!--<span class="kolore-gorria glyphicon glyphicon-log-in" aria-hidden="true"> </span>-->
-					<a class="login-icon" class="kolore-gorria" href="logina"> <img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {% trans "Login" %} </a>
+					<!-- <a class="login-icon" class="kolore-gorria" href="logina"> <img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {% trans "Login" %} </a> -->
+					<a href="#" data-toggle="modal" data-target="#login-modal" ><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {% trans "Login" %}</a>
 				</li>
+				
 				{% endif %}
 
       </ul> <!-- Eskuineko 2 linkak -->

@@ -98,9 +98,19 @@ def get_tree(el_node):
     return nodes
 
 def hasiera(request):
+    """Hasiera orria"""
      
-    #Kontadoreko kopuruak lortu datu-basetik
-    #Itemak
+    login_form = LoginForm()
+    erabiltzailea_form = CreateUserForm() 
+    
+    if 'login' in request.POST:
+        logina(request)
+        
+    if 'Erabiltzailea_gehitu' in request.POST:
+        erregistratu(request)
+        
+    # Kontadoreko kopuruak lortu datu-basetik
+    # Itemak
     itemKop = item.objects.count()
     itemKop = itemKop / 1000
     #eguneko itema
@@ -137,7 +147,7 @@ def hasiera(request):
     erakBerria=berria.objects.get(erakutsi=1)
     currentDate= datetime.datetime.now()
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    return render_to_response('index.html',{'currentDate': currentDate ,'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'erakBerria':erakBerria},context_instance=RequestContext(request))
+    return render_to_response('index.html',{'login_form':login_form,'erabiltzailea_form':erabiltzailea_form,'currentDate': currentDate ,'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'erakBerria':erakBerria},context_instance=RequestContext(request))
 
  
 '''
@@ -5720,17 +5730,18 @@ def login_egin_(request):
     return False
 
 def logina(request):
-    
+    """Login function. 
+    BUG: the workspace is not shown until page is reloaded once logged in."""
     #!! Workspace bat sortu
     #Datu-basean: workspace eta usr_workspace taula eguneratu behar dira
     logina=LoginForm(request.POST)
     # return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
     if logina.is_valid():
         login_egin_(request)
-        return render_to_response('base.html',{'mezua':_("Ongi etorri OndareBideak sistemara")},context_instance=RequestContext(request))
+        return render_to_response('ajax_login.html',{'mezua':_("Ongi etorri OndareBideak sistemara")},context_instance=RequestContext(request))
     else:
         logina=LoginForm()
-        return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
+        #return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
 
 def db_oaipmh_bilketa(cd):
     """ oai-pmh baseURL batetik abiatuta itemak EDM formatuan jetsi eta metadatuak datu-basean gorde"""
@@ -5802,8 +5813,8 @@ def erregistratu(request):
    
         else:
             #return render_to_response("izena_eman.html",{"bilaketa":bilaketa_form,"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
-            return render_to_response("erregistratu.html",{"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
-    return render_to_response("erregistratu.html",{"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
+            return render_to_response("erregistratu.html",{"erabiltzailea_form":erabiltzailea_form},context_instance=RequestContext(request))
+    return render_to_response("erregistratu.html",{"erabiltzailea_form":erabiltzailea_form},context_instance=RequestContext(request))
 
 def db_erregistratu_erabiltzailea(cd):
     """Erabiltzaile bat erregistratzen du"""
