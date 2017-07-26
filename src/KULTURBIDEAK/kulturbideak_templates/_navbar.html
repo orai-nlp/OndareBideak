@@ -3,72 +3,50 @@
 {% load qr_tags %}
 {% load tags%}
 
-<nav class="navbar navbar-default navbar-fixed-top">
-	<div class="container">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a id="brand-logo" class="{% if request.get_full_path != '/' and request.get_full_path != '/logina' and request.get_full_path != '/erregistratu'%}navbar-brand{% else %}{% if request.mobile or request.get_full_path == '/' %}index-brand{%else%}navbar-brand{% endif %}{% endif %}" href="/"><img src="{{STATIC_URL}}img/brandy/logoa_iluna.png"></a>
-		</div>
+<!-- header css-->
+<!-- CSS media query on a link element -->
 
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="navbar-collapse-1">
-			<!-- Language menu-->
-			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">
-				{% csrf_token %}
-				<input name="next" type="hidden" value="#" />
-				<input type="hidden" name="language" value="{{ lang.0 }}" />
-				{% get_current_language as LANGUAGE_CODE %}
-				<ul id="lang_ul">
+<link rel="stylesheet" media="(min-width: 600px)" href="{{STATIC_URL}}css/new_header_style.css" type="text/css">
+<link rel="stylesheet" media="(max-width: 600px)" href="{{STATIC_URL}}css/new_header_style_mobile.css" type="text/css">
+		
 
-					{% for langa in LANGUAGES %}
-					{% if forloop.last %}					
-					<li class="last_li">
-						{% if langa.1 ==  LANGUAGE_CODE %}
-						<a class="active" href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-						{% else %}
-						<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-						{% endif %}
-					</li>		
-					{% else %}
-					<li>
-						{% if langa.1 == LANGUAGE_CODE %}					
-						<a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-						{% else %}
-						<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
-						{% endif %}
-					</li>
-					{% endif %}
-					{% endfor %}
-				</ul>
-			</form>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     <!--OLD LOGO -->
+     <!--
+     <a id="brand-logo" class="{% if request.get_full_path != '/' and request.get_full_path != '/logina' and request.get_full_path != '/erregistratu'%}navbar-brand{% else %}{% if request.mobile or request.get_full_path == '/' %}index-brand{%else%}navbar-brand{% endif %}{% endif %}" href="/"><img src="{{STATIC_URL}}img/brandy/logoa_iluna.png"></a>
+	 -->
+	 
+	 <a id="new-logo" class="" href="/"><img src="{{STATIC_URL}}img/newLogo/logo/ob_logo_karratu_RGB.png"></a>
+	
+    </div> <!--Logoa eta mobiletan agertzen den menu itxiaren botoia -->
 
-			{% if request.get_full_path != '/' %}
-					<ul class="nav navbar-nav">
-						<li>
-							<a href="itemak_hasiera"> {% trans "ITEMAK" %} </a>
-						</li>
-						<li>
-							<a href="ibilbideak_hasiera"> {% trans "IBILBIDEAK" %} </a>
-						</li>
-						<li>
-
-							<a href="hornitzaileak_hasiera"> <span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span> {% trans "HORNITZAILEAK" %} </a>
-						</li>
-					</ul>
-
-					<div class="col-sm-3 col-md-3 bilatzailea-kutxa text-center navbar-nav">
-						<!--<form action="/search" method="get" class="navbar-form">-->
-						<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      
+      <ul class="nav navbar-nav header-main-links {% if not request.mobile%} header-main-links-med {%endif%}">
+        <li><a class="header-custom-link-underline" href="itemak_hasiera"> {% trans "ITEMAK" %} </a></li>
+        <li><a class="header-custom-link-underline" href="ibilbideak_hasiera"> {% trans "IBILBIDEAK" %} </a></li>
+        <li><a class="header-custom-link-underline" href="hornitzaileak_hasiera"> <span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span> {% trans "HORNITZAILEAK" %} </a></li>
+      </ul>
+   
+      
+      <div class="col-sm-3 col-md-3  {% if not request.mobile%} bilatzailea-kutxa {%endif%} text-center navbar-nav">
+						
+						<form action="/cross_search" method="post" class="navbar-form navbar-left autocomplete-me">
 
 							{% csrf_token %}
 							<div class="input-group" style="width:97%;">
 								{% trans "Bilatu ..." as the_placeholder %}
+								{% trans "Bilaketa ze hizkuntzatan?" as query_language %}
 								<!-- id=id_q-->
 								{% if bilaketaGaldera%}
 								<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
@@ -77,12 +55,19 @@
 
 								{%endif%}
 								<span class="input-group-btn">
+									
 									<button class="btn btn-default" type="submit">
 										<span class="glyphicon glyphicon-search" aria-hidden="true"></span> !
-									</button> </span>
-
+									</button> 									
+								</span>
+								<!-- <span class="input-group-btn">
+									<select id="hizkRadio" title="{{ query_language }}">
+										<option value="eu" selected="selected">eu</option>
+										<option value="es">es</option>
+										<option value="en">en</option>
+									</select>					
+								</span> -->				
 							</div>
-
 							{% if radioHizkuntza == "eu" or not radioHizkuntza %}
 							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu" checked>
 							Eu
@@ -104,42 +89,48 @@
 							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en">
 							En
 							{%endif%}
+							
 
 						</form>
+						
+					
 
-					</div><!-- bilaketa kutxa -->
-				{% endif %}
+		</div><!-- bilaketa kutxa -->
+	
+      	<!-- Language menu-->
+			<form id="hizkuntza_aukeraketa_id" name="setLang{{ lang.1 }}" action="/i18n/setlang/" method="post">
+				{% csrf_token %}
+				<input name="next" type="hidden" value="#" />
+				<input type="hidden" name="language" value="{{ lang.0 }}" />
+				{% get_current_language as LANGUAGE_CODE %}
+				<ul class="nav navbar-nav " id="lang_ul">
 
-			<!-- Home menu -->
-			<ul id="home_menu" class="nav navbar-nav navbar-right">
-				{% if request.get_full_path == '/' %}
-				<li>
-					<a href="#HOME"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
-				</li>
-				<!--<li><a href="#SERVICE">Services</a></li>-->
-				<li>
-					<a href="#ABOUT">{% trans "Zer da?" %}</a>
-				</li>
-				<!--<li><a href="#TESTIMONIAL">Testimonial</a></li>-->
-				<li>
-					<a href="#WORK">{% trans "Adibideak" %}</a>
-				</li>
-				<li>
-					<a href="">|</a>
-				</li>
-				{% endif %}
-				<!--<li><a href="#CONTACT">Harremanetarako</a></li>-->
-				<!-- register and login buttons OR logout and user menu -->
-				{% if request.mobile %}
+					{% for langa in LANGUAGES %}
+				
+					<li class="interf-lang">
+						{% if langa.1 == LANGUAGE_CODE %}					
+						<a href="#" class="active" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+						{% else %}
+						<a href="#" onclick="hizkuntza_url_egokitu(this);">{{ langa.1 }}</a>
+						{% endif %}
+					</li>
+					
+					{% endfor %}
+				</ul>
+			</form>
+      <ul id="home_menu" class="nav navbar-nav navbar-right">
+        {% if request.mobile %}
 				<hr>
 				{% endif %}
 				{% if user.is_authenticated %}
 				
 				<li>
-					<a href="irten"> <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> {% trans "Irten" %}</a>
+					<a href="irten"> <span class="kolore-sound glyphicon glyphicon-log-out" aria-hidden="true"></span> {% trans "Irten" %}</a>
 				</li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>
+					<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class=" kolore-sound glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>-->
+					<a href="#" class="dropdown-toggle" login-icon data-toggle="dropdown"><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {{request.user.username}} <b class="caret"></b></a>
+					
 					{% if not user.is_superuser %}
 					<ul class="dropdown-menu">
 						<li>
@@ -191,10 +182,7 @@
 						<li>
 							<a href="irten">{% trans "Irten" %} <!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
 						</li>
-            		<!--
-            		<p class="kud_irudia"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></p>
-            		<a class="btn btn-common" href="{{BASE_URL}}/admin_hornitzaile_fitxa_editatu?hid={{hornitzaile.fk_user.id}}">{% trans "Hornitzaile fitxa editatu" %} <span class="glyphicon glyphicon-chevron-right"></span></a>
-            		-->
+            		
             		</ul>
             		{%endif%}
             	
@@ -202,15 +190,18 @@
 				
 				{% else %}
 				<li>
-					<a href="erregistratu"><b>{% trans "Erregistratu" %}</b> </a>
+					<a href="#" data-toggle="modal" data-target="#register-modal"><b>{% trans "Erregistratu" %}</b> </a>
+					<!-- <a href="erregistratu">{% trans "Erregistratu" %}</b> </a>-->
 				</li>
 
 				<li>
-					<a href="logina"><span class="glyphicon glyphicon-log-in" aria-hidden="true"> </span> {% trans "Login" %} </a>
+					
+					<a href="#" data-toggle="modal" data-target="#login-modal" ><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {% trans "Login" %}</a>
 				</li>
+				
 				{% endif %}
 
-			</ul>
-		</div><!-- /.navbar-collapse -->
-	</div><!-- /.container -->
+      </ul> <!-- Eskuineko 2 linkak -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>

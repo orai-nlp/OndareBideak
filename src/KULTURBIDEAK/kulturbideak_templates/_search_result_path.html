@@ -1,0 +1,118 @@
+{% load i18n %}
+{% load tags %}
+{% load leaflet_tags %}
+
+<div class="row search-result">	
+	<div class="thumbnail col-xs-2 col-md-2">
+	  
+  	{% if "1" in path.acces %}
+	    <div class="zirriborro-tag">      
+	        <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
+		{% if path.path_thumbnail %}
+				<img class="ob_thumbnail" src="{{path.path_thumbnail}}">
+		{% else %}
+				<img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">
+		{% endif %}
+				<div class="dark-overlay"></div>
+				<p><span>Zirriborroa</span></p>
+        	</a>
+	    </div>
+	{% elif path.path_fk_user_id|hornitzailea_da %}
+	    <div class="side-corner-tag">	      
+        	<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
+		{% if path.path_thumbnail %}
+				<img class="ob_thumbnail" src="{{path.path_thumbnail}}">
+		{% else %}
+				<img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">
+		{% endif %}
+				<div class="dark-overlay"></div>
+				<p><span>aditua</span></p>
+            </a>
+	    </div>
+	{%else%}
+	    <div class="">
+        	<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" >
+        {% if path.path_thumbnail %}
+        		<img class="ob_thumbnail" src="{{path.path_thumbnail}}">
+        {% else %} 
+        		<img class="ob_thumbnail" src="/uploads/NoIrudiBide.png">
+		{% endif %}
+				<div class="dark-overlay"></div>
+            </a>
+        </div>
+    {%endif%}
+	</div>
+	
+	<div class="caption  col-xs-9 col-md-9">
+
+		<input type="hidden" id="path_id_{{ forloop.counter }}" value="{{path.path_id}}"/>
+	    <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.path_dc_title}}"/>
+	    <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.path_thumbnail}}"/>
+	   
+	    <h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" id=\
+"path.path_dc_title">{{path.path_dc_title}}</a></h5>
+            {% if path.language %}
+            <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{path.language}}</span><br />
+            {% else %}
+            <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">-</span><br />
+
+	    {%endif%}
+            {% if path.path_dc_subject %}
+            <span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">{{path.path_dc_subject}}</span><br />
+            {% else %}
+            <span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">-</span><br />
+	    
+            {%endif%}
+	</div><!-- caption -->
+    <div class="kudeaketa col-xs-1 col-md-1">                       
+        <!--<h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
+        <div class="btn-group" role="group" aria-label="...">-->
+        <ul class="button-row">
+        	<li>
+        		<a class="ikusi-botoiaa" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}">
+              	<span class="fa fa-eye square-back" aria-hidden="true"></span>
+            	</a>
+            <li>
+			{% if user.is_authenticated %}
+				<!-- editatzeko aukera: ibilbidearen autorea da, supererabiltzailea da ala acces= 4 du-->
+    	        {% if user.id == path.path_fk_user_id|to_int  or user.is_superuser or path.acces == '4' %}
+    	    <li>
+     			<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
+      				<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+      			</a>
+      		</li>
+      			{%endif%}
+      			<!-- editatzeko aukera: acces==3 du eta hornitzailea da -->
+      			{%if path.acces == '3' and request.user|has_group:'hornitzailea'%}
+      				<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
+      			        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+      			   </a>			
+      			{%endif%}
+            {%endif%}
+            
+            {% if user.id == path.path_fk_user_id|to_int  or user.is_superuser%}
+            <!-- ezabatu-->
+            <a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.path_id}})" >
+              <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            </a>
+             <!-- edizio aukerak aldatu-->
+          
+            <a class="btn btn-success announce" data-toggle="modal" data-id="{{path.path_id}}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+            
+            {%endif%}
+
+	    {% if request.user|has_group:'hornitzailea'  or user.is_superuser%}
+           
+            {% if not path.path_id|is_in:eguneko_ibilbideak %} 
+            <a class="btn btn-warning" type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu_ibilb({{path.path_id}})" >
+              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            </a>
+            {%else%}
+            <a class="btn btn-warning egunekoa-botoia" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >
+              <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+            </a>
+            {%endif%}
+            {%endif%}
+		</ul>
+	</div><!-- kudeaketa buttons -->
+  </div><!-- search-result-->

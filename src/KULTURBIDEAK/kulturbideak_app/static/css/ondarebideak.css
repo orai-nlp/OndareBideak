@@ -15,19 +15,19 @@
 
 /* KOLOREAK */
 
-.kolore-gorria {
+.kolore-video {
 	color:#FF563D;
 }
-.kolore-gorria img{
+.kolore-video img{
 	color:#FF563D;
 }
-.kolore-horia {
+.kolore-text {
 	color:#FFDA3E;
 }
-.kolore-urdina {
+.kolore-image {
 	color:#40D7FF;
 }
-.kolore-berdea {
+.kolore-sound {
 	color:#5AED64;
 }
 
@@ -40,12 +40,17 @@
 	
 	color:#000000;
 }
+
 /*
-kolore grisak: -bat argiena
+kolore grisak: - zero argiena
 */
+.kolore-gris-0 { 
+	color:#f8f8f8;
+}
+
 .kolore-gris-bat { 
 	
-	color:#CCCCCC;
+	color:#eeeeee;
 }
 .kolore-gris-bi { 
 	
@@ -78,13 +83,19 @@ kolore grisak: -bat argiena
 }
 
 .circle-back { 
-   background: #CCCCCC; 
+   background: #eeeeee; 
    -moz-border-radius: 50%; 
    -webkit-border-radius: 50%; 
    border-radius: 50%;
    padding:10px;
-   color:black;
+   color:#333333;
    margin:10px;
+}
+
+.square-back { 
+   background: #333333; 
+   padding:10px;   
+   margin:1px;
 }
 /* END Ikono estiloak */
 
@@ -192,6 +203,12 @@ i {
 	margin-right:10px;
 }
 
+/* Bilaketa orrietako emaitzen bistaratea : cross_search.html */
+
+.search-result {
+	background: #f8f8f8;
+	margin:5px;
+}
 
 .bilaketaEmaitza {
 
@@ -227,6 +244,28 @@ img.ob_thumbnail {
 	width: 120px !important;
 	height: 120px !important;
 }
+
+.thumbnail img {
+	background:black;
+}
+.dark-overlay {
+	transition: .5s ease;
+	background: black;
+	opacity: 0.3;
+	position: absolute;
+	top: 5%;
+	left: 5%;
+	width: 90%;
+	height: 90%;
+}
+
+.dark-overlay-1 {
+	background: black;
+	opacity: 0.3;
+}
+/* END Bilaketa orrietako emaitzen bistaratea : cross_search.html */
+
+/* Workspace / Lan eremua */
 #workspace {
 	position: fixed;
 	width: 80%;
@@ -279,7 +318,7 @@ img.ob_thumbnail {
 	border-style: solid;
 	border-width: 1.5px;
 	/*border-color: orange lightblue blue yellow;*/
-	border-color: #31708f;
+	border-color: #333333;/*31708f;*/
 }
 
 .wsb_title {
@@ -318,7 +357,7 @@ img.ob_thumbnail {
 	/*font-weight: bold;*/
 	float: right;
 	margin: 2px;
-	color:#31708f;
+	color:#333333;/*31708f;*/
 	/*border: 1px dotted #808080;*/
 	/*background: #d3d3d3;*/
 }
@@ -327,7 +366,9 @@ img.ob_thumbnail {
 	visibility: hidden;
 }
 
+/* END - Workspace / Lan eremua */
 
+/* Path edition panel */
 #path_boxes_egunekoa {
 	width: 98%;
 	height: 600px;
@@ -426,6 +467,8 @@ img.ob_thumbnail {
 	fill: #000000 !important;
 }
 
+/* END - Path edition panel */
+
 .orria, .orria2 {
 	display: block;
 	margin: 0 auto;
@@ -440,7 +483,7 @@ img.ob_thumbnail {
 	background: white;
 	vertical-align: top;
 	text-align: left;
-	color: #31708f;
+	color: #333333;/*31708f;*/
 }
 
 #eguneko_itema img {
@@ -537,7 +580,7 @@ img.ob_thumbnail {
 	float: left;
 	padding: 0px 6px 0px 6px;
 	border-right: 2px solid #FFFFFF;
-	color: #31708F;
+	color: #333333;/*31708f;*/
 }
 .ulhizkuntzak li:last-child {
 	border-right: 0px;
@@ -935,18 +978,16 @@ circle .unselectedNode {
 	margin-bottom: 15px;
 	margin-top: 0;
 }
-.gehitu-botoia {
-	color: #0099ae;
-}
+
 .ikusi-botoia {
 	color: #0099ae !important;
 	border: 1px solid #0099ae;
 	background: none;
 }
 .gehitu-botoia {
-	color: #0099ae !important;
-	border: 1px solid #0099ae;
+	border: none;
 	background: none;
+	padding:0;
 }
 .egunekoa-botoia {
 	color: #eea236;
@@ -1045,7 +1086,7 @@ h2.uppercase {
 	font-weight: 300;
 	margin-bottom: 15px;
 	margin-top: 0;
-	color: #31708f !important;
+	color: #333333 !important; /*#31708f*/
 }
 .bilaketaEremua {
 

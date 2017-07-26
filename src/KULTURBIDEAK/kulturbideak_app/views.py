@@ -5738,7 +5738,7 @@ def logina(request):
     # return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
     if logina.is_valid():
         login_egin_(request)
-        return render_to_response('ajax_login.html',{'mezua':_("Ongi etorri OndareBideak sistemara")},context_instance=RequestContext(request))
+        return render_to_response('ajax/ajax_login.html',{'mezua':_("Ongi etorri OndareBideak sistemara")},context_instance=RequestContext(request))
     else:
         logina=LoginForm()
         #return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
