@@ -25,18 +25,24 @@
 				 	 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
 				  {%endif%}
 				
+				<ul class="caption-info">
 				{% if item.edm_country %}
-                    <span class="eremu-str">{{item.edm_country}}</span><br />
+					<li>
+	                    <span class="kolore-gris-bi">{{item.edm_country}}</span><br />
+                    </li>
                 {%endif%}  
 				{% if item.dc_title %}
-					<h5><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h5>
+					<li>
+						<h5><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h5>
+                    </li>    
 				{%endif%}
 				{% if item.edm_provider %}
-	                 <img class="img-user-white" src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png">
-	                 <span class="eremu-str"> {{item.edm_provider}} </span>
-	                 <br />
+					<li>
+	                	<img class="img-user-white" src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png">
+	                	<span class="kolore-gris-lau"> {{item.edm_provider}} </span>
+	                </li>
                 {%endif%}
-				
+				</ul>
 {% comment %}				
                                 {% if item.edm_provider %}
                                         <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="eremu-str"> {{item.edm_provider}} </span><br />

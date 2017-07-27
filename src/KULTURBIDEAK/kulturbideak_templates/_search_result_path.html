@@ -49,20 +49,30 @@
 	    <input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.path_dc_title}}"/>
 	    <input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.path_thumbnail}}"/>
 	   
-	    <h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" id=\
+	   	<ul class="caption-info">
+        {% if path.path_creation_date %}
+	   	<li>	
+            <span class="kolore-gris-bi">{{ path.path_creation_date }}</span>
+	    </li>
+	    {% endif %}
+	   	<li>
+	    	<h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}" id=\
 "path.path_dc_title">{{path.path_dc_title}}</a></h5>
-            {% if path.language %}
-            <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">{{path.language}}</span><br />
-            {% else %}
-            <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza:" %}</span><span class="eremu-str">-</span><br />
-
+		</li>
+		<li>	
+        {% if path.language %}
+            <span class="kolore-gris-bi">{{path.language}}</span>
+        {% else %}
+            <span class="kolore-gris-bi">-</span>		
 	    {%endif%}
-            {% if path.path_dc_subject %}
-            <span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">{{path.path_dc_subject}}</span><br />
-            {% else %}
-            <span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia:" %}</span><span class="eremu-str">-</span><br />
-	    
-            {%endif%}
+	    </li>
+	    <li>
+        {% if path.path_dc_subject %}
+            <span class="fa fa-angle-right kolore-video" aria-hidden="true"></span>&nbsp;{% trans "Gaia:" %}</span><span class="eremu-str">&nbsp;{{path.path_dc_subject}}</span>
+        {% else %}
+            <span class="fa fa-angle-right kolore-video" aria-hidden="true"></span>&nbsp;{% trans "Gaia:" %}</span><span class="eremu-str">&nbsp;-</span>
+        {%endif%}
+        </li>
 	</div><!-- caption -->
     <div class="kudeaketa col-xs-1 col-md-1">                       
         <!--<h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>

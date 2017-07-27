@@ -95,8 +95,8 @@ kolore grisak: - zero argiena
 .square-back { 
    background: #333333; 
    padding:10px;   
-   margin:1px;
 }
+
 /* END Ikono estiloak */
 
 body {
@@ -206,10 +206,51 @@ i {
 /* Bilaketa orrietako emaitzen bistaratea : cross_search.html */
 
 .search-result {
-	background: #f8f8f8;
-	margin:5px;
+	background: #eeeeee; /*#f8f8f8;*/
+	margin:5px 0 5px 0;
+	padding: 5px 0px 5px 10px;
+	
 }
 
+.search-result div.thumbnail {
+	margin: 10px 0 10px 0;
+}
+
+.search-result div.caption {
+	float:left !important;
+}
+
+ul.caption-info {
+	float:left;
+	display:block;
+	list-style:none;
+	margin:0;
+	padding:20px;
+}
+
+ul.caption-info li{
+	float:left;
+	text-align:left;
+	width:100%;
+}
+
+.search-result div.kudeaketa {
+	float:right;
+	padding:0;
+}
+
+.button-row{
+	list-style:none;
+	margin: 5px 0 5px 0;
+	padding:0;	
+	float:right;
+	display:block;
+}
+
+.button-row li{
+   margin:1px;
+	
+}
 .bilaketaEmaitza {
 
 	/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
@@ -244,6 +285,7 @@ img.ob_thumbnail {
 	width: 120px !important;
 	height: 120px !important;
 }
+
 
 .thumbnail img {
 	background:black;
@@ -986,8 +1028,9 @@ circle .unselectedNode {
 }
 .gehitu-botoia {
 	border: none;
-	background: none;
+	background: #333333;
 	padding:0;
+	width:100%;
 }
 .egunekoa-botoia {
 	color: #eea236;
@@ -995,7 +1038,7 @@ circle .unselectedNode {
 	background: none;
 }
 .eremu-str {
-	color: #0099ae !important;
+	color: #666666 !important;
 }
 .antzekoTitulua {
 	font-family: walsheim-web, "dosis" !important;
