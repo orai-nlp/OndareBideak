@@ -21,7 +21,15 @@ um_pages }}</p>-->
 <!--<p class="emaitzaInfo"> {{ items.count }} Kultur Item eta {{paths.count}} Ibilbide</p>-->
 
 
-
+{% block result_number %}
+	<div class="result_number">
+	{% if z == 'i'%}
+		<h4>{% trans "Items" %} <span class="num">{{ items.paginator.count }}</span></h4>
+	{% elif z == 'p'%}
+		<h4>{% trans "Paths" %} <span class="num">{{paths.paginator.count}}</span></h4>
+	{% endif %}
+	</div>
+{% endblock result_number %}
 
 {% block bilaketaFiltroak %}
 {% include "_search_filters.html" %}

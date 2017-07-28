@@ -97,6 +97,17 @@ kolore grisak: - zero argiena
    padding:10px;   
 }
 
+.overlay-icon{
+	width: 15%;
+	transition: .5s ease;
+	position: absolute;
+	top: 75%;
+	left: 80%;
+	z-index: 100000;
+	opacity:1 !important;
+	background: transparent !important;
+}
+
 /* END Ikono estiloak */
 
 body {
@@ -290,21 +301,32 @@ img.ob_thumbnail {
 .thumbnail img {
 	background:black;
 }
-.dark-overlay {
+
+div.dark-overlay {
 	transition: .5s ease;
-	background: black;
-	opacity: 0.3;
 	position: absolute;
+	background: rgba(0, 0, 0, 0.5);
 	top: 5%;
 	left: 5%;
 	width: 90%;
 	height: 90%;
 }
 
-.dark-overlay-1 {
-	background: black;
-	opacity: 0.3;
+.num {
+	color: #666666;
 }
+
+li.hornitzaile-result{
+	display:inline-block;
+	text-align:left;
+}
+
+li.hornitzaile-result img{
+	background: #dddddd;
+}
+
+
+
 /* END Bilaketa orrietako emaitzen bistaratea : cross_search.html */
 
 /* Workspace / Lan eremua */
@@ -573,6 +595,7 @@ img.ob_thumbnail {
 	text-align: right;
 }
 
+/* workspace styles */
 #ws_botoia_barruan{
 	position:relative;
 	height:10px;
@@ -584,25 +607,33 @@ img.ob_thumbnail {
 	width:100%;
 	height:100%;
 	position:absolute;
-	vertical-align:middle;
+	vertical-align:miright;
 	text-align:center;"
 }
 
 
 .pathBotoia {
+	background-color:#333333;
+	color:#ffffff;
 	position:absolute; 
 	right:125px;
 	top:3px;
-}
-.pathBotoia_kanpoan{
-	/*background-color:"wheat";*/
-	margin-left:auto;
-	margin-right:auto;
-	display:block;
-	margin-top:0%;
-	margin-bottom:0%;
+	font-size: 1.2em;
+	font-weight: 700;
 }
 
+.pathBotoia_kanpoan{
+	background-color:#333333;	
+	color:#ffffff;
+	display:block;
+	right:120px;
+	margin-top:-3px;
+	float:right;
+	font-size: 1.2em;
+	font-weight: 700;
+}
+
+/* END workspace styles */
 
 .footer {
 	bottom: 0;

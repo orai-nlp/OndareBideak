@@ -376,6 +376,7 @@
 		{% include "_navbar.html" %}
 		{% endblock navbar %}
 
+
 		<!-- PAGE -->
 		<div  style="max-width:1210px;margin:0 auto;">
 			<!--aldeetako margina -->
@@ -423,6 +424,7 @@
 				<!-- END Autocomplete leihoa -->	
 				
 				<div class="row">
+					{% block sidebar %}
 					<div id="sidebar" class="col-md-3 col-lg-4">
 						{% block result_number %}
 						<div class="result_number">
@@ -450,8 +452,10 @@
 						{% endblock egunekoakBozkatuenakAzkenak %}
 				
 					</div><!-- sidebar -->
-									
+					{% endblock sidebar %}		
+					{% block content_div_def %}		
 					<div id="content_div" class="col-md-9 col-lg-8" align="center">
+					{% endblock content_div_def %}
 					{% if mezua %}
 
 					<div class="alert alert-info" role="alert">
@@ -637,9 +641,11 @@
 				</div><!-- row -->
 
 			</div><!-- orria -->
-
+				
 		</div><!-- row -->
 		<!-- END PAGE -->
+		
+		
 		{% block footer %}
 		{% include "_footer.html" %}
 		{% endblock footer %}
