@@ -190,6 +190,15 @@ def itemak_hasiera(request):
         itemak = paginator.page(paginator.num_pages)
     '''
    
+    login_form = LoginForm()
+    erabiltzailea_form = CreateUserForm() 
+    
+    if 'login' in request.POST:
+        logina(request)
+        
+    if 'Erabiltzailea_gehitu' in request.POST:
+        erregistratu(request)
+   
     #Egunekoak
     eguneko_itemak=[]
     eguneko_itemak=item.objects.filter(egunekoa=1)
@@ -296,7 +305,7 @@ def itemak_hasiera(request):
         paths = paginator.page(paginator.num_pages)
     
     
-    return render_to_response('cross_search.html',{'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'login_form':login_form,'erabiltzailea_form':erabiltzailea_form,'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))
       
     #return render_to_response('itemak_hasiera.html',{'non':non,'itemak':itemak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak},context_instance=RequestContext(request))
     
@@ -4050,8 +4059,15 @@ def ibilbideak_hasiera(request):
     #DB-an GALDERA EGIN EGUNEKO/RANDOM/AZKENAK/IKUSIENA PATHA LORTZEKO   
     #DB-an GALDERA EGIN EGUNEKO IBILBIDEA LORTZEKO
    
+    login_form = LoginForm()
+    erabiltzailea_form = CreateUserForm() 
     
-    
+    if 'login' in request.POST:
+        logina(request)
+        
+    if 'Erabiltzailea_gehitu' in request.POST:
+        erregistratu(request)
+   
     #Egunekoak
     eguneko_itemak=[]
     eguneko_itemak=item.objects.filter(egunekoa=1)
@@ -4160,7 +4176,7 @@ def ibilbideak_hasiera(request):
         items = paginator.page(paginator.num_pages)
     
     
-    return render_to_response('cross_search.html',{'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))   
+    return render_to_response('cross_search.html',{'login_form':login_form,'erabiltzailea_form':erabiltzailea_form,'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))   
     #return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
 
    
@@ -4169,7 +4185,7 @@ def hornitzaileak_hasiera(request):
     hornitzaileak = []
     hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3)
     
-    paginator = Paginator(hornitzaileak, 26)
+    paginator = Paginator(hornitzaileak, 27)
     
     type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
  
@@ -4253,6 +4269,15 @@ def autocomplete(request):
 
 def cross_search(request):
     
+    login_form = LoginForm()
+    erabiltzailea_form = CreateUserForm() 
+    
+    if 'login' in request.POST:
+        logina(request)
+        
+    if 'Erabiltzailea_gehitu' in request.POST:
+        erregistratu(request)
+        
     #Defektuz itemen orria erakusteko
     z="i"
     # Helburu hizkuntza guztietan burutuko du bilaketa
@@ -4389,7 +4414,7 @@ def cross_search(request):
     
     
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'login_form':login_form,'erabiltzailea_form':erabiltzailea_form,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 
 def hornitzaile_search(request):

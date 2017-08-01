@@ -103,7 +103,7 @@ kolore grisak: - zero argiena
 	position: absolute;
 	top: 75%;
 	left: 80%;
-	z-index: 100000;
+	z-index: 1000;
 	opacity:1 !important;
 	background: transparent !important;
 }
@@ -319,13 +319,46 @@ div.dark-overlay {
 li.hornitzaile-result{
 	display:inline-block;
 	text-align:left;
+	margin-bottom:20px;
 }
 
-li.hornitzaile-result img{
+li.hornitzaile-result div.hornitzaile-thumbnail{
+	width:100%;
 	background: #dddddd;
+	margin-bottom: 15px;
+}
+li.hornitzaile-result img{
+	height:150px;
+	padding: 10%;
+	margin:auto;
+	display:block;
 }
 
+.hornitzaile-link{
+	text-decoration:underline;
+	font-size:0.9em;
+	font-family:walsheim-bold-web;
+}
 
+div.hornitzaile-desk {
+	font-family: walsheim-web !important;
+	min-height:60px;
+	max-height:40px;
+	margin-bottom:10px;
+}
+
+p.hornitzaile-name {
+	min-height:40px;
+	max-height:40px;
+	margin-bottom:5px;
+	overflow:hidden;
+	
+}
+
+.hornitzaile-mota{
+	min-height:20px;
+	max-height:20px;
+}
 
 /* END Bilaketa orrietako emaitzen bistaratea : cross_search.html */
 
@@ -616,10 +649,10 @@ li.hornitzaile-result img{
 	background-color:#333333;
 	color:#ffffff;
 	position:absolute; 
-	right:125px;
-	top:3px;
-	font-size: 1.2em;
-	font-weight: 700;
+	right:90px;
+	top:0;
+	font-size: 0.9em;
+	font-family:walsheim-bold-web;
 }
 
 .pathBotoia_kanpoan{
@@ -629,8 +662,8 @@ li.hornitzaile-result img{
 	right:120px;
 	margin-top:-3px;
 	float:right;
-	font-size: 1.2em;
-	font-weight: 700;
+	font-size: 1em;
+	font-family:walsheim-bold-web;
 }
 
 /* END workspace styles */
@@ -1115,12 +1148,6 @@ p.uppercase {
 	font-family: walsheim-web, "dosis" !important;
 	font-size: 24px;
 }
-p.letratipoa {
-	font-family: walsheim-web, "dosis" !important;
-}
-.letratipoa p{
-	font-family: walsheim-web, "dosis" !important;
-}
 
 .center {
 	text-align: center;
@@ -1155,9 +1182,8 @@ h2.uppercase {
 }
 
 .bilaketaTitulua {
-	font-family: walsheim-web, "dosis" !important;
-	font-size: 20px;
-	font-weight: 300;
+	font-family: walsheim-bold-web !important;
+	font-size: 1.2em;	
 	margin-bottom: 15px;
 	margin-top: 0;
 	color: #333333 !important; /*#31708f*/

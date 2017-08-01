@@ -38,7 +38,7 @@
 		<li class="col-md-4 col-lg-4 hornitzaile-result">             
             	
             	<!-- Preview Image -->
-      
+    		<div class="hornitzaile-thumbnail">
        			 {% if hornitzaile.ikonoa %} 			 	 
        			 	 <a href="/hornitzaile_search?h={{hornitzaile.fk_user.username}}&h_id={{hornitzaile.fk_user.id}}&z=h">
                   		  <img id="imgPreview" id="imgPreview"class="img-responsive" src="{{hornitzaile.ikonoa}}" ><!--src="http://placehold.it/700x300"-->
@@ -49,22 +49,18 @@
                    		 <img id="imgPreview" class="img-responsive" src="{{ STATIC_URL }}img/no_photo_small.jpg"  alt=""><!--src="http://placehold.it/700x300"-->
                		 </a>
       			 {%endif%}
-        
-            <div class="letratipoa">
-                <p class="left"><b>{{hornitzaile.izena}}</b></p>
-                
-                <p class="mota"><span class=" glyphicon glyphicon-menu-right" aria-hidden="true"></span>{{hornitzaile.erakundeMota}}</p>
-                <p class="letratipoa">{{ hornitzaile.deskribapena|slice:"0:100" |format_html |safe}}... </p>
-                <a class="btn btn-common" href="/hornitzaile_search?h={{hornitzaile.fk_user.username}}&h_id={{hornitzaile.fk_user.id}}&z=h">{% trans "Ikusi Hornitzailea" %} <span class="glyphicon glyphicon-chevron-right"></span></a>
+        	</div>
+            <div class="hornitzaile-text">
+                <p class="hornitzaile-name left kolore-gris-lau"><b>{{hornitzaile.izena}}</b></p>
+                <p class="hornitzaile-mota kolore-gris-bi">{{hornitzaile.erakundeMota}}</p>
+                <div class="hornitzaile-desk kolore-gris-hiru">{{ hornitzaile.deskribapena|slice:"0:100" |format_html |safe}}... </div>
+                <a class="hornitzaile-link kolore-gris-lau" href="/hornitzaile_search?h={{hornitzaile.fk_user.username}}&h_id={{hornitzaile.fk_user.id}}&z=h">{% trans "Ikusi Hornitzailea" %}</a>
             	
             </div>
           
-            </li>
-            
-
-        <hr>
-
-{% endfor %}
+        </li>
+                    
+	{% endfor %}
 </ul>
 </div>
         <!-- /.row -->

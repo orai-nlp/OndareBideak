@@ -5,8 +5,9 @@
 <link rel="stylesheet" media="(min-width: 600px)" href="{{STATIC_URL}}css/ibilbide_proposamena_style.css" type="text/css">
 
 <div class="row item_thumbnail"> <!--item irudiak -->
-	{% if  item.item_id %}
-		<div class="thumbnail col-xs-2 col-md-2">
+	{% if  item.id %}
+	
+	<div class="thumbnail col-xs-2 col-md-2">
 			<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
 				<img  title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}{% endif%}" src="{% if item.ob_thumbnail%} {{item.ob_thumbnail|clean_http_prefix}} {% elif item.edm_object %} {{item.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 			</a>
@@ -43,7 +44,8 @@
                 {% if item.edm_type %}
                 	<span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="eremu-str">{{item.edm_type}}</span><br />
                 {%endif%}   
-	{%endif%}    				
+	{%endif%} 
+	 				
 </div> <!--row-->
 	
 	
