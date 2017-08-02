@@ -83,35 +83,36 @@
                     <button class="gehitu-botoia" title="{% trans 'Lan eremura gehitu' %}" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
                 		<span class="fa fa-plus square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
                     </button>
-                </li>
-                <p id="errepikatua"></p>
-                {% if user.id == item.item_user_id|to_int  or user.is_superuser%}
+                </li>                
+                	{% if user.id == item.item_user_id|to_int  or user.is_superuser%}
                 
 	            <li>
 	            	<a class="btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >
-                    	<span class="fa fa-edit square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
+                    	<i class="fa fa-edit square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
                     </a>
                 </li>
+                
                 <li>
                 <!-- ezabatu -->
-                <a class="btn-danger" type="button" title="Itema ezabatu" onClick="deleteItem({{item.item_id}})" >
-               		<span class="fa fa-times square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
+                <a class="btn-danger ob-botoia" type="button" title="Itema ezabatu"  style="width:100;" onClick="deleteItem({{item.item_id}})" >
+               		<i class="fa fa-times square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
                 </a>
 				</li>
-                {%endif%}
-				
-				{% if request.user|has_group:'hornitzailea' or user.is_superuser %}
-					{% if not item.item_id|is_in:eguneko_itemak %} 
+                	{%endif%}
+					
+					{% if request.user|has_group:'hornitzailea' or user.is_superuser %}
 				<li>
-				<a class="btn-warning " title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.item_id}})" >
-                	<span class="fa fa-star square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
-                </a>
-					{%else%}
-                <a class="btn-warning egunekoa-botoiaa" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu({{item.item_id}})" >
-					<span class="fa fa-star-o square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
-				</a>
-					{%endif%}
-                {%endif%}			
+						{% if not item.item_id|is_in:eguneko_itemak %} 
+					<a class="btn-warning " title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.item_id}})" >
+                		<i class="fa fa-star square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
+                	</a>
+						{%else%}
+                	<a class="btn-warning egunekoa-botoiaa" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu({{item.item_id}})" >
+						<i class="fa fa-star-o square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
+					</a>
+						{%endif%}
+				</li>
+                	{%endif%}			
 				{%endif%}
 			</ul>
 		</div> <!-- kudeaketa buttons -->

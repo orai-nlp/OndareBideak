@@ -6713,36 +6713,11 @@ def handle_uploaded_file(f,izena):
         for chunk in f.chunks():
             destination.write(chunk)
 
-'''
-def nire_itemak_erakutsi(request):
-    
-    userName=request.user.username
-    userID=request.user.id
-    itemak=[]
-    itemak = item.objects.filter(fk_ob_user__id=userID).order_by('-dc_date')
-    #PAGINATOR
-    paginator = Paginator(itemak, 26)
-
-    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
-     
-    page = request.GET.get('page')
-    try:
-        itemak = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        itemak = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        itemak = paginator.page(paginator.num_pages)
-    non="fitxaE"
-    bilaketa_filtroak=1
-    
-    return render_to_response('nire_itemak.html',{'non':non,'itemak':itemak,'bilaketa_filtroak':bilaketa_filtroak},context_instance=RequestContext(request))
-  
-''' 
 
 def nire_itemak_erakutsi(request):
-    
+    '''
+    Nire itemak atala erakusteko bista, cross_search.html-ren aldaera da.
+    '''
     userName=request.user.username
     userID=request.user.id
     
@@ -6858,35 +6833,10 @@ def nire_itemak_erakutsi(request):
       
 
 
-
-'''
 def nire_ibilbideak_erakutsi(request):
-    
-    userID=request.user.id
-    ibilbideak=[]
-    ibilbideak = path.objects.filter(fk_user_id__id=userID).order_by('-creation_date')
-        
-    #PAGINATOR
-    paginator = Paginator(ibilbideak, 26)
-
-    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
-     
-    page = request.GET.get('page')
-    try:
-        ibilbideak = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        ibilbideak = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        ibilbideak = paginator.page(paginator.num_pages)
-    non="fitxaE"
-    return render_to_response('nire_ibilbideak.html',{'non':non,'paths':ibilbideak},context_instance=RequestContext(request))
-   
-'''
-
-def nire_ibilbideak_erakutsi(request):
-
+    '''
+    Nire ibilbideak atala erakusteko bista, cross_search.html-ren aldaera da.
+    '''
     userName=request.user.username
     userID=request.user.id
     

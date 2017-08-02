@@ -376,52 +376,37 @@
 		{% include "_navbar.html" %}
 		{% endblock navbar %}
 
-
+		{% block extra_markup %}
+		{% endblock extra_markup %}
+				
 		<!-- PAGE -->
 		<div  style="max-width:1210px;margin:0 auto;">
 			<!--aldeetako margina -->
-			<!--<hr>-->
-			<!--PANTAILA EGITURA NAGUSIA-->
+			<!--<hr>-->			
+			<!--PANTAILA EGITURA NAGUSIA-->			
 			<div class="orria">
+				{% block autocomplete %}
 				<!-- Autocomplete leihoa -->
 				<div id="SERVICE" class="container" style="display:none;">
 					<h2 class="titulu-kolorea autocomplete-galdera">Hauetakoren bat bilatzen duzu?</h2>
 					<div class="row">
+						{% for i in "0123" %}
 						<div class="col-md-3 text-center">
-							<div class="autocompleteItem single_service wow fadeInUp" id="auto0" >
-								<a id="a0"><img class="autocomplete_irudia" id="img0"></a>
-								<h2 id="h20"></h2>
-								<p id="p0"></p>
+							<div class="autocompleteItem single_service wow fadeInUp" id="auto{{i}}" >
+								<a id="a{{i}}"><img class="autocomplete_irudia" id="img{{i}}"></a>
+								<h2 id="h2{{i}}"></h2>
+								<p id="p{{i}}"></p>
 
 							</div>
 						</div>
-						<div class="col-md-3 text-center">
-							<div class=" autocompleteItem single_service wow fadeInUp" id="auto1" >
-								<a id="a1"><img class="autocomplete_irudia" id="img1"></a>
-								<h2 id="h21"></h2>
-								<p id="p1"></p>
-
-							</div>
-						</div>
-						<div class="col-md-3 text-center">
-							<div class="autocompleteItem single_service wow fadeInUp" id="auto2" >
-								<a id="a2"><img class="autocomplete_irudia" id="img2"></a>
-								<h2 id="h22"></h2>
-								<p id="p2"></p>
-
-							</div>
-						</div>
-						<div class="col-md-3 text-center">
-							<div class="autocompleteItem single_service wow fadeInUp" id="auto3" >
-								<a id="a3"><img class="autocomplete_irudia" id="img3"></a>
-								<h2 id="h23"></h2>
-								<p id="p3"></p>
-							</div>
-						</div>
+						{% endfor %}
+						
 					</div>
 					<hr />
 				</div>
 				<!-- END Autocomplete leihoa -->	
+				{% endblock autocomplete %}
+				
 				
 				<div class="row">
 					{% block sidebar %}
@@ -452,10 +437,12 @@
 						{% endblock egunekoakBozkatuenakAzkenak %}
 				
 					</div><!-- sidebar -->
-					{% endblock sidebar %}		
+					{% endblock sidebar %}	
+						
 					{% block content_div_def %}		
 					<div id="content_div" class="col-md-9 col-lg-8" align="center">
 					{% endblock content_div_def %}
+					
 					{% if mezua %}
 
 					<div class="alert alert-info" role="alert">

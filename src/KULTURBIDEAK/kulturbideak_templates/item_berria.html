@@ -1,9 +1,23 @@
-{% extends "base.html" %}
+{% extends "__base.html" %}
 {% load i18n %}
 {% load leaflet_tags %}
 {% load qr_tags %}
 
 {% load tags%}
+
+{% block extra_markup %}
+<div class="item-extra-background"></div>
+{% endblock extra_markup %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content_div_def %}		
+<div id="content_div">
+{% endblock content_div_def %}
+
+
+				
 {% block content %}
 
 {% get_current_language as LANGUAGE_CODE %}
@@ -13,7 +27,7 @@
 <input type="hidden" id="irudia_{{id}}" value="{{irudia}}"/>
 <input type="hidden" id="mota_{{id}}" value="{{momentukoItema.edm_type}}"/>
 
-<div class="container">
+<div class="fitxa backgrnd-{{momentukoItema.edm_type|lower}}">
 	<div class="row">
 		<!--<div class="col-md-1">
 		</div>-->
@@ -50,83 +64,11 @@
 				{%endif%}
 			</div>
 
-			<div id="item_infobox" class="path-info overflow">
-				<h3 class="titulu-kolorea">{% trans "EZAUGARRIAK" %}</h3>
-				<ul class="nav  navbar-default">
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Sortzailea" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_creator%}
-							{{momentukoItema.dc_creator}}
-							{%else%}
-							-
-							{% endif %} </span>
-
-					</li>
-
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Hornitzailea" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_dataprovider%}
-							{{momentukoItema.edm_dataprovider}} ({{momentukoItema.edm_provider}})
-							{%else%}
-							{{momentukoItema.edm_provider}}
-							{% endif %} </span>
-
-					</li>
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Gaia" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_subject%}
-							{{momentukoItema.dc_subject}}
-							{%else%}
-							-
-							{% endif %} </span>
-
-					</li>
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Hizkuntza" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.ob_language %}
-							{{momentukoItema.ob_language | ob_language_errep_kendu}}
-							{%else%}
-							-
-							{% endif %} </span>
-
-					</li>
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Herrialdea" %}:&nbsp;
-						<span class="eremu-str"> {% if item.edm_country %}
-							{{item.edm_country }}
-							{%else%}
-							-
-							{% endif %} </span>
-
-					</li>
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Data" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_year %}
-							{{momentukoItema.edm_year }}
-							{%else%}
-							-
-							{% endif %} </span>
-
-					</li>
-					<li>
-						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-						{% trans "Mota" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_type %}
-							{{momentukoItema.edm_type }}
-							{%else%}
-							-
-							{% endif %} </span>
-
-					</li>
-				</ul>
-			</div>
-
+			<div id="item_infobox" class="path-info overflow">				
+				<a class="aRight" href="" data-toggle="modal" data-target="#modal-metadata">
+					<i class="fa fa-address-card-o">&nbsp;&nbsp;</i>{% trans "Fitxa osoa ikusi" %}
+				</a>
+			</div>	
 			<div id="crossingPaths" class="path-info overflow">
 
 				<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
@@ -449,3 +391,114 @@
 
 
 {% endblock content %}
+
+{% block custom_modals %}
+{{ block.super }}
+<!-- modal item fitxa osoa-->
+
+<div class="modal fade" id="modal-metadata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{% trans "Bozkatuenak" %}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body top-padding-0">
+                    	
+                   		<div id="messages"></div>
+                   		<h4 class="modal-inner-title">{% trans "Ezaugarriak" %}</h4>                                                     
+                        <div id="item_infobox" class="path-info overflow">
+							<ul class="nav  navbar-default">
+					<li>
+						<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						{% trans "Sortzailea" %}:&nbsp;
+						<span class="eremu-str"> {% if momentukoItema.dc_creator%}
+							{{momentukoItema.dc_creator}}
+							{%else%}
+							-
+							{% endif %} </span>
+
+					</li>
+
+					<li>
+						<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						{% trans "Hornitzailea" %}:&nbsp;
+						<span class="eremu-str"> {% if momentukoItema.edm_dataprovider%}
+							{{momentukoItema.edm_dataprovider}} ({{momentukoItema.edm_provider}})
+							{%else%}
+							{{momentukoItema.edm_provider}}
+							{% endif %} </span>
+
+					</li>
+					<li>
+						<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						{% trans "Gaia" %}:&nbsp;
+						<span class="eremu-str"> {% if momentukoItema.dc_subject%}
+							{{momentukoItema.dc_subject}}
+							{%else%}
+							-
+							{% endif %} </span>
+
+					</li>
+					<li>
+						<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						{% trans "Hizkuntza" %}:&nbsp;
+						<span class="eremu-str"> {% if momentukoItema.ob_language %}
+							{{momentukoItema.ob_language | ob_language_errep_kendu}}
+							{%else%}
+							-
+							{% endif %} </span>
+
+					</li>
+					<li>
+						<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						{% trans "Herrialdea" %}:&nbsp;
+						<span class="eremu-str"> {% if item.edm_country %}
+							{{item.edm_country }}
+							{%else%}
+							-
+							{% endif %} </span>
+
+					</li>
+					<li>
+						<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						{% trans "Data" %}:&nbsp;
+						<span class="eremu-str"> {% if momentukoItema.edm_year %}
+							{{momentukoItema.edm_year }}
+							{%else%}
+							-
+							{% endif %} </span>
+
+					</li>
+					<li>
+						<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						{% trans "Mota" %}:&nbsp;						
+						<span class="eremu-str"> {% if momentukoItema.edm_type %}
+						<span class="kolore-{{momentukoItema.edm_type}}"><img class="mota-icon" src="{{STATIC_URL}}img/newLogo/icons/{{momentukoItema.edm_type|lower}}.png">
+							{{momentukoItema.edm_type }}
+							{%else%}
+							-
+							{% endif %} 
+						</span>
+
+					</li>
+				</ul>
+			</div>		
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>                                
+                            </div>                            
+                            <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- END modal item fitxa osoa-->
+
+
+{% endblock custom_modals %}
+

@@ -68,9 +68,9 @@
 	    </li>
 	    <li>
         {% if path.path_dc_subject %}
-            <span class="fa fa-angle-right kolore-video" aria-hidden="true"></span>&nbsp;{% trans "Gaia:" %}</span><span class="eremu-str">&nbsp;{{path.path_dc_subject}}</span>
+            <i class="fa fa-angle-right kolore-video" aria-hidden="true"></i><span class="eremu-str">&nbsp;{% trans "Gaia:" %}&nbsp;{{path.path_dc_subject}}</span>
         {% else %}
-            <span class="fa fa-angle-right kolore-video" aria-hidden="true"></span>&nbsp;{% trans "Gaia:" %}</span><span class="eremu-str">&nbsp;-</span>
+            <i class="fa fa-angle-right kolore-video" aria-hidden="true"></i><span class="eremu-str">&nbsp;{% trans "Gaia:" %}&nbsp;-</span>
         {%endif%}
         </li>
 	</div><!-- caption -->
@@ -79,49 +79,57 @@
         <div class="btn-group" role="group" aria-label="...">-->
         <ul class="button-row">
         	<li>
-        		<a class="ikusi-botoiaa" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}">
-              	<span class="fa fa-eye square-back" aria-hidden="true"></span>
+        		<a class="" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.path_id}}">
+              		<i class="fa fa-eye square-back kolore-gris-0" aria-hidden="true"></i>
             	</a>
-            <li>
+            </li>
 			{% if user.is_authenticated %}
 				<!-- editatzeko aukera: ibilbidearen autorea da, supererabiltzailea da ala acces= 4 du-->
-    	        {% if user.id == path.path_fk_user_id|to_int  or user.is_superuser or path.acces == '4' %}
+    	    	{% if user.id == path.path_fk_user_id|to_int  or user.is_superuser or path.acces == '4' %}
     	    <li>
-     			<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
-      				<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+     			<a class="btn-default ob-botoia" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
+      				<i class="fa fa-pencil-square-o square-back kolore-gris-0" aria-hidden="true"></i>
       			</a>
       		</li>
       			{%endif%}
       			<!-- editatzeko aukera: acces==3 du eta hornitzailea da -->
       			{%if path.acces == '3' and request.user|has_group:'hornitzailea'%}
-      				<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
-      			        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-      			   </a>			
+      		<li>
+      			<a class="btn-default ob-botoia" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
+      		        <i class="fa fa-pencil-square-o square-back kolore-gris-0" aria-hidden="true"></i>
+      		   </a>
+ 	  		</li>			
       			{%endif%}
-            {%endif%}
-            
-            {% if user.id == path.path_fk_user_id|to_int  or user.is_superuser%}
-            <!-- ezabatu-->
-            <a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.path_id}})" >
-              <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-            </a>
-             <!-- edizio aukerak aldatu-->
-          
-            <a class="btn btn-success announce" data-toggle="modal" data-id="{{path.path_id}}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-            
-            {%endif%}
+                        
+            	{% if user.id == path.path_fk_user_id|to_int  or user.is_superuser%}
+            	<!-- ezabatu-->
+            <li>
+            	<a class="btn-danger ob-botoia" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.path_id}})" >
+              		<i class="fa fa-times square-back kolore-video" aria-hidden="true" style="width:100%;"></i>
+            	</a>
+            </li>
+            	<!-- edizio aukerak aldatu-->
+          	<li>
+	            <a class="btn-success announce ob-botoia" data-toggle="modal" data-id="{{path.path_id}}" style="width:100%;">
+	            	<i class="fa fa-share-square-o square-back kolore-gris-0" aria-hidden="true"></i>
+	           	</a>
+            </li>
+            	{%endif%}
 
-	    {% if request.user|has_group:'hornitzailea'  or user.is_superuser%}
-           
-            {% if not path.path_id|is_in:eguneko_ibilbideak %} 
-            <a class="btn btn-warning" type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu_ibilb({{path.path_id}})" >
-              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            </a>
-            {%else%}
-            <a class="btn btn-warning egunekoa-botoia" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >
-              <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-            </a>
-            {%endif%}
+			    {% if request.user|has_group:'hornitzailea'  or user.is_superuser%}
+           	<li>
+        		    {% if not path.path_id|is_in:eguneko_ibilbideak %}             
+            	<a class="btn-warning ob-botoia" type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu_ibilb({{path.path_id}})" >
+            		<i class="fa fa-star square-back kolore-gris-0" aria-hidden="true"></i>
+            	</a>
+    
+    		        {%else%}
+            	<a class="btn-warning ob-botoia eguneko-botoiaa" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >
+              		<i class="fa fa-star-o square-back kolore-gris-0" aria-hidden="true"></i>
+            	</a>
+            		{%endif%}
+            </li>
+            	{%endif%}
             {%endif%}
 		</ul>
 	</div><!-- kudeaketa buttons -->

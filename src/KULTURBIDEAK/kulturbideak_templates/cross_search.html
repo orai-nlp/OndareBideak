@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "__base.html" %}
 {% load i18n %}
 {% load tags %}
 {% load leaflet_tags %}
@@ -347,18 +347,14 @@ um_pages }}</p>-->
                     <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>
-                    		<h4>{% trans "Kultur itemak" %}</h4>                                                    
+                    		<h4 class="modal-inner-title">{% trans "Kultur itemak" %}</h4>                                                    
                             {% for item in eguneko_itemak %}
                             	{% include "_item_search_thumbnail.html" %}                            	
 							{%endfor%}
 							<br/>	
-                			<h4>{% trans "Ibilbideak" %}</h4>
-           					{% for ibilbide in eguneko_ibilbideak %}
-           						
-           						{% if ibilbide.dc_title%}
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
-								{%endif%}
-								
+                			<h4 class="modal-inner-title">{% trans "Ibilbideak" %}</h4>
+           					{% for path in eguneko_ibilbideak %}
+           						{% include "_path_search_thumbnail.html" %}
 							{%endfor%}              
                             <br/>						
                             <div class="modal-footer">
@@ -392,18 +388,14 @@ um_pages }}</p>-->
                     <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>
-                    		<h4>{% trans "Kultur itemak" %}</h4>                                                     
+                    		<h4 class="modal-inner-title">{% trans "Kultur itemak" %}</h4>                                                     
                             {% for item in item_bozkatuenak %}	
-                            	{% if item.dc_title%}							
-								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>				
-								{%endif%}
+	                           	{% include "_item_search_thumbnail.html" %}                            	
 							{%endfor%}                    
                             <br/>	
-                            <h4>{% trans "Ibilbideak" %}</h4>
-                            {% for ibilbide in ibilbide_bozkatuenak %}
-                            	{% if ibilbide.dc_title%}
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
-								{%endif%}
+                            <h4 class="modal-inner-title">{% trans "Ibilbideak" %}</h4>
+                            {% for path in ibilbide_bozkatuenak %}
+                            	{% include "_path_search_thumbnail.html" %}                            	
 							{%endfor%}
                             <br/>				
                             <div class="modal-footer">
@@ -436,18 +428,14 @@ um_pages }}</p>-->
                     <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>  
-                    		<h4>{% trans "Kultur itemak" %}</h4>                                                            
+                    		<h4 class="modal-inner-title">{% trans "Kultur itemak" %}</h4>                                                            
                             {% for item in azken_itemak %}
-                            	{% if item.dc_title%}					
-								<label for="exampleInputEmail1"><a href="erakutsi_item?id={{item.id}}">{{item.dc_title|correct_language_tags}} </a></label><br/>
-								{%endif%}				
+                            	{% include "_item_search_thumbnail.html" %}                            					
 							{%endfor%}                      
                             <br/>
-                            <h4>{% trans "Ibilbideak" %}</h4> 
-                            {% for ibilbide in azken_ibilbideak %}
-                            	{% if ibilbide.dc_title%}
-								<label for="exampleInputEmail1"><a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{ibilbide.id}}">{{ibilbide.dc_title}} </a></label><br/>
-								{%endif%}								
+                            <h4 class="modal-inner-title">{% trans "Ibilbideak" %}</h4> 
+                            {% for path in azken_ibilbideak %}
+                            	{% include "_path_search_thumbnail.html" %}                            									
 							{%endfor%}
 							<br/>           					
                             <div class="modal-footer">

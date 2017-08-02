@@ -41,6 +41,38 @@
 	color:#000000;
 }
 
+/* KOLOREAK */
+
+.backgrnd-video {
+	background-color:#FF563D;
+}
+.backgrnd-video img{
+	background-color:#FF563D;
+}
+.backgrnd-text {
+	background-color:#FFDA3E;
+}
+.backgrnd-image {
+	background-color:#40D7FF;
+}
+.backgrnd-sound {
+	background-color:#5AED64;
+}
+
+/* hasierako patailan: data, gehiago ikusiren gezia...*/
+.kolore-txuria { 
+	
+	color:#FFFFFF;
+}
+.kolore-beltza { 
+	
+	color:#000000;
+}
+
+
+
+
+
 /*
 kolore grisak: - zero argiena
 */
@@ -156,6 +188,14 @@ i {
 	background-size: contain;
 }
 
+div.item-extra-background{
+	position:absolute;
+	top:120px;
+	background-color: #f8f8f8;
+	width:100%;
+	height:200px;
+	z-index:-1;
+}
 
 
 #SERVICE {
@@ -361,6 +401,52 @@ p.hornitzaile-name {
 }
 
 /* END Bilaketa orrietako emaitzen bistaratea : cross_search.html */
+
+
+/* Autocomplete eta eguneko/azkenak/bozkatuenak modalen estiloak */
+
+.search-result-modal {
+	background: #ffffff; /*#f8f8f8;*/
+	margin:5px 0 5px 0;
+	padding: 5px 0px 5px 10px;
+	border-bottom: solid 1px #eeeeee;
+}
+
+.search-result-modal div.thumbnail {
+	margin: 10px 0 10px 0;
+	padding:0;
+	max-height:80px;
+	max-width:80px;
+	border:none;
+}
+
+img.ob_thumbnail-mini{
+	height:80px !important;
+}
+
+.search-result-modal div.caption {
+	float:left !important;
+}
+
+.search-result-modal div.dark-overlay {
+	transition: .5s ease;
+	position: absolute;
+	background: rgba(0, 0, 0, 0.5);
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;	
+}
+
+h4.modal-inner-title {
+	tex-align:left;
+	font-family:walsheim-bold-web;
+}
+
+
+/* END Autocomplete eta eguneko/azkenak/bozkatuenak modalen estiloak */
+
+
 
 /* Workspace / Lan eremua */
 #workspace {
@@ -1085,6 +1171,12 @@ circle .unselectedNode {
 	margin-top: 0;
 }
 
+.ob-botoia {
+	border: none;	
+	padding:0;
+	width:100% !important;
+}
+
 .ikusi-botoia {
 	color: #0099ae !important;
 	border: 1px solid #0099ae;
@@ -1469,6 +1561,10 @@ ul {
     font-family: walsheim-web, Arial, sans-serif;
     font-weight: 900;
 } 
+
+.tag-modal{
+	padding:0px;
+}
  
 .zirriborro-tag p{
  	margin: 0px;

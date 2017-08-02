@@ -1,52 +1,61 @@
 {% load i18n %}
-{% load tags%}
+{% load tags %}
+{% load leaflet_tags %}
 
-<!-- CSS media query on a link element -->
-<link rel="stylesheet" media="(min-width: 600px)" href="{{STATIC_URL}}css/ibilbide_proposamena_style.css" type="text/css">
-
-<div class="row item_thumbnail"> <!--item irudiak -->
-	{% if  item.id %}
-	
-	<div class="thumbnail col-xs-2 col-md-2">
-			<a class="bilaketaEmaitza  thumbnail"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
-				<img  title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}{% endif%}" src="{% if item.ob_thumbnail%} {{item.ob_thumbnail|clean_http_prefix}} {% elif item.edm_object %} {{item.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
+<div class="row search-result-modal">	
+	  <!--<div class="col-xs-6 col-md-3">-->
+			
+		{% if  item.id%}
+		<div class="thumbnail col-xs-2 col-md-2">
+			
+			<a class="bilaketaEmaitza"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >
+				<img class="ob_thumbnail-mini" title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}{% endif%}" src="{% if item.ob_thumbnail%} {{item.ob_thumbnail|clean_http_prefix}} {% elif item.edm_object %} {{item.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
+				<div class="dark-overlay">
+					<img class="overlay-icon" src="{{STATIC_URL}}img/newLogo/icons/{{item.edm_type|lower}}.png"></div>
 			</a>
-		</div>
-		<div class="col-xs-1 col-md-1"></div>
+			
+		</div>		
 		<!--http://jsfiddle.net/WjKyF/-->
 		<div class="caption col-xs-9 col-md-9">
-				<input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.item_id}}"/>
-		   	    <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
-				<input type="hidden" id="mota_{{ forloop.counter }}" value="{{item.edm_type}}"/>
-				{% if item.ob_thumbnail %}
+				 <input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.id}}"/>
+				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
+				 <input type="hidden" id="mota_{{ forloop.counter }}" value="{{item.edm_type}}"/>
+				  {% if item.ob_thumbnail %}
 				 	<input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.ob_thumbnail}}"/>
-				{% else%}
+				  {% else%}
 				 	 <input type="hidden" id="irudia_{{ forloop.counter }}" value="{{item.edm_object}}"/>
-			    {%endif%}
+				  {%endif%}
+				
+				<ul class="caption-info">
 				{% if item.dc_title %}
-					<h5><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h5>
+					<li>
+						<h5><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h5>
+                    </li>    
 				{%endif%}
-                {% if item.edm_provider %}
-           			<span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
-                {%endif%}
-                {% if item.dc_creator %}
-                	<span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea" %}: <span class="eremu-str">{{item.dc_creator}}</span><br />
-                {%endif%}
-                {% if item.dc_subject %}
-                	<span class="bilaketaEremua" id="gaia"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: <span class="eremu-str">{{item.dc_subject}}</span><br />
-                {%endif%}
-                {% if item.edm_country %}
-                    <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="eremu-str">{{item.edm_country}}</span><br />
-                {%endif%}
-                {% if item.ob_language %}
-                    <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{item.ob_language | ob_language_errep_kendu}}</span><br />
-                {%endif%}                              
-                {% if item.edm_type %}
-                	<span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="eremu-str">{{item.edm_type}}</span><br />
-                {%endif%}   
-	{%endif%} 
-	 				
-</div> <!--row-->
-	
-	
-</div>
+				</ul>
+{% comment %}				
+                                {% if item.edm_provider %}
+                                        <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="eremu-str"> {{item.edm_provider}} </span><br />
+                                {%endif%}
+                                {% if item.dc_creator %}
+                                        <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea" %}: <span class="eremu-str">{{item.dc_creator}}</span><br />
+                                {%endif%}
+                                {% if item.dc_subject %}
+                                        <span class="bilaketaEremua" id="gaia"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: <span class="eremu-str">{{item.dc_subject}}</span><br />
+                                {%endif%}
+                                {% if item.edm_country %}
+                                        <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="eremu-str">{{item.edm_country}}</span><br />
+                                {%endif%}
+                                {% if item.ob_language %}
+                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{item.ob_language | ob_language_errep_kendu}}</span><br />
+                                {%endif%}                              
+                                {% if item.edm_type %}
+                                        <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="eremu-str">{{item.edm_type}}</span><br />
+                                {%endif%}
+                                
+{% endcomment %}
+		</div>	 <!-- caption -->			    
+		<div class="kudeaketa col-xs-1 col-md-1">                       
+		</div> <!-- kudeaketa buttons -->
+		{% endif %}		
+  </div><!-- search-result-->
