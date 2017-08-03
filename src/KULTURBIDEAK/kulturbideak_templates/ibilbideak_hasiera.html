@@ -94,18 +94,18 @@
 
 					<h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h5>
 					{% if path.language %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">{{path.language}}</span>
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="kolore-gris-hiru">{{path.language}}</span>
 					<br />
 					{% else %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="eremu-str">-</span>
+					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="kolore-gris-hiru">-</span>
 					<br />
 
 					{%endif%}
 					{% if path.dc_subject %}
-					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}:</span><span class="eremu-str">{{path.dc_subject}}</span>
+					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}:</span><span class="kolore-gris-hiru">{{path.dc_subject}}</span>
 					<br />
 					{% else %}
-					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}:</span><span class="eremu-str">-</span>
+					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}:</span><span class="kolore-gris-hiru">-</span>
 					<br />
 
 					{%endif%}

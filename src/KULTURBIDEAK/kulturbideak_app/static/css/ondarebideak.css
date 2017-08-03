@@ -38,10 +38,10 @@
 }
 .kolore-beltza { 
 	
-	color:#000000;
+	color:#000000 !important;
 }
 
-/* KOLOREAK */
+/* FONDO KOLOREAK */
 
 .backgrnd-video {
 	background-color:#FF563D;
@@ -59,6 +59,22 @@
 	background-color:#5AED64;
 }
 
+.backgrnd-gris-0 {
+	background-color:#f8f8f8;
+}
+.backgrnd-gris-bat {
+	background-color:#eeeeee;
+}
+.backgrnd-gris-bi{
+	background-color:#999999;
+}
+.backgrnd-gris-hiru {
+	background-color:#666666;
+}
+.backgrnd-gris-lau {
+	background-color:#333333;
+}
+
 /* hasierako patailan: data, gehiago ikusiren gezia...*/
 .kolore-txuria { 
 	
@@ -69,7 +85,13 @@
 	color:#000000;
 }
 
+a {
+	color: #333333; 
+}
 
+a:hover {
+	color: #666666; 
+}
 
 
 
@@ -104,6 +126,32 @@ kolore grisak: - zero argiena
  .top-padding-0 {
  	padding-top: 0;
  }
+ 
+.eskuma {
+	float: right;
+	text-align:right;
+}
+.ezkerra {
+	float: left;
+}
+.clearfix::after {
+	clear: both;
+	content: "";
+	display: table;
+}
+
+.bold {
+	font-family:walsheim-bold-web;
+}
+
+b{
+	font-family:walsheim-bold-web;
+}
+
+
+i {
+	font-style:italic;
+}
  /* END estilo orokorrak*/
 
 
@@ -129,6 +177,10 @@ kolore grisak: - zero argiena
    padding:10px;   
 }
 
+.square-back-lg { 
+   background: #333333; 
+   padding:15px;   
+}
 .overlay-icon{
 	width: 15%;
 	transition: .5s ease;
@@ -142,20 +194,20 @@ kolore grisak: - zero argiena
 
 /* END Ikono estiloak */
 
-body {
-	font-family: walsheim-web, Verdana, Arial, sans-serif;
-	color:#333333;
-}
 
 
 #qr_code{
 	text-align:center;
 }
 
-#qr_code_create_link span{
-	font-size:24px;
+#qr_code_create_link i {
+	font-size:16px;	
 }
 
+#qr_code_create_link {
+	font-family:walsheim-bold-web;	
+}
+	
 
 .d3label{
 	text-decoration: none;
@@ -165,8 +217,10 @@ body {
 	font-family: walsheim-web,Dosis, sans-serif;
 }
 
-i {
-	font-style:italic;
+/* egitura nagusiak */
+body {
+	font-family: walsheim-web, Verdana, Arial, sans-serif;
+	color:#333333;
 }
 
 
@@ -176,6 +230,16 @@ i {
 .headerra {
 	background-color: #d9edf7;
 }
+
+.orria, .orria2 {
+	display: block;
+	margin: 0 auto;
+	padding-top:40px;
+	/*text-align: center;*/
+}
+
+/* END egitura nagusiak */
+
 .titulu-kolorea {
 	color: #31708f !important;
 }
@@ -549,6 +613,42 @@ h4.modal-inner-title {
 	visibility: hidden;
 }
 
+#ws_botoia_barruan{
+	position:relative;
+	height:10px;
+}
+
+#ws_botoia_kanpoan{
+	
+	/*text-align: center;*/
+	width:100%;
+	height:100%;
+	position:absolute;
+	vertical-align:miright;
+	text-align:center;"
+}
+
+
+.pathBotoia {
+	background-color:#333333;
+	color:#ffffff;
+	position:absolute; 
+	right:90px;
+	top:0;
+	font-size: 0.9em;
+	font-family:walsheim-bold-web;
+}
+
+.pathBotoia_kanpoan{
+	background-color:#333333;	
+	color:#ffffff;
+	display:block;
+	right:120px;
+	margin-top:-3px;
+	float:right;
+	font-size: 1em;
+	font-family:walsheim-bold-web;
+}
 /* END - Workspace / Lan eremua */
 
 /* Path edition panel */
@@ -652,12 +752,7 @@ h4.modal-inner-title {
 
 /* END - Path edition panel */
 
-.orria, .orria2 {
-	display: block;
-	margin: 0 auto;
-	padding-top:40px;
-	/*text-align: center;*/
-}
+
 	
 .ezkerra_div {
 	width: 15%;
@@ -683,29 +778,6 @@ h4.modal-inner-title {
 	width: 97%;
 }
 
-.crossingPaths {
-	margin-top: 20px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	padding: 5px;
-}
-
-#crossingPaths {
-	margin-top: 20px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	padding: 5px;
-}
-
-.content_div {
-	width: 65%;
-	min-height: 500px;
-	display: inline-block;
-	background: white;
-	vertical-align: top;
-	margin: 0 20px;
-	text-align: left;
-}
 
 .erabiltzaile-menua {
 	font-size: 9pt;
@@ -714,45 +786,7 @@ h4.modal-inner-title {
 	text-align: right;
 }
 
-/* workspace styles */
-#ws_botoia_barruan{
-	position:relative;
-	height:10px;
-}
 
-#ws_botoia_kanpoan{
-	
-	/*text-align: center;*/
-	width:100%;
-	height:100%;
-	position:absolute;
-	vertical-align:miright;
-	text-align:center;"
-}
-
-
-.pathBotoia {
-	background-color:#333333;
-	color:#ffffff;
-	position:absolute; 
-	right:90px;
-	top:0;
-	font-size: 0.9em;
-	font-family:walsheim-bold-web;
-}
-
-.pathBotoia_kanpoan{
-	background-color:#333333;	
-	color:#ffffff;
-	display:block;
-	right:120px;
-	margin-top:-3px;
-	float:right;
-	font-size: 1em;
-	font-family:walsheim-bold-web;
-}
-
-/* END workspace styles */
 
 .footer {
 	bottom: 0;
@@ -874,22 +908,6 @@ h4.modal-inner-title {
 	max-height: 100%;
 	max-width: 100%;
 }
-.eskuma {
-	float: right;
-	text-align:right;
-}
-.ezkerra {
-	float: left;
-}
-/*#nabigMenu_botoiak {
- border: 1px solid lightgrey;
- border-radius:10px;
- }*/
-.clearfix::after {
-	clear: both;
-	content: "";
-	display: table;
-}
 
 
 #nabigMenu_botoiak ul {
@@ -927,53 +945,164 @@ h4.modal-inner-title {
 .path_sarrera {
 	overflow: hidden;
 }
+
+/* item_berria.html CSS*/
+.crossingPathsTitle {
+	padding: 0 10px;
+	border-bottom: 1px solid #000000;	
+}
+
+.content_div {
+	width: 65%;
+	min-height: 500px;
+	display: inline-block;
+	background: white;
+	vertical-align: top;
+	margin: 0 20px;
+	text-align: left;
+}
+
+div.fitxa {
+	padding-top:50px;
+	height:600px;
+}
+div#item_infobox{
+	width:100%;
+}
+
+div.item-fitxa-line1{
+	float:left;
+	width:100%;
+	margin-bottom:30px;
+}
+
+div.item-fitxa-line2{	
+	width:100%;
+	margin-bottom:30px;
+}
+.item-data {
+	font-size:2em;
+	text-align:left;	
+	width:100%;
+}
+li.li-mota {
+	text-align:center;	
+}
+li.li-mota span{
+	border-bottom: 3px solid #000000;
+	padding: 5px 15px;
+}
+
+ul.button-row-horizontal {
+	list-style:none;
+	margin: 5px 0 5px 0;
+	padding:0;	
+	float:right;	
+}
+
+.button-row-horizontal li{
+	padding:5px;
+	background:none;
+	color:#000000;
+	display:inline-block;
+	vertical-align:middle;
+}
+
+.item-fitxa-info-ul{
+	width:100%;
+	padding:0;	
+}
+
+.item-fitxa-info-ul li{
+	display:inline-block;
+	width:24%;
+	text-align:left;
+	float:left;	
+}
+
+p.item-field-title {
+	 text-transform: uppercase;
+	 font-size:0.8em;
+}
+
+#kudeaketa-bar{
+	position:fixed;
+	font-size:1.5em;
+	font-family:walsheim-light-web;
+	left:-1px;
+}
+
+div.item_preview {
+	float:none;
+	margin:-200px auto 0 auto;
+	background:transparent;
+}
+
+
+/* END item_berria.html CSS*/
+
+
+/* _similar_items.html*/
+div.similar-items{
+	padding:50px 0;
+	background-color:#f8f8f8;
+}
+
+img.similar-img {
+	width:95%;
+	height:200px;
+	background: #000000;
+}
+
+.marra_overlay {
+    border-bottom: 2px solid #FFDA3E; 
+	width: 10%;
+	margin: 0px 22px;
+	height: 20px;
+	margin-bottom:10px;
+}
+
+.title_overlay {
+	font-family: walsheim-bold-web;
+    font-size: 17px;
+    margin: 0px 22px 0;
+    max-width: 193px;
+    height:60px;
+}
+
+.creator_overlay {
+	font-size: 15px;
+    margin: 4px 22px 10px;
+}
+
+div.similar-overlay {
+	transition: .5s ease;
+	position: absolute;
+	background: rgba(0, 0, 0, 0.4);
+	top: 0%;
+	left: 0%;
+	width: 95%;
+	height: 100%;
+}
+
+div.similar-overlay img.overlay-icon{
+	width: 10%;
+	transition: .5s ease;
+	position: absolute;
+	top: 75%;
+	left: 80%;
+	z-index: 1000;
+	opacity: 1 !important;
+	background: transparent !important;
+}
+
+div.similar-thumbnail{
+	padding: 0 5px;
+}
+/* END _similar_items.html*/
+
 /* HEADERRAREN ESTILOA*/
 
-/* Maddalen
-#brand-logo img {
-	width:230px;
-	
-}
-
-.navbar-brand{
-	margin-top:25px;
-}
-
-.index-brand{
-	margin-left:200px;
-}
-
-#brand-logo.index-brand img {
-	margin-top:10px;
-}
-*/
-/* Maddalen
-#hizkuntza_aukeraketa_id{
-	position:absolute;
-	width:150px;	
-}
-
-#hizkuntza_aukeraketa_id ul{
-	list-style:none;
-	padding:0px;
-}
-
-#hizkuntza_aukeraketa_id ul li{
-	display:inline-block;
-	border-right: 1px solid #ccc;
-	padding: 0px 10px 0px 5px;
-	margin-top: 10px;
-	line-height: 14px;
-}
-
-
-.last_li {
-	border-right:0px !important;	
-}
-*/
-.navbar-default-berria .navbar-brand-berria {
-	color: #31708f !important;
-}
 .navbar-brand-berria {
 	float: left;
 	font-size: 35px !important;
@@ -981,21 +1110,9 @@ h4.modal-inner-title {
 	line-height: 0;
 	padding: 20px !important;
 }
-/* Maddalen
-.navbar-default .navbar-nav > li > a {
-	color: #31708f !important;
-}
 
-.navbar-nav > li > a {
-	padding-bottom: 15px !important;
-	padding-top: 35px !important;
-}
+/* END - HEADERRAREN ESTILOA*/
 
-.bilatzailea-kutxa {
-	padding: 20px;
-	margin-left:15px;
-}
-*/
 .kolorea {
 	background-color: #31708f !important;
 	border-color: #31708f !important;
@@ -1163,6 +1280,9 @@ circle .unselectedNode {
 .ibilbide-panela {
 	height: 550px;
 }
+
+/* END CSS svg*/
+
 .autocomplete-galdera {
 	font-family: walsheim-web, "dosis" !important;
 	font-size: 24px;
@@ -1193,9 +1313,7 @@ circle .unselectedNode {
 	border: 1px solid #0099ae;
 	background: none;
 }
-.eremu-str {
-	color: #666666 !important;
-}
+
 .antzekoTitulua {
 	font-family: walsheim-web, "dosis" !important;
 	font-size: 24px;

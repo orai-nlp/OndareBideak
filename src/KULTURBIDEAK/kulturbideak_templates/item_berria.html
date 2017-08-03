@@ -9,6 +9,11 @@
 <div class="item-extra-background"></div>
 {% endblock extra_markup %}
 
+{% block orria_div_def %}			
+	<div class="">
+{% endblock orria_div_def %}
+	
+
 {% block sidebar %}
 {% endblock sidebar %}
 
@@ -22,135 +27,202 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 
+{% with itype=momentukoItema.edm_type|lower %}
+
 <input type="hidden" id="item_id_{{id}}" value="{{id}}"/>
 <input type="hidden" id="titulua_{{id}}" value="{{momentukoItema.dc_title}}"/>
 <input type="hidden" id="irudia_{{id}}" value="{{irudia}}"/>
 <input type="hidden" id="mota_{{id}}" value="{{momentukoItema.edm_type}}"/>
 
-<div class="fitxa backgrnd-{{momentukoItema.edm_type|lower}}">
-	<div class="row">
-		<!--<div class="col-md-1">
-		</div>-->
-		<div class="col-md-3">
-
-			<div class="path-info overflow">
-				{% if user.is_authenticated %}
-				<h3 class="titulu-kolorea">{% trans "Kudeaketa Aukerak" %}</h3>
-				<button class="btn btn-default gehitu-botoia" type="button" title="{% trans 'Lan eremura gehitu' %}" onclick="create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
-
-					{% trans "Gehitu" %}
-					<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-				</button>
-
-				{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
-				<!--egunekoa bihurtu-->
-				{% if item.egunekoa == 0 %}
-				<a class="btn btn-warning egunekoa-botoia" title="{% trans 'Gehitu eguneko itema' %}"  type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=ikusi" > <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </a>
-				{%endif%}
-				{% if item.egunekoa == 1 %}
-				<a class="btn btn-warning egunekoa-botoia" title="{% trans 'Kendu eguneko itema' %}"  type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=ikusi" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> </a>
-
-				{%endif%}
-
-				{%endif%}
+<div id="kudeaketa-bar" class="path-info overflow">
+	<ul class="button-row">              
+    {% if user.is_authenticated %}
+		<li class="backgrnd-gris-lau">
+			<button class="btn-default gehitu-botoia" type="button" title="{% trans 'Lan eremura gehitu' %}" onclick="create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
+				<i class="fa fa-plus square-back-lg kolore-{{itype}}" aria-hidden="true"></i>
+			</button>
+		</li>
+		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
+		<!--egunekoa bihurtu-->
+			{% if item.egunekoa == 0 %}
+		<li class="backgrnd-gris-lau center">
+			<a class="btn-warning " title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.id}})" >
+           		<i class="fa fa-star square-back-lg kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
+           	</a>
+        </li>
+			{%endif%}
+			{% if item.egunekoa == 1 %}
+		<li class="backgrnd-gris-lau center">
+			<a class="btn-warning" title="{% trans 'Kendu eguneko itema' %}" type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=ikusi" >
+				<i class="fa fa-star-o square-back-lg kolore-{{itype}}" aria-hidden="true"></i>
+			</a>
+		</li>
+			{%endif%}
+		{%endif%}
 		
-				{% if user.id == item.fk_ob_user.id or user.is_superuser%}
+		{% if user.id == item.fk_ob_user.id or user.is_superuser%}
 
-				<!--editatu-->
-				<a class="btn btn-default" type="button" title="{% trans 'itema editatu' %}" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" > <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
-				<!-- ezabatu -->
-				<a class="btn btn-danger" type="button" title="{% trans 'itema ezabatu' %}" onClick="deleteItem({{item.id}})" > <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
-				{%endif%}
-				{%endif%}
-			</div>
+		<!--editatu-->
+		<li class="backgrnd-gris-lau center">
+			<a class="btn-default" type="button" title="{% trans 'itema editatu' %}" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >
+              	<i class="fa fa-edit square-back kolore-{{itype|lower}}" aria-hidden="true"></i>
+			</a>
+		</li>
+		<!-- ezabatu -->
+		<li class="backgrnd-gris-lau center">
+			<a class="btn-danger ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deleteItem({{item.id}})" >
+				<i class="fa fa-times square-back kolore-{{itype}}" aria-hidden="true"></i>
+			</a>
+		</li>
+		{%endif%}
+	{%endif%}
+	</ul>	
+</div>
 
+
+<div class="container fitxa backgrnd-{{momentukoItema.edm_type|lower}}">
+	<div class="item-fitxa-line1">
+	<!-- ezkerreko zutabea, mota eta gurutzatzen diren ibilbideak -->
+	<div class="left col-md-2">
+		<ul class="mota-crossing" >
+			<li class="li-mota">
+				<span class="kolore-beltza">
+					<img class="mota-icon" src="{{STATIC_URL}}img/newLogo/icons/{{itype}}_beltz.png">{% trans itype %}
+				</span>
+			</li>
+		</ul>
+	</div>
+	<!-- erdiko zutabea, zabalena, titulua eta informazio nagusia -->
+	<div class="center col-md-8">
+		<div class="item-fitxa-line1">
+			<p class="ezkerra item-data kolore-txuria">
+				<span class="">
+				 {% if momentukoItema.edm_year %}
+					{{momentukoItema.edm_year }}
+					{%else%}
+					-
+					{% endif %}
+				</span>
+			</p>
+			<h2 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
+		</div>
+	</div>
+	<!-- eskuineko zutabea sare sozialak -->
+	<div class="right col-md-2">
+		<!-- BOTAZIO SISTEMA-->
+		{% if user.is_authenticated %}
+
+		<!-- <div class="eskuma">
+			<a class="titulu-kolorea eskuma" type="button" href="#">{% trans "Kultur itema gustoko duzu?" %}</a>
+		</div>		 
+		<br />-->
+		
+		<ul class="button-row-horizontal">
+			{% if botatuDu == 1 %}
+           	<li><a class="" type="button" href="{{BASE_URL}}/botoa_eman_item?id={{id}}" disabled> <i class="fa fa-thumbs-up" aria-hidden="true"></i> </a></li>
+			<li><a class="" type="button" href="#" > <b class="eskuma titulu-kolorea">{{botoKopurua}}</b> </a></li>
+			<li><a class="" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{id}}" > <i class="fa fa-thumbs-down" aria-hidden="true"></i> </a></li>
+			{%else%}
+			<li><a class="" type="button" href="{{BASE_URL}}/botoa_eman_item?id={{id}}" > <i class="fa fa-thumbs-up" aria-hidden="true"></i> </a></li>
+			<li><a class="" type="button" href="#"> <b>{{botoKopurua}}</b> </a></li>
+			<li><a class="" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{id}}" disabled > <i class="fa fa-thumbs-down" aria-hidden="true"></i> </a></li>
+			{%endif%}
+        </ul>    
+		
+		{%endif%}
+		<!-- social network sharing buttons -->
+		{% include "_sharing.html"%}
+			
+	</div> 
+	</div>
+	<div class="item-fitxa-line2">
+		<!-- ezkerreko zutabea, mota eta gurutzatzen diren ibilbideak -->
+		<div class="left col-md-2">
+			<ul class="mota-crossing" >
+				<li class="center">
+					<div id="crossingPaths" class="path-info overflow">
+
+				<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
+				{%if itemPaths %}
+					<a class="crossingPathsTitle" href="" data-toggle="modal" data-target="#modalCrossing"><b>{{itemPaths.count}}</b> {% trans "Ibilbide" %}</a>
+				
+				{% else %}
+					<a class="crossingPathsTitle" href="" data-toggle="modal" data-target="#modalCrossing"><b>0</b> {% trans "Ibilbide" %}</a>
+					<div style="color: #666666;" id="div_you_want_to_blink"> <i class="fa fa-info-circle" aria-hidden="true"></i> {% trans "Izan lehena item honekin ibilbide bat sortzen!" %}</div>
+											
+				{%endif%}
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- erdiko zutabea, zabalena, titulua eta informazio nagusia -->
+		<div class="center col-md-8">
+			<ul class="item-fitxa-info-ul">
+				<!-- creator -->
+				<li>
+					<p class="item-field-title kolore-gris-hiru">{% trans "Sortzailea" %}</p>						
+					<p class="kolore-beltza">
+					{% if momentukoItema.dc_creator%}
+					{{momentukoItema.dc_creator}}
+					{%else%}
+					-
+					{% endif %}
+					</p>
+				</li>
+				<!-- provider -->
+				<li>
+					<p class="item-field-title kolore-gris-hiru">{% trans "Hornitzailea" %}</p>
+					<p class="kolore-beltza"> {% if momentukoItema.edm_dataprovider%}
+						{{momentukoItema.edm_dataprovider}} ({{momentukoItema.edm_provider}})
+						{%else%}
+						{{momentukoItema.edm_provider}}
+						{% endif %}
+					</p>
+				</li>
+				<!-- provider -->
+				<li>
+					<p class="item-field-title kolore-gris-hiru">{% trans "Gaia" %}</p>
+					<p class="kolore-beltza"> {% if momentukoItema.dc_subject%}
+						{{momentukoItema.dc_subject}}
+						{%else%}
+						-
+						{% endif %} 
+					</p>
+				</li>
+				<!-- language /country -->
+				<li>
+					<p class="item-field-title kolore-gris-hiru">{% trans "Hizkuntza eta jatorria" %}</p>
+					<p class="kolore-beltza">
+					{% if momentukoItema.ob_language %}
+						{{momentukoItema.ob_language | ob_language_errep_kendu}}
+					{%else%}
+						-
+					{% endif %}
+						&nbsp;-&nbsp;
+					{% if item.edm_country %}
+						{{item.edm_country }}
+					{%else%}
+						-
+					{% endif %} 
+					 </p>
+				</li>
+			</ul>
+	 	</div>
+	 	<!-- eskuineko zutabea sare sozialak -->
+		<div class="right col-md-2">
 			<div id="item_infobox" class="path-info overflow">				
 				<a class="aRight" href="" data-toggle="modal" data-target="#modal-metadata">
 					<i class="fa fa-address-card-o">&nbsp;&nbsp;</i>{% trans "Fitxa osoa ikusi" %}
 				</a>
-			</div>	
-			<div id="crossingPaths" class="path-info overflow">
-
-				<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
-				{%if itemPaths %}
-				<!-- class="crossingPaths"-->
-				<div class="">
-							
-					<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} ({{itemPaths.count}})</h3>
-					{% for node in itemPaths %}
-					{% if forloop.counter < 4 %}
-					<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}"> <span class="glyphicon glyphicon-map-marker" aria-hidden="true"> </span>&nbsp;{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
-					{%endif%}
-					{%endfor%}
-					<!--</br>-->
-					{% if itemPaths|length  >= 4 %} <!-- ONDOREN >= 4 JARRI-->
-					<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
-					{%endif%}
-					</ br>
-					<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Animatu ibilbideetako bat ikusi eta bozkatzera!" %}</div>
-					
+			</div>
+		</div>
+	</div>			
+</div><!-- container fitxa: end of colored bacground -->
 	
-				</div>
-				{% else %}
-				<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Izan lehena item honekin ibilbide bat sortzen!" %}</div>
-				
-				<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; -
-							
-				</h3>
-				{%endif%}
-			</div>
+<div class="item_preview col-xs-12 col-sm-12 col-md-10">
 
-		</div> <!-- ezkerreko zutabearen amaiera -->
-		<div class="col-md-7">
-			<div class="path-name overflow titulu-kolorea">
-				<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
-
-				<ul class="nav navbar-nav navbar-default">
-					<li>
-						{% if "VIDEO" in momentukoItema.edm_type %}
-						<span class="glyphicon glyphicon-film" aria-hidden="true"></span>
-						{% endif %}
-						{% if "TEXT" in momentukoItema.edm_type %}
-						<span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-						{% endif %}
-						{% if "IMAGE" in momentukoItema.edm_type %}
-						<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
-						{% endif %}
-						{% if "SOUND" in momentukoItema.edm_type %}
-						<span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
-						{% endif %}
-					</li>
-					<li>
-						<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-						{% if momentukoItema.edm_year %}
-						{{momentukoItema.edm_year}}
-						{%else%}
-						-
-						{% endif %}
-					</li>
-
-					<li>
-						
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-
-						{{momentukoItema.dc_creator}}   &nbsp;  {{momentukoItema.edm_provider}}
-					</li>
-				</ul>
-			</div>
-
-			<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
-			<!--{{ LANGUAGE_CODE|choose_description_language:item |striptags |safe }}-->
-			<div class="path-info overflow ">
-				<div class="comment more item-info-description">
-
-					{{ LANGUAGE_CODE|choose_description_language:item|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
-
-				</div>
-			</div>
-			
-	
-			<div id="item_preview">
-			
+	<div id="item_preview-element">
+		{% comment %}	
 			<!--AUDIO ALA BIDEOA BADA IRUDIA ERE ERAKUTSI, BALDIN BADAGO-->
 			{% if momentukoItema.edm_type == "SOUND" or  momentukoItema.edm_type == "VIDEO"  %}
 					
@@ -163,7 +235,7 @@
 				{%endif%}
 			{%endif%}
 			
-			
+		{% endcomment %}
 			<!-- item preview -->
 			  
 
@@ -171,12 +243,12 @@
 			<!-- TESTUA BADA -->
 				{% if momentukoItema.edm_type == "TEXT" %}
 
-						<ul class="nav  navbar-default">
+						<!-- <ul class="nav  navbar-default">
 							<li class="ezkerra">
-								<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+								<i class="fa fa-chevron-right" aria-hidden="true"></i>
 								{% trans "Klikatu beheko irudian testua zabaltzeko" %}:
 							</li>
-						</ul>
+						</ul> -->
 
 						{% include "_item_preview.html" %}
 		
@@ -187,12 +259,12 @@
 				{% if momentukoItema.edm_type == "IMAGE"  %}
 					
 					{% if momentukoItema.edm_object%}
-						<ul class="nav  navbar-default">
+						<!-- <ul class="nav  navbar-default">
 							<li class="ezkerra">
-								<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+								<i class="fa fa-chevron-right" aria-hidden="true"></i>
 								{% trans "Ikusi irudia" %}:
 							</li>
-						</ul>
+						</ul> -->
 						<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
 						 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
 						</a>
@@ -207,12 +279,13 @@
 				<!-- AUDIOA BADA eta audio objektua baldin badu-->
 				{% if momentukoItema.edm_type == "SOUND" %}
 					{% if momentukoItema.edm_object%}
-						<ul class="nav  navbar-default">
+						<!-- <ul class="nav  navbar-default">
 							<li class="ezkerra">
-								<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+								<i class="fa fa-chevron-right" aria-hidden="true"></i>
 								{% trans "Entzun audioa" %}:
 							</li>
 						</ul>
+						 -->
 						<audio controls>
   							<!--<source src="{{momentukoItema.edm_object}}" type="audio/ogg">-->
   							<source src="{{momentukoItema.edm_object}}" type="audio/mpeg">					
@@ -227,12 +300,12 @@
 				{% if momentukoItema.edm_type == "VIDEO"%}
 				
 					{% if momentukoItema.edm_object%}
-						<ul class="nav  navbar-default">
+						<!-- <ul class="nav  navbar-default">
 							<li class="ezkerra">
-								<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+								<i class="fa fa-chevron-right" aria-hidden="true"></i>
 								{% trans "Bideoa" %}:
 							</li>
-						</ul>
+						</ul> -->
 					
 						{% if '.mp4' in momentukoItema.edm_object %}
 							<video width="640" height="480" controls>
@@ -254,7 +327,7 @@
 							s1.addVariable('file','{{momentukoItema.edm_object}}');
 							s1.write ('mediaspace');
 							</script>
-							
+							</div>
 							
 						<!-- elif '.flv' in momentukoItema.edm_object and 'EuskoMedia Fundazioa' in momentukoItema.edm_provider -->
 							<!-- Lehen hau erabiltzen genuen, EM bideoak erreproduzitzeko, baina orain https, eduki-misto errorea ematenn du -->
@@ -286,30 +359,48 @@
 				
 				
 			<div id="license_info" class="path-info overflow">
+				<div class="col-sm-8">					
+					<p class="item-field-title kolore-gris-hiru">{% trans "Lizentzia" %}</p>
+					<p class="kolore-beltza">
+					{% if momentukoItema.edm_rights%}
+						<a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a>
+					{%else%}
+						-
+					{% endif %} 
+					</p>
+				</div>
+				<div class="col-sm-2">		
+				<!-- QR code link-->
+					<a id="qr_code_create_link" href="" data-toggle="modal" data-target="#modalqrcode" class="eskuma kolore-beltza">
+						<i class="fa fa-qrcode" aria-hidden="true"> </i> QR <span>&nbsp;</span> 
+					</a>			
+				</div>
+					<div class="col-sm-2">
+					{% if momentukoItema.edm_isshownat%}
+						<a  class="kolore-beltza eskuma" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><i class="fa fa-eye" aria-hidden="true"></i> {% trans "Ikusi jatorrizkoa" %}</a>
+					{%endif%}
+					</div>
+			</div><!-- license info -->
+	</div>
+	<!-- item preview-->
+	
+	<div class="item-preview-description">
+			{% comment %}
+			<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
+			<!--{{ LANGUAGE_CODE|choose_description_language:item |striptags |safe }}-->
+			{% endcomment %}
+			
+			<div class="path-info overflow ">
+				<div class="comment more item-info-description bold">
 
-					<ul class="nav  navbar-default">
-						<li class="ezkerra">
-							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-							{% trans "Lizentzia" %}:&nbsp;
-							<span class="eremu-str"> {% if momentukoItema.edm_rights%} <a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a> {%else%}
-								-
-								{% endif %} </span>
+					{{ LANGUAGE_CODE|choose_description_language:item|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
 
-						</li>
-						<li class="eskuma">
-							{% if momentukoItema.edm_isshownat%}
-							<a  class="eremu-str" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
-							{%endif%}
-						</li>
-					</ul>
 				</div>
 			</div>
-			<!-- item preview-->
-			
 				
 			<div id="item_moreInfo" class="path-info overflow">
-				<h3 class="titulu-kolorea">{% trans "Bestelako informazioa" %}</h3>
-				<ul class="nav navbar-nav navbar-default">
+				<h3 class="kolore-gris-hiru">{% trans "Bestelako informazioa" %}</h3>
+				<ul class="">
 					{% if item.proposatutakoa %}
 					<li>
 						<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
@@ -332,37 +423,10 @@
 
 			<!-- </div> this tag should be removed, its a surplus-->
 		</div>
-		<div class="col-md-2">
-			<!-- BOTAZIO SISTEMA-->
-
-			{% if user.is_authenticated %}
-
-			<div class="eskuma">
-				<a class="titulu-kolorea eskuma" type="button" href="#">{% trans "Kultur itema gustoko duzu?" %}</a>
-			</div>
-			<br />
-			<div class="btn-group eskuma" role="group" aria-label="...">
-
-				{% if botatuDu == 1 %}
-				<a class="btn btn-default " type="button" href="{{BASE_URL}}/botoa_eman_item?id={{id}}" disabled> <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> </a>
-				<a class="btn btn-default " type="button" href="#" > <b class="eskuma titulu-kolorea">{{botoKopurua}}</b> </a>
-				<a class="btn btn-default " type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{id}}" > <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> </a>
-
-				{%else%}
-				<a class="btn btn-default " type="button" href="{{BASE_URL}}/botoa_eman_item?id={{id}}" > <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> </a>
-				<a class="btn btn-default " type="button" href="#"> <b class="eskuma titulu-kolorea">{{botoKopurua}}</b> </a>
-				<a class="btn btn-default " type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{id}}" disabled > <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> </a>
-				{%endif%}
-			</div>
-
-			{%endif%}
-			<!-- social network sharing buttons -->
-			{% include "_sharing.html"%}
-
-		</div>
+		
 	</div>
 </div>
-<!--container-->
+</div> <!--container-->
 
 <!-- GEOLOKALIZAZIOA -->
 {% if geoloc_longitude %}
@@ -389,11 +453,16 @@
 {% include "_comments.html" %}
 <!-- END COMMENTS-->
 
-
+{% endwith %}
 {% endblock content %}
 
 {% block custom_modals %}
 {{ block.super }}
+
+<!-- QR code modal --> 
+{% include "_QR_modal.html" %}
+<!-- END QR code modal -->
+
 <!-- modal item fitxa osoa-->
 
 <div class="modal fade" id="modal-metadata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -414,7 +483,7 @@
 					<li>
 						<i class="fa fa-chevron-right" aria-hidden="true"></i>
 						{% trans "Sortzailea" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_creator%}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.dc_creator%}
 							{{momentukoItema.dc_creator}}
 							{%else%}
 							-
@@ -425,7 +494,7 @@
 					<li>
 						<i class="fa fa-chevron-right" aria-hidden="true"></i>
 						{% trans "Hornitzailea" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_dataprovider%}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.edm_dataprovider%}
 							{{momentukoItema.edm_dataprovider}} ({{momentukoItema.edm_provider}})
 							{%else%}
 							{{momentukoItema.edm_provider}}
@@ -435,7 +504,7 @@
 					<li>
 						<i class="fa fa-chevron-right" aria-hidden="true"></i>
 						{% trans "Gaia" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_subject%}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.dc_subject%}
 							{{momentukoItema.dc_subject}}
 							{%else%}
 							-
@@ -445,7 +514,7 @@
 					<li>
 						<i class="fa fa-chevron-right" aria-hidden="true"></i>
 						{% trans "Hizkuntza" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.ob_language %}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.ob_language %}
 							{{momentukoItema.ob_language | ob_language_errep_kendu}}
 							{%else%}
 							-
@@ -455,7 +524,7 @@
 					<li>
 						<i class="fa fa-chevron-right" aria-hidden="true"></i>
 						{% trans "Herrialdea" %}:&nbsp;
-						<span class="eremu-str"> {% if item.edm_country %}
+						<span class="kolore-gris-hiru"> {% if item.edm_country %}
 							{{item.edm_country }}
 							{%else%}
 							-
@@ -465,7 +534,7 @@
 					<li>
 						<i class="fa fa-chevron-right" aria-hidden="true"></i>
 						{% trans "Data" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_year %}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.edm_year %}
 							{{momentukoItema.edm_year }}
 							{%else%}
 							-
@@ -475,7 +544,7 @@
 					<li>
 						<i class="fa fa-chevron-right" aria-hidden="true"></i>
 						{% trans "Mota" %}:&nbsp;						
-						<span class="eremu-str"> {% if momentukoItema.edm_type %}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.edm_type %}
 						<span class="kolore-{{momentukoItema.edm_type}}"><img class="mota-icon" src="{{STATIC_URL}}img/newLogo/icons/{{momentukoItema.edm_type|lower}}.png">
 							{{momentukoItema.edm_type }}
 							{%else%}
@@ -499,6 +568,60 @@
 </div>
 <!-- END modal item fitxa osoa-->
 
+<!-- modal crossing-paths -->
+<div class="modal fade" id="modal-crossing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">         
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{% trans "Ze ibilbidetan?" %}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">               
+                    <div class="panel-body top-padding-0">
+                    	
+                   		<div id="messages"></div>
+                   		<h4 class="modal-inner-title">{% trans "Ezaugarriak" %}</h4>
+                   		                                                     
+                 		<div id="crossingPaths" class="path-info overflow">
+
+						<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
+						{%if itemPaths %}
+						<!-- class="crossingPaths"-->
+						<div class="">
+							
+							<h3 class="titulu-kolorea">{{itemPaths.count}} {% trans "Ze ibilbidetan?" %} </h3>
+							{% for node in itemPaths %}
+								{% if forloop.counter < 4 %}
+							<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}"> <span class="glyphicon glyphicon-map-marker" aria-hidden="true"> </span>&nbsp;{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
+								{%endif%}
+							{%endfor%}
+							<!--</br>-->
+							{% if itemPaths|length  >= 4 %} <!-- ONDOREN >= 4 JARRI-->
+							<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
+							{%endif%}
+							</ br>
+							<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Animatu ibilbideetako bat ikusi eta bozkatzera!" %}</div>					
+						</div>
+						{% else %}
+						<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Izan lehena item honekin ibilbide bat sortzen!" %}</div>
+				
+						<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; -</h3>
+						{%endif%}
+						</div>
+						
+                 	    <div class="modal-footer">
+                        	<button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>                                
+                        </div>                            
+                        <p><br/></p>                    
+                    </div>                       
+                </div>
+            </div><!-- END modal-body -->
+            
+        </div>
+    </div>
+</div>
+<!-- END modal crossing-paths-->
 
 {% endblock custom_modals %}
 

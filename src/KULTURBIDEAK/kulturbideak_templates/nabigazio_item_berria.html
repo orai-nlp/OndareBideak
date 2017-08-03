@@ -183,7 +183,7 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Sortzailea" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_creator%}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.dc_creator%}
 							{{momentukoItema.dc_creator|format_html |safe}}
 							{%else%}
 							-
@@ -194,7 +194,7 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Hornitzailea" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_provider%}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.edm_provider%}
 							{{momentukoItema.edm_provider|format_html |safe}}
 							{%else%}
 							-
@@ -204,7 +204,7 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Gaia" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_subject%}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.dc_subject%}
 							{{momentukoItema.dc_subject}}
 							{%else%}
 							-
@@ -214,7 +214,7 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Hizkuntza" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.ob_language %}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.ob_language %}
 							{{momentukoItema.ob_language| ob_language_errep_kendu}}
 							{%else%}
 							-
@@ -224,7 +224,7 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Herrialdea" %}:&nbsp;
-						<span class="eremu-str"> {% if item.edm_country %}
+						<span class="kolore-gris-hiru"> {% if item.edm_country %}
 							{{item.edm_country }}
 							{%else%}
 							-
@@ -234,7 +234,7 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Data" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_year %}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.edm_year %}
 							{{momentukoItema.edm_year }}
 							{%else%}
 							-
@@ -244,7 +244,7 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Mota" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.edm_type %}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.edm_type %}
 							{{momentukoItema.edm_type }}
 							{%else%}
 							-
@@ -449,14 +449,14 @@
 						<li class="ezkerra">
 							<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 							{% trans "Lizentzia" %}:&nbsp;
-							<span class="eremu-str"> {% if momentukoItema.edm_rights%} <a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a> {%else%}
+							<span class="kolore-gris-hiru"> {% if momentukoItema.edm_rights%} <a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a> {%else%}
 								-
 								{% endif %} </span>
 
 						</li>
 						<li class="eskuma">
 							{% if momentukoItema.edm_isshownat%}
-							<a  class="eremu-str" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
+							<a  class="kolore-gris-hiru" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
 							{%endif%}
 						</li>
 					</ul>
@@ -513,7 +513,7 @@
 					<li>
 						<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 						{% trans "Jatorrizko deskribapena" %}:&nbsp;
-						<span class="eremu-str"> {% if momentukoItema.dc_description %}
+						<span class="kolore-gris-hiru"> {% if momentukoItema.dc_description %}
 							<div class="comment more item-info-description">
 								{{ LANGUAGE_CODE|choose_description_language:momentukoItema |format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags |safe}}
 							</div> {%else%}

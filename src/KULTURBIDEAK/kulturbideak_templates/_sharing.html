@@ -9,30 +9,17 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/social-share-kit.js"></script>
 <script type="text/javascript">SocialShareKit.init();</script>
 
-<div class="share_titulu eskuma">
+<!-- <div class="share_titulu eskuma">
 	<span class="titulu-kolorea eskuma">{% trans "Konpartitu" %}!</span>
 </div>
-
+ -->
 <div class="share_buttons eskuma">
-	<div class="ssk-right ssk-xs ssk-round ssk-count clearfix">
-		<a class="ssk ssk-facebook" href=""> </a>
-		<a class="ssk ssk-twitter" href="https://twitter.com/intent/tweet"> </a>
-		<a class="ssk ssk-google-plus" href=""> </a>
-		<a class="ssk ssk-email" href=""></a>
+	<div class="ssk-right ssk-xs ssk-count clearfix kolore-beltza">
+		<a class="ssk ssk-icon kolore-beltza" href=""><i class="fa fa-facebook" aria-hidden="true"></i> </a>
+		<a class="ssk ssk-icon kolore-beltza" href="https://twitter.com/intent/tweet"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+		<a class="ssk ssk-icon kolore-beltza" href=""><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+		<a class="ssk ssk-icon kolore-beltza" href=""><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
 
 	
 	</div>
 </div>
-
-
-<!-- QR code link-->
-<div class="share_titulu eskuma">
-	<span class="titulu-kolorea eskuma">{% trans "Eraman itema mundu errealera" %}!</span>
-</div>
-<div class="share_titulu eskuma">
-	<a id="qr_code_create_link" href="" data-toggle="modal" data-target="#modalqrcode" class="titulu-kolorea eskuma"> QR <span>&nbsp;</span><span class="glyphicon glyphicon-qrcode" aria-hidden="true"> </span> </a>
-</div>
-
-<!-- QR code modal --> 
-{% include "_QR_modal.html" %}
-<!-- END QR code modal -->
