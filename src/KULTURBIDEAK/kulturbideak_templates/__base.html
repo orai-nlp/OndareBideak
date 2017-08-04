@@ -381,14 +381,14 @@
 				
 		<!-- PAGE -->
 		{% block page_div_def %}			
-		<div  style="max-width:1210px;margin:0 auto;">
+		<div id="main_page" style="max-width:1210px;margin:0 auto;">
 		{% endblock page_div_def %}				
 			<!--aldeetako margina -->
 			<!--<hr>-->			
 			<!--PANTAILA EGITURA NAGUSIA-->			
 		
 		{% block orria_div_def %}			
-			<div class="orria">
+			<div id="orria" class="orria">
 		{% endblock orria_div_def %}
 		
 				{% block autocomplete %}
@@ -634,6 +634,10 @@
 				</div><!-- row -->
 
 			</div><!-- orria -->
+
+		{% block after_orria %}
+		
+		{% endblock after_orria %}
 				
 		</div><!-- row -->
 		<!-- END PAGE -->

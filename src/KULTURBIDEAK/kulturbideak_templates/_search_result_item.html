@@ -16,7 +16,7 @@
 			
 		</div>		
 		<!--http://jsfiddle.net/WjKyF/-->
-		<div class="caption col-xs-9 col-md-9">
+		<div class="caption col-xs-10 col-md-10">
 				 <input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.item_id}}"/>
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="mota_{{ forloop.counter }}" value="{{item.edm_type}}"/>
@@ -34,7 +34,7 @@
                 {%endif%}  
 				{% if item.dc_title %}
 					<li>
-						<h5><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h5>
+						<h6><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h6>
                     </li>    
 				{%endif%}
 				{% if item.edm_provider %}
@@ -65,12 +65,12 @@
                                 {%endif%}
                                 
 {% endcomment %}
-		</div>	 <!-- caption -->			    
-		<div class="kudeaketa col-xs-1 col-md-1">                       
+				    
+		<div class="kudeaketa">                       
         	<!--<h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
             <div class="btn-group" role="group" aria-label="...">-->
             <ul class="button-row">
-            	<li>
+            	<li class="backgrnd-gris-lau">
             		<a class="ikusi-botoiaa" type="button" title="Ikusi kultur itema" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}">
                 		<span class="fa fa-eye square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
 					</a>
@@ -79,20 +79,20 @@
 
 				{% if user.is_authenticated %}
 
-                <li>
+                <li class="backgrnd-gris-lau">
                     <button class="gehitu-botoia" title="{% trans 'Lan eremura gehitu' %}" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
                 		<span class="fa fa-plus square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
                     </button>
                 </li>                
                 	{% if user.id == item.item_user_id|to_int  or user.is_superuser%}
                 
-	            <li>
+	            <li class="backgrnd-gris-lau">
 	            	<a class="btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >
                     	<i class="fa fa-edit square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
                     </a>
-                </li>
+                </li class="backgrnd-gris-lau">
                 
-                <li>
+                <li class="backgrnd-gris-lau">
                 <!-- ezabatu -->
                 <a class="btn-danger ob-botoia" type="button" title="Itema ezabatu"  style="width:100;" onClick="deleteItem({{item.item_id}})" >
                		<i class="fa fa-times square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
@@ -101,7 +101,7 @@
                 	{%endif%}
 					
 					{% if request.user|has_group:'hornitzailea' or user.is_superuser %}
-				<li>
+				<li class="backgrnd-gris-lau">
 						{% if not item.item_id|is_in:eguneko_itemak %} 
 					<a class="btn-warning " title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.item_id}})" >
                 		<i class="fa fa-star square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
@@ -116,5 +116,7 @@
 				{%endif%}
 			</ul>
 		</div> <!-- kudeaketa buttons -->
+		
+		</div>	 <!-- caption -->	
 		{% endif %}		
   </div><!-- search-result-->

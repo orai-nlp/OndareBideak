@@ -333,6 +333,7 @@ div.item-extra-background{
 
 .search-result div.caption {
 	float:left !important;
+	padding-right:0;
 }
 
 ul.caption-info {
@@ -340,7 +341,8 @@ ul.caption-info {
 	display:block;
 	list-style:none;
 	margin:0;
-	padding:20px;
+	padding:20px 20px 5px 20px;
+	width:100%;
 }
 
 ul.caption-info li{
@@ -356,16 +358,16 @@ ul.caption-info li{
 
 .button-row{
 	list-style:none;
-	margin: 5px 0 5px 0;
+	margin: 0px 0 5px 0;
 	padding:0;	
 	float:right;
-	display:block;
 }
 
 .button-row li{
-   margin:1px;
-	
+   margin:-1px;
+   display:inline-block;	
 }
+
 .bilaketaEmaitza {
 
 	/*background-image: url("/home/maddalen/Documents/Aptana Studio 3 Workspace/KULTURBIDEAK/src/KULTURBIDEAK/kulturbideak_app/media/uploads/NoIrudiItem.png");*/
@@ -1008,6 +1010,19 @@ ul.button-row-horizontal {
 	vertical-align:middle;
 }
 
+.button-row-vert{
+	list-style:none;
+	margin: 5px 0 5px 0;
+	padding:0;	
+}
+
+.button-row-vert li{
+   margin:1px;
+   display:block;
+   min-height:50px;	
+}
+
+
 .item-fitxa-info-ul{
 	width:100%;
 	padding:0;	
@@ -1030,6 +1045,7 @@ p.item-field-title {
 	font-size:1.5em;
 	font-family:walsheim-light-web;
 	left:-1px;
+	z-index:1001;
 }
 
 div.item_preview {
@@ -1038,13 +1054,20 @@ div.item_preview {
 	background:transparent;
 }
 
+div#item_preview-element {
+	padding:20px;
+	background:#ffffff;
+}
+.item-info-description a {
+    color: #666666;
+}
 
 /* END item_berria.html CSS*/
 
 
 /* _similar_items.html*/
 div.similar-items{
-	padding:50px 0;
+	padding:50px 20px;
 	background-color:#f8f8f8;
 }
 
@@ -1083,6 +1106,7 @@ div.similar-overlay {
 	left: 0%;
 	width: 95%;
 	height: 100%;
+	z-index:1000;
 }
 
 div.similar-overlay img.overlay-icon{
@@ -1091,13 +1115,23 @@ div.similar-overlay img.overlay-icon{
 	position: absolute;
 	top: 75%;
 	left: 80%;
-	z-index: 1000;
+	z-index: 1001;
 	opacity: 1 !important;
 	background: transparent !important;
 }
 
 div.similar-thumbnail{
 	padding: 0 5px;
+}
+
+.antzekoTitulua {
+	font-family: walsheim-web, "dosis" !important;
+	font-size: 24px;
+	font-weight: 300;
+	margin-bottom: 15px;
+	margin-top: 0;
+	alignment-adjust: center;
+	padding-left: 50px;
 }
 /* END _similar_items.html*/
 
@@ -1140,6 +1174,11 @@ a.morelink {
 .aRight {
 	float: right;
 }
+
+div#comments {
+	padding-top:10px;
+}
+
 
 /*CSS svg*/
 
@@ -1219,12 +1258,15 @@ circle .unselectedNode {
 
 .item-info-description,.path-info-description {
 	color: #000;
-	font-family: walsheim-web;
-	font-size: 18px;
-	font-weight: 300;
+	font-size: 1em;
 	line-height: 22px;
 }
 
+.item-info-description,.path-info-description {
+	color: #000;
+	font-size: 1em;
+	line-height: 22px;
+}
 
 
 .path-info-description p {
@@ -1235,13 +1277,7 @@ circle .unselectedNode {
     line-height: 22px;
 }
 
-.item-info-description p {
-    color: #000;
-    font-family: walsheim-web, "dosis",sans-serif;
-    font-size: 18px;
-    font-weight: 300;
-    line-height: 22px;
-}
+
 
 /* Maddalen
 .navbar-default li {
@@ -1314,14 +1350,7 @@ circle .unselectedNode {
 	background: none;
 }
 
-.antzekoTitulua {
-	font-family: walsheim-web, "dosis" !important;
-	font-size: 24px;
-	font-weight: 300;
-	margin-bottom: 15px;
-	margin-top: 0;
-	alignment-adjust: center;
-}
+
 h3.uppercase {
 	text-transform: uppercase;
 	font-family: walsheim-web, "dosis" !important;

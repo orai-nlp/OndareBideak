@@ -9,6 +9,10 @@
 <div class="item-extra-background"></div>
 {% endblock extra_markup %}
 
+{% block page_div_def %}			
+<div id="main_page">
+{% endblock page_div_def %}		
+
 {% block orria_div_def %}			
 	<div class="">
 {% endblock orria_div_def %}
@@ -35,7 +39,7 @@
 <input type="hidden" id="mota_{{id}}" value="{{momentukoItema.edm_type}}"/>
 
 <div id="kudeaketa-bar" class="path-info overflow">
-	<ul class="button-row">              
+	<ul class="button-row-vert">              
     {% if user.is_authenticated %}
 		<li class="backgrnd-gris-lau">
 			<button class="btn-default gehitu-botoia" type="button" title="{% trans 'Lan eremura gehitu' %}" onclick="create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
@@ -391,7 +395,7 @@
 			{% endcomment %}
 			
 			<div class="path-info overflow ">
-				<div class="comment more item-info-description bold">
+				<div class="comment more item-info-description">
 
 					{{ LANGUAGE_CODE|choose_description_language:item|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
 
@@ -444,17 +448,22 @@
 {%endif%}
 <!-- END GEOLOKALIZAZIOA -->
 
-<!-- MLT -->
 
+{% endwith %}
+{% endblock content %}
+
+{% block after_orria %}
+
+<!-- MLT -->
 {% include "_similar_items.html" %}
 <!-- END MLT-->
 
 <!-- COMMENTS-->
 {% include "_comments.html" %}
 <!-- END COMMENTS-->
+{% endblock after_orria %}
 
-{% endwith %}
-{% endblock content %}
+
 
 {% block custom_modals %}
 {{ block.super }}
