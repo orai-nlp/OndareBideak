@@ -206,15 +206,22 @@
 	</div>			
 </div><!-- container fitxa: end of colored bacground -->
 	
-<div class="item_preview col-xs-12 col-sm-12 col-md-10">
+<div class="item_preview col-xs-12 col-sm-12 col-md-10 center">
 	
 	<!-- item preview-->
 	<div id="item_preview-element">
-		{% if momentukoPatha.paths_thumbnail %}
-		<img class="img-responsive ibilbide-irudia" alt="" src="http://ondarebideak.dss2016.eu/{{momentukoPatha.paths_thumbnail}}">
-		{% else %}
-		<img class="img-responsive" src="{{ STATIC_URL }}uploads/NoIrudiBide.png">
-		{% endif %}		
+		<a id="autoplay-button" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">			
+			{% if momentukoPatha.paths_thumbnail %}
+				<img class="img-responsive ibilbide-irudia" alt="" src="{{momentukoPatha.paths_thumbnail}}"  onError="this.onerror=null;this.src='/uploads/NoIrudiItem.png';">
+			{% else %}
+				<img class="img-responsive" src="{{ STATIC_URL }}uploads//uploads/NoIrudiItem.png">
+			{% endif %}
+			<div class="overlay-path">
+				<p class="title-overlay">
+					<i class="fa fa-play kolore-gris-bat"></i>
+				</p>
+			</div>
+		</a>
 	</div>
 	
 	<!-- license info-->
@@ -238,51 +245,43 @@
 		</div>		
 	</div><!-- license info -->	
 		
-	<div class="item-preview-description backgrnd-txuria">
+	<div id="item_preview-description" class="backgrnd-txuria">
 			{% comment %}
 			<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
 			<!--{{ LANGUAGE_CODE|choose_description_language:item |striptags |safe }}-->
 			{% endcomment %}
 			
-			<div class="path-info overflow ">
-				<div class="comment more path-info-description">
-					{{momentukoPatha.dc_description}}
-				</div>
+		<div class="path-info overflow ">
+			<div class="comment more path-info-description">
+				{{momentukoPatha.dc_description}}
 			</div>
+		</div>
 				
-			<div id="item_moreInfo" class="path-info overflow">
-				<h3 class="kolore-gris-hiru">{% trans "Bestelako informazioa" %}</h3>
-				<ul class="">
-					{% if momentukoPatha.proposatutakoa %}
-					<li>
-						<span class="fa fa-heart-empty" aria-hidden="true"></span>
-						{% trans "Adituek Proposatutakoa" %}
-
-					</li>
-					{%endif%}
-					{% if momentukoPatha.egunekoa %}
-					<li>
-						<span class="fa fa-bullhorn" aria-hidden="true"></span>
-						{% trans "Egunekoa" %}
-
-					</li>
-					{%endif%}
-					{% if not momentukoPatha.egunekoa and not momentukoPatha.proposatutakoa%}
-					- - -
-					{%endif%}
-				</ul>
-				<div>
-					<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> AUTOPLAY </a>					
-				</div>				
-			</div>
+		<div id="item_moreInfo" class="path-info overflow">
+			<h3 class="kolore-gris-hiru">{% trans "Bestelako informazioa" %}</h3>
+			<ul class="">
+				{% if momentukoPatha.proposatutakoa %}
+				<li>
+					<span class="fa fa-heart-empty" aria-hidden="true"></span>
+					{% trans "Adituek Proposatutakoa" %}
+				</li>
+				{%endif%}
+				{% if momentukoPatha.egunekoa %}
+				<li>
+					<span class="fa fa-bullhorn" aria-hidden="true"></span>
+					{% trans "Egunekoa" %}
+				</li>
+				{%endif%}
+				{% if not momentukoPatha.egunekoa and not momentukoPatha.proposatutakoa%}
+				- - -
+				{%endif%}
+			</ul>						
+		</div>
 	</div>
-			
-	</div>
-</div>
-</div> <!--container-->
+</div><!-- END item-preview -->
 	
-<!-- ibilbide panela d3 svg -->
 
+<!-- ibilbide panela d3 svg -->
 <div class="container">
 	<div class="row">
 		<div class="col-md-1"></div>

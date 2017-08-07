@@ -321,11 +321,7 @@ div.item-extra-background{
 	margin:10px 0 10px 0;
 }
 
-#autoplay{
-	float:right;
-	padding: 3%;
-	margin-right:10px;
-}
+
 
 /* Bilaketa orrietako emaitzen bistaratea : cross_search.html */
 
@@ -1070,12 +1066,48 @@ div.item_preview {
 div#item_preview-element {
 	padding:20px;
 	background:#ffffff;
+	display:inline-block;
+}
+
+div#item_preview-description {
+	text-align:left;
 }
 .item-info-description a {
     color: #666666;
 }
 
-/* END item_berria.html CSS*/
+/* END item.html CSS*/
+
+
+/* ibilbidea.html CSS*/
+div.overlay-path{
+	transition: .5s ease;
+	position: absolute;
+	background: rgba(0, 0, 0, 0.2);
+	top: 60px;
+	left: -100px;
+	width: 200px;
+	height: 200px;
+	z-index: 1000;
+	
+}
+
+div.overlay-path p{
+	padding:33%;
+	font-size:5em;	
+}
+
+#autoplay{
+	float:right;
+	padding: 3%;
+	margin-right:10px;
+}
+
+#autoplay-button{
+	position:relative;
+}
+/* END ibilbidea.html CSS*/
+
 
 
 /* _similar_items.html*/
@@ -1294,6 +1326,7 @@ circle .unselectedNode {
 .ibilbide-irudia {
 	border-radius: 0%;
 	margin:auto;
+	background-color: rgba(0, 0, 0, 0.2);
 }
 .ibilbide-irudia-index {
 	max-height: 300px;
