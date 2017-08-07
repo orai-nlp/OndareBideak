@@ -75,6 +75,25 @@ import random
 
 nodeLoadError=""
 
+
+'''
+    *************************************
+            Auxiliary functions
+    *************************************
+'''
+
+def log_sign_in_forms(request):
+    login_form = LoginForm()
+    erabiltzailea_form = CreateUserForm() 
+    
+    if 'login' in request.POST:
+        logina(request)
+        
+    if 'Erabiltzailea_gehitu' in request.POST:
+        erregistratu(request)  
+
+    return (login_form,erabiltzailea_form)
+
 def randomword(length):
     return ''.join(random.choice(string.lowercase) for i in range(length))
 
@@ -100,15 +119,8 @@ def get_tree(el_node):
 def hasiera(request):
     """Hasiera orria"""
      
-    login_form = LoginForm()
-    erabiltzailea_form = CreateUserForm() 
-    
-    if 'login' in request.POST:
-        logina(request)
-        
-    if 'Erabiltzailea_gehitu' in request.POST:
-        erregistratu(request)
-        
+    (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
+           
     # Kontadoreko kopuruak lortu datu-basetik
     # Itemak
     itemKop = item.objects.count()
@@ -147,7 +159,18 @@ def hasiera(request):
     erakBerria=berria.objects.get(erakutsi=1)
     currentDate= datetime.datetime.now()
     #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    return render_to_response('index.html',{'login_form':login_form,'erabiltzailea_form':erabiltzailea_form,'currentDate': currentDate ,'ibilbideak':ibilbideak,'egunekoItem':egunekoItem,'egunekoPath':egunekoPath,'egunekoHornitzaile':egunekoHornitzaile,'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop,'erakBerria':erakBerria},context_instance=RequestContext(request))
+    return render_to_response('index.html',{'login_form':login_form,
+                                            'erabiltzailea_form':erabiltzailea_form,
+                                            'currentDate': currentDate,
+                                            'ibilbideak':ibilbideak,
+                                            'egunekoItem':egunekoItem,
+                                            'egunekoPath':egunekoPath,
+                                            'egunekoHornitzaile':egunekoHornitzaile,
+                                            'itemKop':itemKop,
+                                            'ibilbideKop':ibilbideKop,
+                                            'hornitzaileKop':hornitzaileKop,
+                                            'erabiltzaileKop':erabiltzaileKop,
+                                            'erakBerria':erakBerria},context_instance=RequestContext(request))
 
  
 '''
@@ -190,15 +213,8 @@ def itemak_hasiera(request):
         itemak = paginator.page(paginator.num_pages)
     '''
    
-    login_form = LoginForm()
-    erabiltzailea_form = CreateUserForm() 
-    
-    if 'login' in request.POST:
-        logina(request)
-        
-    if 'Erabiltzailea_gehitu' in request.POST:
-        erregistratu(request)
-   
+    (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
+
     #Egunekoak
     eguneko_itemak=[]
     eguneko_itemak=item.objects.filter(egunekoa=1)
@@ -4059,14 +4075,8 @@ def ibilbideak_hasiera(request):
     #DB-an GALDERA EGIN EGUNEKO/RANDOM/AZKENAK/IKUSIENA PATHA LORTZEKO   
     #DB-an GALDERA EGIN EGUNEKO IBILBIDEA LORTZEKO
    
-    login_form = LoginForm()
-    erabiltzailea_form = CreateUserForm() 
-    
-    if 'login' in request.POST:
-        logina(request)
-        
-    if 'Erabiltzailea_gehitu' in request.POST:
-        erregistratu(request)
+    (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
+
    
     #Egunekoak
     eguneko_itemak=[]
@@ -4176,11 +4186,39 @@ def ibilbideak_hasiera(request):
         items = paginator.page(paginator.num_pages)
     
     
-    return render_to_response('cross_search.html',{'login_form':login_form,'erabiltzailea_form':erabiltzailea_form,'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))   
+    return render_to_response('cross_search.html',{'login_form':login_form,
+                                                   'erabiltzailea_form':erabiltzailea_form,
+                                                   'non':non,
+                                                   'ibilbide_bozkatuenak':ibilbide_bozkatuenak,
+                                                   'eguneko_ibilbideak':eguneko_ibilbideak,
+                                                   'azken_ibilbideak':azken_ibilbideak,
+                                                   'item_bozkatuenak':item_bozkatuenak,
+                                                   'eguneko_itemak':eguneko_itemak,
+                                                   'azken_itemak':azken_itemak,
+                                                   'db_hornitzaileak_text':db_hornitzaileak_text,
+                                                   'db_hornitzaileak':db_hornitzaileak,
+                                                   'db_motak_text':db_motak_text,
+                                                   'db_motak':db_motak,
+                                                   'db_lizentziak_text':db_lizentziak_text,
+                                                   'db_lizentziak':db_lizentziak,
+                                                   'z':z,
+                                                   'items':items,
+                                                   'paths':paths,
+                                                   'bilaketa_filtroak':bilaketa_filtroak,
+                                                   'bilaketaGaldera':galdera,
+                                                   'radioHizkuntza':hizkuntza,
+                                                   'hizkF':hizkF,
+                                                   'horniF':horniF,
+                                                   'motaF':motaF,
+                                                   'ordenaF':ordenaF,
+                                                   'lizentziaF':lizentziaF,
+                                                   'besteaF':besteaF},context_instance=RequestContext(request))   
     #return render_to_response('ibilbideak_hasiera.html',{'non':non,'paths':paths,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'ibilbide_bozkatuenak':ibilbide_bozkatuenak},context_instance=RequestContext(request))
 
    
 def hornitzaileak_hasiera(request):
+
+    (login_form, erabiltzailea_form) = log_sign_in_forms(request)
 
     hornitzaileak = []
     hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3)
@@ -4200,16 +4238,11 @@ def hornitzaileak_hasiera(request):
         hornitzaileak = paginator.page(paginator.num_pages)
         
     
-    return render_to_response('hornitzaileak_hasiera.html', {'hornitzaileak':hornitzaileak}, context_instance=RequestContext(request))
+    return render_to_response('hornitzaileak_hasiera.html', {'login_form':login_form,
+                                                             'erabiltzailea_form':erabiltzailea_form,
+                                                             'hornitzaileak':hornitzaileak}, context_instance=RequestContext(request))
     
-def hornitzailea_ikusi(request):
-   
-    non="fitxaI"
-    id=request.GET['id']
-    hornitzaile=hornitzailea.objects.get(fk_user__id=id)
-    print non
-    return render_to_response('hornitzailea_ikusi.html',{'non':non,'hornitzailea':hornitzaile},context_instance=RequestContext(request))
-    
+
 def autocomplete(request):
     
     sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:4]
@@ -4269,14 +4302,7 @@ def autocomplete(request):
 
 def cross_search(request):
     
-    login_form = LoginForm()
-    erabiltzailea_form = CreateUserForm() 
-    
-    if 'login' in request.POST:
-        logina(request)
-        
-    if 'Erabiltzailea_gehitu' in request.POST:
-        erregistratu(request)
+    (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
         
     #Defektuz itemen orria erakusteko
     z="i"
@@ -5080,6 +5106,9 @@ def filtro_search(request):
 
 def nabigazioa_hasi(request):
     
+    
+    (login_form, erabiltzailea_form) = log_sign_in_forms(request)
+    
     #print "nabigazioa_hasi"
     if 'path_id' in request.GET:
         path_id=request.GET['path_id']
@@ -5160,7 +5189,29 @@ def nabigazioa_hasi(request):
         
         #Ezkerreko zutabea ez erakusteko
         non="fitxaE"
-        return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('ibilbidea.html',{'login_form':login_form,
+                                                    'erabiltzailea_form':erabiltzailea_form,
+                                                    "non":non,
+                                                    "comment_form": comment_form,
+                                                    "comment_parent_form": comment_parent_form,
+                                                    "comments": comments,
+                                                    'itemPaths':itemPaths,
+                                                    'pathqrUrl':pathqrUrl,
+                                                    'itemqrUrl':itemqrUrl,
+                                                    'autoplay':autoplay,
+                                                    'hasieraBakarra':hasieraBakarra,
+                                                    'momentukoPatha':momentukoPatha,
+                                                    'botoKopuruaPath':botoKopuruaPath,
+                                                    'botoKopuruaItem':botoKopuruaItem,
+                                                    'botatuDuPath':botatuDuPath,
+                                                    'botatuDuItem':botatuDuItem,
+                                                    'path_id':path_id,
+                                                    'node_id':item_id,
+                                                    'path_nodeak': nodes,
+                                                    'momentukoNodea':momentukoNodea,
+                                                    'momentukoItema':momentukoItema,
+                                                    'hurrengoak':hurrengoak,
+                                                    'aurrekoak':aurrekoak},context_instance=RequestContext(request))
     
     return False
         
