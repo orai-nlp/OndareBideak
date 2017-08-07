@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >   
+	{% if '.mp3' in momentukoItema.edm_isshownby %}
+	
+		<audio controls>
+  		<source src="{{momentukoItema.edm_isshownby}}" type="audio/mpeg">					
+		</audio>
+	
+	{% elif momentukoItema.edm_isshownat %}
+	 <iframe id="preview_frame" style="width:100%;height:300px;" src="{{momentukoItema.edm_isshownat}}"></iframe>
+	 {% elif momentukoItema.ob_thumbnail %} 
+	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
+	 {%else%}
+	<img  alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
+	{%endif%} 
+</a>

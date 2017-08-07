@@ -33,11 +33,9 @@
 
 /* hasierako patailan: data, gehiago ikusiren gezia...*/
 .kolore-txuria { 
-	
-	color:#FFFFFF;
+	color:#FFFFFF !important;
 }
 .kolore-beltza { 
-	
 	color:#000000 !important;
 }
 
@@ -85,6 +83,13 @@
 	color:#000000;
 }
 
+.backgrnd-beltza {
+	background-color:#000000;
+}
+
+.backgrnd-txuria {
+	background-color:#FFFFFF;
+}
 a {
 	color: #333333; 
 }
@@ -93,6 +98,10 @@ a:hover {
 	color: #666666; 
 }
 
+a.kolore-gris-bat:hover {
+	color: #999999;
+	text-decoration:underline;
+}
 
 
 /*
@@ -995,6 +1004,10 @@ li.li-mota span{
 	padding: 5px 15px;
 }
 
+li.li-mota-path span{
+	border-bottom: 3px solid #FFDA3E;
+	padding: 5px 15px;
+}
 ul.button-row-horizontal {
 	list-style:none;
 	margin: 5px 0 5px 0;
@@ -1278,26 +1291,13 @@ circle .unselectedNode {
 }
 
 
-
-/* Maddalen
-.navbar-default li {
-	font-size: 14px;
-	padding: 0 15px 0 0;
-	color: #c03035;
-	text-decoration: none;
-}
-*/
 .ibilbide-irudia {
-
-	height: 128px;
 	border-radius: 0%;
-	/*border: solid 1px #CCC;*/
-
+	margin:auto;
 }
 .ibilbide-irudia-index {
 	max-height: 300px;
 	border-radius: 0%;
-	/*border: solid 1px #CCC;*/
 }
 
 .hornitzaile-irudia {

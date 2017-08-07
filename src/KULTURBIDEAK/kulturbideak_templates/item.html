@@ -135,7 +135,7 @@
 		
 		{%endif%}
 		<!-- social network sharing buttons -->
-		{% include "_sharing.html"%}
+		{% include "_sharing.html" with buttonColor="beltza" %}
 			
 	</div> 
 	</div>
@@ -183,7 +183,7 @@
 						{% endif %}
 					</p>
 				</li>
-				<!-- provider -->
+				<!-- subject -->
 				<li>
 					<p class="item-field-title kolore-gris-hiru">{% trans "Gaia" %}</p>
 					<p class="kolore-beltza"> {% if momentukoItema.dc_subject%}
@@ -221,7 +221,7 @@
 			</div>
 		</div>
 	</div>			
-</div><!-- container fitxa: end of colored bacground -->
+</div><!-- container fitxa: end of colored background -->
 	
 <div class="item_preview col-xs-12 col-sm-12 col-md-10">
 
@@ -407,14 +407,14 @@
 				<ul class="">
 					{% if item.proposatutakoa %}
 					<li>
-						<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+						<span class="fa fa-heart-empty" aria-hidden="true"></span>
 						{% trans "Adituek Proposatutakoa" %}
 
 					</li>
 					{%endif%}
 					{% if item.egunekoa %}
 					<li>
-						<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+						<span class="fa fa-bullhorn" aria-hidden="true"></span>
 						{% trans "Egunekoa" %}
 
 					</li>

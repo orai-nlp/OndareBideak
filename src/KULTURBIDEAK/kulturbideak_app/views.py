@@ -1397,7 +1397,7 @@ def eguneko_itema_kendu(request):
         non="erakutsi_item"
 
         
-        return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+        return render_to_response('item.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
     elif nondik.startswith("path"):
         print "nondik ba? ikusi path"
@@ -2306,7 +2306,7 @@ def eguneko_itema_gehitu(request):
         non="erakutsi_item"
         
         
-        return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+        return render_to_response('item.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
     elif nondik.startswith("path"):
         print "nondik ba? ikusi path"
@@ -6200,7 +6200,7 @@ def erakutsi_item(request):
     
     non="erakutsi_item"
 
-    return render_to_response('item_berria.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+    return render_to_response('item.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
 
 
@@ -6300,7 +6300,7 @@ def botoa_eman_item(request):
 
     else:
         non="erakutsi_item"
-        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        return render_to_response('item.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
     
 def botoa_kendu_item(request):
@@ -6398,7 +6398,7 @@ def botoa_kendu_item(request):
 
     else:
         non="erakutsi_item"
-        return render_to_response('item_berria.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
+        return render_to_response('item.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopurua':botoKopuruaItem,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'titulua':titulua,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDuItem},context_instance=RequestContext(request))    
 
 
 def editatu_itema(request):
