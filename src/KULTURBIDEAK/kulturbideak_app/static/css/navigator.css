@@ -1,0 +1,9 @@
+html,body {
+    padding:0px;
+    margin:0px; 
+    height:100%;
+}
+.bg {
+    width: 100px;
+    height:100%;
+}

@@ -1,0 +1,142 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+{% block content %}
+
+{% get_current_language as LANGUAGE_CODE %}
+<html>
+	<head>
+	
+		{# Load the tag library #}
+		{% load bootstrap3 %}
+		
+		
+		{% block tts_styles %}
+		<!-- TTS -->
+		{% if not request.mobile or request.tablet %}
+		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts.css">
+		{% else %}
+		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts_mob.css">
+		{% endif %}		
+		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tinybox.css">
+		{% endblock tts_styles %}
+	
+	
+		<link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
+		<link rel="stylesheet" href="{{STATIC_URL}}css/navigator.css" type="text/css">
+		<link rel="stylesheet" href="{{STATIC_URL}}css/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+		
+	
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
+		
+		
+		{# Load CSS and JavaScript #}
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/kulturbideak.js"></script>
+
+		{% bootstrap_css %}
+		{% bootstrap_javascript %}
+
+		{# Display django.contrib.messages as Bootstrap alerts #}
+		{# bootstrap_messages #}
+
+		{% load leaflet_tags %}
+		{% load tags%}
+
+		{% leaflet_js %}
+		{% leaflet_css %}
+		{% load qr_tags %}
+		
+		<script>
+            var csrf_token = "{{ csrf_token }}";
+            var erabiltzailea = "{{request.user.username}}";
+		</script>
+		
+		<!-- VIDEO PLAYERRA-->		
+		<script src="{{STATIC_URL}}mediaelement3.1.2/mediaelement-and-player.js"></script>
+		<link href="{{STATIC_URL}}mediaelement3.1.2/mediaelementplayer.css" rel="stylesheet">
+
+		<script type="text/javascript" src="{{STATIC_URL}}hdflvplayer4.1/swfobject.js"></script>
+		
+		
+		<script>
+  		//Autoplay-ak erabiltzen du aldagai hau, hurrengo orrira noiz berdideratu behar duen jakiteko
+  		var isTTSReading = false;
+  
+		  //"Entzun Orria" sakatzerakoan narrazio osoa irakur dezan erabiltzen da
+  		var desk_osoa = "{{momentukoNodea.dc_description |lerroJauziakKendu| format_html | format_html | replace_quotes| safe }}"
+  					.replace(/<\/?[^>]+(>|$)/g,"");  
+  		if (!desk_osoa|| desk_osoa === ""){
+	  		desk_osoa ="{{momentukoNodea.dc_description |lerroJauziakKendu | safe}}";
+  		}
+  		// |safe|htmlEtiketakGarbitu
+  		//alert(desk_osoa);
+  
+  		//tts_berezia.js-ek erabiltzen du ze hizkuntzatan irakurri jakiteko, bukaeran hizkuntza: aldagaiean
+  		var path_hizkuntza="{{momentukoPatha.language}}";
+  
+		</script>
+	</head>
+	<body>
+		<div id="main-div" class="bg backgrnd-gris-lau">
+			<!-- atzeko irudia -->
+			<div id="back-image">
+				<div id="buttons">
+					<ul>
+						<li><a href=""><i class="fa fa-map-signs backgrnd-gris-0"></i></a></li>
+						<li><a href=""><i class="fa fa-times backgrnd-gris-0"></i></a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- END atzeko irudia -->
+			<!-- elementuak erakusteko panela -->
+			<div id="navigator-content">
+				<!--  elementua -->
+				<div id="item-view">
+				</div>
+				<!-- END elementua -->
+				<!-- Deskribapena -->
+				<div id="item-description">
+				</div>
+				<!-- END Deskribapena -->
+			</div>
+			<!-- END elementuak erakusteko panela -->
+			
+			<!-- nabigazio-kontrola -->
+			<div id="control-panel" class="backgrnd-gris-hiru">
+				<div class="col-md-2">
+					<img src="{{STATIC_URL}}/img/newLogo/icons/path_zuri.png">
+					<p><span>{% trans "IBILBIDEA" %} </span></p>
+					<p>{{momentukoPatha.dc_title}}</p>
+				</div>
+				<!-- kontrolak -->
+				<div class="cold-md-8">
+					<ul id="panel-elements">
+						<li>
+							<a href=""><i class="fa fa-play"></i></a>
+						</li>
+						<li>
+							<a href=""><i class="fa fa-pause"></i></a>
+						</li> 
+					</ul>
+				</div>
+				<!-- END kontrolak -->
+				<!-- aurrera/atzera botoiak -->
+				<div class="cold-md-2">
+					<ul id="panel-elements">
+						<li>
+							<a href=""><i class="fa fa-arrow-left"></i>{% trans 'aurrekoa' %}</a>
+						</li>
+						<li>
+							<a href=""><i class="fa fa-arrow-right"></i>{% trans 'hurrengoa' %}</a>
+						</li> 
+					</ul>
+				</div>
+				<!-- END aurrera/atzera botoiak -->
+			</div>
+			<!-- END nabigazio-kontrola -->
+		</div>
+	</body>
+	
+</html>
