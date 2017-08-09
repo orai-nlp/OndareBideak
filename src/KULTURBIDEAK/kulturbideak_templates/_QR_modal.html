@@ -17,7 +17,7 @@
 			<div id="qr_code">
 				{% qr_from_text request.get_full_path "l" %}
 				<!--<img src="node.qr">-->
-				<p>	<a href="{{request.get_full_path}}">http://ondarebideak.dss2016.eu{{request.get_full_path}}</a></p>
+				<p>	<a href="{{request.get_full_path}}">{{BASE_URL}}/{{request.get_full_path}}</a></p>
 				
 			</div>			
 		</div>

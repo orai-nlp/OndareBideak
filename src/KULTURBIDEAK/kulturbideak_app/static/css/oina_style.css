@@ -4,7 +4,8 @@
 	width:117px;
 	margin-top:27px;
 	margin-bottom:18px;
-	margin-left:12px;
+	padding-left:15px;
+	min-height:80px;
 }
 
 .logo_ob_oina img {
@@ -13,31 +14,26 @@
 	margin-bottom:18px;
 	margin-left:0px;
 }
-.oina-marra {
-	
-	
-	border-bottom: 2px solid #FF563D; 
-	
-}
 
 .oina-text-bat{
-	margin-left: 4px;
+	margin: 10px 0 0 0;
+	padding-left:15px;
 	font-family: walsheim-bold-web;
 	color:#333333;
 	font-size: 12px !important;
 	
 }
 .oina-desk {
-
-	margin-left: 12px;
-	font-size: 11px !important;
+	padding: 0 30px 0 15px;
+	font-size: 9px !important;
+	margin:0;
 }
 
 .gara-title {
 	font-family: walsheim-bold-web;
-	font-size: 14px !important;
+	font-size: 12px !important;
 	margin-bottom: 20px;   
-    margin-top: 137px;
+   
 }
 .logo-gm {
 	margin-right: -14px;

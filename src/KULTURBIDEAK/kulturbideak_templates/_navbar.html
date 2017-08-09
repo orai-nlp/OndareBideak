@@ -25,7 +25,7 @@
      <a id="brand-logo" class="{% if request.get_full_path != '/' and request.get_full_path != '/logina' and request.get_full_path != '/erregistratu'%}navbar-brand{% else %}{% if request.mobile or request.get_full_path == '/' %}index-brand{%else%}navbar-brand{% endif %}{% endif %}" href="/"><img src="{{STATIC_URL}}img/brandy/logoa_iluna.png"></a>
 	 -->
 	 
-	 <a id="new-logo" class="" href="/"><img src="{{STATIC_URL}}img/newLogo/logo/ob_logo_karratu_RGB.png"></a>
+	 <a id="new-logo" class="" href="/"><img src="{{STATIC_URL}}img/logo/ob_logo_karratu_RGB.png"></a>
 	
     </div> <!--Logoa eta mobiletan agertzen den menu itxiaren botoia -->
 
@@ -120,87 +120,79 @@
 			</form>
       <ul id="home_menu" class="nav navbar-nav navbar-right">
         {% if request.mobile %}
-				<hr>
-				{% endif %}
-				{% if user.is_authenticated %}
-				
-				<li>
-					<a href="irten"> <span class="kolore-sound glyphicon glyphicon-log-out" aria-hidden="true"></span> {% trans "Irten" %}</a>
-				</li>
-				<li class="dropdown">
-					<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class=" kolore-sound glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>-->
-					<a href="#" class="dropdown-toggle" login-icon data-toggle="dropdown"><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {{request.user.username}} <b class="caret"></b></a>
+			<hr>
+		{% endif %}
+		{% if user.is_authenticated %}
+			<li class="dropdown">
+				<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class=" kolore-sound glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>-->
+				<a href="#" class="dropdown-toggle" login-icon data-toggle="dropdown"><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {{request.user.username}} <b class="caret"></b></a>
 					
-					{% if not user.is_superuser %}
-					<ul class="dropdown-menu">
-						<li>
-							<a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a>
-						</li>
-						<li>
-							<a href="{{BASE_URL}}/nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a>
-						</li>
-						<li role="separator" class="divider"></li>
-						{% if request.user|has_group:'hornitzailea' %}
-						<li>
-							<a href="{{BASE_URL}}/oaipmh_datubilketa">{% trans "OAI-PMH bidezko itemen bilketa" %}</a>
-						</li>
-						{% endif%}
-						<li>
-							<a href="{{BASE_URL}}/itema_gehitu">{% trans "Item berria gehitu" %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
-						</li></a>
-						<li role="separator" class="divider"></li>
-						<li>
-							<a href="{{BASE_URL}}/perfila_erakutsi">{% trans "Profila" %}</a>
-						</li>
-						<li>
-							<a href="{{BASE_URL}}/pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a>
-						</li>
-						<li role="separator" class="divider"></li>
-						{% if request.user|has_group:'hornitzailea' %}
-						<li>
-							<a href="{{BASE_URL}}/hornitzaile_fitxa_editatu">{% trans "Hornitzaile fitxa editatu" %}</a>
-						</li>
-						<li role="separator" class="divider"></li>
-						{% endif%}
+				{% if not user.is_superuser %}
+				<ul class="dropdown-menu">
+					<li>
+						<a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a>
+					</li>
+					<li>
+						<a href="{{BASE_URL}}/nire_ibilbideak_erakutsi">{% trans "Nire ibilbideak" %}</a>
+					</li>
+					<li role="separator" class="divider"></li>
+					{% if request.user|has_group:'hornitzailea' %}
+					<li>
+						<a href="{{BASE_URL}}/oaipmh_datubilketa">{% trans "OAI-PMH bidezko itemen bilketa" %}</a>
+					</li>
+					{% endif%}
+					<li>
+						<a href="{{BASE_URL}}/itema_gehitu">{% trans "Item berria gehitu" %} <i class="fa fa-upload" aria-hidden="true"></i></a>
+					</li>
+					<li role="separator" class="divider"></li>
+					<li>
+						<a href="{{BASE_URL}}/perfila_erakutsi">{% trans "Profila" %}</a>
+					</li>
+					<li>
+						<a href="{{BASE_URL}}/pasahitza_aldatu">{% trans "Pasahitza Aldatu" %}</a>
+					</li>
+					<li role="separator" class="divider"></li>
+					{% if request.user|has_group:'hornitzailea' %}
+					<li>
+						<a href="{{BASE_URL}}/hornitzaile_fitxa_editatu">{% trans "Hornitzaile fitxa editatu" %}</a>
+					</li>
+					<li role="separator" class="divider"></li>
+					{% endif%}
 
-						<li>
-							<a href="irten">{% trans "Irten" %} <!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
-						</li>
-					</ul>
-					<!--Administratzailea baldin bada kudeaketa-aukerak erakutsi -->
-            		{% else %}
-            		<ul class="dropdown-menu">
-						<li>
-							<a href="{{BASE_URL}}/admin_erabiltzaileak_kudeatu">{% trans "Erabiltzaileak kudeatu" %}</a>
-						</li>
-						<li>
-							<a href="{{BASE_URL}}/admin_berriak_kudeatu">{% trans "Berriak kudeatu" %}</a>
-						</li>
-						<li>
-							<a href="{{BASE_URL}}/admin_eguneko_hornitzaileak_kudeatu">{% trans "Eguneko hornitzaileak kudeatu" %}</a>
-						</li>
-						<li>
-							<a href="irten">{% trans "Irten" %} <!--<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>--></a>
-						</li>
-            		
-            		</ul>
-            		{%endif%}
+					<li>
+						<a href="irten">{% trans "Irten" %} <i class="fa fa-sign-out kolore-gris-lau" aria-hidden="true"></i></a>
+					</li>
+				</ul>
+				<!--Administratzailea baldin bada kudeaketa-aukerak erakutsi -->
+            	{% else %}
+            	<ul class="dropdown-menu">
+					<li>
+						<a href="{{BASE_URL}}/admin_erabiltzaileak_kudeatu">{% trans "Erabiltzaileak kudeatu" %}</a>
+					</li>
+					<li>
+						<a href="{{BASE_URL}}/admin_berriak_kudeatu">{% trans "Berriak kudeatu" %}</a>
+					</li>
+					<li>
+						<a href="{{BASE_URL}}/admin_eguneko_hornitzaileak_kudeatu">{% trans "Eguneko hornitzaileak kudeatu" %}</a>
+					</li>
+					<li>
+						<a href="irten">{% trans "Irten" %} <i class="fa fa-sign-out kolore-sound" aria-hidden="true"></i></a>
+					</li>
+           		</ul>
+           		{%endif%}
             	
-				</li>
+			</li><!-- dropdown -->
 				
-				{% else %}
-				<li>
-					<a href="#" data-toggle="modal" data-target="#register-modal"><b>{% trans "Erregistratu" %}</b> </a>
-					<!-- <a href="erregistratu">{% trans "Erregistratu" %}</b> </a>-->
-				</li>
+			{% else %}
+			<li>
+				<a href="#" data-toggle="modal" data-target="#register-modal"><b>{% trans "Erregistratu" %}</b> </a>
+				<!-- <a href="erregistratu">{% trans "Erregistratu" %}</b> </a>-->
+			</li>
 
-				<li>
-					
-					<a href="#" data-toggle="modal" data-target="#login-modal" ><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {% trans "Login" %}</a>
-				</li>
-				
-				{% endif %}
-
+			<li>				
+				<a href="#" data-toggle="modal" data-target="#login-modal" ><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {% trans "Login" %}</a>
+			</li>
+			{% endif %}
       </ul> <!-- Eskuineko 2 linkak -->
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

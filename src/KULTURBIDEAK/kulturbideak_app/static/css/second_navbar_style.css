@@ -1,14 +1,13 @@
 
 .second-navbar {
- 
 	 background-color: #f8f8f8;
-	 padding-bottom: 40px;
+	 padding: 40px 0;
 }
 
 .parag-index {
 	font-family: walsheim-light-web;
 	color:#999999;
-	font-size: 17px !important;
+	font-size: 24px !important;
 }
 
 .parag-line-height-txikia {
@@ -22,13 +21,19 @@
 .kopuruak {
 	font-family: walsheim-web;
 	color:#333333;
-	font-size: 21px !important;
-	margin: 16px 20px -4px !important;
-	border-bottom: 2px solid black; 
-	width: 75%;
+	font-size: 36px !important;
 	text-align: center;
 	line-height: 2em;
+	border-bottom:3px solid #ffffff;
+	/*margin:auto;*/
 }
+
+ul#kopuruak li{
+	display:inline-block;
+	padding:20px;
+	text-align:center;
+}
+
 
 .kopuru-marra-gorria {
 	border-bottom-color:#FF563D;
@@ -47,11 +52,10 @@
 }
 
 .kopuru-azpiko-testua {
-	font-family: walsheim-ligth-web;
+	font-family: walsheim-light-web;
 	color:#666666;
-	font-size: 9px !important;
-	text-align: center;
-	margin: 16px 22px -4px !important;
+	font-size: 12px !important;
+	text-align: center;	
 }
 .kopuru-azpiko-testua a{
 	
@@ -68,7 +72,6 @@
 .galdera {
 	font-family: walsheim-web;
 	color:#333333;
-	margin: 69px 40px -4px !important;
 	font-size: 16px !important;
 }
 .galdera a{

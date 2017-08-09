@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext as _
 from django.db.models import Count
 #from haystack import site
-
+from django.conf import settings
 
 
 
@@ -134,7 +134,7 @@ class item(models.Model):
         
     #Itemei dagokien QR kodeak sortzeko erabiliko da
     def get_absolute_url(self):
-        return "http://ondarebideak.dss2016.eu/erakutsi_item?id=%i" % self.id
+        return "{}/erakutsi_item?id={}".format(settings.BASE_URL,self.id)
       
     # get comments
     def get_comments(self):

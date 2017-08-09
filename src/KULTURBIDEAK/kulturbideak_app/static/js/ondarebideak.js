@@ -1,5 +1,11 @@
 
 /***************************
+*    Global variables
+****************************/
+
+var serverUrl = "http://obprototipoa.elhuyar.eus"
+
+/***************************
 *    Utils
 ****************************/
 
@@ -636,7 +642,7 @@ function add_me_to_the_SVG(element,item_id){
 
 	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
 	if (data.length == 0){
-			var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://ondarebideak.dss2016.eu/uploads/festivalCineDonostia.jpeg", "parent":'' };
+			var root = {"id":0 ,"name" : "ROOT" , "irudia": serverUrl+"/uploads/NoIrudiItem.png", "parent":'' };
 			data.push(root);
 	}
 	var id = element.id.substring(7,element.id.length);

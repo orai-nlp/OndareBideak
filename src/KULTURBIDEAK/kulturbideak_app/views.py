@@ -34,18 +34,19 @@ from KULTURBIDEAK.kulturbideak_app.models import *
 from haystack.management.commands import update_index
 from KULTURBIDEAK.settings import *
 
+# settings.py variables
+from django.conf import settings
+
+# i18n
 from django.utils.translation import ugettext as _
 
 from datetime import datetime
 
+#solr
 from KULTURBIDEAK.kulturbideak_app.search_indexes import itemIndex
 from KULTURBIDEAK.kulturbideak_app.search_indexes import pathIndex
 from db_views import db_add_itemcomment,db_add_pathcomment,db_register, db_update_profile
 from haystack.query import SQ, SearchQuerySet
-
-import simplejson as json
-import getopt
-import tempfile
 
 from  haystack.inputs import Not
 from haystack.inputs import Raw
@@ -57,6 +58,11 @@ from haystack.inputs import Raw
 #from KULTURBIDEAK.kulturbideak_app.models import item
 
 #from array import array
+
+#json
+import simplejson as json
+import getopt
+import tempfile
 
 import os
 import subprocess
@@ -72,9 +78,13 @@ import re
 import random
 
 
-
+'''
+    *************************************
+             global variables
+    *************************************
+'''
 nodeLoadError=""
-
+ob_base_url = settings.BASE_URL
 
 '''
     *************************************
@@ -3234,8 +3244,8 @@ def eguneko_ibilbidea_gehitu(request):
         autoplay=0
         
         #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-        pathqrUrl="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id="+str(path_id)
-        itemqrUrl="http://ondarebideak.dss2016.eu/erakutsi_item?id="+str(item_id)
+        pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=momentukoItema)
@@ -4028,8 +4038,8 @@ def eguneko_ibilbidea_kendu(request):
         autoplay=0
         
         #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-        pathqrUrl="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id="+str(path_id)
-        itemqrUrl="http://ondarebideak.dss2016.eu/erakutsi_item?id="+str(item_id)
+        pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=momentukoItema)
@@ -5176,8 +5186,8 @@ def nabigazioa_hasi(request):
         autoplay=0
         
         #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-        pathqrUrl="http://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id="+str(path_id)
-        itemqrUrl="http://ondarebideak.dss2016.eu/erakutsi_item?id="+str(item_id)
+        pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=momentukoItema)

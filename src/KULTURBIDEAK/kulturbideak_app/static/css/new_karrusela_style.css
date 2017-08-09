@@ -7,6 +7,11 @@ Image credits: unsplash.com
 /********************************/
 /*       Fade Bs-carousel       */
 /********************************/
+#bs-carousel {
+	align:center;
+	padding:0 12%;
+}
+
 .fade-carousel {
     position: relative;
     height: 48vh;
@@ -32,14 +37,14 @@ Image credits: unsplash.com
  	/*left:-605px;*/
  }
 
-/*Maddalen berria */
+/*Maddalen berria 
  .carousel-inner {
     padding-left: 95px !important;
    /* padding-top: 35px !important;*/
    
     width: 95% !important;
  }
-
+*/
 .laukia {
 
 	 height: 48vh;/* inherit slide-1..ena*/
@@ -56,14 +61,14 @@ Image credits: unsplash.com
 
 .karratua {
 	height: 48vh;
-
+	padding:0;
 }
-/* boostrap-eko defektuzkoa aldatzen du*/
+/* boostrap-eko defektuzkoa aldatzen du
 .col-md-5 {
     width: 45.667% !important;
     padding-right: 0px;
 }
-
+*/
 .fondo-horia {
 	background-color:#FFDA3E;
 }

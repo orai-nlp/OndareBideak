@@ -11,14 +11,14 @@
 <div class="container-fluid second-navbar">
 
    <div class="row">
-    <div class="col-md-3 col-md-offset-1">
+    <div class="col-md-4 col-md-offset-1 padding-0">
     	<!-- TEXTUA -->
-    	<p class="parag-index parag-line-height-txikia "> Una nueva forma de acceder e </p>
-    	<p class="parag-index"> interpretar el patrimonio digital </p>
+    	<p class="parag-index parag-line-height-txikia "> {% trans "Una nueva forma de acceder e" %} </p>
+    	<p class="parag-index"> {% trans "interpretar el patrimonio digital" %} </p>
     	
     	<form action="/cross_search" method="post" class="navbar-form second-bilatzailea autocomplete-me">
 				{% csrf_token %}
-				<div class="input-group" style="width:97%;">
+				<div class="input-group" style="width:90%;">
 					{% trans "Bilatu ..." as the_placeholder %}								
 					{% if bilaketaGaldera%}
 						<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
@@ -38,68 +38,24 @@
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span> !
 						</button> 
 					</span>
-				</div> 
-    	
-    	<!--BILATZAILE-KUTXA -->
-    	<!--
-			<form action="/cross_search" method="post" class="navbar-form second-bilatzailea autocomplete-me">
-				{% csrf_token %}
-				<div class="input-group" style="width:97%;">
-					{% trans "Bilatu ..." as the_placeholder %}								
-					{% if bilaketaGaldera%}
-						<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
-					{% else %}
-						<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
-					{%endif%}
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="submit">
-							<span class="glyphicon glyphicon-search" aria-hidden="true"></span> !
-						</button> 
-					</span>
-				</div> 
-				-->
-				<!--input-group-->
-<!--
-							{% if radioHizkuntza == "eu" or not radioHizkuntza %}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu" checked>
-							Eu
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu">
-							Eu
-							{%endif%}
-							{% if radioHizkuntza == "es"%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="es" checked>
-							Es
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="es">
-							Es
-							{%endif%}
-							{% if radioHizkuntza == "en"%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en" checked>
-							En
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en">
-							En
-							{%endif%}
-							-->
-
+				</div>     	
 			</form> <!-- Bilatzailearen formularioa -->
 		<!--</div>--><!-- bilaketa kutxa -->  	
     </div> <!--col-md-3 col-md-offset-1 --> <!-- Testua eta bilatzaile-kutxa -->
-    <div class="col-md-4">
-    	<div class="row"> <!-- nested columns -->
-   			 <div class="col-md-4 esk-padding">
+    <div class="col-md-4 padding-0">
+    	<ul id="kopuruak" class="padding-0 center"> <!-- nested columns -->
+   			 <li class="left-padding-0">
    			 	<p class="kopuruak kopuru-marra-gorria "> {{itemKop}}k </p>
-   			 	<p class="kopuru-azpiko-testua"> <a href="itemak_hasiera">{% trans "Itemak" %} &nbsp; <span class="kolore-gris-bat glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a></p>
-   			 </div>
-   			 <div class="col-md-4 esk-padding">
+   			 	<p class="kopuru-azpiko-testua"> <a href="itemak_hasiera">{% trans "Item" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i> </a></p>
+   			 </li>
+   			 <li>
    			 	<p class="kopuruak kopuru-marra-berdea "> {{ibilbideKop}}</p> <!--32 -->
-   			 	<p class="kopuru-azpiko-testua"> <a href="ibilbideak_hasiera">{% trans "Ibilbideak" %} &nbsp; <span class="kolore-gris-bat glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a> </p>
-   			 </div>
-   			 <div class="col-md-4 esk-padding">
+   			 	<p class="kopuru-azpiko-testua"> <a href="ibilbideak_hasiera">{% trans "Ibilbideak" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i> </a> </p>
+   			 </li>
+   			 <li>
    			 	<p class="kopuruak kopuru-marra-urdina"> {{hornitzaileKop}} </p><!--42 -->
-   			 	<p class="kopuru-azpiko-testua"> <a href="hornitzaileak_hasiera">{% trans "Hornitzaileak" %} &nbsp; <span class="kolore-gris-bat glyphicon glyphicon-arrow-right" aria-hidden="true"></span></a></p>
-   			 </div>
+   			 	<p class="kopuru-azpiko-testua"> <a href="hornitzaileak_hasiera">{% trans "Hornitzaileak" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i></a></p>
+   			 </li>
    		 </div>
     </div> <!--col-md-3 --><!-- Zenbakiak -->  
      <div class="col-md-3">

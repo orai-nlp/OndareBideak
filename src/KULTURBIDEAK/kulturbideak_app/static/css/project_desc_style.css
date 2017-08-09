@@ -2,7 +2,7 @@
 .about_title {
 	color: #333333;
     font-family: walsheim-bold-web;
-    font-size: 17px;
+    font-size: 24px;
     margin-bottom: 19px;
     margin-top: 87px;
 }
@@ -10,65 +10,26 @@
 .about_sarrera {
 	font-family: walsheim-light-web;
 	color:#999999;
-	font-size: 17px !important;
+	font-size: 24px !important;
 	margin: 0 0 61px !important;
 }
 
 .about_us_p {
-
 	font-family: walsheim-light-web;
-	color:#333333;
-	font-size: 16px !important;
+	font-size: 14px !important;
 	margin: 20px 13px 15px !important;
-
 }
 
-
-.about_irudiak {
-	margin: -53px 0 15px !important;
-
-	
+ul#about-icons li{
+	display: inline-block;
+	font-family: walsheim-light-web;
+    font-size: 14px;
+    padding:0 40px;
 }
 
 .about_irudiak img {
- 	width:75px;
+	width:75px;
 	margin-top:27px;
 	margin-bottom:18px;
 	margin-left:12px;
-
-}
-
-.img_text {
-	color: #40D7FF;
-    font-family: walsheim-ligth-web;
-    font-size: 13px;
-    margin: 9px 19px -4px;
-    /*text-align: center*/
-}
-
-.text_text {
-	color: #FFDA3E;
-    font-family: walsheim-ligth-web;
-    font-size: 13px;
-     margin: 9px 19px -4px;
-    /*text-align: center*/
-}
-.video_text {
-	color: #FF563D;
-    font-family: walsheim-ligth-web;
-    font-size: 13px;
-     margin: -21px 19px -4px;
-    /*text-align: center*/
-}
-.audio_text {
-	color: #5AED64;
-    font-family: walsheim-ligth-web;
-    font-size: 13px;
-     margin: 17px 19px -4px;
-    /*text-align: center*/
-}
-
-.col-zabalera {
-
-	width: 19.667% !important;
 }

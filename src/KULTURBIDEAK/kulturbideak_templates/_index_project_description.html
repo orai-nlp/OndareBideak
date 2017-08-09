@@ -13,7 +13,7 @@
 		</div>
 	</div> <!--row-->
 	<div class="row">
-		<div class="col-md-3 col-md-offset-2">
+		<div class="col-md-4 col-md-offset-2">
 			
 			<p class="about_sarrera">
 				{% trans "Ondare digitala atzitu erabili eta interpretatzeko modu berri bat" %}
@@ -26,39 +26,39 @@
 		</div>
 	</div> <!--row-->
 	<div class="row"> <!-- IRUDIAK  -->
-		<div class="col-md-8 col-md-offset-3">
-			<div class="row"> <!-- nested columns -->
-   			 <div class="col-md-2 col-zabalera">
-   			 	<p class="about_irudiak">  <img src="{{STATIC_URL}}img/newLogo/icons/image_fullres.png"></p>
-   			 	<p class="img_text"> {% trans "Imágenes"%}</p>
-   			 </div>
-   			 <div class="col-md-2 col-zabalera">
-   			 	<p class="about_irudiak"> <img src="{{STATIC_URL}}img/newLogo/icons/text_fullres.png"> </p>
-   			  	<p class="text_text"> {% trans "Textos"%}</p>
-   			  </div>
-   			  <div class="col-md-2 col-zabalera">
-   			 	<p class="about_irudiak"> <img src="{{STATIC_URL}}img/newLogo/icons/video_fullres.png"> </p>
-   			 	<p class="video_text"> {% trans "Videos"%}</p>
-   			 </div>
-   			 <div class="col-md-2 col-zabalera">
-   			 	<p class="about_irudiak"> <img src="{{STATIC_URL}}img/newLogo/icons/audio_fullres.png"> </p>
-   			  	<p class="audio_text"> {% trans "Audios"%}</p>
-   			  </div>
-		</div> <!--row-->	
+		<div class="col-md-8 col-md-offset-2">
+			<ul id="about-icons" class="padding-0 center"> <!-- nested columns -->
+   				<li class="kolore-image">
+   			 		<p class="about_irudiak">  <img src="{{STATIC_URL}}img/icons/image_fullres.png"></p>
+   			 		<p class=""> {% trans "Imágenes"%}.</p>
+   			 	</li>
+   			 	<li class="kolore-text">
+   			 		<p class="about_irudiak"> <img src="{{STATIC_URL}}img/icons/text_fullres.png"> </p>
+   			  		<p class=""> {% trans "Textos"%}.</p>
+   			  	</li>
+   			  	<li class="kolore-video">
+   			 		<p class="about_irudiak"> <img src="{{STATIC_URL}}img/icons/video_fullres.png"> </p>
+   			 		<p class=""> {% trans "Videos"%}.</p>
+   			 	</li>
+   			 	<li class="kolore-sound">
+   			 		<p class="about_irudiak"> <img src="{{STATIC_URL}}img/icons/audio_fullres.png"> </p>
+   			  		<p class=""> {% trans "Audios"%}.</p>
+   			  	</li>
+			</ul> <!--row-->	
 		</div>
 	</div> <!--row-->
 	<div class="row">
 		<div class="col-md-4 col-md-offset-2">
-			<p class="about_us_p">
+			<p class="about_us_p kolore-gris-lau">
 				 {% trans "OndareBideak proiektuak ondare digitala atzitu, erabili eta interpretatzeko modu berriak eskaintzen dizkio erabiltzaileari." %}
 			</p>
 
-			<p class="about_us_p">
+			<p class="about_us_p kolore-gris-lau">
 				{% trans "Liburutegi, museo eta artxibategietako ondarea gero eta gehiago digitalizatuta dago, eta lekuan bertan ez ezik atari digitalen bidez ere kontsulta dezakegu. Tamalez, biltegi digital hauetan dagoen informazio kopuru erraldoiak oso zaila egiten du bisitariarentzat bertako edukiak modu eraginkorrean atzitzea. Edukiek ez dute ikusgarritasunik horrenbesteko materialen artean eta askotan biltegiak objektu inerteen gordailu huts bihurtzen dira. Museo eta galerietan egoera bestelakoa da, ondarea antolatu egiten baita eta bisitaria aukeratutako edukietan zehar gidatu." %}
 			</p>
 		</div>
 		<div class="col-md-4 ">
-			<p class="about_us_p">
+			<p class="about_us_p kolore-gris-lau">
 				{% trans "Gurera etorrita, Donostialdean kultura aldetik ikusgarri diren obra eta elementu digital andana dago. Ondare horri bizia emateko sortu da, hain zuzen ere, OndareBideak proiektua. Horretarako eduki horien gaineko plataforma digital bat garatu dugu, “museo digitala”. Bertan, adituek sortutako “erakusketa digitalak” ikusi eta jarraitu ahal izango ditu bisitariak, baita sare sozialen bidez partekatu eta gustokoenen aldeko bozka eman ere. Horrekin batera, ibilbide propioak sortzeko aukera emango du webguneak, lan kulturalen irakurketa eta interpretazio pertsonaletarako bidea eskainiz. Ibilbideak bakoitza erabiltzailearen erakusketa pertsonala izango da, otutzen zaion edozein irizpideren araberakoa izan daiteke, adibidez: gai orokor bat (Arkitektura, Musika), garai historiko jakin bat (XIX. mendea), leku jakin bati lotua (Ulia edo Urgull), pertsonaia ezagunei buruzkoak (Aita Donostia, Bilintx), edo gure gustoko lekuei buruzko ibilbide bat." %}
 			</p>
 		</div>

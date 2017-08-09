@@ -43,16 +43,16 @@
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer marra-iluna mota-irudia"> {% trans "Itema" %} &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  
        						{% if 'TEXT' in egunekoItem.edm_type %}
-       							<img src="{{STATIC_URL}}img/newLogo/icons/text_beltz.png">
+       							<img src="{{STATIC_URL}}img/icons/text_beltz.png">
        							<span class="letra-arina"> &nbsp;  {% trans "Testua" %} </span> </p>
        						{% elif 'IMAGE' in egunekoItem.edm_type %}
-       							<img src="{{STATIC_URL}}img/newLogo/icons/image_beltz.png">
+       							<img src="{{STATIC_URL}}img/icons/image_beltz.png">
        							<span class="letra-arina"> &nbsp;  {% trans "Irudia" %} </span> </p>
        						{% elif 'SOUND' in egunekoItem.edm_type %}
-       							<img src="{{STATIC_URL}}img/newLogo/icons/audio_beltz.png">
+       							<img src="{{STATIC_URL}}img/icons/audio_beltz.png">
        							<span class="letra-arina"> &nbsp;  {% trans "Audioa" %} </span> </p>
        						{% else %}
-       							<img src="{{STATIC_URL}}img/newLogo/icons/video_beltz.png">
+       							<img src="{{STATIC_URL}}img/icons/video_beltz.png">
        							<span class="letra-arina"> &nbsp;  {% trans "Bideoa" %} </span> </p>
        						{%endif%}
        						
@@ -66,14 +66,14 @@
        						
        						{%endif%}
        					</div>
-       					<div class="col-md-5 col-md-offset-1">
+       					<div class="col-md-10 col-md-offset-1">
        						<p class="karrusel-title"> {{ LANGUAGE_CODE|choose_title_language:egunekoItem|format_html|safe}}  </p>
        					</div>	
        					<div class="col-md-10 col-md-offset-1">
        						<p class="karrusel-describapena"> {{ LANGUAGE_CODE|choose_description_language:egunekoItem|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe | get_substring_150}}  </p>
        					</div>			
        					<div class="col-md-4 col-md-offset-8">
-       						<p class="karrusel-gehiago"> <a href="http://ondarebideak.dss2016.eu/erakutsi_item?id={{egunekoItem.id}}"> {% trans "Ikusi gehiago" %} &nbsp;<span class="kolore-txuria glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a></p>
+       						<p class="karrusel-gehiago"> <a href="{{BASE_URL}}/erakutsi_item?id={{egunekoItem.id}}"> {% trans "Ikusi gehiago" %} &nbsp;<span class="kolore-txuria glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a></p>
        					</div>		
        				
        				</div>
@@ -141,7 +141,7 @@
        						<p class="karrusel-describapena-argia"> {{egunekoHornitzaile.deskribapena |format_html| safe |get_substring_150 | safe }} ... </p>
        					</div>			
        					<div class="col-md-4 col-md-offset-8">
-       						<p class="karrusel-gehiago-argia"> <a href="http://ondarebideak.dss2016.eu/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h"> {% trans "Ikusi gehiago" %} &nbsp;<span class="kolore-horia glyphicon glyphicon-arrow-right" aria-hidden="true"></span></a></p>
+       						<p class="karrusel-gehiago-argia"> <a href="{{BASE_URL}}/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h"> {% trans "Ikusi gehiago" %} &nbsp;<span class="kolore-horia glyphicon glyphicon-arrow-right" aria-hidden="true"></span></a></p>
        					</div>		
        				
        				</div>
