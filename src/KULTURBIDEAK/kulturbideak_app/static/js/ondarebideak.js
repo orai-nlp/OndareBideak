@@ -648,32 +648,10 @@ function add_me_to_the_SVG(element,item_id){
 	var id = element.id.substring(7,element.id.length);
 	var irudia = element.children[3].src;// ws_box-ei type irudia gehitu aurretik children[2]
 	var titulua = element.children[4].firstChild.data; // ws_box-ei motaren irudia gehitu aurretik children[3]
-	var mota = element.children[1].firstChild.attributes[0].nodeValue
-	//glyphicon glyphicon-camera  		--> IMAGE
-	//glyphicon glyphicon-file    		--> TEXT
-	//glyphicon glyphicon-headphones    --> SOUND
-	//glyphicon glyphicon-film		    --> VIDEO
-	if(mota == 'glyphicon glyphicon-camera')
-	{
-		mota='IMAGE';
-	}
-	else if(mota == 'glyphicon glyphicon-file')
-	{
-		mota='TEXT';
-	}
-	else if(mota == 'glyphicon glyphicon-headphones')
-	{
-		mota='SOUND';
-	}
-	else if(mota == 'glyphicon glyphicon-film')
-	{
-		mota='VIDEO';
-	}
-	else
-	{
-		mota='';
-	}
-    
+	
+	var mota = element.children[1].firstChild.attributes[1].nodeValue;	
+	mota = mota.split("/").pop().split(".")[0].toUpperCase();
+	
 	//var svg = document.getElementById("path_boxes").children;
 	var obj={id: id, name: titulua , irudia: irudia, parent:0, mota: mota};
 	data.push(obj);
@@ -684,31 +662,9 @@ function add_me_to_the_SVG(element,item_id){
     var id = element.id.substring(7,element.id.length);
 	var irudia = element.children[3].src;// ws_box-ei motaren irudia gehitu aurretik children[2]
 	var titulua = element.children[4].firstChild.data;//children[3]
-	var mota = element.children[1].firstChild.attributes[0].nodeValue
-	//glyphicon glyphicon-camera  		--> IMAGE
-	//glyphicon glyphicon-file    		--> TEXT
-	//glyphicon glyphicon-headphones    --> SOUND
-	//glyphicon glyphicon-film		    --> VIDEO
-	if(mota == 'glyphicon glyphicon-camera')
-	{
-		mota='IMAGE';
-	}
-	else if(mota == 'glyphicon glyphicon-file')
-	{
-		mota='TEXT';
-	}
-	else if(mota == 'glyphicon glyphicon-headphones')
-	{
-		mota='SOUND';
-	}
-	else if(mota == 'glyphicon glyphicon-film')
-	{
-		mota='VIDEO';
-	}
-	else
-	{
-		mota='';
-	}
+	
+	var mota = element.children[1].firstChild.attributes[1].nodeValue;
+	mota = mota.split("/").pop().split(".")[0].toUpperCase();
 	
 	//var svg = document.getElementById("path_boxes").children;
 	var obj={id: id, name: titulua , irudia: irudia, parent:0, mota: mota};
@@ -918,29 +874,31 @@ function add_workspace_box(box_id,text_value,image_value,mota){
     //Motaren arabera irudia agertzeko    
     var wsb_typeImage = document.createElement("div");
     wsb_typeImage.setAttribute("class","wsb_typeImage");
-    var typeglyph = document.createElement("span");
+    var typeglyph = document.createElement("img");
 
-    if(mota=='IMAGE')
+    typeglyph.setAttribute("class","mota-icon");
+    typeglyph.setAttribute("src","/static/img/icons/"+mota.toLowerCase()+".png");
+    /*if(mota=='IMAGE')
     {
-    	typeglyph.setAttribute("class","glyphicon glyphicon-camera");
+    	typeglyph.setAttribute("class","glyphicon glyphicon-camera mota-icon");
     }
     else if(mota=='TEXT')
     {
-    	typeglyph.setAttribute("class","glyphicon glyphicon-file");
+    	typeglyph.setAttribute("class","glyphicon glyphicon-file mota-icon");
     }
     else if(mota=='SOUND')
     {
-    	typeglyph.setAttribute("class","glyphicon glyphicon-headphones");
+    	typeglyph.setAttribute("class","glyphicon glyphicon-headphones mota-icon");
     }
     else if(mota=='VIDEO')
     {
-    	typeglyph.setAttribute("class","glyphicon glyphicon-film");
+    	typeglyph.setAttribute("class","glyphicon glyphicon-film mota-icon");
     }
     else
     {
     	typeglyph.setAttribute("class","");
     }
-    typeglyph.setAttribute("aria-hidden","true");
+    typeglyph.setAttribute("aria-hidden","true");*/
     wsb_typeImage.appendChild(typeglyph);
     ws_box.appendChild(wsb_typeImage);
     

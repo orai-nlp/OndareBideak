@@ -1,0 +1,259 @@
+/* LETRA TIPO BERRIAK*/
+@font-face {
+    font-family: "walsheim-web";
+    src: url("../fonts/gt-walsheim-web.ttf") format("truetype");
+}
+@font-face {
+    font-family: "walsheim-light-web";
+    src: url("../fonts/gt-walsheim-light-web.ttf") format("truetype");
+}
+@font-face {
+    font-family: "walsheim-bold-web";
+    src: url("../fonts/gt-walsheim-bold-web.ttf") format("truetype");
+}
+
+
+/* KOLOREAK */
+
+.kolore-video {
+	color:#FF563D !important;
+}
+.kolore-video img{
+	color:#FF563D !important;
+}
+.kolore-text {
+	color:#FFDA3E !important;
+}
+.kolore-image {
+	color:#40D7FF !important;
+}
+.kolore-sound {
+	color:#5AED64 !important;
+}
+
+/* hasierako patailan: data, gehiago ikusiren gezia...*/
+.kolore-txuria { 
+	color:#FFFFFF !important;
+}
+.kolore-beltza { 
+	color:#000000 !important;
+}
+
+/* FONDO KOLOREAK */
+
+.backgrnd-video {
+	background-color:#FF563D !important;
+}
+.backgrnd-video img{
+	background-color:#FF563D !important;
+}
+.backgrnd-text {
+	background-color:#FFDA3E !important;
+}
+.backgrnd-image {
+	background-color:#40D7FF !important;
+}
+.backgrnd-sound {
+	background-color:#5AED64 !important;
+}
+
+.backgrnd-gris-0 {
+	background-color:#f8f8f8 !important;
+}
+.backgrnd-gris-bat {
+	background-color:#eeeeee !important;
+}
+.backgrnd-gris-bi{
+	background-color:#999999 !important;
+}
+.backgrnd-gris-hiru {
+	background-color:#666666 !important;
+}
+.backgrnd-gris-lau {
+	background-color:#333333 !important;
+}
+
+/* hasierako patailan: data, gehiago ikusiren gezia...*/
+.kolore-txuria { 
+	
+	color:#FFFFFF !important;
+}
+.kolore-beltza { 
+	
+	color:#000000 !important;
+}
+
+.backgrnd-beltza {
+	background-color:#000000 !important;
+}
+
+.backgrnd-txuria {
+	background-color:#FFFFFF !important;
+}
+a {
+	color: #333333; 
+}
+
+a:hover {
+	color: #666666; 
+}
+
+a.kolore-gris-bat:hover {
+	color: #999999;
+	text-decoration:underline;
+}
+
+
+/*
+kolore grisak: - zero argiena
+*/
+.kolore-gris-0 { 
+	color:#f8f8f8 !important;
+}
+
+.kolore-gris-bat { 
+	
+	color:#eeeeee !important;
+}
+.kolore-gris-bi { 
+	
+	color:#999999 !important;
+}
+.kolore-gris-hiru { 
+	
+	color:#666666 !important;
+}
+.kolore-gris-lau { 
+	
+	color:#333333 !important;
+}
+
+
+
+
+/* estilo orokorrak, normalean definitutako klaseek dituztenak gainidazteko*/
+ .top-padding-0 {
+ 	padding-top: 0 !important;
+ }
+ 
+ .left-padding-0 {
+ 	padding-left: 0 !important;
+ }
+ 
+ .right-padding-0{
+ 	padding-right: 0 !important;
+ }
+ 
+ .bottom-padding-0{
+ 	padding-bottom: 0 !important;
+ }
+ 
+ .padding-0{
+ 	padding:0 !important;
+ }
+ 
+.eskuma {
+	float: right;
+	text-align:right;
+}
+.ezkerra {
+	float: left;
+}
+.clearfix::after {
+	clear: both;
+	content: "";
+	display: table;
+}
+
+.bold {
+	font-family:walsheim-bold-web;
+}
+
+b{
+	font-family:walsheim-bold-web;
+}
+
+
+i {
+	font-style:italic;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+ /* END estilo orokorrak*/
+
+
+/* Ikono estiloak */
+.mota-icon {
+	width:1em;
+	margin:5px;
+	vertical-align:bottom;
+}
+
+.circle-back { 
+   background: #eeeeee; 
+   -moz-border-radius: 50%; 
+   -webkit-border-radius: 50%; 
+   border-radius: 50%;
+   padding:10px;
+   color:#333333;
+   margin:10px;
+}
+
+.square-back { 
+   background: #333333; 
+   padding:10px;   
+}
+
+.square-back-lg { 
+   background: #333333; 
+   padding:15px;   
+}
+
+.overlay-icon{
+	width: 15%;
+	transition: .5s ease;
+	position: absolute;
+	top: 75%;
+	left: 80%;
+	z-index: 1000;
+	opacity:1 !important;
+	background: transparent !important;
+}
+
+/* END Ikono estiloak */
+
+/* custom modal dialog styles*/
+.modal-dialog {
+	width: 60%;
+}
+
+.modal-content {
+	-webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    border-top: solid 5px #FFDA3E !important;
+    border-bottom: solid 5px #FF563D !important;
+    border-left: solid 5px #40D7FF !important;
+    border-right: solid 5px #5AED64 !important;
+     
+}
+
+.modal-title{
+	color:black !important;
+	font-weight: bold !important;
+}
+
+.modal-body h4 {
+	color:#666666 !important;
+	margin:10px 0px 20px 0px;
+}
+
+#login-modal {
+	width:40%;
+	left:auto;
+}
+/* End of modal dialog styles*/
+

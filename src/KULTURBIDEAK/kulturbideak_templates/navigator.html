@@ -2,7 +2,6 @@
 {% load leaflet_tags %}
 {% load qr_tags %}
 {% load tags%}
-{% block content %}
 
 {% get_current_language as LANGUAGE_CODE %}
 <html>
@@ -23,7 +22,7 @@
 		{% endblock tts_styles %}
 	
 	
-		<link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
+		<link rel="stylesheet" href="{{STATIC_URL}}css/ob_common_styles.css" type="text/css">
 		<link rel="stylesheet" href="{{STATIC_URL}}css/navigator.css" type="text/css">
 		<link rel="stylesheet" href="{{STATIC_URL}}css/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
 		
@@ -47,11 +46,17 @@
 		{% leaflet_js %}
 		{% leaflet_css %}
 		{% load qr_tags %}
-		
+
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/readmore.js"></script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
 		<script>
             var csrf_token = "{{ csrf_token }}";
             var erabiltzailea = "{{request.user.username}}";
 		</script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3.min.js"></script>
+		
 		
 		<!-- VIDEO PLAYERRA-->		
 		<script src="{{STATIC_URL}}mediaelement3.1.2/mediaelement-and-player.js"></script>
@@ -77,15 +82,27 @@
   		var path_hizkuntza="{{momentukoPatha.language}}";
   
 		</script>
+		
+		
+		
 	</head>
+	
+	
 	<body>
-		<div id="main-div" class="bg backgrnd-gris-lau">
+		<div id="main-div" class="bg backgrnd-beltza">
 			<!-- atzeko irudia -->
-			<div id="back-image">
+			<div id="back-image" class="backgrnd-gris-hiru">
 				<div id="buttons">
 					<ul>
-						<li><a href=""><i class="fa fa-map-signs backgrnd-gris-0"></i></a></li>
-						<li><a href=""><i class="fa fa-times backgrnd-gris-0"></i></a></li>
+						<li class="square-back-lg backgrnd-gris-0">
+							<button id="create_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modaloverview" >
+								<i class="fa fa-map-signs backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i>
+							</button>
+							<a href=""></a>
+						</li>
+						<li class="square-back-lg backgrnd-gris-0">
+							<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}"><i class="fa fa-times backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i></a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -104,32 +121,40 @@
 			<!-- END elementuak erakusteko panela -->
 			
 			<!-- nabigazio-kontrola -->
-			<div id="control-panel" class="backgrnd-gris-hiru">
-				<div class="col-md-2">
-					<img src="{{STATIC_URL}}/img/icons/path_zuri.png">
-					<p><span>{% trans "IBILBIDEA" %} </span></p>
-					<p>{{momentukoPatha.dc_title}}</p>
+			<div id="control-panel" class="backgrnd-gris-lau">
+				<div class="col-md-4">
+					<ul id="ctrlpanel-info" class="left-padding-0">
+						<li id="ctrlpanel-logo">
+							<img src="{{STATIC_URL}}/img/icons/path.png">
+						</li>
+						<li id="ctrlpanel-path-info" class="left-padding-0">
+							<p class="ctrlpanel-line"><span class="ctrlpanel-title kolore-gris-bi">{% trans "IBILBIDEA" %}</span></p>
+							<p class="ctrlpanel-line"><span class="ctrlpanel-path-title kolore-gris-0">{{momentukoPatha.dc_title}}</span></p>
+						</li>
+					</ul>
 				</div>
 				<!-- kontrolak -->
-				<div class="cold-md-8">
-					<ul id="panel-elements">
+				<div class="col-md-5">
+					<ul id="panel-elements" class="center">
 						<li>
-							<a href=""><i class="fa fa-play"></i></a>
+							<a id="autoplay" class="" href="#" onclick="window.location = stopOrria;return false;">
+								<i class="fa fa-play"></i>
+							</a>
 						</li>
 						<li>
-							<a href=""><i class="fa fa-pause"></i></a>
+							<a id="autoplay" class="" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"><i class="fa fa-pause"></i></a>
 						</li> 
 					</ul>
 				</div>
 				<!-- END kontrolak -->
 				<!-- aurrera/atzera botoiak -->
-				<div class="cold-md-2">
-					<ul id="panel-elements">
+				<div class="col-md-3">
+					<ul id="fwrd-bckwrd">
 						<li>
-							<a href=""><i class="fa fa-arrow-left"></i>{% trans 'aurrekoa' %}</a>
+							<a href=""><i class="fa fa-arrow-left"></i><span class="capitalize kolore-gris-bi"> {% trans 'aurrekoa' %}</span></a>
 						</li>
 						<li>
-							<a href=""><i class="fa fa-arrow-right"></i>{% trans 'hurrengoa' %}</a>
+							<a href=""><span class="capitalize kolore-gris-bi">{% trans 'hurrengoa' %} </span><i class="fa fa-arrow-right"></i></a>
 						</li> 
 					</ul>
 				</div>
@@ -137,6 +162,149 @@
 			</div>
 			<!-- END nabigazio-kontrola -->
 		</div>
+		
+		
+		
+<!-- IBILBIDEAREN MODALA -->
+<div class="modal fade" id="modaloverview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4>{% trans "Ibilbidearen mapa" %}</h4>
+			</div>
+			<div class="modal-body">
+				<div id="path_boxes_overview"></div>
+				<script>
+                var ibilbide_data = [];
+                var path_id = {{path_id}};
+                var root = {
+                    "id" : 0,
+                    "name" : "ROOT",
+                    "irudia" : "{{BASE_URL}}/uploads/festivalCineDonostia.jpeg",
+                    "parent" : ''
+                };
+                ibilbide_data.push(root);
+				</script>
+				{% for node in path_nodeak%}
+				<script type="text/javascript">
+                var id = "{{node.fk_item_id_id}}";
+                //path_node[0];
+                var titulua = htmlDecode("{{node.dc_title}}");
+                //path_node[1];
+            	var irudia = htmlDecode("{{node.fk_item_id.ob_thumbnail}}");												
+				if (!irudia || irudia === "") {
+					irudia = htmlDecode("{{node.fk_item_id.edm_object}}");
+				}
+				//path_node[2];
+                if (!irudia || irudia === "") {
+                    irudia = "/uploads/NoIrudiItem.png";
+                }
+
+                var aita_id = "{{node.paths_prev}}";
+                //aita hutsa bada , root izango da bere aita
+                if (aita_id == "") {
+                    aita_id = 0;
+                }
+                var mota = "{{node.fk_item_id.edm_type}}";
+				
+				var obj = {
+					id : id,
+					name : titulua,
+					irudia : irudia,
+					parent : aita_id,
+					mota : mota
+				};
+                
+                ibilbide_data.push(obj);
+
+				</script>
+				{% endfor%}
+				<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3ondarebideakoverview.js"></script>
+			</div>
+			<div class="modal-footer">						
+       				<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       				<button type="button" class="btn btn-primary">Save changes</button>-->
+   			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END IBILBIDEAREN MODALA -->
+		
+
+<!-- page-end scripts -->
+<!-- TTS -->
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts_berezia.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
+
+
+{% if autoplay == 1 %}
+
+<script>
+  //Orriaren goikaldea erazagutu da aldagaia
+  //var isTTSReading = false;
+
+
+
+  var orr = "{{autoplaypage}}";
+  var stopOrr=orr; //Stop botoiak kargatu behar duen orria
+  orr=orr+"&autoplay=1&offset="+{{offset}};
+  
+  var stopOrria = stopOrr.replace("&amp;", "&");
+  var orria = orr.replace("&amp;", "&");
+  //var sec = 1000;
+  //var autoplayTimeout;
+
+  function waitForIt()
+  {
+     //console.log("wait?");
+     if (isTTSReading) {
+        //console.log("yes");
+        setTimeout(function(){waitForIt()},100);
+     }
+     else
+     {
+        //console.log("no wait");
+        //go do that thing
+        window.location = orria;
+        //doSetTimeOutAutoplay(orria, sec); 
+     }
+  }
+
+  function entzunEtaHurrengoraPasa()
+  {
+
+      isTTSReading =true;
+
+      TTS.entzun();
+      waitForIt();
+
+  }
+     
+    //ORRIA ENTZUN
+    entzunEtaHurrengoraPasa();
+
+    //document.getElementById("azalpentestua").click();
+    //doSetTimeOutAutoplay(orria, sec);
+</script>
+
+{%endif%} <!--  autoplay-->
+
+<!-- END page-end scripts -->
+
+
+
+		
 	</body>
 	
 </html>
