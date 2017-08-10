@@ -152,6 +152,10 @@ kolore grisak: - zero argiena
  	padding:0 !important;
  }
  
+ .margin-0{
+ 	margin:0 !important;
+ }
+ 
 .eskuma {
 	float: right;
 	text-align:right;
@@ -182,12 +186,17 @@ i {
 	text-transform: capitalize;
 }
 
+.btn {
+	border: none !important;
+	border-radius: 0 !important;
+	padding:0 !important;
+}
  /* END estilo orokorrak*/
 
 
 /* Ikono estiloak */
 .mota-icon {
-	width:1em;
+	width:10px;
 	margin:5px;
 	vertical-align:bottom;
 }
@@ -256,4 +265,47 @@ i {
 	left:auto;
 }
 /* End of modal dialog styles*/
+
+
+/* overlays */
+div.dark-overlay {
+	transition: .5s ease;
+	position: absolute;
+	background: rgba(0, 0, 0, 0.5);
+	top: 5%;
+	left: 5%;
+	width: 90%;
+	height: 90%;
+}
+
+div.dark-overlay-full {
+	transition: .5s ease;
+	position: absolute;
+	background: rgba(0, 0, 0, 0.75);
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+}
+/* END overlays */
+
+/* read more... estekak */ 
+a.morelink {
+	text-decoration: none;
+	outline: none;
+}
+.morecontent span {
+	display: none;
+}
+.comment {
+	/*width: 400px;*/
+	margin: 10px;
+}
+.aRight {
+	float: right;
+}
+
+/* END read more... estekak */
+
+
 

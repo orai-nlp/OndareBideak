@@ -11,7 +11,8 @@
 			<a class="bilaketaEmaitza"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
 				<img class="ob_thumbnail" title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}{% endif%}" src="{% if item.ob_thumbnail%} {{item.ob_thumbnail|clean_http_prefix}} {% elif item.edm_object %} {{item.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 				<div class="dark-overlay">
-					<img class="overlay-icon" src="{{STATIC_URL}}img/icons/{{item.edm_type|lower}}.png"></div>
+					<img class="overlay-icon" src="{{STATIC_URL}}img/icons/{{item.edm_type|lower}}.png">
+				</div>
 			</a>
 			
 		</div>		

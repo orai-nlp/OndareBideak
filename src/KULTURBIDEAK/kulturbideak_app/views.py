@@ -1464,7 +1464,28 @@ def eguneko_itema_kendu(request):
         non="nabigazio_item"
         
         
-        return render_to_response('navigator.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+        return render_to_response('navigator.html',{"non":non,
+                                                    "comment_form": comment_form,
+                                                    "comment_parent_form": comment_parent_form,
+                                                    "comments": comments,
+                                                    'itemPaths':itemPaths,
+                                                    'qrUrl':qrUrl,
+                                                    'mlt':mlt,
+                                                    'geoloc_longitude':geoloc_longitude,
+                                                    'geoloc_latitude':geoloc_latitude,
+                                                    'botoKopurua':botoKopurua,
+                                                    'item':item_tupla,
+                                                    'momentukoItema':item_tupla,
+                                                    'id':item_id,
+                                                    'herrialdea':herrialdea,
+                                                    'hizkuntza':hizkuntza,
+                                                    'kategoria':kategoria,
+                                                    'eskubideak':eskubideak,
+                                                    'urtea':urtea,
+                                                    'viewAtSource':viewAtSource,
+                                                    'irudia':irudia,
+                                                    'hornitzailea':hornitzailea,
+                                                    'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
     else:
         
@@ -2373,7 +2394,28 @@ def eguneko_itema_gehitu(request):
         non="nabigazio_item"
         
         
-        return render_to_response('navigator.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':item_id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+        return render_to_response('navigator.html',{"non":non,
+                                                    "comment_form": comment_form,
+                                                    "comment_parent_form": comment_parent_form,
+                                                    "comments": comments,
+                                                    'itemPaths':itemPaths,
+                                                    'qrUrl':qrUrl,
+                                                    'mlt':mlt,
+                                                    'geoloc_longitude':geoloc_longitude,
+                                                    'geoloc_latitude':geoloc_latitude,
+                                                    'botoKopurua':botoKopurua,
+                                                    'item':item_tupla,
+                                                    'momentukoItema':item_tupla,
+                                                    'id':item_id,
+                                                    'herrialdea':herrialdea,
+                                                    'hizkuntza':hizkuntza,
+                                                    'kategoria':kategoria,
+                                                    'eskubideak':eskubideak,
+                                                    'urtea':urtea,
+                                                    'viewAtSource':viewAtSource,
+                                                    'irudia':irudia,
+                                                    'hornitzailea':hornitzailea,
+                                                    'botatuDu':botatuDu},context_instance=RequestContext(request))    
     else:
         
         #editatu
@@ -5218,8 +5260,8 @@ def nabigazioa_hasi(request):
                                                     'path_id':path_id,
                                                     'node_id':item_id,
                                                     'path_nodeak': nodes,
-                                                    'momentukoNodea':momentukoNodea,
-                                                    'momentukoItema':momentukoItema,
+                                                    'node':momentukoNodea,
+                                                    'item':momentukoItema,
                                                     'hurrengoak':hurrengoak,
                                                     'aurrekoak':aurrekoak},context_instance=RequestContext(request))
     
@@ -5337,7 +5379,30 @@ def autoplay_hasieratik(request):
         mlt = mlt[:10]
       
         non="fitxaE"
-        return render_to_response('navigator.html',{'non':non,"mlt":mlt,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('navigator.html',{'non':non,
+                                                    "mlt":mlt,
+                                                    "comment_form": comment_form,
+                                                    "comment_parent_form": comment_parent_form,
+                                                    "comments": comments,
+                                                    'itemPaths':itemPaths,
+                                                    'pathqrUrl':pathqrUrl,
+                                                    'itemqrUrl':itemqrUrl,
+                                                    'offset':offset,
+                                                    'autoplay':autoplay,
+                                                    'autoplaypage':autoplaypage,
+                                                    'hasieraBakarra':hasieraBakarra,
+                                                    'momentukoPatha':momentukoPatha,
+                                                    'botoKopuruaPath':botoKopuruaPath,
+                                                    'botoKopuruaItem':botoKopuruaItem,
+                                                    'botatuDuPath':botatuDuPath,
+                                                    'botatuDuItem':botatuDuItem,
+                                                    'path_id':path_id,
+                                                    'node_id':item_id,
+                                                    'path_nodeak': nodes,
+                                                    'node':momentukoNodea,
+                                                    'item':momentukoItema,
+                                                    'hurrengoak':hurrengoak,
+                                                    'aurrekoak':aurrekoak},context_instance=RequestContext(request))
     
  
 def nabigazio_item(request):
@@ -5453,7 +5518,28 @@ def nabigazio_item(request):
     mlt = mlt[:10]
  
     non="fitxaE"
-    return render_to_response('navigator.html',{'non':non,"mlt":mlt,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    return render_to_response('navigator.html',{'non':non,
+                                                "mlt":mlt,
+                                                "comment_form": comment_form,
+                                                "comment_parent_form": comment_parent_form,
+                                                "comments": comments,
+                                                'itemPaths':itemPaths,
+                                                'pathqrUrl':pathqrUrl,
+                                                'itemqrUrl':itemqrUrl,
+                                                'autoplay':autoplay,
+                                                'hasieraBakarra':hasieraBakarra,
+                                                'momentukoPatha':momentukoPatha,
+                                                'botoKopuruaPath':botoKopuruaPath,
+                                                'botoKopuruaItem':botoKopuruaItem,
+                                                'botatuDuPath':botatuDuPath,
+                                                'botatuDuItem':botatuDuItem,
+                                                'path_id':path_id,
+                                                'node_id':item_id,
+                                                'path_nodeak': nodes,
+                                                'node':momentukoNodea,
+                                                'item':momentukoItema,
+                                                'hurrengoak':hurrengoak,
+                                                'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 def nabigatu(request):
      
@@ -5636,11 +5722,55 @@ def nabigatu(request):
     
     if(autoplay == 1):
         non="fitxaE"
-        return render_to_response('navigator.html',{"mlt":mlt,"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'offset':offset,'autoplay':autoplay,'autoplaypage':autoplaypage,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('navigator.html',{"mlt":mlt,
+                                                    "non":non,
+                                                    "comment_form": comment_form,
+                                                    "comment_parent_form": comment_parent_form,
+                                                    "comments": comments,
+                                                    'itemPaths':itemPaths,
+                                                    'pathqrUrl':pathqrUrl,
+                                                    'itemqrUrl':itemqrUrl,
+                                                    'offset':offset,
+                                                    'autoplay':autoplay,
+                                                    'autoplaypage':autoplaypage,
+                                                    'hasieraBakarra':hasieraBakarra,
+                                                    'momentukoPatha':momentukoPatha,
+                                                    'botoKopuruaPath':botoKopuruaPath,
+                                                    'botoKopuruaItem':botoKopuruaItem,
+                                                    'botatuDuPath':botatuDuPath,
+                                                    'botatuDuItem':botatuDuItem,
+                                                    'path_id':path_id,
+                                                    'node_id':item_id,
+                                                    'path_nodeak': nodes,
+                                                    'node':momentukoNodea,
+                                                    'item':momentukoItema,
+                                                    'hurrengoak':hurrengoak,
+                                                    'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
         non="fitxaE"
-        return render_to_response('navigator.html',{"mlt":mlt,"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'autoplay':autoplay,'hasieraBakarra':hasieraBakarra,'momentukoPatha':momentukoPatha,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('navigator.html',{"mlt":mlt,
+                                                    "non":non,
+                                                    "comment_form": comment_form,
+                                                    "comment_parent_form": comment_parent_form,
+                                                    "comments": comments,
+                                                    'itemPaths':itemPaths,
+                                                    'pathqrUrl':pathqrUrl,
+                                                    'itemqrUrl':itemqrUrl,
+                                                    'autoplay':autoplay,
+                                                    'hasieraBakarra':hasieraBakarra,
+                                                    'momentukoPatha':momentukoPatha,
+                                                    'botoKopuruaPath':botoKopuruaPath,
+                                                    'botoKopuruaItem':botoKopuruaItem,
+                                                    'botatuDuPath':botatuDuPath,
+                                                    'botatuDuItem':botatuDuItem,
+                                                    'path_id':path_id,
+                                                    'node_id':item_id,
+                                                    'path_nodeak': nodes,
+                                                    'node':momentukoNodea,
+                                                    'item':momentukoItema,
+                                                    'hurrengoak':hurrengoak,
+                                                    'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 def botoa_eman_path(request):
@@ -6306,7 +6436,22 @@ def botoa_eman_item(request):
         
         
     
-        return render_to_response('navigator.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('navigator.html',{'mlt':mlt,
+                                                    "non":non,
+                                                    'itemPaths':itemPaths,
+                                                    'qrUrl':qrUrl,
+                                                    'mlt':mlt,
+                                                    'botoKopuruaPath':botoKopuruaPath,
+                                                    'botoKopuruaItem':botoKopuruaItem,
+                                                    'botatuDuPath':botatuDuPath,
+                                                    'botatuDuItem':botatuDuItem,
+                                                    'path_id':path_id,
+                                                    'node_id':item_id,
+                                                    'path_nodeak': nodes,
+                                                    'node':momentukoNodea,
+                                                    'item':momentukoItema,
+                                                    'hurrengoak':hurrengoak,
+                                                    'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
         non="erakutsi_item"
@@ -6404,7 +6549,22 @@ def botoa_kendu_item(request):
         botoKopuruaPath=momentukoIbilbidea.get_votes()
         botoKopuruaItem=momentukoItema.get_votes()
     
-        return render_to_response('navigator.html',{'mlt':mlt,"non":non,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'botoKopuruaPath':botoKopuruaPath,'botoKopuruaItem':botoKopuruaItem,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak,'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+        return render_to_response('navigator.html',{'mlt':mlt,
+                                                    "non":non,
+                                                    'itemPaths':itemPaths,
+                                                    'qrUrl':qrUrl,
+                                                    'mlt':mlt,
+                                                    'botoKopuruaPath':botoKopuruaPath,
+                                                    'botoKopuruaItem':botoKopuruaItem,
+                                                    'botatuDuPath':botatuDuPath,
+                                                    'botatuDuItem':botatuDuItem,
+                                                    'path_id':path_id,
+                                                    'node_id':item_id,
+                                                    'path_nodeak': nodes,
+                                                    'node':momentukoNodea,
+                                                    'item':momentukoItema,
+                                                    'hurrengoak':hurrengoak,
+                                                    'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
     else:
         non="erakutsi_item"

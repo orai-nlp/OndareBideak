@@ -683,8 +683,10 @@ def to_int(value):
     return int(value)
     
     
-    
-    
+# Custom tag for diagnostics
+@register.simple_tag()    
+def debug_object(var):
+    return vars(var)    
     
     
     

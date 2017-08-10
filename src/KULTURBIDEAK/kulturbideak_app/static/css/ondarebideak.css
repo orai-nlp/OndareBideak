@@ -207,15 +207,6 @@ img.ob_thumbnail {
 	background:black;
 }
 
-div.dark-overlay {
-	transition: .5s ease;
-	position: absolute;
-	background: rgba(0, 0, 0, 0.5);
-	top: 5%;
-	left: 5%;
-	width: 90%;
-	height: 90%;
-}
 
 .num {
 	color: #666666;
@@ -781,11 +772,9 @@ div.item-fitxa-line2{
 	width:100%;
 	margin-bottom:30px;
 }
-.item-data {
-	font-size:2em;
-	text-align:left;	
-	width:100%;
-}
+
+/* item-fitxa: mota ikono estiloak*/
+
 li.li-mota {
 	text-align:center;	
 }
@@ -798,6 +787,16 @@ li.li-mota-path span{
 	border-bottom: 3px solid #FFDA3E;
 	padding: 5px 15px;
 }
+
+/* END item-fitxa:mota ikono estiloak*/
+
+
+.item-data {
+	font-size:2em;
+	text-align:left;	
+	width:100%;
+}
+
 ul.button-row-horizontal {
 	list-style:none;
 	margin: 5px 0 5px 0;
@@ -999,21 +998,6 @@ tr.spaceUnder > th {
 	padding-bottom: 0.1em;
 }
 
-a.morelink {
-	text-decoration: none;
-	outline: none;
-}
-.morecontent span {
-	display: none;
-}
-.comment {
-	/*width: 400px;*/
-	margin: 10px;
-}
-.aRight {
-	float: right;
-}
-
 div#comments {
 	padding-top:10px;
 }
@@ -1093,12 +1077,6 @@ circle .unselectedNode {
 	font-size: 17px;
 	font-family: walsheim-web, "dosis" !important;
 	font-weight: 300;
-}
-
-.item-info-description,.path-info-description {
-	color: #000;
-	font-size: 1em;
-	line-height: 22px;
 }
 
 .item-info-description,.path-info-description {

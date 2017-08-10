@@ -15,6 +15,25 @@ html,body {
  **********************/
 #back-image{
 	height:100%;
+	width:100%;
+	position:absolute;
+	z-index:1000;
+}
+
+img.navigator_bckgrnd {
+	height:100%;
+	width:100%;
+	padding:30px;
+}
+.crop-80 {
+	padding:3% 10% !important;
+}
+
+/* main window buttons */
+#buttons{
+	position:absolute;
+	right:0;
+	z-index:1001;
 }
 
 #buttons ul{
@@ -25,6 +44,111 @@ html,body {
 #buttons li{
 	display:inline-block;
 }
+
+#buttons > ul > li {
+	width: 50px;
+	height:50px;
+	text-align:center;
+	vertical-align:center;
+} 
+/* END main window buttons */
+
+
+
+/*** navigator content ***/
+#navigator-content {	
+	width:100%;
+	height:100%;
+	position:relative;
+}
+
+#item-view {
+	width:54%;
+	position:absolute;
+	top:20%;
+	left:6%;
+	z-index:1001;	
+	height:60%;
+}
+
+#item_img {
+	display:block;
+	border:none;
+	padding:0;
+	height:100%;
+}
+
+
+#item-description{
+	width:50%;
+	position:absolute;
+	bottom:95px;
+	right:0;
+	z-index:1001;
+	padding: 80px 30px 20px 20px;
+	height: 50%;
+}
+
+.item-info-description,.path-info-description {
+	font-size: 18px;
+	line-height: 22px;
+	background:transparent;
+	font-family:walsheim-light-web;
+}
+
+div.item-info-description a {
+	color: #666;	
+}
+
+div.item-info-description a:hover {
+	color: #999;	
+}
+
+
+.ul-mota {
+	list-style:none;
+	padding:0;
+}
+
+.ul-mota li{
+	text-align:center;	
+}
+li.li-mota span{
+	border-bottom: 3px solid #000000;
+	padding: 5px;
+}
+
+
+#navigator-item-info {
+	padding:10px 10px 0 10px;
+	height:100%;
+}
+
+#navigator-item-info h2 {
+	margin-bottom:10px;
+}
+.scrollbar{
+    overflow-y:scroll;
+    scrollbar-base-color: #F8F8F8;
+    scrollbar-track-color: #333333;
+}
+
+#navigator-item-info::-webkit-scrollbar{
+	width: 6px;
+    background-color: #F8F8F8;
+    padding:10px 0px;
+}
+
+#navigator-item-info::-webkit-scrollbar-thumb {
+    background-color: #333333;
+}
+
+#navigator-item-info::-webkit-scrollbar-track {
+    background-color: #f8f8f8;
+}
+
+
+/*** END navigator content ***/
 
 /* END main navigator window */
 
@@ -37,6 +161,7 @@ html,body {
 	width:100%;
 	position:fixed;
 	height:95px;
+	z-index:1002;
 }
 
 
@@ -99,4 +224,5 @@ html,body {
 #modaloverview .modal-dialog {
 	width:80%;
 }
+
 /* END path map modal window */

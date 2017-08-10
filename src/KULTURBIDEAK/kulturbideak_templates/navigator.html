@@ -4,6 +4,8 @@
 {% load tags%}
 
 {% get_current_language as LANGUAGE_CODE %}
+
+{% with item.edm_type|lower as itype%}
 <html>
 	<head>
 	
@@ -70,10 +72,10 @@
   		var isTTSReading = false;
   
 		  //"Entzun Orria" sakatzerakoan narrazio osoa irakur dezan erabiltzen da
-  		var desk_osoa = "{{momentukoNodea.dc_description |lerroJauziakKendu| format_html | format_html | replace_quotes| safe }}"
+  		var desk_osoa = "{{node.dc_description |lerroJauziakKendu| format_html | format_html | replace_quotes| safe }}"
   					.replace(/<\/?[^>]+(>|$)/g,"");  
   		if (!desk_osoa|| desk_osoa === ""){
-	  		desk_osoa ="{{momentukoNodea.dc_description |lerroJauziakKendu | safe}}";
+	  		desk_osoa ="{{node.dc_description |lerroJauziakKendu | safe}}";
   		}
   		// |safe|htmlEtiketakGarbitu
   		//alert(desk_osoa);
@@ -90,8 +92,22 @@
 	
 	<body>
 		<div id="main-div" class="bg backgrnd-beltza">
-			<!-- atzeko irudia -->
-			<div id="back-image" class="backgrnd-gris-hiru">
+			<!-- elementuak erakusteko panela -->
+			<div id="navigator-content">
+				<!-- atzeko irudia -->
+				<div id="back-image" class="backgrnd-gris-hiru">
+					<img title="{% if node.dc_title %}{{ LANGUAGE_CODE|choose_title_language:node|format_html|safe}}{% endif%}"
+					{% if item.ob_thumbnail%}
+					src="{{item.ob_thumbnail|clean_http_prefix}}" class="navigator_bckgrnd" 
+					{% elif item.edm_object %}
+					src="{{item.edm_object|clean_http_prefix}}" class="navigator_bckgrnd" 
+					{%else%}
+					src="{{STATIC_URL}}img/icons/path_fullres_zuri.png" class="navigator_bckgrnd crop-80" 
+					{% endif %}>
+					<div class="dark-overlay-full"></div>
+				</div>
+				<!-- END atzeko irudia -->
+				<!-- botoiak -->
 				<div id="buttons">
 					<ul>
 						<li class="square-back-lg backgrnd-gris-0">
@@ -105,16 +121,43 @@
 						</li>
 					</ul>
 				</div>
-			</div>
-			<!-- END atzeko irudia -->
-			<!-- elementuak erakusteko panela -->
-			<div id="navigator-content">
+				<!-- END botoiak -->
 				<!--  elementua -->
-				<div id="item-view">
+				<div id="item-view" class="backgrnd-kolore-gris-0">
+					<!-- item preview -->
+					{% include "_item_preview.html" with momentukoItema=item %}
+					<!-- item preview-->
 				</div>
 				<!-- END elementua -->
 				<!-- Deskribapena -->
-				<div id="item-description">
+				<div id="item-description" class="backgrnd-{{itype}}">
+					<div class="left-padding-0 col-md-2">
+						<ul class="ul-mota" >
+							<li class="li-mota">
+								<span class="kolore-beltza">
+									<img class="mota-icon" src="{{STATIC_URL}}img/icons/{{itype}}_beltz.png">{% trans itype %}
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div id="navigator-item-info" class="col-md-10 scrollbar margin-0">
+						<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
+						<div id="description" class="item-info-description">
+
+							<!-- <div class="clearfix"></div> -->
+						{% if autoplay == 1 %}
+								<span id="item-narrazioa" class="comment item-narrazio kolore-gris-lau">{{node.dc_description | format_html| format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+						{% else %}
+								<span  id="item-narrazioa" class="comment more item-narrazio kolore-gris-lau">{{node.dc_description | format_html |format_html| safe}}</span>				
+						{%endif%}								
+								{% if item.dc_description %}
+									<div class="more item-info-description kolore-gris-lau">
+									{{ LANGUAGE_CODE|choose_description_language:item |format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags |safe}}
+									</div>
+								{% endif %}
+								</div>					
+						</div>						
+					</div>					
 				</div>
 				<!-- END Deskribapena -->
 			</div>
@@ -176,14 +219,14 @@
 				<h4>{% trans "Ibilbidearen mapa" %}</h4>
 			</div>
 			<div class="modal-body">
-				<div id="path_boxes_overview"></div>
+				<div id="path_boxes_overview" class="backgrnd-gris-bat"></div>
 				<script>
                 var ibilbide_data = [];
                 var path_id = {{path_id}};
                 var root = {
                     "id" : 0,
                     "name" : "ROOT",
-                    "irudia" : "{{BASE_URL}}/uploads/festivalCineDonostia.jpeg",
+                    "irudia" : "{{STATIC_URL}}/img/icons/path.png",
                     "parent" : ''
                 };
                 ibilbide_data.push(root);
@@ -308,3 +351,4 @@
 	</body>
 	
 </html>
+{% endwith %}
