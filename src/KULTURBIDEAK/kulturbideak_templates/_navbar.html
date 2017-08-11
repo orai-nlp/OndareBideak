@@ -35,7 +35,7 @@
       <ul class="nav navbar-nav header-main-links {% if not request.mobile%} header-main-links-med {%endif%}">
         <li><a class="header-custom-link-underline" href="itemak_hasiera"> {% trans "ITEMAK" %} </a></li>
         <li><a class="header-custom-link-underline" href="ibilbideak_hasiera"> {% trans "IBILBIDEAK" %} </a></li>
-        <li><a class="header-custom-link-underline" href="hornitzaileak_hasiera"> <span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span> {% trans "HORNITZAILEAK" %} </a></li>
+        <li><a class="header-custom-link-underline" href="hornitzaileak_hasiera"> {% trans "HORNITZAILEAK" %} </a></li>
       </ul>
    
       
@@ -54,10 +54,10 @@
 								<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
 
 								{%endif%}
-								<span class="input-group-btn">
+								<span id="search_icons" class="input-group-btn">
 									
 									<button class="btn btn-default" type="submit">
-										<span class="glyphicon glyphicon-search" aria-hidden="true"></span> !
+										<span class="icon-ob-search" aria-hidden="true"></span> !
 									</button> 									
 								</span>
 								<!-- <span class="input-group-btn">
@@ -123,9 +123,8 @@
 			<hr>
 		{% endif %}
 		{% if user.is_authenticated %}
-			<li class="dropdown">
-				<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class=" kolore-sound glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}} <b class="caret"></b></a>-->
-				<a href="#" class="dropdown-toggle" login-icon data-toggle="dropdown"><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {{request.user.username}} <b class="caret"></b></a>
+			<li class="dropdown">				
+				<a href="#" class="dropdown-toggle" login-icon data-toggle="dropdown"><i class="icon-ob-usr kolore-video"></i> {{request.user.username}} <b class="caret"></b></a>
 					
 				{% if not user.is_superuser %}
 				<ul class="dropdown-menu">
@@ -190,7 +189,7 @@
 			</li>
 
 			<li>				
-				<a href="#" data-toggle="modal" data-target="#login-modal" ><img src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png"> {% trans "Login" %}</a>
+				<a href="#" data-toggle="modal" data-target="#login-modal" ><i class="icon-ob-usr kolore-video"></i> {% trans "Login" %}</a>
 			</li>
 			{% endif %}
       </ul> <!-- Eskuineko 2 linkak -->

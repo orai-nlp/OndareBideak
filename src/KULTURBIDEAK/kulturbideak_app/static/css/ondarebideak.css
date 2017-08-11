@@ -801,13 +801,10 @@ ul.button-row-horizontal {
 	list-style:none;
 	margin: 5px 0 5px 0;
 	padding:0;	
-	float:right;	
 }
 
 .button-row-horizontal li{
 	padding:5px;
-	background:none;
-	color:#000000;
 	display:inline-block;
 	vertical-align:middle;
 }
@@ -860,6 +857,8 @@ div#item_preview-element {
 	padding:20px;
 	background:#ffffff;
 	display:inline-block;
+	border:none;
+	border-radius:0;
 }
 
 div#item_preview-description {

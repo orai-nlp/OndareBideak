@@ -1723,14 +1723,14 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 	var besteF_ar = [];
 	
 	//Hizkuntzak
-	var EuhizkElement = document.getElementById('hizkuntza1F');
-	var EshizkElement = document.getElementById('hizkuntza2F');
-	var EnhizkElement = document.getElementById('hizkuntza3F');
+	var EuhizkElement = document.getElementById('hizkuntza-eu');
+	var EshizkElement = document.getElementById('hizkuntza-es');
+	var EnhizkElement = document.getElementById('hizkuntza-en');
 	
 	//Ordena
-	var dataOrdenaElement = document.getElementById('ordena1F');
-	var data2OrdenaElement = document.getElementById('ordena3F');
-	var botoOrdenaElement = document.getElementById('ordena2F');
+	var dataOrdenaElement = document.getElementById('ordena-dataDesc');
+	var data2OrdenaElement = document.getElementById('ordena-dataAsc');
+	var botoOrdenaElement = document.getElementById('ordena-botoak');
 	
 	//Beste batzuk
 	var egunekoaElement = document.getElementById('egunekoaF');
@@ -1905,9 +1905,9 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 	var besteF_ar = [];
 	
 	//Hizkuntzak
-	var EuhizkElement = document.getElementById('hizkuntza1F');
-	var EshizkElement = document.getElementById('hizkuntza2F');
-	var EnhizkElement = document.getElementById('hizkuntza3F');
+	var EuhizkElement = document.getElementById('hizkuntza-eu');
+	var EshizkElement = document.getElementById('hizkuntza-es');
+	var EnhizkElement = document.getElementById('hizkuntza-en');
 	
 	//Hornitzaileak
 	//var EkmHorniElement = document.getElementById('hornitzaile1F');
@@ -1920,9 +1920,9 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 	//var imgMotaElement = document.getElementById('mota4F');
 	
 	//Ordena
-	var dataOrdenaElement = document.getElementById('ordena1F');
-	var data2OrdenaElement = document.getElementById('ordena3F');
-	var botoOrdenaElement = document.getElementById('ordena2F');
+	var dataOrdenaElement = document.getElementById('ordena-dataDesc');
+	var data2OrdenaElement = document.getElementById('ordena-dataAsc');
+	var botoOrdenaElement = document.getElementById('ordena-botoak');
 	
 	//Lizentzia
 	//var lizentziaLibreElement =document.getElementById('lizentzia1F');
@@ -2134,9 +2134,9 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 	var besteF_ar = [];
 	
 	//Hizkuntzak
-	var EuhizkElement = document.getElementById('hizkuntza1F');
-	var EshizkElement = document.getElementById('hizkuntza2F');
-	var EnhizkElement = document.getElementById('hizkuntza3F');
+	var EuhizkElement = document.getElementById('hizkuntza-eu');
+	var EshizkElement = document.getElementById('hizkuntza-es');
+	var EnhizkElement = document.getElementById('hizkuntza-en');
 	
 	//Hornitzaileak
 	//var EkmHorniElement = document.getElementById('hornitzaile1F');
@@ -2148,10 +2148,11 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 	//var videoMotaElement = document.getElementById('mota3F');
 	//var imgMotaElement = document.getElementById('mota4F');
 	
+
 	//Ordena
-	var dataOrdenaElement = document.getElementById('ordena1F');
-	var data2OrdenaElement = document.getElementById('ordena3F');
-	var botoOrdenaElement = document.getElementById('ordena2F');
+	var dataOrdenaElement = document.getElementById('ordena-dataDesc');
+	var data2OrdenaElement = document.getElementById('ordena-dataAsc');
+	var botoOrdenaElement = document.getElementById('ordena-botoak');
 	
 	//Lizentzia
 	//var lizentziaLibreElement =document.getElementById('lizentzia1F');
@@ -2333,16 +2334,15 @@ function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 	var besteF_ar = [];
 	
 	//Hizkuntzak
-	var EuhizkElement = document.getElementById('hizkuntza1F');
-	var EshizkElement = document.getElementById('hizkuntza2F');
-	var EnhizkElement = document.getElementById('hizkuntza3F');
+	var EuhizkElement = document.getElementById('hizkuntza-eu');
+	var EshizkElement = document.getElementById('hizkuntza-es');
+	var EnhizkElement = document.getElementById('hizkuntza-en');
 	
-
 	
 	//Ordena
-	var dataOrdenaElement = document.getElementById('ordena1F');
-	var data2OrdenaElement = document.getElementById('ordena3F');
-	var botoOrdenaElement = document.getElementById('ordena2F');
+	var dataOrdenaElement = document.getElementById('ordena-dataDesc');
+	var data2OrdenaElement = document.getElementById('ordena-dataAsc');
+	var botoOrdenaElement = document.getElementById('ordena-botoak');
 	
 
 	
@@ -2525,15 +2525,14 @@ function bilaketaFiltratu_db()
 	var besteF_ar = [];
 	
 	//Hizkuntzak
-	var EuhizkElement = document.getElementById('hizkuntza1F');
-	var EshizkElement = document.getElementById('hizkuntza2F');
-	var EnhizkElement = document.getElementById('hizkuntza3F');
-	
-		
+	var EuhizkElement = document.getElementById('hizkuntza-eu');
+	var EshizkElement = document.getElementById('hizkuntza-es');
+	var EnhizkElement = document.getElementById('hizkuntza-en');
+			
 	//Ordena
-	var dataOrdenaElement = document.getElementById('ordena1F');
-	var data2OrdenaElement = document.getElementById('ordena3F');
-	var botoOrdenaElement = document.getElementById('ordena2F');
+	var dataOrdenaElement = document.getElementById('ordena-dataDesc');
+	var data2OrdenaElement = document.getElementById('ordena-dataAsc');
+	var botoOrdenaElement = document.getElementById('ordena-botoak');
 	
 	
 	//Beste batzuk

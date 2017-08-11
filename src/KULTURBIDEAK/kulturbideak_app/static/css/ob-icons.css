@@ -24,6 +24,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-ob-logo:before {
+  content: "\e92e";
+}
+.icon-ob-check:before {
+  content: "\e92f";
+}
 .icon-ob-fire-add-sound .path1:before {
   content: "\e900";
   color: rgb(90, 237, 100);
@@ -137,7 +143,7 @@
 .icon-ob-cog:before {
   content: "\e919";
 }
-.icon-arrow-left:before {
+.icon-ob-arrow-left:before {
   content: "\e91a";
 }
 .icon-ob-arrow-right:before {
@@ -190,10 +196,10 @@
 .icon-ob-edit:before {
   content: "\e929";
 }
-.icon-trash:before {
+.icon-ob-trash:before {
   content: "\e92a";
 }
-.icon-usr:before {
+.icon-ob-usr:before {
   content: "\e92b";
 }
 .icon-ob-qr:before {

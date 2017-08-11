@@ -689,8 +689,9 @@ def debug_object(var):
     return vars(var)    
     
     
-    
-    
+@register.filter(name='split')
+def split(value):
+    return value.split(' ')
     
     
     

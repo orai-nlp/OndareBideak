@@ -27,6 +27,7 @@
 		<link rel="stylesheet" href="{{STATIC_URL}}css/ob_common_styles.css" type="text/css">
 		<link rel="stylesheet" href="{{STATIC_URL}}css/navigator.css" type="text/css">
 		<link rel="stylesheet" href="{{STATIC_URL}}css/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+		<link rel="stylesheet" href="{{STATIC_URL}}css/ob-icons.css" type="text/css">
 		
 	
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
@@ -117,7 +118,7 @@
 							<a href=""></a>
 						</li>
 						<li class="square-back-lg backgrnd-gris-0">
-							<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}"><i class="fa fa-times backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i></a>
+							<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}"><i class="icon-ob-times backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i></a>
 						</li>
 					</ul>
 				</div>
@@ -135,7 +136,7 @@
 						<ul class="ul-mota" >
 							<li class="li-mota">
 								<span class="kolore-beltza">
-									<img class="mota-icon" src="{{STATIC_URL}}img/icons/{{itype}}_beltz.png">{% trans itype %}
+									<i class="icon-ob-{{itype}}"></i> {% trans itype %}
 								</span>
 							</li>
 						</ul>
@@ -181,11 +182,11 @@
 					<ul id="panel-elements" class="center">
 						<li>
 							<a id="autoplay" class="" href="#" onclick="window.location = stopOrria;return false;">
-								<i class="fa fa-play"></i>
+								<i class="icon-ob-play"></i>
 							</a>
 						</li>
 						<li>
-							<a id="autoplay" class="" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"><i class="fa fa-pause"></i></a>
+							<a id="autoplay" class="" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"><i class="icon-ob-pause"></i></a>
 						</li> 
 					</ul>
 				</div>
@@ -194,10 +195,10 @@
 				<div class="col-md-3">
 					<ul id="fwrd-bckwrd">
 						<li>
-							<a href=""><i class="fa fa-arrow-left"></i><span class="capitalize kolore-gris-bi"> {% trans 'aurrekoa' %}</span></a>
+							<a href=""><i class="icon-ob-arrow-left"></i><span class="capitalize kolore-gris-bi"> {% trans 'aurrekoa' %}</span></a>
 						</li>
 						<li>
-							<a href=""><span class="capitalize kolore-gris-bi">{% trans 'hurrengoa' %} </span><i class="fa fa-arrow-right"></i></a>
+							<a href=""><span class="capitalize kolore-gris-bi">{% trans 'hurrengoa' %} </span><i class="icon-ob-arrow-right"></i></a>
 						</li> 
 					</ul>
 				</div>

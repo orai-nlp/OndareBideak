@@ -3,13 +3,13 @@
 {% load qr_tags %}
 {% load tags%}
 
-<div id="item_preview">
+<div id="item_preview-element">
 	<!--AUDIO ALA BIDEOA BADA IRUDIA ERE ERAKUTSI, BALDIN BADAGO-->
 	{% if momentukoItema.edm_type == "SOUND" or  momentukoItema.edm_type == "VIDEO"  %}
 				
 		{% if momentukoItema.ob_thumbnail%}
 						
-	<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%} # {%endif%}" target="{% if momentukoItema.ob_thumbnail %}_blank{%endif%}" >
+	<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%} # {%endif%}" target="{% if momentukoItema.ob_thumbnail %}_blank{%endif%}" >
 		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
 	</a>
 			
@@ -27,7 +27,7 @@
 	{% if momentukoItema.edm_type == "IMAGE"  %}
 					
 		{% if momentukoItema.edm_object%}
-	<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
+	<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
 		 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
 	</a>
 		{%else%}
@@ -74,7 +74,7 @@
 
 		<ul class="nav  navbar-default">
 			<li class="ezkerra">
-				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+				<span class="ob-icons-chevron-right" aria-hidden="true"></span>
 					{% trans "Lizentzia" %}:&nbsp;
 				<span class="kolore-gris-hiru"> 
 				{% if momentukoItema.edm_rights%}

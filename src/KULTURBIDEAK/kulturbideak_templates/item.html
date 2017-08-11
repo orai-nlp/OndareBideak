@@ -43,7 +43,7 @@
     {% if user.is_authenticated %}
 		<li class="backgrnd-gris-lau">
 			<button class="btn-default gehitu-botoia" type="button" title="{% trans 'Lan eremura gehitu' %}" onclick="create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
-				<i class="fa fa-plus square-back-lg kolore-{{itype}}" aria-hidden="true"></i>
+				<i class="icon-ob-plus square-back-lg kolore-{{itype}}" aria-hidden="true"></i>
 			</button>
 		</li>
 		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
@@ -51,7 +51,7 @@
 			{% if item.egunekoa == 0 %}
 		<li class="backgrnd-gris-lau center">
 			<a class="btn-warning " title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.id}})" >
-           		<i class="fa fa-star square-back-lg kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
+           		<i class="icon-ob-fire square-back-lg kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
            	</a>
         </li>
 			{%endif%}
@@ -69,13 +69,13 @@
 		<!--editatu-->
 		<li class="backgrnd-gris-lau center">
 			<a class="btn-default" type="button" title="{% trans 'itema editatu' %}" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >
-              	<i class="fa fa-edit square-back kolore-{{itype|lower}}" aria-hidden="true"></i>
+              	<i class="icon-ob-edit square-back kolore-{{itype|lower}}" aria-hidden="true"></i>
 			</a>
 		</li>
 		<!-- ezabatu -->
 		<li class="backgrnd-gris-lau center">
 			<a class="btn-danger ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deleteItem({{item.id}})" >
-				<i class="fa fa-times square-back kolore-{{itype}}" aria-hidden="true"></i>
+				<i class="icon-ob-times square-back kolore-{{itype}}" aria-hidden="true"></i>
 			</a>
 		</li>
 		{%endif%}
@@ -90,9 +90,7 @@
 	<div class="left col-md-2">
 		<ul class="mota-crossing" >
 			<li class="li-mota">
-				<span class="kolore-beltza">
-					<img class="mota-icon" src="{{STATIC_URL}}img/icons/{{itype}}_beltz.png">{% trans itype %}
-				</span>
+				<span class="kolore-beltza"><i class="icon-ob-{{itype}}"></i> {% trans itype %}</span>
 			</li>
 		</ul>
 	</div>
@@ -225,168 +223,7 @@
 	
 <div class="item_preview col-xs-12 col-sm-12 col-md-10 center">
 
-	<div id="item_preview-element">
-		{% comment %}	
-			<!--AUDIO ALA BIDEOA BADA IRUDIA ERE ERAKUTSI, BALDIN BADAGO-->
-			{% if momentukoItema.edm_type == "SOUND" or  momentukoItema.edm_type == "VIDEO"  %}
-					
-				{% if momentukoItema.ob_thumbnail%}
-						
-					<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%} # {%endif%}" target="{% if momentukoItema.ob_thumbnail %}_blank{%endif%}" >
-						<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
-					</a>
-					
-				{%endif%}
-			{%endif%}
-			
-		{% endcomment %}
-			<!-- item preview -->
-			  
-
-			<!-- OBJEKTUA ERAKUTSI BALDIN BADAGO ETA BESTELA SAIATU DATU-BASEKO BESTE EREMU BATETAN AURKITZEN-->
-			<!-- TESTUA BADA -->
-				{% if momentukoItema.edm_type == "TEXT" %}
-
-						<!-- <ul class="nav  navbar-default">
-							<li class="ezkerra">
-								<i class="fa fa-chevron-right" aria-hidden="true"></i>
-								{% trans "Klikatu beheko irudian testua zabaltzeko" %}:
-							</li>
-						</ul> -->
-
-						{% include "_item_preview_text.html" %}
-		
-				{%endif%}
-				
-			
-				<!-- IRUDIA BADA eta objektua baldin badu-->
-				{% if momentukoItema.edm_type == "IMAGE"  %}
-					
-					{% if momentukoItema.edm_object%}
-						<!-- <ul class="nav  navbar-default">
-							<li class="ezkerra">
-								<i class="fa fa-chevron-right" aria-hidden="true"></i>
-								{% trans "Ikusi irudia" %}:
-							</li>
-						</ul> -->
-						<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
-						 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
-						</a>
-					{%else%}
-						{% include "_item_preview_img.html" %}	
-					{%endif%}
-					
-					
-				{%endif%}
-			
-			
-				<!-- AUDIOA BADA eta audio objektua baldin badu-->
-				{% if momentukoItema.edm_type == "SOUND" %}
-					{% if momentukoItema.edm_object%}
-						<!-- <ul class="nav  navbar-default">
-							<li class="ezkerra">
-								<i class="fa fa-chevron-right" aria-hidden="true"></i>
-								{% trans "Entzun audioa" %}:
-							</li>
-						</ul>
-						 -->
-						<audio controls>
-  							<!--<source src="{{momentukoItema.edm_object}}" type="audio/ogg">-->
-  							<source src="{{momentukoItema.edm_object}}" type="audio/mpeg">					
-						</audio>
-					{%else%}
-						{% include "_item_preview_sound.html" %}
-					{%endif%}
-				{%endif%}
-			
-	
-				<!--BIDEOA BADA-->
-				{% if momentukoItema.edm_type == "VIDEO"%}
-				
-					{% if momentukoItema.edm_object%}
-						<!-- <ul class="nav  navbar-default">
-							<li class="ezkerra">
-								<i class="fa fa-chevron-right" aria-hidden="true"></i>
-								{% trans "Bideoa" %}:
-							</li>
-						</ul> -->
-					
-						{% if '.mp4' in momentukoItema.edm_object %}
-							<video width="640" height="480" controls>
-  								<source src="{{momentukoItema.edm_object}}" type="video/mp4">
-  							</video>
-							
-						{% elif '.flv' in momentukoItema.edm_object %}
-							<!-- Lehen : and "EuskoMedia Fundazioa" not in momentukoItema.edm_provider-->
-							
-						
-							<!-- HD FLV PLAYER : Orokorrean ondo dabil-->			
-							
-							<div name='mediaspace' id='mediaspace'>
-							<script type="text/javascript">
-							var s1 = new SWFObject ('../static/hdflvplayer4.1/hdplayer.swf', 'player', '640', '360', '9');						
-							s1.addParam ('allowfullscreen', 'true');
-							s1.addParam ('allowscriptaccess', 'always');
-							s1.addParam ('wmode', 'transparent');
-							s1.addVariable('file','{{momentukoItema.edm_object}}');
-							s1.write ('mediaspace');
-							</script>
-							</div>
-							
-						<!-- elif '.flv' in momentukoItema.edm_object and 'EuskoMedia Fundazioa' in momentukoItema.edm_provider -->
-							<!-- Lehen hau erabiltzen genuen, EM bideoak erreproduzitzeko, baina orain https, eduki-misto errorea ematenn du -->
-							<!--
-							<div class="multimedia Centrado">
-							<embed src="http://www.euskonews.com/mediaplayer.swf" allowscriptaccess="always" allowfullscreen="true" flashvars="height=349&width=610&file={{momentukoItema.edm_object}}&image={{momentukoItema.ob_thumbnail}}" width="640" height="360">
-							</div>
-							-->
-						{% else %}
-						
-							<video width="640" height="480" controls>
-  								<source src="{{momentukoItema.edm_object}}" type="video/ogg">
-  							</video>
-						
-	
-						{%endif%}
-	
-					
-					{%else%}
-					
-						{% include "_item_preview_video.html" %}
-					{%endif%}
-					
-				{%endif%}
-			
-				
-							
-				
-				
-				
-			<div id="license_info" class="path-info overflow">
-				<div class="col-sm-8">					
-					<p class="item-field-title kolore-gris-hiru">{% trans "Lizentzia" %}</p>
-					<p class="kolore-beltza">
-					{% if momentukoItema.edm_rights%}
-						<a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a>
-					{%else%}
-						-
-					{% endif %} 
-					</p>
-				</div>
-				<div class="col-sm-2">		
-				<!-- QR code link-->
-					<a id="qr_code_create_link" href="" data-toggle="modal" data-target="#modalqrcode" class="eskuma kolore-beltza">
-						<i class="fa fa-qrcode" aria-hidden="true"> </i> QR <span>&nbsp;</span> 
-					</a>			
-				</div>
-					<div class="col-sm-2">
-					{% if momentukoItema.edm_isshownat%}
-						<a  class="kolore-beltza eskuma" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><i class="fa fa-eye" aria-hidden="true"></i> {% trans "Ikusi jatorrizkoa" %}</a>
-					{%endif%}
-					</div>
-			</div><!-- license info -->
-	</div>
-	<!-- item preview-->
+	{% include "_item_preview.html" with momentukoItema=item %}
 	
 	<div id="item_preview-description" class="backgrnd-txuria">
 			{% comment %}

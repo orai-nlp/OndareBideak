@@ -84,14 +84,25 @@
 	padding: 21px;
 	margin-left:0px;
 	border-radius: 0px !important;
+	margin-left:50px;
+}
+
+#search_input{
+	border-radius:0;
+}
+
+#search_icons{
+	position:absolute;
+	float:right;
+	padding-right:50px;
 }
 
 
 /* INTERFAZEKO HIZKUNTZA AUKERATZEKO LINKAK*/
 
 .interf-lang{
- 	padding-right: 5px !important;
- 	font-size: 12px !important ;
+ 	padding-right: 0px !important;
+ 	font-size: 10px !important ;
 }
 
 .header-interface-lang

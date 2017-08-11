@@ -6,12 +6,13 @@
 	  <!--<div class="col-xs-6 col-md-3">-->
 			
 		{% if  item.item_id%}
+		{% with item.edm_type|lower as itype %}
 		<div class="thumbnail col-xs-2 col-md-2">
 			
 			<a class="bilaketaEmaitza"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
 				<img class="ob_thumbnail" title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}{% endif%}" src="{% if item.ob_thumbnail%} {{item.ob_thumbnail|clean_http_prefix}} {% elif item.edm_object %} {{item.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 				<div class="dark-overlay">
-					<img class="overlay-icon" src="{{STATIC_URL}}img/icons/{{item.edm_type|lower}}.png">
+					<i class="icon-ob-{{item.edm_type|lower}} kolore-{{item.edm_type|lower}} overlay-icon"></i>
 				</div>
 			</a>
 			
@@ -40,63 +41,43 @@
 				{%endif%}
 				{% if item.edm_provider %}
 					<li>
-	                	<img class="img-user-white" src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png">
+	                	<i class="icon-ob-usr kolore-gris-hiru"></i>
 	                	<span class="kolore-gris-lau"> {{item.edm_provider}} </span>
 	                </li>
                 {%endif%}
 				</ul>
-{% comment %}				
-                                {% if item.edm_provider %}
-                                        <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="kolore-gris-hiru"> {{item.edm_provider}} </span><br />
-                                {%endif%}
-                                {% if item.dc_creator %}
-                                        <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea" %}: <span class="kolore-gris-hiru">{{item.dc_creator}}</span><br />
-                                {%endif%}
-                                {% if item.dc_subject %}
-                                        <span class="bilaketaEremua" id="gaia"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: <span class="kolore-gris-hiru">{{item.dc_subject}}</span><br />
-                                {%endif%}
-                                {% if item.edm_country %}
-                                        <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="kolore-gris-hiru">{{item.edm_country}}</span><br />
-                                {%endif%}
-                                {% if item.ob_language %}
-                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="kolore-gris-hiru">{{item.ob_language | ob_language_errep_kendu}}</span><br />
-                                {%endif%}                              
-                                {% if item.edm_type %}
-                                        <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="kolore-gris-hiru">{{item.edm_type}}</span><br />
-                                {%endif%}
-                                
-{% endcomment %}
 				    
 		<div class="kudeaketa">                       
         	<!--<h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
             <div class="btn-group" role="group" aria-label="...">-->
-            <ul class="button-row">
+            <ul class="button-row-horizontal">
+            	<!-- 
             	<li class="backgrnd-gris-lau">
             		<a class="ikusi-botoiaa" type="button" title="Ikusi kultur itema" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}">
-                		<span class="fa fa-eye square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
+                		<span class="icon-ob-eye square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
 					</a>
 				</li>
-            
+             -->
 
 				{% if user.is_authenticated %}
 
                 <li class="backgrnd-gris-lau">
                     <button class="gehitu-botoia" title="{% trans 'Lan eremura gehitu' %}" type="button" onclick="create_workspace_box({{ forloop.counter }}, {{ request.user.id }});">
-                		<span class="fa fa-plus square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></span>
+                		<span class="icon-ob-plus square-back kolore-{{itype}}" aria-hidden="true"></span>
                     </button>
                 </li>                
                 	{% if user.id == item.item_user_id|to_int  or user.is_superuser%}
                 
 	            <li class="backgrnd-gris-lau">
 	            	<a class="btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >
-                    	<i class="fa fa-edit square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
+                    	<i class="icon-ob-edit square-back kolore-{{itype}}" aria-hidden="true"></i>
                     </a>
                 </li class="backgrnd-gris-lau">
                 
                 <li class="backgrnd-gris-lau">
                 <!-- ezabatu -->
                 <a class="btn-danger ob-botoia" type="button" title="Itema ezabatu"  style="width:100;" onClick="deleteItem({{item.item_id}})" >
-               		<i class="fa fa-times square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
+               		<i class="icon-ob-times square-back kolore-{{itype}}" aria-hidden="true"></i>
                 </a>
 				</li>
                 	{%endif%}
@@ -105,11 +86,11 @@
 				<li class="backgrnd-gris-lau">
 						{% if not item.item_id|is_in:eguneko_itemak %} 
 					<a class="btn-warning " title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu({{item.item_id}})" >
-                		<i class="fa fa-star square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
+                		<i class="icon-ob-fire square-back kolore-{{itype}}" aria-hidden="true"></i>
                 	</a>
 						{%else%}
                 	<a class="btn-warning egunekoa-botoiaa" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu({{item.item_id}})" >
-						<i class="fa fa-star-o square-back kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
+						<i class="fa fa-star-o square-back kolore-{{itype}}" aria-hidden="true"></i>
 					</a>
 						{%endif%}
 				</li>
@@ -119,5 +100,6 @@
 		</div> <!-- kudeaketa buttons -->
 		
 		</div>	 <!-- caption -->	
+		{% endwith %}
 		{% endif %}		
   </div><!-- search-result-->

@@ -811,7 +811,7 @@ def eguneko_itema_kendu(request):
         if ordenakF != "":       
             ordenaF=ordenakF.split(',')
             for o in ordenaF:
-                if(o=="data"):
+                if(o=="dataDesc"):
                     oData="data"
                 if(o=="dataAsc"):
                     oData2="dataAsc"
@@ -1738,7 +1738,7 @@ def eguneko_itema_gehitu(request):
         if ordenakF != "":       
             ordenaF=ordenakF.split(',')
             for o in ordenaF:
-                if(o=="data"):
+                if(o=="dataDesc"):
                     oData="data"
                 if(o=="dataAsc"):
                     oData2="dataAsc"
@@ -2668,7 +2668,7 @@ def eguneko_ibilbidea_gehitu(request):
         if ordenakF != "":       
             ordenaF=ordenakF.split(',')
             for o in ordenaF:
-                if(o=="data"):
+                if(o=="dataDesc"):
                     oData="data"
                 if(o=="dataAsc"):
                     oData2="dataAsc"
@@ -3451,7 +3451,7 @@ def eguneko_ibilbidea_kendu(request):
         if ordenakF != "":       
             ordenaF=ordenakF.split(',')
             for o in ordenaF:
-                if(o=="data"):
+                if(o=="dataDesc"):
                     oData="data"
                 if(o=="dataAsc"):
                     oData2="dataAsc"
@@ -4655,7 +4655,7 @@ def filtro_search(request):
     if ordenakF != "":       
         ordenaF=ordenakF.split(',')
         for o in ordenaF:
-            if(o=="data"):
+            if(o=="dataDesc"):
                 oData="data"
             if(o=="dataAsc"):
                 oData2="dataAsc"
