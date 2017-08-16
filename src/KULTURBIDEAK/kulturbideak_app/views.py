@@ -1392,7 +1392,7 @@ def eguneko_itema_kendu(request):
         #print mlt[0].object.dc_title
         
         #QR-a sortzeko
-        qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
+        qrUrl=ob_base_url+"/erakutsi_item?id="+item_id
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=item_tupla)
@@ -1449,7 +1449,7 @@ def eguneko_itema_kendu(request):
         #print mlt[0].object.dc_title
         
         #QR-a sortzeko
-        qrUrl="http://ondarebideak.org/nabigatu?path_id="+path_id+"&item_id="+item_id
+        qrUrl=ob_base_url+"/nabigatu?path_id="+path_id+"&item_id="+item_id
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=item_tupla)
@@ -2322,7 +2322,7 @@ def eguneko_itema_gehitu(request):
         #print mlt[0].object.dc_title
         
         #QR-a sortzeko
-        qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
+        qrUrl=ob_base_url+"/erakutsi_item?id="+item_id
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=item_tupla)
@@ -2379,7 +2379,7 @@ def eguneko_itema_gehitu(request):
         #print mlt[0].object.dc_title
         
         #QR-a sortzeko
-        qrUrl="http://ondarebideak.org/nabigatu?path_id="+path_id+"&item_id="+item_id
+        qrUrl=ob_base_url+"/nabigatu?path_id="+path_id+"&item_id="+item_id
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=item_tupla)
@@ -5361,8 +5361,8 @@ def autoplay_hasieratik(request):
         autoplaypage=autoplaypages[0]
         
         #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-        pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
-        itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+        pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
+        itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
         
         #Itema erabiltzen duten path-ak lortu
         itemPaths=node.objects.filter(fk_item_id=momentukoItema)
@@ -5500,8 +5500,8 @@ def nabigazio_item(request):
     autoplay=0
     
     #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-    pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
-    itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+    pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
+    itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
     
     #Itema erabiltzen duten path-ak lortu
     itemPaths=node.objects.filter(fk_item_id=momentukoItema)
@@ -5701,8 +5701,8 @@ def nabigatu(request):
     
     
     #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-    pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
-    itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+    pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
+    itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
     
     #Itema erabiltzen duten path-ak lortu
     itemPaths=node.objects.filter(fk_item_id=momentukoItema)
@@ -5831,8 +5831,8 @@ def botoa_eman_path(request):
     momentukoPatha=path.objects.get(id=path_id)
     
     #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-    pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
-    itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+    pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
+    itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
     
     
     
@@ -5908,8 +5908,8 @@ def botoa_kendu_path(request):
     momentukoPatha=path.objects.get(id=path_id)
     
     #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-    pathqrUrl="http://ondarebideak.org/nabigazioa_hasi?path_id="+str(path_id)
-    itemqrUrl="http://ondarebideak.org/erakutsi_item?id="+str(item_id)
+    pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
+    itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
    
     #Itema erabiltzen duten path-ak lortu
     itemPaths=node.objects.filter(fk_item_id=momentukoItema)
@@ -6326,7 +6326,7 @@ def erakutsi_item(request):
     #print mlt[0].object.dc_title
         
     #QR-a sortzeko
-    qrUrl="http://ondarebideak.org/erakutsi_item?id="+id
+    qrUrl=ob_base_url+"/erakutsi_item?id="+id
         
     #Itema erabiltzen duten path-ak lortu
     itemPaths=node.objects.filter(fk_item_id=item_tupla)
@@ -6383,7 +6383,7 @@ def botoa_eman_item(request):
       
     
     #QR-a sortzeko
-    qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
+    qrUrl=ob_base_url+"/erakutsi_item?id="+item_id
     
     #Itema erabiltzen duten path-ak lortu
     itemPaths=node.objects.filter(fk_item_id=item_tupla)
@@ -6498,7 +6498,7 @@ def botoa_kendu_item(request):
     mlt = mlt[:10]
     
     #QR-a sortzeko
-    qrUrl="http://ondarebideak.org/erakutsi_item?id="+item_id
+    qrUrl=ob_base_url+"/erakutsi_item?id="+item_id
     
     #Itema erabiltzen duten path-ak lortu
     itemPaths=node.objects.filter(fk_item_id=item_tupla)

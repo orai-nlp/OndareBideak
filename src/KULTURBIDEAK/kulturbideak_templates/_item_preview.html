@@ -4,13 +4,20 @@
 {% load tags%}
 
 <div id="item_preview-element">
+	{% if momentukoItema.egunekoa %} 
+	<div class="chosen-item-mark">
+		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{momentukoItema.edm_type|lower}}" aria-hidden="true"></i>
+   		<span class="backgrnd-gris-lau kolore-gris-0 bold">{% trans "Eguneko Itema" %}</span>
+	</div>			
+	{%endif%} 
+			
 	<!--AUDIO ALA BIDEOA BADA IRUDIA ERE ERAKUTSI, BALDIN BADAGO-->
 	{% if momentukoItema.edm_type == "SOUND" or  momentukoItema.edm_type == "VIDEO"  %}
 				
 		{% if momentukoItema.ob_thumbnail%}
 						
 	<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%} # {%endif%}" target="{% if momentukoItema.ob_thumbnail %}_blank{%endif%}" >
-		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
+		<img  style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
 	</a>
 			
 		{%endif%}
@@ -28,7 +35,7 @@
 					
 		{% if momentukoItema.edm_object%}
 	<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
-		 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
+		 <img style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
 	</a>
 		{%else%}
 			{% include "_item_preview_img.html" with momentukoItema=momentukoItema %}	
@@ -67,29 +74,35 @@
 		{%endif%}
 					
 	{%endif%}
-				
-				
-	{% comment %}
+	
+		
+	
 	<div id="license_info" class="path-info overflow">
-
-		<ul class="nav  navbar-default">
-			<li class="ezkerra">
-				<span class="ob-icons-chevron-right" aria-hidden="true"></span>
-					{% trans "Lizentzia" %}:&nbsp;
-				<span class="kolore-gris-hiru"> 
-				{% if momentukoItema.edm_rights%}
+		<ul class="padding-0">
+			<li class="ezkerra left-padding-0">					
+				<p class="item-field-title kolore-gris-hiru">{% trans "Lizentzia" %}</p>				
+				<p class="kolore-beltza margin-0">
+			{% if momentukoItema.edm_rights%}
 					<a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a>
-				{%else%}
+			{%else%}
 					-
-				{% endif %}
-				</span>
+			{% endif %} 
+				</p>
 			</li>
-			<li class="eskuma">
+			<li class="">		
+			<!-- QR code link-->
+				<a id="qr_code_create_link" href="" data-toggle="modal" data-target="#modalqrcode" class="eskuma kolore-beltza">
+					<i class="icon-ob-qr" aria-hidden="true"> </i><span class="azpimarra-gris"> QR </span> 
+				</a>			
+			</li>
+			<li class="right-padding-0">
 			{% if momentukoItema.edm_isshownat%}
-				<a  class="kolore-gris-hiru" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
+				<a class="kolore-beltza eskuma no-hover" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}">
+					<i class="icon-ob-eye" aria-hidden="true"></i><span class="azpimarra-gris"> {% trans "Ikusi jatorrizkoa" %}</span>
+				</a>	
 			{%endif%}
 			</li>
 		</ul>
-	</div>
-	{% endcomment %}
+	</div><!-- license info -->
+	
 </div>

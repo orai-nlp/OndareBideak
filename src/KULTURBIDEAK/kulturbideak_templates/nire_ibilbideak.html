@@ -20,66 +20,18 @@
 			{% include "_path_pagination.html" %}
 
 			{% for path in paths %}
-			<div class="row ezkmarg0">
-				<!--<div class="col-xs-6 col-md-3">-->
 
-				<div class="thumbnail col-xs-2 col-md-2">
-
-					<div class="side-corner-tag">
-						<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" > {% if path.paths_thumbnail %}<img src="{{path.paths_thumbnail}}">{% else %} <img src="/uploads/NoIrudiBide.png">{% endif %}						
-					</div>
-
-				</div>
-				<div class=" col-xs-1 col-md-1"></div>
-				<div class="caption  col-xs-9 col-md-9">
-					<input type="hidden" id="path_id_{{ forloop.counter }}" value="{{path.id}}"/>
-					<input type="hidden" id="path_titulua_{{ forloop.counter }}" value="{{path.dc_title}}"/>
-					<input type="hidden" id="path_irudia_{{ forloop.counter }}" value="{{path.paths_thumbnail}}"/>
-
-					<h5><a class="bilaketaTitulua" title="{{path.dc_title}}" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" id="path.dc_title">{{path.dc_title}}</a></h5>
-					{% if path.language %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="kolore-gris-hiru">{{path.language}}</span>
-					<br />
-					{% else %}
-					<span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="kolore-gris-hiru">-</span>
-					<br />
-
-					{%endif%}
-					{% if path.dc_subject %}
-					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: </span><span class="kolore-gris-hiru">{{path.dc_subject}}</span>
-					<br />
-					{% else %}
-					<span class="bilaketaEremua" id="gaia"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: </span><span class="kolore-gris-hiru">-</span>
-					<br />
-
-					{%endif%}
-
-					<a class="btn btn-primary ikusi-botoia" type="button" href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}"> <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> </a>
-
-					{% if user.username == path.fk_user_id.username %}
-
-					<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.id}}" > <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
-					<!-- ezabatu"-->
-					<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.id}})"  > <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
-					{%endif%}
-					{% if request.user|has_group:'hornitzailea' %}
-					{% if path.egunekoa == 0  %}
-					<a class="btn btn-warning  egunekoa-botoia" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{path.id}}&nondik=hasiera" > <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </a>
-					{%else%}
-					<a class="btn btn-warning  egunekoa-botoia" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{path.id}}&nondik=hasiera" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> </a>
-					{%endif%}
-					{%endif%}
-
-				</div>
-				<!--</div><!-- thumbnail -->
-
-				<!--</div>-->
-			</div>
-			{% empty %}
-			<p>
-				{% trans "Ez da zure ibilbiderik aurkitu." %}
-			</p>
+				{% include "_search_result_path.html"%}
+	
+	        {% empty %}
+				<p>{% trans "Ez da erantzunik aurkitu." %}</p>
+				<p class="asistentea_EzDago"><span class="fa fa-info" aria-hidden="true"></span></p>
+				<p class="asistentea_EzDago">{% trans "Gogoratu! zuk zeuk sor dezakezu gai horri edo beste gai bati buruzko ibilbidea." %}</p>
+				<p class="asistentea_EzDago">{% trans "Horretarako, erregistratu eta jarraitu ibilbidea sortzeko pausuak." %}</p>
+				<p class="asistentea_EzDago"><a href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv"> {% trans "Ikusi bideoa" %} </a></p>
+				<p class="asistentea_EzDago">{% trans "Animatu!" %}</p>
 			{% endfor %}
+			
 
 			<!-- bottom pagination -->
 			{% include "_path_pagination.html" %}

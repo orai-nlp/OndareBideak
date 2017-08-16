@@ -5,12 +5,16 @@
 
 #qr_code_create_link i {
 	font-size:16px;	
+	vertical-align:bottom;
 }
 
 #qr_code_create_link {
 	font-family:walsheim-bold-web;	
 }
-	
+
+#qr_code_create_link:hover {
+	text-decoration: none;
+}	
 
 .d3label{
 	text-decoration: none;
@@ -70,24 +74,22 @@ div.item-extra-background{
 }
 #item_img {
 	margin: 5px;
+	min-width:450px;
 }
 #license_info {
 	margin: 5px;
+	font-size:10px;
 }
-#license_info ul li {
-	width:49%;
-	padding:0px;
-}
-
-#license_info ul li.ezkerra {
-	width:70%;
-	padding:10px 15px;
+#license_info > ul {
+	display:table;
+	width:100%;
 }
 
-#license_info ul li.eskuma {
-	width:30%;
-	text-align:right
+#license_info > ul > li {
+	display:table-cell;
+	padding: 0 5px;
 }
+
 #nabigMenu_titulu {
 	text-align:center;
 }
@@ -690,6 +692,27 @@ h4.modal-inner-title {
 	color: #CCCCCC;
 }
 
+#egunekoakBozkatuenakAzkenak{
+	padding:5px 20px;
+}
+.item_path_aukerak {
+	list-style:none;
+	margin:auto;
+}
+.item_path_aukerak i {
+	font-size: 24px;
+}
+
+.item_path_aukerak li {
+	margin:10px 0;
+	min-height:50px;
+}
+
+.item_path_aukerak-icon{
+	height:50px;
+	width:50px;
+}
+
 /*END bilaketa filtroen estiloak*/
 
 .thumb-128 {
@@ -738,7 +761,7 @@ h4.modal-inner-title {
 	overflow: hidden;
 }
 
-/* item_berria.html CSS*/
+/* item.html CSS*/
 .crossingPathsTitle {
 	padding: 0 10px;
 	border-bottom: 1px solid #000000;	
@@ -778,6 +801,11 @@ div.item-fitxa-line2{
 li.li-mota {
 	text-align:center;	
 }
+
+li.li-mota-path{
+	float:right;
+}
+
 li.li-mota span{
 	border-bottom: 3px solid #000000;
 	padding: 5px 15px;
@@ -803,8 +831,11 @@ ul.button-row-horizontal {
 	padding:0;	
 }
 
+ul.button-row-horizontal a {
+	display:block;	
+}
 .button-row-horizontal li{
-	padding:5px;
+	padding:8px;
 	display:inline-block;
 	vertical-align:middle;
 }
@@ -812,12 +843,11 @@ ul.button-row-horizontal {
 .button-row-vert{
 	list-style:none;
 	margin: 5px 0 5px 0;
-	padding:0;	
+	padding:0;		
 }
 
 .button-row-vert li{
    margin:1px;
-   display:block;
    min-height:50px;	
 }
 
@@ -837,6 +867,8 @@ ul.button-row-horizontal {
 p.item-field-title {
 	 text-transform: uppercase;
 	 font-size:0.8em;
+	 width:100%;
+	 text-align:left;
 }
 
 #kudeaketa-bar{
@@ -866,6 +898,33 @@ div#item_preview-description {
 }
 .item-info-description a {
     color: #666666;
+}
+
+.chosen-item-mark{	
+	transition: .5s ease;
+	position: absolute;
+	top: 3%;
+	left: 80%;
+	z-index: 1000;
+	opacity:1 !important;
+	background: transparent !important;
+}
+
+.chosen-item-mark span{
+	padding:8px 10px;
+	margin-left:-10px;
+	z-index:1001;
+	position:relative;
+	font-size:10px;	
+	
+}
+
+.chosen-item-mark i{
+	padding:15px;
+	z-index:1002;	
+	position:relative;
+	font-size:18px;
+	vertical-align:middle;
 }
 
 /* END item.html CSS*/
@@ -917,9 +976,8 @@ img.similar-img {
 .marra_overlay {
     border-bottom: 2px solid #FFDA3E; 
 	width: 10%;
-	margin: 0px 22px;
-	height: 20px;
-	margin-bottom:10px;
+	margin: 20px 22px;
+	height: 20px;	
 }
 
 .title_overlay {
@@ -946,16 +1004,16 @@ div.similar-overlay {
 	z-index:1000;
 }
 
-div.similar-overlay img.overlay-icon{
-	width: 10%;
+i.overlay-icon{	
 	transition: .5s ease;
 	position: absolute;
-	top: 75%;
-	left: 80%;
+	top: 85%;
+	left: 85%;
 	z-index: 1001;
 	opacity: 1 !important;
 	background: transparent !important;
 }
+
 
 div.similar-thumbnail{
 	padding: 0 5px;

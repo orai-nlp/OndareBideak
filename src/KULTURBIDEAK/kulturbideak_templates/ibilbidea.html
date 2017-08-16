@@ -128,7 +128,7 @@
 		</div>		 
 		<br />-->
 		
-		<ul class="button-row-horizontal">
+		<ul class="button-row-horizontal eskuma">
 			{% if botatuDu == 1 %}
            	<li><a class="kolore-txuria" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" disabled> <i class="fa fa-thumbs-up" aria-hidden="true"></i> </a></li>
 			<li><a class="kolore-txuria" type="button" href="#" > <b class="eskuma titulu-kolorea">{{botoKopuruaPath}}</b> </a></li>
@@ -151,7 +151,9 @@
 		<div class="left col-md-2">
 			<ul class="mota-crossing" >
 				<li class="li-mota-path">
-					<a class="aRight kolore-gris-bat" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}"> <span class="fa fa-eye" aria-hidden="true"> IKUSI </span></a>
+					<span>
+						 <a class="kolore-gris-bat" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}"> <i class="icon-ob-eye" aria-hidden="true"></i> IKUSI </a>
+					</span>
 				</li>
 			</ul>
 		</div>
@@ -210,6 +212,13 @@
 	
 	<!-- item preview-->
 	<div id="item_preview-element">
+		{% if momentukoPatha.egunekoa %} 
+		<div class="chosen-item-mark">
+			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-gris-bat" aria-hidden="true"></i>
+   			<span class="backgrnd-gris-lau kolore-gris-0 bold">{% trans "Eguneko ibilbidea" %}</span>
+		</div>			
+		{%endif%}
+		 
 		<a id="autoplay-button" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">			
 			{% if momentukoPatha.paths_thumbnail %}
 				<img class="img-responsive ibilbide-irudia" alt="" src="{{momentukoPatha.paths_thumbnail}}"  onError="this.onerror=null;this.src='/uploads/NoIrudiItem.png';">
@@ -222,28 +231,7 @@
 				</p>
 			</div>
 		</a>
-	</div>
-	
-	<!-- license info-->
-	<div id="license_info" class="path-info overflow">
-		<div class="col-sm-10">					
-			{% comment %}<p class="item-field-title kolore-gris-hiru">{% trans "Lizentzia" %}</p>
-			<p class="kolore-beltza">
-			{% if momentukoItema.edm_rights%}
-				<a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a>
-			{%else%}
-				-
-			{% endif %} 
-			</p> 
-			{% endcomment %}
-		</div>
-		<div class="col-sm-2">		
-		<!-- QR code link-->
-			<a id="qr_code_create_link" href="" data-toggle="modal" data-target="#modalqrcode" class="eskuma kolore-beltza">
-				<i class="fa fa-qrcode" aria-hidden="true"> </i> QR <span>&nbsp;</span> 
-			</a>			
-		</div>		
-	</div><!-- license info -->	
+	</div>	
 		
 	<div id="item_preview-description" class="backgrnd-txuria">
 			{% comment %}

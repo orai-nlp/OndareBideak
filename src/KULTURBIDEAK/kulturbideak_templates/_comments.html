@@ -3,7 +3,6 @@
 {% load qr_tags %}
 {% load tags%}
 
-<!-- COMMENTS-->
 <div id="comments" class="container">
 	<div class="row">
 		<div class="col-md-1"></div>
@@ -31,11 +30,11 @@
 							{{ comment_form.comment.errors }}
 						</div>
 						{% if user.is_authenticated %}
-						<button name="submit_comment" type="submit" class="btn btn-primary">
+						<button name="submit_comment" type="submit" class="btn btn-primary kolore-gris-0 square-back">
 							{% trans "Bidali iruzkina" %}
 						</button>
 						{% else %}
-						<button name="submit_comment" class="btn btn-primary" onclick='window.location.href="/?next="; return false'>
+						<button name="submit_comment" class="btn btn-primary kolore-gris-0 square-back" onclick='window.location.href="/?next="; return false'>
 							{% trans "Bidali iruzkina" %}
 						</button>
 						{% endif %}
@@ -77,14 +76,14 @@
 									{{ comment_parent_form.comment.errors }}
 								</div>
 								{% if user.is_authenticated %}
-								<button onclick="$('#comment_response_div_{{ comment.id }} input').val({{ comment.id }})" name="submit_comment_parent" type="submit" class="btn btn-primary">
+								<button onclick="$('#comment_response_div_{{ comment.id }} input').val({{ comment.id }})" name="submit_comment_parent" type="submit" class="btn btn-primary kolore-gris-0 square-back">
 									{% trans "Bidali" %}
 								</button>
 								<button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">
 									{% trans "Itxi" %}
 								</button>
 								{% else %}
-								<button name="submit_comment_parent" class="btn btn-primary" onclick='window.location.href="/?next="; return false'>
+								<button name="submit_comment_parent" class="btn btn-primary kolore-gris-0 square-back" onclick='window.location.href="/?next="; return false'>
 									{% trans "Bidali" %}
 								</button>
 								<button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">
@@ -113,6 +112,4 @@
 
 	</div>
 </div>
-<!-- END COMMENTS-->
-
 

@@ -194,6 +194,28 @@ i {
 	padding:0 !important;
 }
 
+.relative{
+	position:relative;
+}
+
+.azpimarra-gris{
+	padding-bottom:1px;
+	border-bottom: 1px solid #95989A;
+}
+
+.bottom-align{
+	position:absolute;
+	vertical-align:bottom;
+}
+
+.no-hover:hover {
+	text-decoration:none;
+}
+
+.form-control, .well {
+	border-radius:0px;
+}
+
 /* checkbox styles*/
 
 input[type="checkbox"]{
@@ -238,12 +260,11 @@ input[type="checkbox"] + label span i{
    border-radius: 50%;
    padding:10px;
    color:#333333;
-   margin:10px;
 }
 
 .square-back { 
    background: #333333; 
-   padding:10px;  
+   padding:10px !important;  
    display:block; 
 }
 
@@ -252,6 +273,13 @@ input[type="checkbox"] + label span i{
    padding:15px;
    display:block;   
 }
+
+.square-back-vert-padding { 
+   background: #333333; 
+   padding:10px 0 !important;  
+   display:block; 
+}
+
 
 .overlay-icon{
 	width: 15%;
@@ -262,6 +290,21 @@ input[type="checkbox"] + label span i{
 	z-index: 1000;
 	opacity:1 !important;
 	background: transparent !important;
+}
+
+.ob-fire-overlay{
+	transition: .5s ease;
+	position: absolute;
+	z-index: 1000;
+	opacity: 1 !important;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+	border: 2px solid #333333 !important;
+	padding: 3px;
+	font-size: 6px;
+	bottom: 5%;
+	right: 5%;
 }
 
 /* END Ikono estiloak */

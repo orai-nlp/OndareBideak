@@ -13,13 +13,14 @@
 				</button>
 				<h4>{% trans "QR kodea" %}</h4>
 			</div>
-
-			<div id="qr_code">
-				{% qr_from_text request.get_full_path "l" %}
-				<!--<img src="node.qr">-->
-				<p>	<a href="{{request.get_full_path}}">{{BASE_URL}}/{{request.get_full_path}}</a></p>
-				
-			</div>			
+			<div class="modal-body">
+				<div id="qr_code">
+					{% qr_from_text request.get_full_path "l" %}
+					<!--<img src="node.qr">-->
+					<p>	<a href="{{request.get_full_path}}">{{BASE_URL}}{{request.get_full_path}}</a></p>				
+				</div>
+			</div>
+			<div class="modal-footer"></div>		
 		</div>
 
 	</div>

@@ -58,11 +58,20 @@ def get_item_image(item):
 
 
 @register.filter
-def cut_karrusel_text(input): 
-    out=input[:150]
+def cut_text(input,num): 
+    out=input[:num]
     if len(input) > len(out): 
         out=out+"..."
     return out
+
+@register.filter
+def cut_words(input,num):
+	kk=input.split("\s+")	 
+	out=' '.join(kk[:num])
+	if len(input) > len(out):
+		out=out+"..."
+		
+	return out
 
 
 @register.filter

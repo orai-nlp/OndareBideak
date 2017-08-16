@@ -644,10 +644,11 @@
 		</div><!-- row -->
 		<!-- END PAGE -->
 		
-		
+		<!-- Footer -->
 		{% block footer %}
 		{% include "_oina.html" %}
 		{% endblock footer %}
+		<!-- END Footer -->
 
 		{% block genericModals %}
 		<!-- page loading message modal -->
@@ -714,8 +715,9 @@
 		</div><!-- /.modal -->
 		{% endblock genericModals %}
 		
-		{% block customModals %}
-		<!--Ventana modal-->
+		<!-- Template specific modals-->
+		{% block custom_modals %}
+		<!--modal More-->
 
 		<div class="modal fade" id="modalMore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -754,9 +756,9 @@
 			</div>
 		</div>
 
-		<!--Fin Ventana modal-->
-		{% endblock customModals %}
-		
+		<!--END modal More-->
+		{% endblock custom_modals %}
+		<!--END template specific modals-->
 
 		{% block pageEndScripts %}
 		<!-- Latest compiled and minified JavaScript -->
