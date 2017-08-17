@@ -330,8 +330,7 @@ input[type="checkbox"] + label span i{
 	font-weight: bold !important;
 }
 
-.modal-body h4 {
-	color:#666666 !important;
+.modal-body h4 {	
 	margin:10px 0px 20px 0px;
 }
 

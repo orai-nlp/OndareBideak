@@ -72,7 +72,7 @@
 				<img src="{% if egunekoPath.paths_thumbnail %}{{egunekoPath.paths_thumbnail}}{% else %}/uploads/NoIrudiBide.png{% endif %}" class="img-responsive " title="{{egunekoPath.dc_title}}" />
        			
        			</div>
-       			<div class="col-md-5 karratua fondo-neutroa"> 
+       			<div class="col-md-5 karratua backgrnd-gris-lau"> 
        				<div class="row"> <!--nested-->
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer-argia marra-horia mota-irudia"> {% trans "Ibilbidea"%}        					
@@ -106,7 +106,7 @@
 				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
 				{% if egunekoHornitzaile.argazkia %} <img src="{{egunekoHornitzaile.argazkia|clean_http_prefix}}" class="img-responsive " title="{{egunekoHornitzaile.izena}}" /> {% else %} <img src="{{egunekoHornitzaile.ikonoa|clean_http_prefix}}" class="img-responsive " title="{{egunekoHornitzaile.izena}}" /> {% endif %}
        			</div>
-       			<div class="col-md-5 karratua fondo-neutroa"> 
+       			<div class="col-md-5 karratua backgrnd-gris-lau"> 
        				<div class="row"> <!--nested-->
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Hornitzailea"%} 
@@ -140,7 +140,7 @@
 				<img class="img-responsive " src="{{erakBerria.argazkia}}" title="{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}">
 			
        			</div>
-       			<div class="col-md-5 karratua fondo-neutroa">
+       			<div class="col-md-5 karratua backgrnd-gris-lau">
        				<div class="row"> <!--nested-->
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Berria"%} 

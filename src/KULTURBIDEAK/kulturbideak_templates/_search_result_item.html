@@ -29,12 +29,23 @@
 			{%endif%}
 				
 			<ul class="caption-info">
-			{% if item.edm_country %}
 				<li>
-	        	    <span class="kolore-gris-bi">{{item.edm_country}}</span><br />
-                </li>
-            {%endif%}  
-			{% if item.dc_title %}
+				    <span class="kolore-gris-bi">
+				{% if item.edm_year %}
+					{% with item.edm_year|date:"Y . m . d" as date %}
+					{% if date and date.strip%}
+						{{date}}
+					{%else%}
+						{{item.edm_year|data_formatua}}
+					{% endif %}	
+					{% endwith %}		
+				{%else%}
+					-	
+				{% endif %}				
+					</span>			
+				</li>
+							
+            {% if item.dc_title %}
 				<li>
 					<h6><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h6>
                 </li>    

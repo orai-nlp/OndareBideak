@@ -130,6 +130,7 @@ div.item-extra-background{
 
 .search-result div.thumbnail {
 	margin: 10px 0 10px 0;
+	border-radius:0;
 }
 
 .search-result div.caption {
@@ -265,21 +266,21 @@ p.hornitzaile-name {
 
 .search-result-modal {
 	background: #ffffff; /*#f8f8f8;*/
-	margin:5px 0 5px 0;
-	padding: 5px 0px 5px 10px;
+	margin:0;
+	padding: 0px 0px 0px 10px;
 	border-bottom: solid 1px #eeeeee;
 }
 
 .search-result-modal div.thumbnail {
-	margin: 10px 0 10px 0;
-	padding:0;
-	max-height:80px;
-	max-width:80px;
-	border:none;
+	margin: 5px 0 5px 0;
+	padding: 0;
+	max-height: 70px;
+	max-width: 70px;
+	border: none;
 }
 
 img.ob_thumbnail-mini{
-	height:80px !important;
+	height:70px !important;
 }
 
 .search-result-modal div.caption {
@@ -289,19 +290,42 @@ img.ob_thumbnail-mini{
 .search-result-modal div.dark-overlay {
 	transition: .5s ease;
 	position: absolute;
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 0.3);
 	top: 0%;
 	left: 0%;
 	width: 100%;
 	height: 100%;	
 }
 
+i.overlay-icon-mini {
+	transition: .5s ease;
+	position: absolute;
+	top: 75%;
+	left: 75%;
+	z-index: 1001;
+	opacity: 1 !important;
+	background: transparent !important;
+}
+
 h4.modal-inner-title {
-	tex-align:left;
+	text-align:left;
 	font-family:walsheim-bold-web;
 }
 
+#autocomplete-div{
+	position:absolute;
+	background: rgba(0, 0, 0, 0.6);
+	width:100%;
+	height:auto;
+	top:0;
+}
 
+#autocomplete-container{
+	width:40%;
+	height:auto;
+	top:90px;
+	left:60%;
+}
 /* END Autocomplete eta eguneko/azkenak/bozkatuenak modalen estiloak */
 
 

@@ -380,26 +380,14 @@
 
 		{% block extra_markup %}
 		{% endblock extra_markup %}
-				
-		<!-- PAGE -->
-		{% block page_div_def %}			
-		<div id="main_page" style="max-width:1210px;margin:0 auto;">
-		{% endblock page_div_def %}				
-			<!--aldeetako margina -->
-			<!--<hr>-->			
-			<!--PANTAILA EGITURA NAGUSIA-->			
-		
-		{% block orria_div_def %}			
-			<div id="orria" class="orria">
-		{% endblock orria_div_def %}
-		
-				{% block autocomplete %}
+
+		{% block autocomplete %}
 				<!-- Autocomplete leihoa -->
-				<div id="SERVICE" class="container" style="display:none;">
-					<h2 class="titulu-kolorea autocomplete-galdera">Hauetakoren bat bilatzen duzu?</h2>
-					<div class="row">
+				<div id="autocomplete-div" class="container" style="display:none;">
+					<!-- <h2 class="titulu-kolorea autocomplete-galdera">Hauetakoren bat bilatzen duzu?</h2> -->
+					<div id="autocomplete-container" class="backgrnd-txuria row">
 						{% for i in "0123" %}
-						<div class="col-md-3 text-center">
+						<div class="col-md-12 text-center">
 							<div class="autocompleteItem single_service wow fadeInUp" id="auto{{i}}" >
 								<a id="a{{i}}"><img class="autocomplete_irudia" id="img{{i}}"></a>
 								<h2 id="h2{{i}}"></h2>
@@ -412,8 +400,21 @@
 					</div>
 					<hr />
 				</div>
-				<!-- END Autocomplete leihoa -->	
+				<!-- END Autocomplete leihoa -->
 				{% endblock autocomplete %}
+
+				
+		<!-- PAGE -->
+		{% block page_div_def %}			
+		<div id="main_page" style="max-width:1210px;margin:0 auto;">
+		{% endblock page_div_def %}				
+			<!--aldeetako margina -->
+			<!--<hr>-->			
+			<!--PANTAILA EGITURA NAGUSIA-->			
+		
+		{% block orria_div_def %}			
+			<div id="orria" class="orria">
+		{% endblock orria_div_def %}						
 				
 				
 				<div class="row">
@@ -713,6 +714,7 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		
 		{% endblock genericModals %}
 		
 		<!-- Template specific modals-->

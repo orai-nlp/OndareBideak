@@ -140,12 +140,9 @@
 				//div_emaitza.appendChild(elemImg);
 				
     		}
-	  		 var div_service = document.getElementById("SERVICE");
-	   		 div_service.setAttribute("style", "display:block;");
-	    
+    		var div_service = document.getElementById("autocomplete-div");
+	   		div_service.setAttribute("style", "display:block;");
 	    	
-	
-		
     	}
     	else
     	{

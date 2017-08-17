@@ -340,19 +340,19 @@ um_pages }}</p>-->
         <div class="modal-content">         
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Adituen proposamenak" %}</h4>
+                <h4 class="modal-title ezkerra">{% trans "Adituen proposamenak" %}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">               
                     <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>
-                    		<h4 class="modal-inner-title">{% trans "Kultur itemak" %}</h4>                                                    
+                    		<h4 class="modal-inner-title kolore-gris-bi">{% trans "Kultur itemak" %}</h4>                                                    
                             {% for item in eguneko_itemak %}
                             	{% include "_item_search_thumbnail.html" %}                            	
 							{%endfor%}
 							<br/>	
-                			<h4 class="modal-inner-title">{% trans "Ibilbideak" %}</h4>
+                			<h4 class="modal-inner-title kolore-gris-bi">{% trans "Ibilbideak" %}</h4>
            					{% for path in eguneko_ibilbideak %}
            						{% include "_path_search_thumbnail.html" %}
 							{%endfor%}              
@@ -381,19 +381,19 @@ um_pages }}</p>-->
         <div class="modal-content">         
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Bozkatuenak" %}</h4>
+                <h4 class="modal-title ezkerra">{% trans "Bozkatuenak" %}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">               
                     <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>
-                    		<h4 class="modal-inner-title">{% trans "Kultur itemak" %}</h4>                                                     
+                    		<h4 class="modal-inner-title kolore-gris-bi">{% trans "Kultur itemak" %}</h4>                                                     
                             {% for item in item_bozkatuenak %}	
 	                           	{% include "_item_search_thumbnail.html" %}                            	
 							{%endfor%}                    
                             <br/>	
-                            <h4 class="modal-inner-title">{% trans "Ibilbideak" %}</h4>
+                            <h4 class="modal-inner-title kolore-gris-bi">{% trans "Ibilbideak" %}</h4>
                             {% for path in ibilbide_bozkatuenak %}
                             	{% include "_path_search_thumbnail.html" %}                            	
 							{%endfor%}
@@ -421,19 +421,19 @@ um_pages }}</p>-->
         <div class="modal-content">         
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Berrienak" %}</h4>
+                <h4 class="modal-title ezkerra">{% trans "Berrienak" %}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">               
                     <div class="panel-body top-padding-0">
                     	
                     		<div id="messages"></div>  
-                    		<h4 class="modal-inner-title">{% trans "Kultur itemak" %}</h4>                                                            
+                    		<h4 class="modal-inner-title kolore-gris-bi">{% trans "Kultur itemak" %}</h4>                                                            
                             {% for item in azken_itemak %}
                             	{% include "_item_search_thumbnail.html" %}                            					
 							{%endfor%}                      
                             <br/>
-                            <h4 class="modal-inner-title">{% trans "Ibilbideak" %}</h4> 
+                            <h4 class="modal-inner-title kolore-gris-bi">{% trans "Ibilbideak" %}</h4> 
                             {% for path in azken_ibilbideak %}
                             	{% include "_path_search_thumbnail.html" %}                            									
 							{%endfor%}

@@ -52,7 +52,7 @@
 	   	<ul class="caption-info">
         {% if path.path_creation_date %}
 	   	<li>	
-            <span class="kolore-gris-bi">{{ path.path_creation_date }}</span>
+            <span class="kolore-gris-bi">{{ path.path_creation_date|date:"Y . m . d" }}</span>
 	    </li>
 	    {% endif %}
 	   	<li>

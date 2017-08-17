@@ -11,13 +11,13 @@
 			<a class="bilaketaEmaitza"  href="{{BASE_URL}}/erakutsi_item?id={{item.id}}" >
 				<img class="ob_thumbnail-mini" title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}{% endif%}" src="{% if item.ob_thumbnail%} {{item.ob_thumbnail|clean_http_prefix}} {% elif item.edm_object %} {{item.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 				<div class="dark-overlay">
-					<i class="icon-ob-{{item.edm_type|lower}} overlay-icon kolore-{{item.edm_type|lower}}"></i>
+					<i class="icon-ob-{{item.edm_type|lower}} overlay-icon-mini kolore-{{item.edm_type|lower}}"></i>
 				</div>
 			</a>
 			
 		</div>		
 		<!--http://jsfiddle.net/WjKyF/-->
-		<div class="caption col-xs-9 col-md-9">
+		<div class="caption col-xs-10 col-md-10">
 				 <input type="hidden" id="item_id_{{ forloop.counter }}" value="{{item.id}}"/>
 				 <input type="hidden" id="titulua_{{ forloop.counter }}" value="{{item.dc_title}}"/>
 				 <input type="hidden" id="mota_{{ forloop.counter }}" value="{{item.edm_type}}"/>
