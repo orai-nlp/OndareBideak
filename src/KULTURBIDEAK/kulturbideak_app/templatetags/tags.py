@@ -40,7 +40,10 @@ def urlpath_exists(path):
 		return "False"
 
 
+@register.filter
+def data_formatua(sarrera):
 
+	return sarrera.replace("-"," . ");
 
 @register.filter
 def is_in(id,list): 

@@ -31,6 +31,11 @@
     text-transform: uppercase;
 }
 
+a.header-custom-link-underline span{
+	border-bottom: 2px solid #333333;
+	padding-bottom:5px;
+	font-size:12px;
+}
 
 .header-custom-link-underline::after{
     position: absolute; 
@@ -38,8 +43,8 @@
     bottom: 0; 
     width: 71%; 
     height: 1px; 
-    border-bottom: 2px solid #333333; 
-    content: ""
+    /*border-bottom: 2px solid #333333;*/ 
+    content: "";
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -51,6 +56,9 @@
     padding-top: 35px;
 }
 
+#hizkuntza_aukeraketa_id {
+	margin:0;
+}
 
 #home_menu{
 	font-size:12px;
@@ -60,23 +68,68 @@
 /*BILAKETA -KUTXA */
 
 .bilatzailea-kutxa {
-	padding: 21px;
-	margin-left:0px;
-	border-radius: 0px !important;
-	margin-left:50px;
+	padding: 21px;	
+	border-radius: 0px !important;	
 }
 
 #search_input{
 	border-radius:0;
+	border: 1px solid #999999;
 }
 
 #search_icons{
 	position:absolute;
-	float:right;
-	padding-right:50px;
+	right:2px;
+	height:100%;
+	z-index:1002;
+	border-left: 1px solid #eeeeee;	
 }
 
+#search_icons button{
+	padding:3px !important;
+	position:relative;
+	height:80%;
+	top:10%;
+	margin-left:2px;
+}
 
+#search_icons button:hover{
+	background:none;	
+}
+	
+#search_lang_div{
+	display:inline;
+}
+
+/* search options dropdown*/
+#search_lang_div:after{
+	content: '\e922';
+    font: normal normal normal 12px/1 ob-icons;
+    color: #333333;
+    right: 10%;
+    top: 25%;    
+    position: absolute;
+    pointer-events: none;
+}
+
+#search_lang{	
+	border:none;
+	border-radius:0;
+	height:80%;
+	top:10%;
+	position:relative;
+	-moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    appearance: none;
+    outline-width: 0;
+    margin-right:2px;
+}
+
+#search_lang option{
+	font-size: 12px;
+	font-family:walsheim-bold-web;
+}
 /* INTERFAZEKO HIZKUNTZA AUKERATZEKO LINKAK*/
 
 .interf-lang{

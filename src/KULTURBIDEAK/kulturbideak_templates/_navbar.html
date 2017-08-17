@@ -33,18 +33,18 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       
       <ul class="nav navbar-nav header-main-links {% if not request.mobile%} header-main-links-med {%endif%}">
-        <li><a class="header-custom-link-underline" href="itemak_hasiera"> {% trans "ITEMAK" %} </a></li>
-        <li><a class="header-custom-link-underline" href="ibilbideak_hasiera"> {% trans "IBILBIDEAK" %} </a></li>
-        <li><a class="header-custom-link-underline" href="hornitzaileak_hasiera"> {% trans "HORNITZAILEAK" %} </a></li>
+        <li><a class="header-custom-link-underline" href="itemak_hasiera"> <span>{% trans "ITEMAK" %}</span> </a></li>
+        <li><a class="header-custom-link-underline" href="ibilbideak_hasiera"> <span>{% trans "IBILBIDEAK" %}</span> </a></li>
+        <li><a class="header-custom-link-underline" href="hornitzaileak_hasiera"> <span>{% trans "HORNITZAILEAK" %}</span> </a></li>
       </ul>
    
       
-      <div class="col-sm-3 col-md-3  {% if not request.mobile%} bilatzailea-kutxa {%endif%} text-center navbar-nav">
+      <div class="col-sm-3 col-md-4  {% if not request.mobile%} bilatzailea-kutxa {%endif%} text-center navbar-nav">
 						
-						<form action="/cross_search" method="post" class="navbar-form navbar-left autocomplete-me">
+						<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
 
 							{% csrf_token %}
-							<div class="input-group" style="width:97%;">
+							<div class="input-group" style="width:100%;">
 								{% trans "Bilatu ..." as the_placeholder %}
 								{% trans "Bilaketa ze hizkuntzatan?" as query_language %}
 								<!-- id=id_q-->
@@ -54,43 +54,22 @@
 								<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
 
 								{%endif%}
-								<span id="search_icons" class="input-group-btn">
+								<div id="search_icons" class="input-group-btn">
 									
 									<button class="btn btn-default" type="submit">
-										<span class="icon-ob-search" aria-hidden="true"></span> !
-									</button> 									
-								</span>
-								<!-- <span class="input-group-btn">
-									<select id="hizkRadio" title="{{ query_language }}">
-										<option value="eu" selected="selected">eu</option>
-										<option value="es">es</option>
-										<option value="en">en</option>
-									</select>					
-								</span> -->				
+										<span class="icon-ob-search" aria-hidden="true"></span>
+									</button> 
+									<div id="search_lang_div" title="{% trans 'Bilaketa ze hizkuntzatan egiten ari zara?' %}">
+									<!-- <span class="icon-ob-chevron-down"></span> -->	
+									<select id="search_lang" name="search_lang" class="backgrnd-txuria kolore-gris-lau">										
+										<option value="eu" {% if radioHizkuntza == "eu" or not radioHizkuntza %}selected{%endif%}>Eu</option>
+										<option value="es" {% if radioHizkuntza == "es" %}selected{%endif%}>Es</option>
+										<option value="en" {% if radioHizkuntza == "en" %}selected{%endif%}>En</option>
+									</select>	
+																	
+									</div>
+								</div>												
 							</div>
-							{% if radioHizkuntza == "eu" or not radioHizkuntza %}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu" checked>
-							Eu
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="eu">
-							Eu
-							{%endif%}
-							{% if radioHizkuntza == "es"%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="es" checked>
-							Es
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="es">
-							Es
-							{%endif%}
-							{% if radioHizkuntza == "en"%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en" checked>
-							En
-							{%else%}
-							<input  type="radio" id="hizkRadio" name="hizkRadio" value="en">
-							En
-							{%endif%}
-							
-
 						</form>
 						
 					

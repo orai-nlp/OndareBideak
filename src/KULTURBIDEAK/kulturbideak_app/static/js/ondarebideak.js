@@ -1680,13 +1680,10 @@ function nabigatu(path_id,node_id)
 }
 
 
-/* +++RAPHAEL funtzioak zeude hemen--BORRATU EGIN DIRA +++ */
-
-
-
 function egunekoaGehituEtabilaketaFiltratu(item_id)
 {
-	var radios = document.getElementsByName('hizkRadio');
+	var search_lang = document.getElementById('search_lang')
+	var hizkR=search_lang.options[search_lang.selectedIndex].value;
 	var galdera = document.getElementById('search_input').value;
     
       if(document.getElementById('hornitzailea_username'))
@@ -1700,21 +1697,7 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 	}
     
     var nireak = document.getElementById('nireak').value;
-   
     
-	for (var i = 0, length = radios.length; i < length; i++) 
-	{
-   	    if (radios[i].checked)
-        {
-            // do whatever you want with the checked radio
-            hizkR=radios[i].value;
-            // only one radio can be logically checked, don't check the rest
-            break;
-        }
-	}
-
-
-
 	var hizkuntzakF_ar = []; 
 	var hornitzaileakF_ar = [];
 	var motaF_ar = [];
@@ -1860,14 +1843,15 @@ function egunekoaGehituEtabilaketaFiltratu(item_id)
 	 var lizentziakF=lizentziaF_ar.toString();
 	 var besteakF =besteF_ar.toString();
 	 
-	 var url = 'eguneko_itema_gehitu?hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+item_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
+	 var url = 'eguneko_itema_gehitu?search_lang='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+item_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
     window.location.href=url;
 	
 }
 
 function egunekoaKenduEtabilaketaFiltratu(item_id)
 {
-	var radios = document.getElementsByName('hizkRadio');
+	var search_lang = document.getElementById('search_lang')
+	var hizkR=search_lang.options[search_lang.selectedIndex].value;
 	var galdera = document.getElementById('search_input').value;
 	
 	
@@ -1884,19 +1868,6 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 	
 	var nireak = document.getElementById('nireak').value;
 	
-	for (var i = 0, length = radios.length; i < length; i++) 
-	{
-   	    if (radios[i].checked)
-        {
-            // do whatever you want with the checked radio
-            hizkR=radios[i].value;
-            // only one radio can be logically checked, don't check the rest
-            break;
-        }
-	}
-
-
-
 	var hizkuntzakF_ar = []; 
 	var hornitzaileakF_ar = [];
 	var motaF_ar = [];
@@ -2088,14 +2059,15 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 	 var lizentziakF=lizentziaF_ar.toString();
 	 var besteakF =besteF_ar.toString();
 	 
-	var url = 'eguneko_itema_kendu?hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+item_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
+	var url = 'eguneko_itema_kendu?search_lang='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+item_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
     window.location.href=url;
 	
 }
 
 function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 {
-	var radios = document.getElementsByName('hizkRadio');
+	var search_lang = document.getElementById('search_lang')
+	var hizkR=search_lang.options[search_lang.selectedIndex].value;
 	var galdera = document.getElementById('search_input').value;
 	
 
@@ -2112,19 +2084,6 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
         
 
 	var nireak = document.getElementById('nireak').value;
-
-	for (var i = 0, length = radios.length; i < length; i++) 
-	{
-   	    if (radios[i].checked)
-        {
-            // do whatever you want with the checked radio
-            hizkR=radios[i].value;
-            // only one radio can be logically checked, don't check the rest
-            break;
-        }
-	}
-
-
 
 	var hizkuntzakF_ar = []; 
 	var hornitzaileakF_ar = [];
@@ -2288,14 +2247,15 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 	 var besteakF =besteF_ar.toString();
 	
 
-	var url = 'eguneko_ibilbidea_gehitu?hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+path_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
+	var url = 'eguneko_ibilbidea_gehitu?search_lang='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+path_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
     window.location.href=url;
 	
 }
 
 function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 {
-	var radios = document.getElementsByName('hizkRadio');
+	var search_lang = document.getElementById('search_lang')
+	var hizkR=search_lang.options[search_lang.selectedIndex].value;
 	var galdera = document.getElementById('search_input').value;
 	
 	
@@ -2313,19 +2273,6 @@ function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
    
 	var nireak = document.getElementById('nireak').value;
 	
-	for (var i = 0, length = radios.length; i < length; i++) 
-	{
-   	    if (radios[i].checked)
-        {
-            // do whatever you want with the checked radio
-            hizkR=radios[i].value;
-            // only one radio can be logically checked, don't check the rest
-            break;
-        }
-	}
-
-
-
 	var hizkuntzakF_ar = []; 
 	var hornitzaileakF_ar = [];
 	var motaF_ar = [];
@@ -2476,7 +2423,7 @@ function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 	 var besteakF =besteF_ar.toString();
 	 
 	
-	var url = 'eguneko_ibilbidea_kendu?hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+path_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
+	var url = 'eguneko_ibilbidea_kendu?search_lang='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+path_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
     window.location.href=url;
 	
 }
@@ -2484,7 +2431,8 @@ function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 function bilaketaFiltratu_db()
 {
 	
-	var radios = document.getElementsByName('hizkRadio');
+	var search_lang = document.getElementById('search_lang')
+	var hizkR=search_lang.value;
 	var galdera = document.getElementById('search_input').value;
 	var hornitzailea = document.getElementById('hornitzailea_username').value;
 	var hornitzailea_user_id = document.getElementById('hornitzaile_search').value;
@@ -2504,19 +2452,6 @@ function bilaketaFiltratu_db()
 	 	z= "h";
 	}
 	
-	for (var i = 0, length = radios.length; i < length; i++) 
-	{
-   	    if (radios[i].checked)
-        {
-            // do whatever you want with the checked radio
-            hizkR=radios[i].value;
-            // only one radio can be logically checked, don't check the rest
-            break;
-        }
-	}
-
-
-
 	var hizkuntzakF_ar = []; 
 	var hornitzaileakF_ar = [];
 	var motaF_ar = [];
@@ -2662,7 +2597,7 @@ function bilaketaFiltratu_db()
 	 var besteakF =besteF_ar.toString();
 	
 	
-	var url = 'filtro_search?hornitzailea_user_id='+hornitzailea_user_id+'&hornitzailea='+hornitzailea+'&z='+z+'&hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&nireak='+nireak;   	
+	var url = 'filtro_search?hornitzailea_user_id='+hornitzailea_user_id+'&hornitzailea='+hornitzailea+'&z='+z+'&search_lang='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&nireak='+nireak;   	
     window.location.href=url;
 }
 
@@ -2671,7 +2606,7 @@ function bilaketaFiltratu_db()
 function bilaketaFiltratu()
 {
 	
-	var radios = document.getElementsByName('hizkRadio');
+	var radios = document.getElementById('search_lang')
 	var galdera = document.getElementById('search_input').value;
 	var hornitzailea = document.getElementById('hornitzailea').value;
 
@@ -2860,7 +2795,7 @@ function bilaketaFiltratu()
 	 var besteakF =besteF_ar.toString();
 	
 	
-	var url = 'filtro_search?hornitzailea='+hornitzailea+'&z='+z+'&hizkRadio='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF;   	
+	var url = 'filtro_search?hornitzailea='+hornitzailea+'&z='+z+'&search_lang='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF;   	
     window.location.href=url;
 }
 */	

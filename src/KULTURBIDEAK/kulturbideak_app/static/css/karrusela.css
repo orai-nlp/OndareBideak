@@ -125,7 +125,7 @@ Image credits: unsplash.com
 
 .karrusel-data {
 	color: #ffffff;
-    font-family: walsheim-ligth-web;
+    font-family: walsheim-light-web;
     font-size: 23px;
     margin-bottom: 19px;
     margin-top: 5px;
@@ -267,6 +267,14 @@ karrusel-describapena-argia p {
     background-color:#f8f8f8;
    
 }
+
+div.index-extra-background{
+	position: absolute;
+    width: 100%;
+    padding-top:200px;
+    height:150px;
+}
+
 
 /********************************/
 /*       Slides backgrounds     */

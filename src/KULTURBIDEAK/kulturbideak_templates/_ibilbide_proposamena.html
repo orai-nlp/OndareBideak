@@ -23,14 +23,14 @@
 		<div class="col-md-3 ibilb-padding">
 			<div class="ibilbide-img-index-tam">
 				{% if path.paths_thumbnail %}
-					<a href="https://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id={{path.id}}"> <img class="img-responsive " src="{{path.paths_thumbnail}}"> 	
+					<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}"> <img class="img-responsive " src="{{path.paths_thumbnail}}"> 	
 				{%else%}
-					<a href="https://ondarebideak.dss2016.eu/nabigazioa_hasi?path_id={{path.id}}"> <img class="img-responsive " src="/uploads/NoIrudiBide.png">
+					<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}"> <img class="img-responsive " src="/uploads/NoIrudiBide.png">
 				{%endif%}			
 						<div class="img_overlay">
 							<p class="marra_overlay">&nbsp;&nbsp;&nbsp;</p>
 							<p class="title_overlay">{{path.dc_title}}</p>
-							<p class="creator_overlay"> <img class="img-user-white" src="{{STATIC_URL}}img/ic_perm_identity_black_24px.png">{{path.fk_user_id.username}}</p>
+							<p class="creator_overlay kolore-txuria"><i class="icon-ob-usr kolore-video"></i> {{path.fk_user_id.username}}</p>
 						</div>
 					</a>	
 			</div>

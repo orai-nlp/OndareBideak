@@ -98,7 +98,7 @@
 		<ul class="mota-crossing" >
 			<li class="li-mota-path">
 				<span class="kolore-txuria">
-					<img class="mota-icon" src="{{STATIC_URL}}img/icons/path_zuri.png">{% trans "ibilbidea" %}
+					<i class="icon-ob-logo"></i> {% trans "ibilbidea" %}
 				</span>
 			</li>
 		</ul>
@@ -109,7 +109,7 @@
 			<p class="ezkerra item-data kolore-gris-bi">
 				<span class="">
 				 {% if momentukoPatha.creation_date %}
-					{{momentukoPatha.creation_date}}
+					{{momentukoPatha.creation_date|date:"Y . m . d"}}
 					{%else%}
 					-
 					{% endif %}

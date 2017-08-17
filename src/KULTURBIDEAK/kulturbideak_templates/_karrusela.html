@@ -3,7 +3,7 @@
 
 <!-- CSS media query on a link element -->
 
-<link rel="stylesheet" media="(min-width: 600px)" href="{{STATIC_URL}}css/new_karrusela_style.css" type="text/css">
+<link rel="stylesheet" media="(min-width: 600px)" href="{{STATIC_URL}}css/karrusela.css" type="text/css">
 
 
 
@@ -30,40 +30,20 @@
 					<img src="{% if egunekoItem.ob_thumbnail%} {{egunekoItem.ob_thumbnail|clean_http_prefix}} {% elif egunekoItem.edm_object %} {{egunekoItem.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}" class="img-responsive " title="{{egunekoItem.dc_title}}" />
 						
        			</div>
-       			{% if 'TEXT' in egunekoItem.edm_type %} <!-- INFO-->
-       				<div class="col-md-5 karratua fondo-horia"> 
-       			{% elif 'IMAGE' in egunekoItem.edm_type %}
-       				<div class="col-md-5 karratua fondo-urdina"> 
-       			{% elif 'SOUND' in egunekoItem.edm_type %}
-       				<div class="col-md-5 karratua fondo-berdea"> 
-       			{% else %}
-       				<div class="col-md-5 karratua fondo-gorria"> <!-- VIDEO-->
-       			{% endif %}
+       			<!-- INFO-->
+       			<div class="col-md-5 karratua backgrnd-{{egunekoItem.edm_type|lower}}"> 
        				<div class="row"> <!--nested-->
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer marra-iluna mota-irudia"> {% trans "Itema" %} &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  
-       						{% if 'TEXT' in egunekoItem.edm_type %}
-       							<img src="{{STATIC_URL}}img/icons/text_beltz.png">
-       							<span class="letra-arina"> &nbsp;  {% trans "Testua" %} </span> </p>
-       						{% elif 'IMAGE' in egunekoItem.edm_type %}
-       							<img src="{{STATIC_URL}}img/icons/image_beltz.png">
-       							<span class="letra-arina"> &nbsp;  {% trans "Irudia" %} </span> </p>
-       						{% elif 'SOUND' in egunekoItem.edm_type %}
-       							<img src="{{STATIC_URL}}img/icons/audio_beltz.png">
-       							<span class="letra-arina"> &nbsp;  {% trans "Audioa" %} </span> </p>
-       						{% else %}
-       							<img src="{{STATIC_URL}}img/icons/video_beltz.png">
-       							<span class="letra-arina"> &nbsp;  {% trans "Bideoa" %} </span> </p>
-       						{%endif%}
-       						
+       							<span class="icon-ob-{{egunekoItem.edm_type|lower}} kolore-gris-lau"></span>
+       							<span class="letra-arina"> &nbsp;  {% trans egunekoItem.edm_type|lower %} </span>
+       						 </p>
        					</div>
        					<div class="col-md-6 col-md-offset-1">
-       					
        						{% if egunekoItem.edm_year%}
-       							<p class="karrusel-data">  {{ egunekoItem.edm_year  }}   </p> <!-- |date:"y.m.d"-->
+       							<p class="karrusel-data">{{egunekoItem.edm_year|date:"y . m . d"}}</p> <!-- |date:"y.m.d"-->
        						{%else%}
-       							<p class="karrusel-data"> {{  currentDate |date:"y.m.d" }} </p>
-       						
+       							<p class="karrusel-data">{{currentDate|date:"Y . m . d"}}</p>       						
        						{%endif%}
        					</div>
        					<div class="col-md-10 col-md-offset-1">
@@ -73,7 +53,7 @@
        						<p class="karrusel-describapena"> {{ LANGUAGE_CODE|choose_description_language:egunekoItem|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe | get_substring_150}}  </p>
        					</div>			
        					<div class="col-md-4 col-md-offset-8">
-       						<p class="karrusel-gehiago"> <a href="{{BASE_URL}}/erakutsi_item?id={{egunekoItem.id}}"> {% trans "Ikusi gehiago" %} &nbsp;<span class="kolore-txuria glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a></p>
+       						<p class="karrusel-gehiago"> <a href="{{BASE_URL}}/erakutsi_item?id={{egunekoItem.id}}"> {% trans "Ikusi gehiago" %} &nbsp;<span class="icon-ob-arrow-right kolore-txuria" aria-hidden="true"></span> </a></p>
        					</div>		
        				
        				</div>
@@ -99,7 +79,7 @@
        					</div>
        					<div class="col-md-6 col-md-offset-1">
        						<!-- Datak: letrak maiuskulaz ala minuskulaz gauza desberdina ematen dute. Adb. M : hilea letraz, m: hilea zenbakiz-->
-       						<p class="karrusel-data">  {{ egunekoPath.creation_date |date:"y.m.d" }} </p>
+       						<p class="karrusel-data">  {{ egunekoPath.creation_date |date:"Y . m . d" }} </p>
        					</div>
        					<div class="col-md-5 col-md-offset-1">
        						<p class="karrusel-title-argia"> {{ egunekoPath.dc_title }} </p>
@@ -132,7 +112,7 @@
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Hornitzailea"%} 
        					</div>
        					<div class="col-md-6 col-md-offset-1">
-       						<p class="karrusel-data">  {{  currentDate |date:"y.m.d" }} </p>
+       						<p class="karrusel-data">  {{  currentDate |date:"Y . m . d" }} </p>
        					</div>
        					<div class="col-md-5 col-md-offset-1">
        						<p class="karrusel-title-argia"> {{egunekoHornitzaile.izena}} </p>
@@ -166,7 +146,7 @@
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Berria"%} 
        					</div>
        					<div class="col-md-6 col-md-offset-1">
-       						<p class="karrusel-data">  {{  currentDate |date:"y.m.d" }} </p> 
+       						<p class="karrusel-data">  {{  currentDate |date:"Y . m . d" }} </p> 
        					</div>
        					<div class="col-md-5 col-md-offset-1">
        						<p class="karrusel-title-berria-argia"> {{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}} </p>

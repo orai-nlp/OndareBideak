@@ -17,51 +17,51 @@
     	<p class="parag-index"> {% trans "interpretar el patrimonio digital" %} </p>
     	
     	<form action="/cross_search" method="post" class="navbar-form second-bilatzailea autocomplete-me">
-				{% csrf_token %}
-				<div class="input-group" style="width:90%;">
-					{% trans "Bilatu ..." as the_placeholder %}								
-					{% if bilaketaGaldera%}
-						<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
-					{% else %}
-						<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
-					{%endif%}
-					 <!--
-					 <select>
- 						 <option value="eu">EU</option>
-  						 <option value="es">ES</option>
-  						 <option value="en">EN</option>
-                         
-					</select> 
-					-->
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="submit">
-							<span class="glyphicon glyphicon-search" aria-hidden="true"></span> !
-						</button> 
-					</span>
-				</div>     	
-			</form> <!-- Bilatzailearen formularioa -->
-		<!--</div>--><!-- bilaketa kutxa -->  	
-    </div> <!--col-md-3 col-md-offset-1 --> <!-- Testua eta bilatzaile-kutxa -->
+			{% csrf_token %}
+			<div class="input-group" style="width:100%;">
+			{% trans "Bilatu ..." as the_placeholder %}
+			{% trans "Bilaketa ze hizkuntzatan?" as query_language %}
+			<!-- id=id_q-->
+			{% if bilaketaGaldera%}
+				<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input" value="{{bilaketaGaldera}}">
+			{% else %}
+				<input name="search_input" id="search_input" class="form-control" type="search" title="" placeholder="{{ the_placeholder }}" name="search_input">
+			{%endif%}
+				<div id="search_icons" class="input-group-btn">
+							
+					<button class="btn btn-default" type="submit">
+						<span class="icon-ob-search" aria-hidden="true"></span>
+					</button> 
+					<div id="search_lang_div" title="{% trans 'Bilaketa ze hizkuntzatan egiten ari zara?' %}">
+						<select id="search_lang" name="search_lang" class="backgrnd-txuria kolore-gris-lau">										
+							<option value="eu" {% if radioHizkuntza == "eu" or not radioHizkuntza %}selected{%endif%}>Eu</option>
+							<option value="es" {% if radioHizkuntza == "es" %}selected{%endif%}>Es</option>
+							<option value="en" {% if radioHizkuntza == "en" %}selected{%endif%}>En</option>
+						</select>	
+					</div>
+				</div>												
+			</div>
+		</form> <!-- Bilatzailearen formularioa -->
+		
+    </div> <!--col-md-4 col-md-offset-1 --> <!-- Testua eta bilatzaile-kutxa -->
     <div class="col-md-4 padding-0">
     	<ul id="kopuruak" class="padding-0 center"> <!-- nested columns -->
-   			 <li class="left-padding-0">
-   			 	<p class="kopuruak kopuru-marra-gorria "> {{itemKop}}k </p>
+   			<li class="left-padding-0">
+   				<p class="kopuruak kopuru-marra-gorria "> {{itemKop}}k </p>
    			 	<p class="kopuru-azpiko-testua"> <a href="itemak_hasiera">{% trans "Item" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i> </a></p>
-   			 </li>
-   			 <li>
+   			</li>
+   			<li>
    			 	<p class="kopuruak kopuru-marra-berdea "> {{ibilbideKop}}</p> <!--32 -->
    			 	<p class="kopuru-azpiko-testua"> <a href="ibilbideak_hasiera">{% trans "Ibilbideak" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i> </a> </p>
-   			 </li>
-   			 <li>
+   			</li>
+   			<li>
    			 	<p class="kopuruak kopuru-marra-urdina"> {{hornitzaileKop}} </p><!--42 -->
    			 	<p class="kopuru-azpiko-testua"> <a href="hornitzaileak_hasiera">{% trans "Hornitzaileak" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i></a></p>
-   			 </li>
-   		 </div>
-    </div> <!--col-md-3 --><!-- Zenbakiak -->  
-     <div class="col-md-3">
-     <p class="galdera"> <a href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv">{% trans "Nola sortu ibilbidea?" %}</a></p>
-     
+   			</li>
+   		</ul>
+   	</div>
+    <div class="col-md-3">
+    	<p class="galdera"> <a href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv">{% trans "Nola sortu ibilbidea?" %}</a></p>
     </div> <!--.col-md-3 -->
-   
    </div> <!-- row-->
 </div><!-- /.container-fluid -->

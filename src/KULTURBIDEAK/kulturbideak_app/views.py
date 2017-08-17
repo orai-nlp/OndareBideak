@@ -765,7 +765,7 @@ def eguneko_itema_kendu(request):
     elif(nondik=="bilaketa"):
        
         # Helburu hizkuntza guztietan burutuko du bilaketa
-        hizkuntza=request.GET['hizkRadio']   
+        hizkuntza=request.GET['search_lang']   
         galdera=request.GET['search_input']
     
         #FILTROAK
@@ -1690,7 +1690,7 @@ def eguneko_itema_gehitu(request):
         #GALDERA ARRUNT BATETIK
         
         # Helburu hizkuntza guztietan burutuko du bilaketa
-        hizkuntza=request.GET['hizkRadio']   
+        hizkuntza=request.GET['search_lang']   
         galdera=request.GET['search_input']
         
         #FILTROAK
@@ -2622,7 +2622,7 @@ def eguneko_ibilbidea_gehitu(request):
     elif(nondik=="bilaketa"):
         print "bilaketa orritik"
         # Helburu hizkuntza guztietan burutuko du bilaketa
-        hizkuntza=request.GET['hizkRadio']   
+        hizkuntza=request.GET['search_lang']   
         galdera=request.GET['search_input']
     
         #FILTROAK
@@ -3405,7 +3405,7 @@ def eguneko_ibilbidea_kendu(request):
     elif(nondik=="bilaketa"):
         print "bilaketa orritik"
         # Helburu hizkuntza guztietan burutuko du bilaketa
-        hizkuntza=request.GET['hizkRadio']   
+        hizkuntza=request.GET['search_lang']   
         galdera=request.GET['search_input']
     
         #FILTROAK
@@ -4360,11 +4360,13 @@ def cross_search(request):
     z="i"
     # Helburu hizkuntza guztietan burutuko du bilaketa
     if(request.POST):
-        hizkuntza=request.POST['hizkRadio']   
+        hizkuntza=request.POST['search_lang']  
+        print "search lang is:",hizkuntza         
         galdera=request.POST['search_input']
     
     if(request.GET):
-        hizkuntza=request.GET['hizkRadio']   
+        hizkuntza=request.GET['search_lang']
+        print "search lang is:",hizkuntza   
         galdera=request.GET['search_input']
         #zein paginator den
         z=request.GET['z']
@@ -4492,7 +4494,26 @@ def cross_search(request):
     
     
     bilaketa_filtroak=1
-    return render_to_response('cross_search.html',{'login_form':login_form,'erabiltzailea_form':erabiltzailea_form,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
+    return render_to_response('cross_search.html',{'login_form':login_form,
+                                                   'erabiltzailea_form':erabiltzailea_form,
+                                                   'ibilbide_bozkatuenak':ibilbide_bozkatuenak,
+                                                   'eguneko_ibilbideak':eguneko_ibilbideak,
+                                                   'azken_ibilbideak':azken_ibilbideak,
+                                                   'item_bozkatuenak':item_bozkatuenak,
+                                                   'eguneko_itemak':eguneko_itemak,
+                                                   'azken_itemak':azken_itemak,
+                                                   'db_hornitzaileak_text':db_hornitzaileak_text,
+                                                   'db_hornitzaileak':db_hornitzaileak,
+                                                   'db_motak_text':db_motak_text,
+                                                   'db_motak':db_motak,
+                                                   'db_lizentziak_text':db_lizentziak_text,
+                                                   'db_lizentziak':db_lizentziak,
+                                                   'z':z,
+                                                   'items':items,
+                                                   'paths':paths,
+                                                   'bilaketa_filtroak':bilaketa_filtroak,
+                                                   'bilaketaGaldera':galdera,
+                                                   'radioHizkuntza':hizkuntza},context_instance=RequestContext(request))
 
 
 def hornitzaile_search(request):
@@ -4596,7 +4617,7 @@ def filtro_search(request):
     #Nire itemak ala Nire ibilbideak kontsultatzeko aukeratik ('nireak' aldagaiarekin kontrolatzen dugu aukera honetatik datorren)
     
     # Helburu hizkuntza guztietan burutuko du bilaketa
-    hizkuntza=request.GET['hizkRadio']
+    hizkuntza=request.GET['search_lang']
    
     galdera=request.GET['search_input']
     z=request.GET['z']
