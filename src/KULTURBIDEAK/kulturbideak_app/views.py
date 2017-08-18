@@ -126,6 +126,56 @@ def get_tree(el_node):
                 nodeLoadError="Node "+child_node_id+" could not be loaded"
     return nodes
 
+
+'''
+    *************************************
+            Utils
+    *************************************
+'''
+def get_egunekoak():
+    ei=[]
+    ep=[]
+    ei=item.objects.filter(egunekoa=1)
+    ep=path.objects.filter(egunekoa=1)
+    
+    return (ei,ep)
+    
+def get_bozkatuenak():
+    item_bozkatuenak=[]
+    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
+    if bozkatuenak_item_zerrenda:
+        item_ids=[]
+        for bozkatuena in bozkatuenak_item_zerrenda:
+            id = bozkatuena.item.id
+            item_ids.append(id)
+       
+        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
+    
+    ibilbide_bozkatuenak=[]
+    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
+    if bozkatuenak_ibilbide_zerrenda:
+        path_ids=[]
+        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
+            id = bozkatuena.path.id
+            path_ids.append(id)
+       
+        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+    
+    return (item_bozkatuenak,ibilbide_bozkatuenak)
+    
+def get_azkenak():
+    ai=[]
+    ap=[]
+    ai=item.objects.order_by('-edm_year')[:5]
+    ap=path.objects.order_by('-creation_date')[:5]
+    return (ai,ap)
+
+'''
+    *************************************
+            Main views
+    *************************************
+'''
+
 def hasiera(request):
     """Hasiera orria"""
      
@@ -226,43 +276,11 @@ def itemak_hasiera(request):
     (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
 
     #Egunekoak
-    eguneko_itemak=[]
-    eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
     #Azkenak
-    azken_itemak=[]
-    azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+    (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
-    item_bozkatuenak=[]
-    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-    if bozkatuenak_item_zerrenda:
-        item_ids=[]
-        for bozkatuena in bozkatuenak_item_zerrenda:
-            id = bozkatuena.item.id
-            item_ids.append(id)
-       
-        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-        
-    #IBILBIDEAK
-    #Egunekoak
-    eguneko_ibilbideak=[]
-    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
-    
-    #Azkenak
-    azken_ibilbideak=[]
-    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
-    
-    #Bozkatuenak
-    ibilbide_bozkatuenak=[]
-    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-    if bozkatuenak_ibilbide_zerrenda:
-        path_ids=[]
-        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-            id = bozkatuena.path.id
-            path_ids.append(id)
-       
-        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+    (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak()
     
         
     #ALDAKETA-CROSS-SEARCH
@@ -1287,45 +1305,12 @@ def eguneko_itema_kendu(request):
             
             
             
-        #ITEMAK
         #Egunekoak
-        eguneko_itemak=[]
-        eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+        (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
         #Azkenak
-        azken_itemak=[]
-        azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+        (azken_itemak,azken_ibilbideak)=get_azkenak()    
         #Bozkatuenak
-        item_bozkatuenak=[]
-        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-        if bozkatuenak_item_zerrenda:
-            item_ids=[]
-            for bozkatuena in bozkatuenak_item_zerrenda:
-                id = bozkatuena.item.id
-                item_ids.append(id)
-       
-            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-    
-        #IBILBIDEAK
-        #Egunekoak
-        eguneko_ibilbideak=[]
-        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
-    
-        #Azkenak
-        azken_ibilbideak=[]
-        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
-    
-        #Bozkatuenak
-        ibilbide_bozkatuenak=[]
-        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-        if bozkatuenak_ibilbide_zerrenda:
-            path_ids=[]
-            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-                id = bozkatuena.path.id
-                path_ids.append(id)
-       
-            ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
+        (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak()
             
     
     
@@ -2232,46 +2217,12 @@ def eguneko_itema_gehitu(request):
         db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
         
         
-        #ITEMAK
         #Egunekoak
-        eguneko_itemak=[]
-        eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+        (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
         #Azkenak
-        azken_itemak=[]
-        azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+        (azken_itemak,azken_ibilbideak)=get_azkenak()    
         #Bozkatuenak
-        item_bozkatuenak=[]
-        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-        if bozkatuenak_item_zerrenda:
-            item_ids=[]
-            for bozkatuena in bozkatuenak_item_zerrenda:
-                id = bozkatuena.item.id
-                item_ids.append(id)
-       
-            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-    
-        #IBILBIDEAK
-        #Egunekoak
-        eguneko_ibilbideak=[]
-        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
-    
-        #Azkenak
-        azken_ibilbideak=[]
-        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
-    
-        #Bozkatuenak
-        ibilbide_bozkatuenak=[]
-        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-        if bozkatuenak_ibilbide_zerrenda:
-            path_ids=[]
-            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-                id = bozkatuena.path.id
-                path_ids.append(id)
-       
-            ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
-        
+        (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak()
         
         #Maddalen:
         if hornitzaile_izena !="":
@@ -3153,46 +3104,12 @@ def eguneko_ibilbidea_gehitu(request):
             paths = paginator.page(paginator.num_pages)
             
             
-        #ITEMAK
         #Egunekoak
-        eguneko_itemak=[]
-        eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+        (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
         #Azkenak
-        azken_itemak=[]
-        azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+        (azken_itemak,azken_ibilbideak)=get_azkenak()    
         #Bozkatuenak
-        item_bozkatuenak=[]
-        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-        if bozkatuenak_item_zerrenda:
-            item_ids=[]
-            for bozkatuena in bozkatuenak_item_zerrenda:
-                id = bozkatuena.item.id
-                item_ids.append(id)
-       
-            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-    
-        #IBILBIDEAK
-        #Egunekoak
-        eguneko_ibilbideak=[]
-        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
-    
-        #Azkenak
-        azken_ibilbideak=[]
-        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
-    
-        #Bozkatuenak
-        ibilbide_bozkatuenak=[]
-        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-        if bozkatuenak_ibilbide_zerrenda:
-            path_ids=[]
-            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-                id = bozkatuena.path.id
-                path_ids.append(id)
-       
-            ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
-    
+        (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak()
     
         z="p"
 
@@ -3946,46 +3863,12 @@ def eguneko_ibilbidea_kendu(request):
     
     
     
-        #ITEMAK
         #Egunekoak
-        eguneko_itemak=[]
-        eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+        (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
         #Azkenak
-        azken_itemak=[]
-        azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+        (azken_itemak,azken_ibilbideak)=get_azkenak()    
         #Bozkatuenak
-        item_bozkatuenak=[]
-        bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-        if bozkatuenak_item_zerrenda:
-            item_ids=[]
-            for bozkatuena in bozkatuenak_item_zerrenda:
-                id = bozkatuena.item.id
-                item_ids.append(id)
-       
-            item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-    
-        #IBILBIDEAK
-        #Egunekoak
-        eguneko_ibilbideak=[]
-        eguneko_ibilbideak=path.objects.filter(egunekoa=1)
-    
-        #Azkenak
-        azken_ibilbideak=[]
-        azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
-    
-        #Bozkatuenak
-        ibilbide_bozkatuenak=[]
-        bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-        if bozkatuenak_ibilbide_zerrenda:
-            path_ids=[]
-            for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-                id = bozkatuena.path.id
-                path_ids.append(id)
-       
-            ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
-            
+        (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak()   
     
         z="p"
 
@@ -4128,46 +4011,13 @@ def ibilbideak_hasiera(request):
     #DB-an GALDERA EGIN EGUNEKO IBILBIDEA LORTZEKO
    
     (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
-
    
     #Egunekoak
-    eguneko_itemak=[]
-    eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
     #Azkenak
-    azken_itemak=[]
-    azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+    (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
-    item_bozkatuenak=[]
-    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-    if bozkatuenak_item_zerrenda:
-        item_ids=[]
-        for bozkatuena in bozkatuenak_item_zerrenda:
-            id = bozkatuena.item.id
-            item_ids.append(id)
-       
-        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-    
-    
-    #Egunekoak
-    eguneko_ibilbideak=[]
-    eguneko_ibilbideak=path.objects.filter(egunekoa=1).exclude(acces='1')
-    
-    #Azkenak
-    azken_ibilbideak=[]
-    azken_ibilbideak=path.objects.order_by('-creation_date').exclude(acces='1')[:10]
-    
-    #Bozkatuenak
-    ibilbide_bozkatuenak=[]
-    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-    if bozkatuenak_ibilbide_zerrenda:
-        path_ids=[]
-        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-            id = bozkatuena.path.id
-            path_ids.append(id)
-       
-        ibilbide_bozkatuenak=path.objects.filter(id__in=path_ids) 
+    (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak() 
     
     non="fitxaE"
     
@@ -4337,13 +4187,19 @@ def autocomplete(request):
             src=result.edm_provider
             suggestions_src.append(src)
     
+    suggestions_type=[]
+    for result in sqs:
+        type=result.edm_type
+        suggestions_type.append(type)
+    
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     the_data = json.dumps({
         'results': suggestions,
         'results_id': suggestions_id,
         'results_img':suggestions_img,
-        'results_src':suggestions_src
+        'results_src':suggestions_src,
+        'results_type':suggestions_type
     })
     print the_data
     return HttpResponse(the_data, content_type='application/json')
@@ -4438,46 +4294,12 @@ def cross_search(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         paths = paginator.page(paginator.num_pages)
     
-    #ITEMAK
     #Egunekoak
-    eguneko_itemak=[]
-    eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
     #Azkenak
-    azken_itemak=[]
-    azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+    (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
-    item_bozkatuenak=[]
-    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-    if bozkatuenak_item_zerrenda:
-        item_ids=[]
-        for bozkatuena in bozkatuenak_item_zerrenda:
-            id = bozkatuena.item.id
-            item_ids.append(id)
-       
-        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-    
-    #IBILBIDEAK
-    #Egunekoak
-    eguneko_ibilbideak=[]
-    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
-    
-    #Azkenak
-    azken_ibilbideak=[]
-    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
-    
-    #Bozkatuenak
-    ibilbide_bozkatuenak=[]
-    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-    if bozkatuenak_ibilbide_zerrenda:
-        path_ids=[]
-        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-            id = bozkatuena.path.id
-            path_ids.append(id)
-       
-        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
-    
+    (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak()
     
     
     #Datu-baseko hornitzaileak lortu
@@ -4615,6 +4437,16 @@ def filtro_search(request):
     #Menu nagusiko itemak edo ibilbideak sakatuta. Kasu honetan galdera="" eta z-ren balioak kontutan hartu
     #Hornitzaile bat kontsultatzetik. Kasu honetan  'hornitzailea' in request.GET  eta galdera hutsa da
     #Nire itemak ala Nire ibilbideak kontsultatzeko aukeratik ('nireak' aldagaiarekin kontrolatzen dugu aukera honetatik datorren)
+    
+    (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
+   
+    #Egunekoak
+    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
+    #Azkenak
+    (azken_itemak,azken_ibilbideak)=get_azkenak()    
+    #Bozkatuenak
+    (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak() 
+    
     
     # Helburu hizkuntza guztietan burutuko du bilaketa
     hizkuntza=request.GET['search_lang']
@@ -5172,10 +5004,62 @@ def filtro_search(request):
     
     if hornitzaile_izena:
         hornitzaile = hornitzailea.objects.get(fk_user__username=hornitzaile_izena)
-        return render_to_response('cross_search.html',{'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'hornitzailea':hornitzaile,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkuntzakF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
+        return render_to_response('cross_search.html',{'login_form':login_form,
+                                                       'erabiltzailea_form':erabiltzailea_form,
+                                                       'ibilbide_bozkatuenak':ibilbide_bozkatuenak,
+                                                       'eguneko_ibilbideak':eguneko_ibilbideak,
+                                                       'azken_ibilbideak':azken_ibilbideak,
+                                                       'item_bozkatuenak':item_bozkatuenak,
+                                                       'eguneko_itemak':eguneko_itemak,
+                                                       'azken_itemak':azken_itemak,
+                                                       'db_hornitzaileak_text':db_hornitzaileak_text,
+                                                       'db_hornitzaileak':db_hornitzaileak,
+                                                       'db_motak_text':db_motak_text,
+                                                       'db_motak':db_motak,
+                                                       'db_lizentziak_text':db_lizentziak_text,
+                                                       'db_lizentziak':db_lizentziak,
+                                                       'hornitzailea':hornitzaile,
+                                                       'z':z,
+                                                       'items':items,
+                                                       'paths':paths,
+                                                       'bilaketa_filtroak':bilaketa_filtroak,
+                                                       'bilaketaGaldera':galdera,
+                                                       'radioHizkuntza':hizkuntza,
+                                                       'hizkF':hizkuntzakF,
+                                                       'horniF':hornitzaileakF,
+                                                       'motaF':motakF,
+                                                       'ordenaF':ordenakF,
+                                                       'lizentziaF':lizentziakF,
+                                                       'besteaF':besteakF},context_instance=RequestContext(request))
     else:
         
-        return render_to_response('cross_search.html',{'nireak':nireak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkuntzakF,'horniF':hornitzaileakF,'motaF':motakF,'ordenaF':ordenakF,'lizentziaF':lizentziakF,'besteaF':besteakF},context_instance=RequestContext(request))
+        return render_to_response('cross_search.html',{'login_form':login_form,
+                                                       'erabiltzailea_form':erabiltzailea_form,
+                                                       'ibilbide_bozkatuenak':ibilbide_bozkatuenak,
+                                                       'eguneko_ibilbideak':eguneko_ibilbideak,
+                                                       'azken_ibilbideak':azken_ibilbideak,
+                                                       'item_bozkatuenak':item_bozkatuenak,
+                                                       'eguneko_itemak':eguneko_itemak,
+                                                       'azken_itemak':azken_itemak,
+                                                       'nireak':nireak,
+                                                       'db_hornitzaileak_text':db_hornitzaileak_text,
+                                                       'db_hornitzaileak':db_hornitzaileak,
+                                                       'db_motak_text':db_motak_text,
+                                                       'db_motak':db_motak,
+                                                       'db_lizentziak_text':db_lizentziak_text,
+                                                       'db_lizentziak':db_lizentziak,
+                                                       'z':z,
+                                                       'items':items,
+                                                       'paths':paths,
+                                                       'bilaketa_filtroak':bilaketa_filtroak,
+                                                       'bilaketaGaldera':galdera,
+                                                       'radioHizkuntza':hizkuntza,
+                                                       'hizkF':hizkuntzakF,
+                                                       'horniF':hornitzaileakF,
+                                                       'motaF':motakF,
+                                                       'ordenaF':ordenakF,
+                                                       'lizentziaF':lizentziakF,
+                                                       'besteaF':besteakF},context_instance=RequestContext(request))
 
 def nabigazioa_hasi(request):
     
@@ -6963,49 +6847,13 @@ def nire_itemak_erakutsi(request):
     userName=request.user.username
     userID=request.user.id
     
-    #ITEMAK
     #Egunekoak
-    eguneko_itemak=[]
-    eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
     #Azkenak
-    azken_itemak=[]
-    azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+    (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
-    item_bozkatuenak=[]
-    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-    if bozkatuenak_item_zerrenda:
-        item_ids=[]
-        for bozkatuena in bozkatuenak_item_zerrenda:
-            id = bozkatuena.item.id
-            item_ids.append(id)
-       
-        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-    
-    #IBILBIDEAK
-    #Egunekoak
-    eguneko_ibilbideak=[]
-    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
-    
-    #Azkenak
-    azken_ibilbideak=[]
-    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
-    
-    #Bozkatuenak
-    ibilbide_bozkatuenak=[]
-    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-    if bozkatuenak_ibilbide_zerrenda:
-        path_ids=[]
-        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-            id = bozkatuena.path.id
-            path_ids.append(id)
-       
-        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
-    
+    (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak()
      
-        
-    
     #Datu-baseko hornitzaileak lortu                                                                                             
     db_hornitzaileak=map(lambda x: x['edm_provider'],item.objects.values('edm_provider').distinct().order_by('edm_provider'))
     db_hornitzaileak_text ="_".join(db_hornitzaileak)
@@ -7082,47 +6930,12 @@ def nire_ibilbideak_erakutsi(request):
     userName=request.user.username
     userID=request.user.id
     
-    #ITEMAK
     #Egunekoak
-    eguneko_itemak=[]
-    eguneko_itemak=item.objects.filter(egunekoa=1)
-    
+    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
     #Azkenak
-    azken_itemak=[]
-    azken_itemak=item.objects.order_by('-edm_year')[:10]
-    
+    (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
-    item_bozkatuenak=[]
-    bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
-    if bozkatuenak_item_zerrenda:
-        item_ids=[]
-        for bozkatuena in bozkatuenak_item_zerrenda:
-            id = bozkatuena.item.id
-            item_ids.append(id)
-       
-        item_bozkatuenak=item.objects.filter(id__in=item_ids) 
-    
-    #IBILBIDEAK
-    #Egunekoak
-    eguneko_ibilbideak=[]
-    eguneko_ibilbideak=path.objects.filter(egunekoa=1)
-    
-    #Azkenak
-    azken_ibilbideak=[]
-    azken_ibilbideak=path.objects.order_by('-creation_date')[:10]
-    
-    #Bozkatuenak
-    ibilbide_bozkatuenak=[]
-    bozkatuenak_ibilbide_zerrenda= votes_path.objects.annotate(votes_count=Count('path')).order_by('-votes_count')[:10]
-    if bozkatuenak_ibilbide_zerrenda:
-        path_ids=[]
-        for bozkatuena in bozkatuenak_ibilbide_zerrenda:
-            id = bozkatuena.path.id
-            path_ids.append(id)
-       
-        ibilbide_bozkatuenak=item.objects.filter(id__in=path_ids) 
-    
-    
+    (item_bozkatuenak,ibilbide_bozkatuenak)=get_bozkatuenak()
     
     non="fitxaE"
     

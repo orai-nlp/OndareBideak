@@ -386,15 +386,32 @@
 				<div id="autocomplete-div" class="container" style="display:none;">
 					<!-- <h2 class="titulu-kolorea autocomplete-galdera">Hauetakoren bat bilatzen duzu?</h2> -->
 					<div id="autocomplete-container" class="backgrnd-txuria row">
+						<h4 class="modal-inner-title kolore-gris-bi" style="padding-left:10px;">{% trans "Itemak" %}</h4>                                                                               
 						{% for i in "0123" %}
-						<div class="col-md-12 text-center">
-							<div class="autocompleteItem single_service wow fadeInUp" id="auto{{i}}" >
-								<a id="a{{i}}"><img class="autocomplete_irudia" id="img{{i}}"></a>
-								<h2 id="h2{{i}}"></h2>
-								<p id="p{{i}}"></p>
-
+						<div class="row search-result-modal">
+							<div id="auto{{i}}" class="thumbnail col-xs-2 col-md-2">
+								<a class="bilaketaEmaitza" id="a{{i}}" >
+									<img class="ob_thumbnail-mini" id="img{{i}}">
+									<div class="dark-overlay">
+										<i id="icon{{i}}"></i>
+									</div>
+								</a>														
 							</div>
-						</div>
+							<div class="caption col-xs-10 col-md-10">							
+								<ul class="caption-info bottom-padding-0 top-padding-0">
+									<li>
+										<h6><a id="h5{{i}}" class="bilaketaTitulua"></a></h6>
+                    				</li>    
+   									<li>
+   										<p id="p{{i}}"></p>
+   									</li>
+								</ul>	
+							</div>
+							<!-- <div class="autocompleteItem single_service wow fadeInUp" id="auto{{i}}" >
+								<a id="a{{i}}"><img class="autocomplete_irudia" id="img{{i}}"></a>
+							
+							</div> -->
+							</div>
 						{% endfor %}
 						
 					</div>

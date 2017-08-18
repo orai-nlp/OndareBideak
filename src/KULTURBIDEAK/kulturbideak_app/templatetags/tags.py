@@ -42,8 +42,15 @@ def urlpath_exists(path):
 
 @register.filter
 def data_formatua(sarrera):
-
-	return sarrera.replace("-"," . ");
+	
+	
+	if re.match(r'^\s*\"[^\"]+\"\s*$', sarrera):
+		output= sarrera.replace('"','')
+		if output == "0":
+			output="-"
+		return output	
+				
+	return sarrera.replace("-"," . ")
 
 @register.filter
 def is_in(id,list): 

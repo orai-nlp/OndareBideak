@@ -50,14 +50,6 @@ body {
 .titulu-kolorea {
 	color: #31708f !important;
 }
-.autocompleteItem {
-	padding: 25px;
-}
-.autocomplete_irudia {
-	min-height: 120px;
-	max-height: 120px;
-	background-size: contain;
-}
 
 div.item-extra-background{
 	position:absolute;
@@ -68,10 +60,6 @@ div.item-extra-background{
 	z-index:-1;
 }
 
-
-#SERVICE {
-	padding-top: 20px !important;
-}
 #item_img {
 	margin: 5px;
 	min-width:450px;
@@ -262,8 +250,11 @@ p.hornitzaile-name {
 /* END Bilaketa orrietako emaitzen bistaratea : cross_search.html */
 
 
-/* Autocomplete eta eguneko/azkenak/bozkatuenak modalen estiloak */
+/*******************************
+ Autocomplete eta eguneko/azkenak/bozkatuenak modalen estiloak 
+ *********************************/
 
+/* Modaletan item/ibilbideen aurrebista estiloak*/
 .search-result-modal {
 	background: #ffffff; /*#f8f8f8;*/
 	margin:0;
@@ -285,6 +276,7 @@ img.ob_thumbnail-mini{
 
 .search-result-modal div.caption {
 	float:left !important;
+	margin:5px 0px;
 }
 
 .search-result-modal div.dark-overlay {
@@ -312,20 +304,44 @@ h4.modal-inner-title {
 	font-family:walsheim-bold-web;
 }
 
+/* autocomplete window styles */
 #autocomplete-div{
 	position:absolute;
 	background: rgba(0, 0, 0, 0.6);
 	width:100%;
 	height:auto;
 	top:0;
+	z-index:1002;
 }
 
 #autocomplete-container{
 	width:40%;
 	height:auto;
-	top:90px;
-	left:60%;
+	top:80px;
+	left:43%;
+	position:relative;
+	z-index:1002;
+	padding:15px 15px 50px 15px;
 }
+
+.autocompleteItem {
+	padding: 25px;
+}
+.autocomplete_irudia {
+	min-height: 120px;
+	max-height: 120px;
+	background-size: contain;
+}
+
+.autocomplete-galdera {
+	font-family: walsheim-web, "dosis" !important;
+	font-size: 24px;
+	font-weight: 300;
+	margin-bottom: 15px;
+	margin-top: 0;
+}
+
+
 /* END Autocomplete eta eguneko/azkenak/bozkatuenak modalen estiloak */
 
 
@@ -693,6 +709,12 @@ h4.modal-inner-title {
 	width:90%;
 }
 
+#horFiltroak {
+	max-height:200px;
+	overflow-y:scroll;
+	padding:10px 0px;
+}
+
 .filter-main-title{
 	color:#999999;
 }
@@ -703,6 +725,10 @@ h4.modal-inner-title {
 }
 .filter-title span {
 	font-weight: 700;	
+}
+
+.filter-label{
+	font-weight:500;
 }
 
 .filterButton {
@@ -915,6 +941,7 @@ div#item_preview-element {
 	display:inline-block;
 	border:none;
 	border-radius:0;
+	position:relative;
 }
 
 div#item_preview-description {
@@ -927,8 +954,8 @@ div#item_preview-description {
 .chosen-item-mark{	
 	transition: .5s ease;
 	position: absolute;
-	top: 3%;
-	left: 80%;
+	top: 60px; /*#item_preview-element padding-top (20px) + 40*/
+	right: 50px; /*#item_preview-element padding-right (20px) + 30*/
 	z-index: 1000;
 	opacity:1 !important;
 	background: transparent !important;
@@ -1164,6 +1191,7 @@ circle .unselectedNode {
 	color: #000;
 	font-size: 1em;
 	line-height: 22px;
+	text-align:justify;
 }
 
 
@@ -1205,13 +1233,6 @@ circle .unselectedNode {
 
 /* END CSS svg*/
 
-.autocomplete-galdera {
-	font-family: walsheim-web, "dosis" !important;
-	font-size: 24px;
-	font-weight: 300;
-	margin-bottom: 15px;
-	margin-top: 0;
-}
 
 .ob-botoia {
 	border: none;	
@@ -1395,11 +1416,7 @@ span.helptext {
 	#home_menu li{
 		display:inline-block;
 	}
-	
-	#SERVICE {
-		padding-top: 50px !important;
-	}
-		
+			
 }
 
 @media (min-width: 768px) and (max-width: 991px) {

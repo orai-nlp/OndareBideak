@@ -69,7 +69,8 @@ a.header-custom-link-underline span{
 
 .bilatzailea-kutxa {
 	padding: 21px;	
-	border-radius: 0px !important;	
+	border-radius: 0px !important;
+	z-index:1003;	
 }
 
 #search_input{

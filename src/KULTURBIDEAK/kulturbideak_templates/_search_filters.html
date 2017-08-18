@@ -27,7 +27,7 @@
 				&nbsp;&nbsp;				
 				<input type="checkbox" id="{{db_mota}}" name="{{db_mota}}" value="{{db_mota}}" onclick="bilaketaFiltratu_db()" 
 				{%if db_mota in motaF%}checked{%endif%}>
-				<label for="{{db_mota}}"><span><i class="icon-ob-check"></i></span><i class="icon-ob-{{db_mota|lower}} kolore-{{db_mota|lower}}"></i><i class="kolore-{{db_mota|lower}}"> {% trans db_mota|lower %}</i></label>
+				<label class="filter-label kolore-{{db_mota|lower}}" for="{{db_mota}}"><span><i class="icon-ob-check"></i></span><i class="icon-ob-{{db_mota|lower}} kolore-{{db_mota|lower}}"></i> {% trans db_mota|lower %}</label>
 				<br>
 		{% endfor %}
 		
@@ -49,7 +49,7 @@
 			&nbsp;&nbsp;
 			<input type="checkbox" id="hizkuntza-{{currentlang}}" name="hizkuntza-{{currentlang}}" value="{{currentlang}}" onclick="bilaketaFiltratu_db()" 
 			{%if currentlang in hizkF%} checked {%endif%}>
-			<label for="hizkuntza-{{currentlang}}"><span><i class="icon-ob-check"></i></span>{{currentlang}}</label>
+			<label class="filter-label" for="hizkuntza-{{currentlang}}"><span><i class="icon-ob-check"></i></span>{{currentlang}}</label>
 			
 			<br>
 			{% endfor %}
@@ -65,13 +65,13 @@
 			<i class="icon-ob-chevron-down" aria-hidden="true"></i>
 		</button>
 	</p>
-	<div class="horFiltroak" id="horFiltroak" style="display:none;">
+	<div class="horFiltroak scrollbar" id="horFiltroak" style="display:none;">
 		<input type="hidden" id="db_hornitzaileak_text" name="db_hornitzaileak_text" value="{{db_hornitzaileak_text}}">
 				
 		{%for db_hornitzailea in db_hornitzaileak%}
 			&nbsp;&nbsp;
 			<input type="checkbox" id="{{db_hornitzailea}}" name="{{db_hornitzailea}}" value="{{db_hornitzailea}}" onclick="bilaketaFiltratu_db()" {%if db_hornitzailea in horniF%}checked{%endif%}>
-			<label for="{{db_hornitzailea}}"><span><i class="icon-ob-check"></i></span> {{db_hornitzailea}}</label>
+			<label class="filter-label" for="{{db_hornitzailea}}"><span><i class="icon-ob-check"></i></span> {{db_hornitzailea}}</label>
 			<br/>
 		{% endfor %}
 	</div>
@@ -92,7 +92,7 @@
 		&nbsp;&nbsp;
 		<input type="checkbox" id="ordena-{{currentordena}}" name="ordena-{{currentordena}}" value="{{currentordena}}" onclick="bilaketaFiltratu_db()"
 		{%if currentordena in ordenaF%} checked {%endif%}>
-		<label for="ordena-{{currentordena}}"><span><i class="icon-ob-check"></i></span> {% trans currentordena %}</label> <!--data (beheraka)--><!-- data (goraka) --><!-- botoak --> 
+		<label class="filter-label" for="ordena-{{currentordena}}"><span><i class="icon-ob-check"></i></span> {% trans currentordena %}</label> <!--data (beheraka)--><!-- data (goraka) --><!-- botoak --> 
 		<br>
 		{%endfor%}
 		{%endwith%}
@@ -115,7 +115,7 @@
 				&nbsp;&nbsp;				
 				<input type="checkbox" id="{{ db_lizentzia.url }}" name="{{db_lizentzia.url}}" value="{{db_lizentzia.url}}" onclick="bilaketaFiltratu_db()" 
 				{%if db_lizentzia.url in lizentziaF%}checked{%endif%}>
-				<label for="{{ db_lizentzia.url }}"><span><i class="icon-ob-check"></i></span> {{ db_lizentzia.izena }}</label>
+				<label class="filter-label" for="{{ db_lizentzia.url }}"><span><i class="icon-ob-check"></i></span> {{ db_lizentzia.izena }}</label>
 				<br>
 		{% endfor %}
 		
@@ -137,7 +137,7 @@
 		&nbsp;&nbsp;
 		<input type="checkbox"  id="{{currentbeste}}F" name="{{currentbeste}}F" value="{{currentbeste}}" onclick="bilaketaFiltratu_db()" 
 		{%if currentbeste in besteaF%}checked{%endif%}>
-		<label for="{{ currentbeste }}F"><span><i class="icon-ob-check"></i></span> {% trans currentbeste %}</label>
+		<label class="filter-label" for="{{ currentbeste }}F"><span><i class="icon-ob-check"></i></span> {% trans currentbeste %}</label>
 		<br>
 		{%endfor%}
 		{%endwith%}

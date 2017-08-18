@@ -171,7 +171,7 @@
 					<p class="item-field-title kolore-gris-hiru">{% trans "Sortzailea" %}</p>						
 					<p class="kolore-beltza">
 					{% if momentukoItema.dc_creator%}
-					{{momentukoItema.dc_creator}}
+					{{momentukoItema.dc_creator|format_html|safe}}
 					{%else%}
 					-
 					{% endif %}
@@ -191,7 +191,7 @@
 				<li>
 					<p class="item-field-title kolore-gris-hiru">{% trans "Gaia" %}</p>
 					<p class="kolore-beltza"> {% if momentukoItema.dc_subject%}
-						{{momentukoItema.dc_subject}}
+						{{momentukoItema.dc_subject|format_html|safe}}
 						{%else%}
 						-
 						{% endif %} 

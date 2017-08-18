@@ -59,6 +59,7 @@
       var results_id = data.results_id || [] //mad
       var results_img = data.results_img || [] //mad
       var results_src = data.results_src || [] //mad
+      var results_type = data.results_type || [] //mad
       
       
       var pathname = window.location.pathname; // Returns path only
@@ -112,14 +113,16 @@
     				
     			}
     			
-    			var h2_text=results_src[res_offset];
+    			var h5_text=results[res_offset];
     			
-    			var p_text=results[res_offset];
+    			var p_text=results_src[res_offset];
+    			var icon_type=results_type[res_offset].toLowerCase();
     		
     			//Elementuen id-ak sortu
     			var div_id="auto"+res_offset;
     			var img_id="img"+res_offset;
-    			var h2_id="h2"+res_offset;
+    			var icon_id="icon"+res_offset;
+    			var h5_id="h5"+res_offset;    			
     			var p_id="p"+res_offset;
     			var a_id="a"+res_offset;
     			
@@ -131,8 +134,12 @@
     			var elemImg=document.getElementById(img_id);
 				elemImg.setAttribute('src', img_src);
 				
-				var elemH2=document.getElementById(h2_id);
-				elemH2.textContent = h2_text;
+				var elemIcon=document.getElementById(icon_id);
+				elemIcon.setAttribute('class',"overlay-icon-mini icon-ob-"+icon_type+" kolore-"+icon_type);
+					
+				var elemH5=document.getElementById(h5_id);
+				elemH5.textContent = h5_text;
+				elemH5.setAttribute('href', a_href);
 				
 				var elemP=document.getElementById(p_id);
 				elemP.textContent = p_text;

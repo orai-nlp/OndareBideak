@@ -127,11 +127,7 @@ li.li-mota span{
 #navigator-item-info h2 {
 	margin-bottom:10px;
 }
-.scrollbar{
-    overflow-y:scroll;
-    scrollbar-base-color: #F8F8F8;
-    scrollbar-track-color: #333333;
-}
+
 
 #navigator-item-info::-webkit-scrollbar{
 	width: 6px;

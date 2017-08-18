@@ -345,7 +345,7 @@ input[type="checkbox"] + label span i{
 div.dark-overlay {
 	transition: .5s ease;
 	position: absolute;
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 0.2);
 	top: 5%;
 	left: 5%;
 	width: 90%;
@@ -381,5 +381,10 @@ a.morelink {
 
 /* END read more... estekak */
 
-
-
+/* Scroll bar style*/
+.scrollbar{
+    overflow-y:scroll;
+    scrollbar-base-color: #F8F8F8;
+    scrollbar-track-color: #333333;
+}
+/* END scroll bar style*/
