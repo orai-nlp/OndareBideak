@@ -309,7 +309,7 @@ h4.modal-inner-title {
 	position:absolute;
 	background: rgba(0, 0, 0, 0.6);
 	width:100%;
-	height:auto;
+	height:100%;
 	top:0;
 	z-index:1002;
 }
@@ -318,7 +318,7 @@ h4.modal-inner-title {
 	width:40%;
 	height:auto;
 	top:80px;
-	left:43%;
+	/*left:43%;*/
 	position:relative;
 	z-index:1002;
 	padding:15px 15px 50px 15px;
@@ -675,18 +675,6 @@ h4.modal-inner-title {
 }
 .info {
 	color: #337ab7;
-}
-.dropdown:hover .dropdown-menu {
-	display: block;
-	right: 20px;
-	top: 0px;
-	margin-top: 70px;
-	width: 300px;
-	position: absolute;
-	alignment-adjust: right;
-	float: right;
-	z-index: 1000000000;
-	left: inherit;
 }
 
 .text-center {
@@ -1106,9 +1094,6 @@ tr.spaceUnder > th {
 	padding-bottom: 0.1em;
 }
 
-div#comments {
-	padding-top:10px;
-}
 
 
 /*CSS svg*/
@@ -1491,14 +1476,10 @@ span.helptext {
 	float:right;
 }
 
-/*table#src_kwrds, table#mentions{
-	border-collapse: collapse;
-	border-style:hidden;
-}*/
 
 table#src_kwrds td {
 	text-align: center;
-	width: 7%;
+	/*width: 7%;*/
 }
 
 table#src_kwrds tbody td {
@@ -1506,26 +1487,44 @@ table#src_kwrds tbody td {
 }
 
 table#src_kwrds .mk_id, .mk_edit {
-	width: 4%;
+	width: 2%;
 }
 
-table#src_kwrds .mk_scrntg, .mk_term {
-	width: 9%;
+table#src_kwrds td.mk_id, td.mk_edit {
+	width: 2%;
+	padding-left:5px;
 }
-#mentions .mm_id, tbody .mm_kpol, tbody .mm_kpol, tbody .mm_lang, tbody .mm_date, tbody .mm_source, thead .mm_text {
-	text-align: center;
+
+table#src_kwrds .mk_title {
+	width: 8%;
+}
+
+table#src_kwrds .mk_desc {
+	width: 8%;
+}
+
+table#src_kwrds .mk_date {
+	width: 3%;
 }
 
 thead tr:first-child {
-	font-size: 15px;
+	font-size: 13px;
+	font-family: walsheim-bold-web;
 	height: 40px;
 }
 
-.kwrds {
-	float: right;
-	padding-right: 10px;
+table#src_kwrds thead td{
+	padding:15px;
+	
 }
 
+table#src_kwrds td.mk_datetime{
+	padding-left:2px !important;
+}
+table#src_kwrds tbody td.mk_datetime{
+	padding:2px 14px 2px 14px !important;
+}
+	
 .green {
     color: green;
 }
@@ -1551,11 +1550,11 @@ thead tr:first-child {
 }
 
 tbody td {
-    border-bottom: 2px solid #337ab7;
-    padding: 0px 1px !important;
+    border-bottom: 2px solid #666666;
+    padding: 2px 1px !important;
 }
 table {
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .profile_menu_button {

@@ -3,12 +3,23 @@
 {% load tags %}
 
 {% block additional_css %}
-
 <link href="{{ STATIC_URL }}css/datatables.min.css" rel="stylesheet">
-
-<link href="{{ STATIC_URL }}css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock additional_css %}
 
+{% block page_div_def %}			
+<div id="main_page">
+{% endblock page_div_def %}		
+
+{% block orria_div_def %}			
+<div id="orria" class="" style="padding:10px;">
+{% endblock orria_div_def %}	
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content_div_def %}		
+<div id="content_div" style="padding:10px;">
+{% endblock content_div_def %}
 
 
 
@@ -17,10 +28,10 @@
 <table id="src_kwrds" class="horni-table">
 	<thead>
 		<tr>
-			<td class=".mk_id">{% trans "Id" %}</td>
-			<td>{% trans "Izena" %}</td>
-			<td>{% trans "Deskribapena" %}</td>
-			<td>{% trans "Erakunde mota" %}</td>
+			<td class="mk_id">{% trans "Id" %}</td>
+			<td class="mk_name">{% trans "Izena" %}</td>
+			<td class="mk_desc">{% trans "Deskribapena" %}</td>
+			<td class="mk_insttype">{% trans "Erakunde mota" %}</td>
 			<td>{% trans "Telefonoa" %}</td>
 			<td>{% trans "Emaila" %}</td>
 			<td>{% trans "Egunekoa da?" %}</td>			
@@ -39,7 +50,7 @@
 			<td>{{ horni.telefonoa }}</td>
 			<td>{{ horni.emaila }}</td>
 			<td><i class="fa {% if horni.egunekoa == 1 %} fa-check green {% else %} fa-times red{% endif %}" aria-hidden="true"></i></td>
-			<td><a href="#" data-toggle="modal" data-target="#erab-modal" onclick="aldatu_hornitzaile_egoera('{{ horni.id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+			<td><a href="#" data-toggle="modal" data-target="#erab-modal" onclick="aldatu_hornitzaile_egoera('{{ horni.id }}')" ><i class="icon-ob-edit" aria-hidden="true" style="margin-top:5%;"></i></a></td>
 			
 		</tr>
 		{% endfor %}
@@ -71,7 +82,7 @@
         }, {
             extend : 'colvis',
             className : 'profile_menu_button',
-            text : 'Erakutsi/Ezkutatu <i class=\"fa fa-eye\"></i>'
+            text : 'Erakutsi/Ezkutatu <i class=\"icon-ob-eye\"></i>'
         }],
         iDisplayLength : 100
     });

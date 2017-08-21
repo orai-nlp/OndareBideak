@@ -184,42 +184,54 @@ um_pages }}</p>-->
 {%else%}
   <div id="itemak" class="tab-pane fade">
 {%endif%}	
+  	
+	{% comment %}
+	{% if items %}
+		<div id="div_you_want_to_blink" class="asistentea_EzDago">
+			<i class="fa fa-info-circle" aria-hidden="true"></i>
+			&nbsp;{% trans "Gehitu lan-eremura gustoko itemak eta sortu ibilbidea." %}
+			<a href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv">{% trans "Ikusi bideoa" %} </a>
+			{% trans " eta Animatu!"%}
+		</div>
+ 	
+ 	{%endif%}
+ 	{% endcomment %}
+ 	
+ 	{% for item in items %}
+ 	
+ 		{% include "_search_result_item.html"%} 	 
+	
+	{% empty %}
+		<p>{% trans "Ez da erantzunik aurkitu." %}</p>
+		<p class="asistentea_EzDago"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
+		<p class="asistentea_EzDago">{% trans "Gogoratu! zuk zeuk igo ditzakezu gai horri edo beste gai bati buruzko itemak." %}</p>
+		<p class="asistentea_EzDago">{% trans "Horretarako, erregistratu eta erabiltzailearen menuan <i>'Item berria gehitu'</i> sakatu." %}</p>
+		<p class="asistentea_EzDago">{% trans "Animatu!" %}</p> 
+	{% endfor %}
 
-  	<!-- PAGINATOR ITEMAK -->
+
+	<!-- PAGINATOR ITEMAK -->
   	<div class="pagination">
     <span class="step-links">
     	
         {% if items.has_previous %}
-            <a href="?page={{ items.previous_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">aurrekoak</a>
+            <a class="kolore-gris-lau" href="?page={{ items.previous_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
+            	<span class="icon-ob-arrow-left kolore-gris-ccc"> </span>{% trans 'Aurrekoak' %}
+            </a>
         {% endif %}
 
-        <span class="current">
-            {{ items.number }}.orrialdea {{ items.paginator.num_pages }}tik.
+        <span class="current kolore-gris-ccc">
+            [{{ items.number }}/{{ items.paginator.num_pages }}]
         </span>
 
         {% if items.has_next %}
-            <a href="?page={{ items.next_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">hurrengoak</a>
+            <a href="?page={{ items.next_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
+            	<span class="kolore-gris-lau">{% trans 'Hurrengoak' %} </span><span class="icon-ob-arrow-right kolore-gris-ccc"></span>
+            </a>
         {% endif %}
     </span>
 	</div>
 
- 	{% if items %}
-		<div class="asistentea_EzDago"><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;{% trans "Gehitu lan-eremura gustoko itemak eta sortu ibilbidea." %}<a href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv">{% trans "Ikusi bideoa" %} </a>{% trans " eta Animatu!"%}</div>
- 	
- 	{%endif%}
- 	{% for item in items %}
- 	
- 	{% include "_search_result_item.html"%}
- 	 
-	
-  {% empty %}
-	<p>{% trans "Ez da erantzunik aurkitu." %}</p>
-	<p class="asistentea_EzDago"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-	<p class="asistentea_EzDago">{% trans "Gogoratu! zuk zeuk igo ditzakezu gai horri edo beste gai bati buruzko itemak." %}</p>
-	<p class="asistentea_EzDago">{% trans "Horretarako, erregistratu eta erabiltzailearen menuan <i>'Item berria gehitu'</i> sakatu." %}</p>
-	<p class="asistentea_EzDago">{% trans "Animatu!" %}</p>
-	 
-{% endfor %}
 
   </div> <!--itemak -->
   
@@ -230,24 +242,7 @@ um_pages }}</p>-->
   <div id="ibilbideak" class="tab-pane fade">
   {%endif%}
   	
-  	<!-- PAGINATOR IBILBIDEAK-->
-  	
-  	<div class="pagination">
-    <span class="step-links">
-        {% if paths.has_previous %}
-            <a href="?page={{ paths.previous_page_number}}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">aurrekoak</a>
-        {% endif %}
-
-        <span class="current">
-            {{ paths.number }}.orrialdea {{ paths.paginator.num_pages }}tik.
-        </span>
-
-        {% if paths.has_next %}
-            <a href="?page={{ paths.next_page_number}}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">hurrengoak</a>
-        {% endif %}
-    </span>
-	</div>
-  
+  	  
    {% for path in paths %}
 
 	{% include "_search_result_path.html"%}
@@ -261,6 +256,27 @@ um_pages }}</p>-->
 	<p class="asistentea_EzDago">{% trans "Animatu!" %}</p>
 {% endfor %}
 
+	<!-- PAGINATOR IBILBIDEAK-->
+  	
+  	<div class="pagination">
+    <span class="step-links">
+        {% if paths.has_previous %}
+            <a class="kolore-gris-lau" href="?page={{ paths.previous_page_number}}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
+               	<span class="icon-ob-arrow-left kolore-gris-ccc"> </span>{% trans 'Aurrekoak' %}
+			</a>
+        {% endif %}
+
+        <span class="current kolore-gris-ccc">
+            [{{ paths.number }} / {{ paths.paginator.num_pages }}]
+        </span>
+
+        {% if paths.has_next %}
+            <a href="?page={{ paths.next_page_number}}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
+            	<span class="kolore-gris-lau">{% trans 'Hurrengoak' %} </span><span class="icon-ob-arrow-right kolore-gris-ccc"></span>
+            </a>
+        {% endif %}
+    </span>
+	</div>
 		
   </div><!-- ibilbideak -->
   

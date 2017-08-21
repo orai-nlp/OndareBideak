@@ -152,10 +152,10 @@
 
 				<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
 				{%if itemPaths %}
-					<a class="crossingPathsTitle" href="" data-toggle="modal" data-target="#modalCrossing"><b>{{itemPaths.count}}</b> {% trans "Ibilbide" %}</a>
+					<a class="crossingPathsTitle" href="" data-toggle="modal" data-target="#modal-crossing"><b>{{itemPaths.count}}</b> {% trans "Ibilbide" %}</a>
 				
 				{% else %}
-					<a class="crossingPathsTitle" href="" data-toggle="modal" data-target="#modalCrossing"><b>0</b> {% trans "Ibilbide" %}</a>
+					<a class="crossingPathsTitle" href="" data-toggle="modal" data-target="#modal-crossing"><b>0</b> {% trans "Ibilbide" %}</a>
 					<div style="color: #666666;" id="div_you_want_to_blink"> <i class="fa fa-info-circle" aria-hidden="true"></i> {% trans "Izan lehena item honekin ibilbide bat sortzen!" %}</div>
 											
 				{%endif%}
@@ -426,14 +426,13 @@
         <div class="modal-content">         
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Ze ibilbidetan?" %}</h4>
+                <h4 class="modal-title">{% trans "Ze ibilbidetan?" %} <span class="kolore-gris-bi">{{itemPaths.count}}</span></h4>
             </div>
             <div class="modal-body">
                 <div class="row">               
                     <div class="panel-body top-padding-0">
                     	
                    		<div id="messages"></div>
-                   		<h4 class="modal-inner-title">{% trans "Ezaugarriak" %}</h4>
                    		                                                     
                  		<div id="crossingPaths" class="path-info overflow">
 
@@ -441,23 +440,23 @@
 						{%if itemPaths %}
 						<!-- class="crossingPaths"-->
 						<div class="">
-							
-							<h3 class="titulu-kolorea">{{itemPaths.count}} {% trans "Ze ibilbidetan?" %} </h3>
+							<div style="color: rgb(223, 170, 0);padding:15px 0; " id="div_you_want_to_blink"> <span class="fa fa-info-circle" aria-hidden="true"></span> {% trans "Animatu ibilbideetako bat ikusi eta bozkatzera!" %}</div>
 							{% for node in itemPaths %}
 								{% if forloop.counter < 4 %}
-							<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}"> <span class="glyphicon glyphicon-map-marker" aria-hidden="true"> </span>&nbsp;{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
+							<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}"> <span class="fa fa-map-marker" aria-hidden="true"> </span>&nbsp;{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
 								{%endif%}
 							{%endfor%}
+							{% comment %}
 							<!--</br>-->
 							{% if itemPaths|length  >= 4 %} <!-- ONDOREN >= 4 JARRI-->
-							<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
+							<a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="icon-ob-plus">&nbsp;&nbsp;</span></a>
 							{%endif%}
+							{% endcomment %}
 							</ br>
-							<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Animatu ibilbideetako bat ikusi eta bozkatzera!" %}</div>					
+												
 						</div>
 						{% else %}
-						<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {% trans "Izan lehena item honekin ibilbide bat sortzen!" %}</div>
-				
+						<div style="color: rgb(223, 170, 0) " id="div_you_want_to_blink"> <span class="fa fa-info-circle" aria-hidden="true"></span> {% trans "Izan lehena item honekin ibilbide bat sortzen!" %}</div>
 						<h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; -</h3>
 						{%endif%}
 						</div>

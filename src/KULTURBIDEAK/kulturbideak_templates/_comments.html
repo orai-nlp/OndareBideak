@@ -4,6 +4,7 @@
 {% load tags%}
 
 <div id="comments" class="container">
+	<h2 class="kolore-gris-lau antzekoTitulua">{% trans "Iruzkinak" %} <span class="kolore-gris-bi">{{ comments|length }}</span></h2>
 	<div class="row">
 		<div class="col-md-1"></div>
 
@@ -59,34 +60,39 @@
 					<input type="hidden" name="id" value="{{id}}">
 				{% endif %}
 					<fieldset>
-						<a class="pull-left" href="#" > <!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ comment.author.genre.genre }}.png" alt="">--> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> </a>
-						<div class="media-body">
+						<a class="comment-icon" href="#" > 
+							<!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ comment.author.genre.genre }}.png" alt="">-->
+							<span class="icon-ob-usr kolore-gris-hiru" aria-hidden="true"></span>
+						</a>
+						<div class="media-body" style="padding-left:5px;">
 							<h4 class="media-heading"><small>{{ comment.author.first_name }} {{ comment.author.last_name }}</small> - <small>{{ comment.date|date:"SHORT_DATE_FORMAT" }}</small></h4>
 							{{ comment.comment|safe }}
 							{% if user.is_authenticated %} <!--Maddalen-->
 							<p>
-								<a href="#" onclick="$('#comment_response_div_{{ comment.id }}').show(1000);return false;">{% trans "Respond" %}</a>
+								<a class="kolore-gris-hiru" href="#" onclick="$('#comment_response_div_{{ comment.id }}').show(1000);return false;" title="{% trans 'erantzun' %}">
+									<span class="fa fa-mail-reply"></span>
+								</a>
 							</p>
 							{%endif%}
-							<div id="comment_response_div_{{ comment.id }}" style="display:none">
-								<div class="form-group">
+							<div id="comment_response_div_{{ comment.id }}" style="display:none" class="comment-response-id">
+								<div class="form-group comment-response-form">
 									<!--<textarea class="form-control" rows="3"></textarea>-->
 									{{ comment_parent_form.parent_id }}
 									{{ comment_parent_form.comment }}
 									{{ comment_parent_form.comment.errors }}
 								</div>
 								{% if user.is_authenticated %}
-								<button onclick="$('#comment_response_div_{{ comment.id }} input').val({{ comment.id }})" name="submit_comment_parent" type="submit" class="btn btn-primary kolore-gris-0 square-back">
+								<button onclick="$('#comment_response_div_{{ comment.id }} input').val({{ comment.id }})" name="submit_comment_parent" type="submit" class="btn btn-primary kolore-gris-0 square-back ezkerra">
 									{% trans "Bidali" %}
 								</button>
-								<button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">
+								<button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn kolore-gris-0 square-back eskuma">
 									{% trans "Itxi" %}
 								</button>
 								{% else %}
-								<button name="submit_comment_parent" class="btn btn-primary kolore-gris-0 square-back" onclick='window.location.href="/?next="; return false'>
+								<button name="submit_comment_parent" class="btn btn-primary kolore-gris-0 square-back ezkerra" onclick='window.location.href="/?next="; return false'>
 									{% trans "Bidali" %}
 								</button>
-								<button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn">
+								<button onclick="$('#comment_response_div_{{ comment.id }}').hide(1000);return false;" type="submit" class="btn kolore-gris-0 square-back eskuma">
 									{% trans "Itxi" %}
 								</button>
 								{% endif %}
@@ -94,8 +100,11 @@
 							</div>
 							{% for subcomment in comment.get_subcomments %}
 							<div class="media">
-								<a class="pull-left" href="#"> <!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ subcomment.author.genre.genre }}.png" alt="">--> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> </a>
-								<div class="media-body">
+								<a class="comment-icon" href="#">
+									<!--<img class="media-object" src="{{ STATIC_URL }}img/icon_{{ subcomment.author.genre.genre }}.png" alt="">-->
+									<span class="icon-ob-usr kolore-gris-hiru" aria-hidden="true"></span>
+								</a>
+								<div class="media-body" style="padding-left:5px;">
 									<h4 class="media-heading"><small>{{ subcomment.author.first_name }} {{ subcomment.author.last_name }}</small> - <small>{{ subcomment.date|date:"SHORT_DATE_FORMAT" }}</small></h4>
 									{{ subcomment.comment|safe }}
 								</div>

@@ -112,9 +112,13 @@ kolore grisak: - zero argiena
 }
 
 .kolore-gris-bat { 
-	
 	color:#eeeeee !important;
 }
+
+.kolore-gris-ccc {
+	color:#cccccc !important;
+}
+
 .kolore-gris-bi { 
 	
 	color:#999999 !important;
@@ -239,6 +243,16 @@ input[type="checkbox"]:checked + label span {
 
 input[type="checkbox"] + label span i{
     font-size:11px;    
+}
+
+.pagination{
+	width:100%;
+}
+
+.pagination span.step-links{
+	float:right;
+	font-size:16px;
+	font-family:walsheim-light-web;
 }
 
  /*****************************
@@ -371,15 +385,37 @@ a.morelink {
 .morecontent span {
 	display: none;
 }
-.comment {
-	/*width: 400px;*/
-	margin: 10px;
-}
 .aRight {
 	float: right;
 }
 
 /* END read more... estekak */
+
+/* iruzkinak _comments.html*/
+div#comments {
+	padding-top:10px;
+}
+
+.comment {
+	/*width: 400px;*/
+	margin: 10px;
+}
+
+.comment-icon{
+	float:left;
+	font-size:16px;
+}
+
+.comment-response-id{
+	padding:2px;
+}
+
+.comment-response-form{
+	margin:0 0 15px 0 !important;
+}
+
+/* END iruzkinak _comments.html*/
+
 
 /* Scroll bar style*/
 .scrollbar{

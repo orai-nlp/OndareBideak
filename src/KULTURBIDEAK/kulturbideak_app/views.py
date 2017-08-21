@@ -4215,7 +4215,7 @@ def cross_search(request):
     #Defektuz itemen orria erakusteko
     z="i"
     # Helburu hizkuntza guztietan burutuko du bilaketa
-    if(request.POST):
+    if(request.POST) and ('login' not in request.POST):
         hizkuntza=request.POST['search_lang']  
         print "search lang is:",hizkuntza         
         galdera=request.POST['search_input']
@@ -6163,13 +6163,22 @@ def editatu_ibilbidea(request):
             # print "ERROA:"+sarrera'''
             
     
-    return render_to_response('editatu_ibilbidea.html',{'momentukoPatha':ibilbidea,'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+    return render_to_response('editatu_ibilbidea.html',{'momentukoPatha':ibilbidea,
+                                                        'path_id':id,
+                                                        'path_nodeak': nodes,
+                                                        'path_titulua': titulua,
+                                                        'path_gaia':gaia,
+                                                        'path_deskribapena':deskribapena,
+                                                        'path_irudia':irudia},context_instance=RequestContext(request))
 
 
 
 def erakutsi_item(request):
      
-    if request.POST:
+    (login_form, erabiltzailea_form) = log_sign_in_forms(request)
+     
+    if request.POST and 'login' not in request.POST and request.user.is_authenticated():
+        
         #KOMENTARIOA IDATZI DA
         id=request.POST['id']
         item_tupla = item.objects.get(pk=id)
@@ -6245,7 +6254,29 @@ def erakutsi_item(request):
     
     non="erakutsi_item"
 
-    return render_to_response('item.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'qrUrl':qrUrl,'mlt':mlt,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'botoKopurua':botoKopurua,'item':item_tupla,'momentukoItema':item_tupla,'id':id,'herrialdea':herrialdea, 'hizkuntza':hizkuntza,'kategoria':kategoria,'eskubideak':eskubideak, 'urtea':urtea, 'viewAtSource':viewAtSource, 'irudia':irudia, 'hornitzailea':hornitzailea,'botatuDu':botatuDu},context_instance=RequestContext(request))    
+    return render_to_response('item.html',{'login_form':login_form,
+                                           'erabiltzailea_form':erabiltzailea_form,
+                                           "non":non,
+                                           "comment_form": comment_form,
+                                           "comment_parent_form": comment_parent_form,
+                                           "comments": comments,
+                                           'itemPaths':itemPaths,
+                                           'qrUrl':qrUrl,
+                                           'mlt':mlt,
+                                           'geoloc_longitude':geoloc_longitude,
+                                           'geoloc_latitude':geoloc_latitude,
+                                           'botoKopurua':botoKopurua,
+                                           'item':item_tupla,
+                                           'momentukoItema':item_tupla,
+                                           'id':id,
+                                           'herrialdea':herrialdea,
+                                           'hizkuntza':hizkuntza,
+                                           'kategoria':kategoria,
+                                           'eskubideak':eskubideak,
+                                           'urtea':urtea,'viewAtSource':viewAtSource,
+                                           'irudia':irudia,
+                                           'hornitzailea':hornitzailea,
+                                           'botatuDu':botatuDu},context_instance=RequestContext(request))    
 
 
 
@@ -6531,20 +6562,7 @@ def editatu_itema(request):
         else:
             objektu_url=""
         
-        '''
-        #HIZKUNZA 
-        dc_language=request.POST['hizkuntza']
-
-        if(dc_language=="1"):
-            dc_language="eu"
-            edm_language="eu"
-        elif(dc_language=="2"):
-            dc_language="es"
-            edm_language="es"            
-        else:
-            dc_language="en"
-            edm_language="en"
-        '''
+               
         ob_language=''
         #Hizkuntza kontrola
         if 'eu' in request.POST:
@@ -6830,7 +6848,22 @@ Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
        
         
         itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'mota':mota, 'herrialdea':herrialdea , 'jatorrizkoa': jatorrizkoa, 'sortzailea':sortzailea,'gaia':gaia, 'lizentzia':lizentzia, 'data':data,'eu':eu,'es':es,'en':en})
-        return render_to_response('editatu_itema.html',{"non":non,'geoloc_longitude':geoloc_longitude,'geoloc_latitude':geoloc_latitude,'item':item_tupla,'itema':itema,'id':item_id,'irudia':irudia,'titulua':titulua,'herrialdea':herrialdea,'hornitzailea':hornitzailea,'eskubideak':eskubideak,'urtea':urtea,'hizkuntza':hizk,'viewAtSource':viewAtSource,'mota':mot,'liz':liz},context_instance=RequestContext(request))
+        return render_to_response('editatu_itema.html',{"non":non,
+                                                        'geoloc_longitude':geoloc_longitude,
+                                                        'geoloc_latitude':geoloc_latitude,
+                                                        'item':item_tupla,
+                                                        'itema':itema,
+                                                        'id':item_id,
+                                                        'irudia':irudia,
+                                                        'titulua':titulua,
+                                                        'herrialdea':herrialdea,
+                                                        'hornitzailea':hornitzailea,
+                                                        'eskubideak':eskubideak,
+                                                        'urtea':urtea,
+                                                        'hizkuntza':hizk,
+                                                        'viewAtSource':viewAtSource,
+                                                        'mota':mot,
+                                                        'liz':liz},context_instance=RequestContext(request))
 
 
 def handle_uploaded_file(f,izena):

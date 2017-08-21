@@ -59,11 +59,29 @@ a.header-custom-link-underline span{
 #hizkuntza_aukeraketa_id {
 	margin:0;
 }
-
+/* erabiltzaile profila eta menua */
 #home_menu{
 	font-size:12px;
+	position:relative;
 }
 
+#profile-menu {
+	position: absolute;
+}
+
+.dropdown:hover .dropdown-menu {
+	display: block;	
+	top: 59px; 
+	/*69=35(padding-top)+4(padding-bottom)+20(line-height) - the link containing the menu
+	BUT!!- the li.dropdown parent height is 59. Thus we use 59, otherways interaction is buggy */
+	width: 250px;
+	position: absolute;
+	alignment-adjust: right;
+	float: right;
+	z-index: 1002;
+	left: inherit;
+}
+/* END erabiltzaile profila eta menua*/
 
 /*BILAKETA -KUTXA */
 

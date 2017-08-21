@@ -132,6 +132,7 @@ def hornitzailea_da(path_user_id):
 
 
 
+
 @register.filter(name='has_group')
 def has_group(user, group_name):
     group = Group.objects.get(name=group_name)
@@ -703,7 +704,7 @@ def to_int(value):
     
     
 # Custom tag for diagnostics
-@register.simple_tag()    
+@register.filter(name='debug')    
 def debug_object(var):
     return vars(var)    
     

@@ -44,7 +44,7 @@
 						<form action="/cross_search" method="post" class="navbar-form autocomplete-me">
 
 							{% csrf_token %}
-							<div class="input-group" style="width:100%;">
+							<div id="search-box" class="input-group" style="width:100%;">
 								{% trans "Bilatu ..." as the_placeholder %}
 								{% trans "Bilaketa ze hizkuntzatan?" as query_language %}
 								<!-- id=id_q-->
@@ -104,9 +104,8 @@
 		{% if user.is_authenticated %}
 			<li class="dropdown">				
 				<a href="#" class="dropdown-toggle" login-icon data-toggle="dropdown"><i class="icon-ob-usr kolore-video"></i> {{request.user.username}} <b class="caret"></b></a>
-					
+				<ul id="profile-menu" class="dropdown-menu">
 				{% if not user.is_superuser %}
-				<ul class="dropdown-menu">
 					<li>
 						<a href="nire_itemak_erakutsi">{% trans "Nire itemak" %}</a>
 					</li>
@@ -139,11 +138,9 @@
 
 					<li>
 						<a href="irten">{% trans "Irten" %} <i class="fa fa-sign-out kolore-gris-lau" aria-hidden="true"></i></a>
-					</li>
-				</ul>
+					</li>				
 				<!--Administratzailea baldin bada kudeaketa-aukerak erakutsi -->
-            	{% else %}
-            	<ul class="dropdown-menu">
+            	{% else %}            	
 					<li>
 						<a href="{{BASE_URL}}/admin_erabiltzaileak_kudeatu">{% trans "Erabiltzaileak kudeatu" %}</a>
 					</li>
@@ -156,9 +153,8 @@
 					<li>
 						<a href="irten">{% trans "Irten" %} <i class="fa fa-sign-out kolore-sound" aria-hidden="true"></i></a>
 					</li>
-           		</ul>
            		{%endif%}
-            	
+           		</ul>            	
 			</li><!-- dropdown -->
 				
 			{% else %}

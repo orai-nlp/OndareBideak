@@ -3,10 +3,12 @@
 {% load leaflet_tags %}
 
 <div class="row search-result-modal">	
-	<div class="thumbnail col-xs-2 col-md-2">
+ 	<div class="thumbnail col-xs-2 col-md-2">
 	
 {% if path.acces %}
-  	{% if path.acces %}	
+	
+  	{% if path.acces == 1 %}
+  		
 	    <div class="zirriborro-tag tag-modal">      
 	        <a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
 		{% if path.paths_thumbnail %}
@@ -17,8 +19,8 @@
 				<div class="dark-overlay"></div>
 				<p><span>{% trans "Zirriborroa" %}</span></p>
         	</a>
-	    </div>
-	{% elif path.path_fk_user_id|hornitzailea_da %}
+	    </div>	
+	{% elif path.fk_user_id_id|hornitzailea_da %}
 	    <div class="side-corner-tag tag-modal">	      
         	<a class="bilaketaEmaitzaPath"  href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}" >
 		{% if path.paths_thumbnail %}
@@ -42,7 +44,7 @@
             </a>
         </div>
     {%endif%}
-  {%endif%}
+{%endif%}
 	</div>
 	
 	<div class="caption  col-xs-10 col-md-10">
@@ -80,57 +82,5 @@
         {% endcomment %}
         
 	</div><!-- caption -->
-    <div class="kudeaketa col-xs-1 col-md-1">                       
-        <!--<h3 class="titulu-kolorea bilaketa">Kudeaketa Aukerak</h3>
-        <div class="btn-group" role="group" aria-label="...">-->
-        <ul class="button-row">        	
-			{% if user.is_authenticated %}
-				<!-- editatzeko aukera: ibilbidearen autorea da, supererabiltzailea da ala acces= 4 du-->
-    	        {% if user.id == path.path_fk_user_id|to_int  or user.is_superuser or path.acces == '4' %}
-    	    <li>
-     			<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
-      				<i class="icon-ob-edit kolore-gris-0" aria-hidden="true"></i>
-      			</a>
-      		</li>
-      			{%endif%}
-      			<!-- editatzeko aukera: acces==3 du eta hornitzailea da -->
-      			{%if path.acces == '3' and request.user|has_group:'hornitzailea'%}
-      		<li class="backgrnd-gris-lau">
-      			<a class="btn btn-default" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
-      				<span class="icon-ob-edit kolore-gris-0" aria-hidden="true"></span>
-      		   	</a>
-      		</li>			
-      			{%endif%}
-            {%endif%}
-            
-            {% if user.id == path.path_fk_user_id|to_int  or user.is_superuser%}
-            <!-- ezabatu-->
-            <li class="backgrnd-gris-lau">
-            	<a class="btn btn-danger" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.path_id}})" >
-              		<span class="icon-ob-trash" aria-hidden="true"></span>
-            	</a>
-            </li>
-             <!-- edizio aukerak aldatu-->
-          
-            <li class="backgrnd-gris-lau">
-            	<a class="btn btn-success announce" data-toggle="modal" data-id="{{path.path_id}}" >
-            		<span class="icon-ob-edit" aria-hidden="true"></span>
-            	</a>
-            </li>
-            {%endif%}
-
-	    {% if request.user|has_group:'hornitzailea'  or user.is_superuser%}
-           
-            {% if not path.path_id|is_in:eguneko_ibilbideak %} 
-            <a class="btn btn-warning" type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu_ibilb({{path.path_id}})" >
-              <span class="icon-ob-fire kolore-gris-0 backgrnd-gris-lau" aria-hidden="true"></span>
-            </a>
-            {%else%}
-            <a class="btn btn-warning egunekoa-botoia" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >
-              <span class="icon-ob-fire kolore-gris-0" aria-hidden="true"></span>
-            </a>
-            {%endif%}
-            {%endif%}
-		</ul>
-	</div><!-- kudeaketa buttons -->
+    <div class="kudeaketa"></div><!-- kudeaketa buttons -->
   </div><!-- search-result-->

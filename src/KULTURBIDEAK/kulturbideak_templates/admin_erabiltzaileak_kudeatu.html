@@ -10,6 +10,21 @@
 {% endblock additional_css %}
 
 
+{% block page_div_def %}			
+<div id="main_page">
+{% endblock page_div_def %}		
+
+{% block orria_div_def %}			
+<div id="orria" class="" style="padding:10px;">
+{% endblock orria_div_def %}	
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content_div_def %}		
+<div id="content_div" style="padding:10px;">
+{% endblock content_div_def %}
+
 
 
 
@@ -17,20 +32,20 @@
 <table id="src_kwrds">
 	<thead>
 		<tr>
-			<td class=".mk_id">{% trans "Id" %}</td>
+			<td class="mk_id">{% trans "Id" %}</td>
 			<td>{% trans "Izena" %}</td>
 			<td>{% trans "Abizena" %}</td>
 			<td>{% trans "Username" %}</td>
 			<td>{% trans "Posta" %}</td>
-			<td>{% trans "Hornitzailea da?" %}</td>
+			<td>{% trans "Hornitzaile da?" %}</td>
 			<td>{% trans "Hornitzaile-izena" %}</td>
-			<td>{% trans "Azken konexioa" %}</td>
-			<td>{% trans "Noiz erregistratua" %}</td>
+			<td class="mk_datetime">{% trans "Azken konexioa" %}</td>
+			<td class="mk_datetime">{% trans "Noiz erregistratua" %}</td>
 			
-			<td class=".mk_edit">{% trans "Editatu Profila" %}</td>
-			<td class=".mk_edit">{% trans "Editatu Pasahitza" %}</td>
-			<td class=".mk_edit">{% trans "Editatu hornitzaile-fitxa" %}</td>
-			<td class=".mk_edit">{% trans "Hornitzaile bihurtu" %}</td>
+			<td class="mk_edit">{% trans "Editatu Profila" %}</td>
+			<td class="mk_edit">{% trans "Editatu Pasahitza" %}</td>
+			<td class="mk_edit">{% trans "Editatu hornitzaile-fitxa" %}</td>
+			<td class="mk_edit">{% trans "Hornitzaile bihurtu" %}</td>
 		</tr>
 	</thead>
 	<tbody>
@@ -51,18 +66,18 @@
 			{% if not erab.id in hornitzaileak_id %}
 				 <td> --- </td>
 			{%endif%}
-			<td>{{ erab.last_login }}</td>
-			<td>{{ erab.date_joined }}</td>
+			<td class="mk_datetime">{{ erab.last_login|date:'Y.m.d h:i a' }}</td>
+			<td class="mk_datetime">{{ erab.date_joined|date:'Y.m.d h:i a' }}</td>
 
-			<td><a href="#" data-toggle="modal" data-target="#erab-modal" onclick="load_erab_form('{{ erab.id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
-			<td><a href="#" onclick="load_changePass_confirmation('{{ erab.id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+			<td><a href="#" data-toggle="modal" data-target="#erab-modal" onclick="load_erab_form('{{ erab.id }}')" ><i class="icon-ob-edit" aria-hidden="true" style="margin-top:5%;"></i></a></td>
+			<td><a href="#" onclick="load_changePass_confirmation('{{ erab.id }}')" ><i class="icon-ob-edit" aria-hidden="true" style="margin-top:5%;"></i></a></td>
 			{% if erab.id in hornitzaileak_id %} 
-				<td><a href="/admin_hornitzaile_fitxa_editatu?erabId={{erab.id}}"  target='_blank'><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+				<td><a href="/admin_hornitzaile_fitxa_editatu?erabId={{erab.id}}"  target='_blank'><i class="icon-ob-edit" aria-hidden="true" style="margin-top:5%;"></i></a></td>
 			{%else%}
 				<td>---</td>
 			{%endif%}
 			{% if not erab.id in hornitzaileak_id %}
-				<td><a href="/admin_hornitzaile_bihurtu?erabId={{erab.id}}"  target='_blank'><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;margin-top:5%;"></i></a></td>
+				<td><a href="/admin_hornitzaile_bihurtu?erabId={{erab.id}}"  target='_blank'><i class="icon-ob-edit" aria-hidden="true" style="margin-top:5%;"></i></a></td>
 			{%else%}
 				 <td> --- </td>
 			{%endif%}

@@ -133,10 +133,7 @@ var pb_box_space = 20;//
 var paths_starts = [];
 var connections = [];
 
-
-
-
-
+/* initalizations for logged and not logged users */
 function initialize(){
 	
 	//svg-a martxan jartzeko
@@ -145,28 +142,13 @@ function initialize(){
 	//kargatu workspaceko elementuak
 	load_ws();
 	
-	
-	//kargatu erabiltzailearen ibilbideak
-	//load_paths_list(user_id);
-	//Kargatu Ibilbide bozkatuenak
-	//load_most_voted_paths();
-	//Kargatu Eguneko Itema
-	//load_eguneko_itema();
-	//Kargatu Eguneko Ibilbidea
-	//load_eguneko_ibilbidea();
 }
 function initialize_notlogged(){
 	
 	//svg-a martxan jartzeko
 	set_pb();
-	
-	//Kargatu Ibilbide bozkatuenak
-	//load_most_voted_paths();
-	//Kargatu Eguneko Itema
-	//load_eguneko_itema();
-	//Kargatu Eguneko Ibilbidea
-	//load_eguneko_ibilbidea();
 }
+/* END initalizations */
 
 function hizkuntza_url_egokitu(linka){
 	
@@ -180,370 +162,9 @@ function hizkuntza_url_egokitu(linka){
 
 }
 
-
-//pantailaren albo batean erabiltzailearen path-ak kargatzeko
-/*
-function load_paths_list(user_id){
-	var paths_list_container = document.getElementById("nire_ibilbideak");
-	if (paths_list_container){
-		//ajax deia, kargatu kontainerrean zerrenda
-		load_paths_list_request(paths_list_container, user_id);
-	}
-}
-
-
-function load_paths_list_request(paths_list_container,user_id)
-{
-	
-	var csrftoken = getCookie('csrftoken');
-	var xmlHttp = createXmlHttpRequestObject();
-	
-	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
-		
-		$.ajaxSetup({
-   			beforeSend: function(xhr, settings) {
-       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
-       		}
-   		 	}
-		});
-        xmlHttp.open("POST","../ajax_lortu_paths_list",true);
-        xmlHttp.onreadystatechange = function (){
-            load_paths_list_answer(xmlHttp,paths_list_container);                                                                   // Erantzuna jasotzean exekutatuko den deia
-        };
-        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("user_id=" + user_id  + "&csrfmiddlewaretoken=" + csrftoken);                       // Eskaera bidali
-    }
-}
-
-function load_paths_list_answer(xmlHttp,paths_list_container)
-{
-	
-	if (xmlHttp.readyState == 4){
-        if(xmlHttp.status == 200){
-			var xml_answer = xmlHttp.responseXML;
-			var xml_Document = xml_answer.documentElement;
-			var paths = xml_Document.getElementsByTagName("path");
-			
-			for (var i=0;i<paths.length;i++){
-				
-				id = paths[i].getElementsByTagName("id")[0].firstChild.data;
-				titulua="";
-				if (paths[i].getElementsByTagName("titulua")[0].firstChild){
-					titulua = paths[i].getElementsByTagName("titulua")[0].firstChild.data;
-				}
-				deskribapena="";
-				if (paths[i].getElementsByTagName("deskribapena")[0].firstChild){
-					deskribapena = paths[i].getElementsByTagName("deskribapena")[0].firstChild.data;
-				}
-				irudia = "";
-				if (paths[i].getElementsByTagName("irudia")[0].firstChild){
-					irudia = paths[i].getElementsByTagName("irudia")[0].firstChild.data;
-				}
-				add_path_to_list(id,titulua,deskribapena,irudia);
-			}                                 
-        }
-    }
-	
-}
-
-function add_path_to_list(id,titulua,deskribapena,irudia){
-	
-	var ibilbideak_div = document.getElementById("nire_ibilbideak");
-    
-    var p = document.createElement('p');
-    
-    var a = document.createElement('a');
-	var linkText = document.createTextNode(titulua);
-	a.appendChild(linkText);
-	a.title = titulua;
-	a.href = "editatu_ibilbidea?id="+id;
-	ibilbideak_div.appendChild(p);
-	ibilbideak_div.appendChild(a);
-    
-    
-}
-*/
-
-//pantailaren albo batean Ibilbide bozkatuenak kargatzeko
-/*
-function load_most_voted_paths(){
-	var paths_list_container = document.getElementById("ibilbide_bozkatuenak");
-	if (paths_list_container){
-		//ajax deia, kargatu kontainerrean zerrenda
-		load_most_voted_paths_request(paths_list_container);
-	}
-}
-
-
-
-
-function load_most_voted_paths_request(paths_list_container)
-{
-	
-	var csrftoken = getCookie('csrftoken');
-	var xmlHttp = createXmlHttpRequestObject();
-	
-	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
-		
-		$.ajaxSetup({
-   			beforeSend: function(xhr, settings) {
-       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
-       		}
-   		 	}
-		});
-        xmlHttp.open("POST","../ajax_lortu_most_voted_paths",true);
-        xmlHttp.onreadystatechange = function (){
-            load_most_voted_paths_answer(xmlHttp,paths_list_container);                                                                   // Erantzuna jasotzean exekutatuko den deia
-        };
-        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("csrfmiddlewaretoken=" + csrftoken);     // Eskaera bidali
-    }
-}
-
-function load_most_voted_paths_answer(xmlHttp,paths_list_container)
-{
-	//alert("load_most_voted_paths_answer");	
-	if (xmlHttp.readyState == 4){
-        if(xmlHttp.status == 200){
-			var xml_answer = xmlHttp.responseXML;
-			var xml_Document = xml_answer.documentElement;
-			var paths = xml_Document.getElementsByTagName("path");
-			
-			
-			for (var i=0;i<paths.length;i++){
-				
-				id = paths[i].getElementsByTagName("id")[0].firstChild.data;
-				
-				titulua="";
-				
-				if (paths[i].getElementsByTagName("titulua")[0].firstChild){
-					titulua = paths[i].getElementsByTagName("titulua")[0].firstChild.data;
-														
-				}
-				
-				
-				add_most_voted_path_to_list(id,titulua);
-			}                                 
-        }
-    }
-	
-}
-
-function add_most_voted_path_to_list(id,titulua){
-	
-	
-	
-	var ibilbideak_div = document.getElementById("ibilbide_bozkatuenak");
-    
-    var p = document.createElement('p');
-    
-    var a = document.createElement('a');
-   
-	var linkText = document.createTextNode(titulua);
-	a.appendChild(linkText);
-	
-	a.title = titulua;
-	a.href = "nabigazioa_hasi?path_id="+id;
-	ibilbideak_div.appendChild(p);
-	ibilbideak_div.appendChild(a);
-    
-    
-}
-*/
-
-
-//pantailaren albo batean eguneko itema erakusteko
-/*
-function load_eguneko_itema()
-{
-	
-	var eguneko_itema_container = document.getElementById("eguneko_itema");
-	if (eguneko_itema_container){
-		//ajax deia, kargatu kontainerrean zerrenda
-		
-		load_eguneko_itema_request(eguneko_itema_container);
-	}
-}
-
-
-
-function load_eguneko_itema_request(eguneko_itema_container)
-{
-		
-	var csrftoken = getCookie('csrftoken');
-	var xmlHttp = createXmlHttpRequestObject();
-	
-	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
-		
-		$.ajaxSetup({
-   			beforeSend: function(xhr, settings) {
-       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
-       		}
-   		 	}
-		});
-        xmlHttp.open("POST","../ajax_lortu_eguneko_itema",true);
-        xmlHttp.onreadystatechange = function (){
-            load_eguneko_itema_answer(xmlHttp,eguneko_itema_container);                                                                   // Erantzuna jasotzean exekutatuko den deia
-        };
-        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("csrfmiddlewaretoken=" + csrftoken);     // Eskaera bidali
-    }
-}
-
-function load_eguneko_itema_answer(xmlHttp,eguneko_itema_container)
-{
-	
-	if (xmlHttp.readyState == 4){
-		
-        if(xmlHttp.status == 200){
-        
-			var xml_answer = xmlHttp.responseXML;
-			var xml_Document = xml_answer.documentElement;
-			var items = xml_Document.getElementsByTagName("item");
-			
-			
-			//Eguneko ibilbide bat baino gehiago daudenean, random bidez aukeratu zein kargatu
-			var randomNum = Math.floor(Math.random() * items.length);
-			
-			
-			id = items[randomNum].getElementsByTagName("id")[0].firstChild.data;
-			titulua = items[randomNum].getElementsByTagName("titulua")[0].firstChild.data;
-			irudia = items[randomNum].getElementsByTagName("irudia")[0].firstChild.data;
-			
-			add_eguneko_itema_to_list(id,titulua,irudia);
-			                         
-        }
-    }
-	
-}
-
-function add_eguneko_itema_to_list(id,titulua,irudia){
-	
-	
-	//Random-a inplementatu
-	var eguneko_itema_div = document.getElementById("eguneko_itema");
-    
-    var p = document.createElement('p');
-    
-    var a = document.createElement('a');
-    
-    var img = document.createElement("img");
-	img.setAttribute("src", irudia);
-   
-	//var linkText = document.createTextNode(titulua);
-	//a.appendChild(linkText);
-	a.appendChild(img);
-	//a.title = titulua;
-	a.href = "erakutsi_item?id="+id;
-	eguneko_itema_div.appendChild(p);
-	eguneko_itema_div.appendChild(a);
-    
-    
-}
-*/
-
-//pantailaren albo batean eguneko ibilbidea erakusteko
-
-/*
-function load_eguneko_ibilbidea()
-{
-	
-	var eguneko_ibilbidea_container = document.getElementById("eguneko_ibilbidea");
-	if (eguneko_ibilbidea_container){
-		//ajax deia, kargatu kontainerrean zerrenda
-		
-		load_eguneko_ibilbidea_request(eguneko_ibilbidea_container);
-	}
-}
-
-function load_eguneko_ibilbidea_request(eguneko_ibilbidea_container)
-{
-		
-	var csrftoken = getCookie('csrftoken');
-	var xmlHttp = createXmlHttpRequestObject();
-	
-	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
-		
-		$.ajaxSetup({
-   			beforeSend: function(xhr, settings) {
-       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
-       		}
-   		 	}
-		});
-        xmlHttp.open("POST","../ajax_lortu_eguneko_ibilbidea",true);
-        xmlHttp.onreadystatechange = function (){
-            load_eguneko_ibilbidea_answer(xmlHttp,eguneko_ibilbidea_container);                                                                   // Erantzuna jasotzean exekutatuko den deia
-        };
-        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("csrfmiddlewaretoken=" + csrftoken);     // Eskaera bidali
-    }
-}
-
-function load_eguneko_ibilbidea_answer(xmlHttp,eguneko_ibilbidea_container)
-{
-	
-	if (xmlHttp.readyState == 4){
-		
-        if(xmlHttp.status == 200){
-        
-			var xml_answer = xmlHttp.responseXML;
-			var xml_Document = xml_answer.documentElement;
-			var paths = xml_Document.getElementsByTagName("path");
-			
-			
-			//Eguneko ibilbide bat baino gehiago daudenean, random bidez aukeratu zein kargatu
-			var randomNum = Math.floor(Math.random() * paths.length);
-			
-			
-			id = paths[randomNum].getElementsByTagName("id")[0].firstChild.data;
-			titulua = paths[randomNum].getElementsByTagName("titulua")[0].firstChild.data;
-			irudia = paths[randomNum].getElementsByTagName("irudia")[0].firstChild.data;
-			
-			add_eguneko_ibilbidea_to_list(id,titulua,irudia);
-		                       
-        }
-    }
-	
-}
-
-function add_eguneko_ibilbidea_to_list(id,titulua,irudia){
-	
-	
-	//Random-a inplementatu
-	var eguneko_ibilbidea_div = document.getElementById("eguneko_ibilbidea");
-    
-    var p = document.createElement('p');
-    
-    var a = document.createElement('a');
-    
-    var img = document.createElement("img");
-	img.setAttribute("src", irudia);
-   
-	//var linkText = document.createTextNode(titulua);
-	//a.appendChild(linkText);
-	a.appendChild(img);
-	//a.title = titulua;
-	a.href = "erakutsi_item?id="+id;
-	eguneko_ibilbidea_div.appendChild(p);
-	eguneko_ibilbidea_div.appendChild(a);
-    
-    
-}
-
-*/
-
-
+/*workspace*/
 function load_ws()
 {
-	
 	load_ws_request();	
 }
 
@@ -743,14 +364,6 @@ function create_workspace_box(index,user_id){
     var mota = document.getElementById("mota_"+index).value;
     
     //Titulua garbitu eta laburtu
-    /*titulua=titulua.replace('<div class=\"titulu_es\">', ' ');
-    titulua=titulua.replace('</div>', ' ');
-    titulua=titulua.replace('<div class=\"titulu_en\">', ' ');
-    titulua=titulua.replace('</div>', ' ');
-    titulua=titulua.replace('<div class=\"titulu_eu\">', ' ');
-    titulua=titulua.replace('</div>',' ');
-    titulua=titulua.replace('<div class=\"titulu_lg\">', ' ');
-    titulua=titulua.replace('</div>',' ');*/
     titulua=tituluaGarbitu(titulua,false);  
       
    	//Titulua laburtu?
@@ -785,8 +398,6 @@ function create_workspace_box(index,user_id){
 	
     //add_workspace_box(item_id,titulua,irudia);
 }
-
-
 
 //create workspace_box request
 function create_workspace_box_request(item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail)
@@ -972,65 +583,18 @@ function wsb_handleDragLeave(ev) {
 }
 
 
-
-
-
-
-/*
-Ajax bidez irudi bat igotzeko adibidea da beheko jQuery-a. sortu_ibilbidea.html-etik deitzen da
- */
-/*
-$(document).ready(function(){
-$('#form').submit(function(e) {
-
-   var form = $(this);        
-   var formdata = false;
-   if(window.FormData){
-     formdata = new FormData(form[0]);
-                   
-     }
-
-   var formAction = form.attr('action');
-
-                $.ajax({
-                    type        : 'POST',
-                    url         : '../ajax_path_irudia_gorde_proba',
-                    cache       : false,
-                    data        : formdata ? formdata : form.serialize(),
-                    contentType : false,
-                    processData : false,
-
-                    success: function(response) {
-                        if(response != 'error') {
-                            //$('#messages').addClass('alert alert-success').text(response);
-                            // OP requested to close the modal
-                           
-                             $('#myModal').modal('hide');
-                        } else {
-                            $('#messages').addClass('alert alert-danger').text(response);
-                        }
-                    }
-                });
-                e.preventDefault();
-            });
-   
-});
-*/
-
-
+/**
+ * Hainbat funtzio orria kargatutakoan exekutatu beharrekoak
+ * */
 
 //Ibilbidearen edizio aukerak AJAX bidez aldatzen ditu datu-basean
 $(document).ready(function(){
 	
 $('#pathEdizioAukerakEguneratu').submit(function(e) {
- 
-
 
    var path_id = document.getElementById("pathId").value;
    var edizioZbk = document.getElementById("acces").value;
-   
   
-   
    var form = $(this);      
    var formdata = false;
    if(window.FormData){
@@ -1061,17 +625,7 @@ $('#pathEdizioAukerakEguneratu').submit(function(e) {
                         }
                     }
                 });
-                e.preventDefault();
-           
-   
-   
-  
-   
-   
-   
-   
-
-  
+                e.preventDefault();          
  });
    
 });
@@ -1177,7 +731,18 @@ $('#formEguneratu').submit(function(e) {
    
 });
 
-/*
+
+//Ibilbidea eguneratzean irudia gordetzeko
+$(document).ready(function(){
+	pos = $("#search-box").offset();
+	$("#autocomplete-container").css({
+		left: (pos.left-10) + "px"		
+	});/*not sure why but the autocomplete-container is shown 10px to the right. Thus the correction*/
+	console.log("autocomplete lehioaren posizioa aldatuta:"+$("#autocomplete-container").css('left'));
+});
+
+
+/**
  * 
  * IBILBIDEA SORTZEKO FUNTZIOAK
  * 
