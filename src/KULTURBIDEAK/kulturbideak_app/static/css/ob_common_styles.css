@@ -72,6 +72,14 @@
 .backgrnd-gris-lau {
 	background-color:#333333 !important;
 }
+.backgrnd-gris-9598 {
+	background-color:#95989A !important;
+}
+
+.backgrnd-gris-ccc {
+	background-color:#CCCCCC !important;
+}
+
 
 /* hasierako patailan: data, gehiago ikusiren gezia...*/
 .kolore-txuria { 
@@ -123,6 +131,11 @@ kolore grisak: - zero argiena
 	
 	color:#999999 !important;
 }
+
+.kolore-gris-9598 {
+	color:#95989A !important;
+}
+
 .kolore-gris-hiru { 
 	
 	color:#666666 !important;
@@ -156,6 +169,18 @@ kolore grisak: - zero argiena
  
  .padding-0{
  	padding:0 !important;
+ }
+ 
+ .padding-15{
+ 	padding:15px !important;
+ }
+ 
+ .padding-10{
+ 	padding:10px !important;
+ }
+ 
+ .margin-0{
+ 	margin:0 !important;
  }
  
  .margin-0{
@@ -254,6 +279,11 @@ input[type="checkbox"] + label span i{
 	font-size:16px;
 	font-family:walsheim-light-web;
 }
+
+.indent{
+	padding-left:20px;
+}
+
 
  /*****************************
   END estilo orokorrak

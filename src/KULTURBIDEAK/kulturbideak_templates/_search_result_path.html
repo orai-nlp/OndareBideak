@@ -121,11 +121,11 @@
 			    {% if request.user|has_group:'hornitzailea'  or user.is_superuser%}
                 <li class="backgrnd-gris-lau">
         		    {% if not path.path_id|is_in:eguneko_ibilbideak %}             
-            		<a class="btn-warning ob-botoia" type="button" href="javascript:egunekoaGehituEtabilaketaFiltratu_ibilb({{path.path_id}})" >
+            		<a class="btn-warning ob-botoia" type="button" href="javascript:egunekoaAldatuEtabilaketaFiltratu_ibilb({{path.path_id}},'gehitu')" >
             			<i class="icon-ob-fire square-back kolore-gris-0" aria-hidden="true"></i>
             		</a>
     		        {%else%}
-	            	<a class="btn-warning ob-botoia eguneko-botoiaa" type="button" href="javascript:egunekoaKenduEtabilaketaFiltratu_ibilb({{path.path_id}})" >
+	            	<a class="btn-warning ob-botoia eguneko-botoiaa" type="button" href="javascript:egunekoaAldatuEtabilaketaFiltratu_ibilb({{path.path_id}},'kendu')" >
     	          		<i class="icon-ob-fire square-back kolore-gris-0" aria-hidden="true"></i>
         	    	</a>
             		{%endif%}

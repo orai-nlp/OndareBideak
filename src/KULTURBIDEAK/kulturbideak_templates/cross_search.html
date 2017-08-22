@@ -88,74 +88,64 @@ um_pages }}</p>-->
 	<div id="fitxa" class="tab-pane fade">
 	{%endif%}
 
-		<div class="container">
-  
- 
       	 <div class="row">
-            <div class="col-lg-3">  
-                <div class="well info_box  icon_info">
-                    <h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-tag" aria-hidden="true"></span>                   
-                      <span id="id_area" class="list-group-item-text">{{hornitzailea.erakundeMota}}</span>                                        
-                    </h4>
-                 	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-						
-               		 <span id="id_where">{{hornitzailea.helbidea}}</span>
-                       
-                	</h4>
-                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
-						
-               		 <span id="id_telefonoa">{{hornitzailea.telefonoa}}</span>
-                       
-                	</h4>
-                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-						
-               		 <span id="id_emaila">{{hornitzailea.emaila}}</span>
-                       
-                	</h4>
-                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-						
-               		  <span id="id_website"><a href="http://{{hornitzailea.website}}" target="_blank">{{hornitzailea.website}}</a></span>
-                       
-                	</h4>
-                	<h4 class="mota2"><span style="font-size:1.5em;color: #eea236" class="glyphicon glyphicon-time" aria-hidden="true"></span>
-						
-               		 <span id="id_emaila">{{hornitzailea.ordutegia}}</span>
-                       
-                	</h4>
-                    
-                </div>
-    
-            </div> 
-           	<div class="col-lg-8"> <!-- col-lg-8-->
-				{% if hornitzailea.izena != "" %}
-					<h1 class=" walsheim-web text-center"><span id="id_title"> {{hornitzailea.izena}}</span>
-				{%else%}
-				     <h1 class="walsheim-web text-center"><span id="id_title"> Hornitzailearen Izena*</span>
-                {%endif%}
-                	 </h1>  
-                        
-                <!--<p class="lead">{% trans "Deskribapena" %}</p>-->
-                <div class="path-info-description">
-                	<div class="row">                
-        		<div class="col-md-8" ><span id="id_summary">{{hornitzailea.deskribapena|format_html|safe}}</span></div>
-        		
-        		
-        		
-        			<div id="hornitzaile-ikonoa" class="col-md-4">
-				{% if hornitzailea.ikonoa %}
-        				<img id="id_icon" class="hornitzaile-ikonoa" src="{{ hornitzailea.ikonoa }}" alt="">      			
-	 			{%endif%}
-        		</div>
-        		</div>
-        		
-        		</div>
-                                                                        
-                <hr>
-		
+            <div id="hornitzaile-ikonoa" class="col-md-2 clearfix margin-minus">	    	
+        	{% if hornitzailea.ikonoa %} 
+        		<!-- <img id="id_icon" class="hornitzaile-ikonoa" src="{{ hornitzailea.ikonoa }}" alt=""> -->       		 
+			 	<img id="id_icon" class="img-responsive" src="{{ hornitzailea.ikonoa }}" alt="">
+        	{%endif%}
+        	</div>       
+    		<div class="col-md-10">  
+    			<div class="row padding-15">
+    				<div id="provider-name-desc" class="col-md-8">
+    					<div id="provider-name">
+    						<h4 class="walsheim-web">
+    						{% if hornitzailea.izena != "" %}
+								<span id="id_title"> {{hornitzailea.izena}}</span>
+							{%else%}
+				     			<span id="id_title"> Hornitzailearen Izena*</span>
+                			{%endif%}
+                	 		</h4>  
+    					</div>
+    					<div id="provider-desc">
+    						<span id="id_summary">{{hornitzailea.deskribapena|format_html|safe}}</span>
+    					</div>
+    				</div>
+    				<div id="provider-infobox" class="col-md-4 backgrnd-gris-0">                  
+                    	<h5 class="mota2" style="margin-bottom:20px;">
+                    		<span class="kolore-gris-9598 capitalize">{% trans 'Datuak' %}</span>                                                            		
+		                </h5>
+                    	<h5 class="mota2">
+                    		<span class="kolore-video" aria-hidden="true">&mdash;</span>                   
+        					<span id="id_area" class="kolore-gris-hiru">{{hornitzailea.erakundeMota}}</span>                                                            		
+		                </h5>
+		                <h5 class="mota2">
+                    		<span class="kolore-video" aria-hidden="true">&mdash;</span>                   
+		   					<span id="id_where" class="kolore-gris-hiru">{{hornitzailea.helbidea}}</span>
+                    	</h5>              	
+         		       	<h5 class="mota2">
+                    		<span class="kolore-video" aria-hidden="true">&mdash;</span>                   
+               				<span id="id_telefonoa2" class="kolore-gris-hiru">{{hornitzailea.telefonoa}}</span>
+                		</h5>
+                		<h5 class="mota2">
+                    		<span class="kolore-video" aria-hidden="true">&mdash;</span>                   
+		               		<span id="id_emaila2" class="kolore-gris-hiru">{{hornitzailea.emaila}}</span>
+        	        	</h5>
+            	    	<h5 class="mota2">
+                    		<span class="kolore-video" aria-hidden="true">&mdash;</span>                   
+							<span id="id_website2" class="kolore-gris-hiru">{{hornitzailea.website}}</span>
+               		  	</h5>                	
+                		<h5 class="mota2">
+                    		<span class="kolore-video" aria-hidden="true">&mdash;</span>                   
+							<span id="id_ordutegia2" class="kolore-gris-hiru">{{hornitzailea.ordutegia}}</span>
+                        </h5>	                
+                	</div>
+            	</div> 
+            	<div class="row">
          		<!-- Preview Image -->
       
        			 {% if hornitzailea.argazkia %}
-        				<img id="id_image" class="hornitzaile-irudia" src="{{ hornitzailea.argazkia }}" alt="">
+        				<img id="imgPreview" class="hornitzaile-irudia" src="{{ hornitzailea.argazkia }}" alt="">
       			
 					 {%else %}
 		 				<img id="imgPreview" class="hornitzaile-irudia" src="{{ STATIC_URL }}/img/no_photo_small.jpg" alt="">
@@ -172,11 +162,10 @@ um_pages }}</p>-->
 
 	  			 <!-- END GEOLOKALIZAZIOA -->
        
-			</div><!-- col-lg-8-->
-
-		</div><!--row-->
-	</div><!--container-->	
-</div><!--fitxa-->
+				</div><!-- row photo and geo map -->
+			</div> <!-- col-md-10 provider main content -->
+		</div><!--row-->	
+	</div><!--fitxa-->
 
 
 {% if z == 'i'%}

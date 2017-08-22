@@ -218,7 +218,7 @@ def hasiera(request):
     #Hasierako pantailan erakutsi behar den berria hartu datu-basetik
     erakBerria=berria.objects.get(erakutsi=1)
     currentDate= datetime.datetime.now()
-    #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
+
     return render_to_response('index.html',{'login_form':login_form,
                                             'erabiltzailea_form':erabiltzailea_form,
                                             'currentDate': currentDate,
@@ -232,24 +232,7 @@ def hasiera(request):
                                             'erabiltzaileKop':erabiltzaileKop,
                                             'erakBerria':erakBerria},context_instance=RequestContext(request))
 
- 
-'''
-def hasiera_old(request):
     
-    
-    #Kontadoreko kopuruak lortu datu-basetik
-    #Itemak
-    itemKop = item.objects.count()
-    #Ibilbideak
-    ibilbideKop = path.objects.count()   
-    #Hornitzaileak
-    hornitzaileKop = hornitzailea.objects.count()
-    #Erabiltzaileak
-    erabiltzaileKop = usr.objects.count()
-    #return render_to_response('hasiera.html',{'path_id':id,'path_nodeak': nodes, 'path_titulua': titulua,'path_gaia':gaia, 'path_deskribapena':deskribapena, 'path_irudia':irudia},context_instance=RequestContext(request))
-    return render_to_response('index_brandy.html',{'itemKop':itemKop,'ibilbideKop':ibilbideKop,'hornitzaileKop':hornitzaileKop,'erabiltzaileKop':erabiltzaileKop},context_instance=RequestContext(request))
-'''
-   
 def itemak_hasiera(request):
     
     #print "itemak_hasiera"

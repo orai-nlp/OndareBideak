@@ -1229,11 +1229,7 @@ circle .unselectedNode {
 	border-radius: 0%;
 }
 
-.hornitzaile-irudia {
 
-	/*height: 150px;*/
-	border: solid 1px #CCC;
-}
 
 .hornitzaile-ikonoa{	
 	border-radius: 5px;
@@ -1247,6 +1243,53 @@ circle .unselectedNode {
 }
 
 /* END CSS svg*/
+
+/*************************
+ Hornitzaile bistak:
+	- hornitzaile_fitxa_editatu.html
+	- hornitzaileak_hasiera.html
+	- hornitzaile_search.html 
+********************************/
+#provider-infobox{
+	text-align:left;
+	padding:25px 10px;
+}
+
+#provider-name{
+	text-align:left;
+	font-family:walsheim-bold-web;
+	padding: 10px 0 15px 0;
+}
+
+#provider-desc{
+	text-align:justify;
+}
+
+h5.mota2{
+	float:left;
+	width:100%;
+	padding: 0px 15px 0px 25px;
+	text-align:left;
+	margin:5px 0px;
+}
+
+.hornitzaile-irudia {
+
+	/*height: 150px;*/
+	border: solid 2px #CCC;
+	padding:2px;
+	width:100%;
+}
+
+.margin-minus{
+	margin-left:-15px;
+}
+
+div#fitxa{
+	padding-top:30px;
+}
+/* END hornitzaile bistak*/
+
 
 
 .ob-botoia {
