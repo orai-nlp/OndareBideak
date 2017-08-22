@@ -1631,6 +1631,7 @@ function egunekoaKenduEtabilaketaFiltratu(item_id)
 
 function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 {
+	$('#loading_modal').modal('show');
 	var search_lang = document.getElementById('search_lang')
 	var hizkR=search_lang.options[search_lang.selectedIndex].value;
 	var galdera = document.getElementById('search_input').value;
@@ -1819,6 +1820,7 @@ function egunekoaGehituEtabilaketaFiltratu_ibilb(path_id)
 
 function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 {
+	$('#loading_modal').modal('show');
 	var search_lang = document.getElementById('search_lang')
 	var hizkR=search_lang.options[search_lang.selectedIndex].value;
 	var galdera = document.getElementById('search_input').value;
@@ -1995,7 +1997,7 @@ function egunekoaKenduEtabilaketaFiltratu_ibilb(path_id)
 
 function bilaketaFiltratu_db()
 {
-	
+	$('#loading_modal').modal('show');
 	var search_lang = document.getElementById('search_lang')
 	var hizkR=search_lang.value;
 	var galdera = document.getElementById('search_input').value;
@@ -2479,7 +2481,7 @@ function load_berria_form(id) {
  * ADMIN : user edition modal opening
  */
 function load_erab_form(id) {
-    // load from AJAX
+	// load from AJAX
     $.ajax({
         method : 'GET',
         url : '/erab_form',

@@ -61,7 +61,7 @@
 		<div class="col-md-1"></div>
 		<div class="col-md-9">
 			<!-- top pagination -->
-			{% include "_path_pagination.html" %}
+			{% include "_pagination.html" with items=paths params="" %}
 
 			{% for path in paths %}
 			<div class="row ezkmarg0">
@@ -137,7 +137,7 @@
 			{% endfor %}
 
 			<!-- bottom pagination -->
-			{% include "_path_pagination.html" %}
+			{% include "_pagination.html" with items=paths params="" %}
 
 		</div><!--column 9-->
 		<div class="col-md-2"></div>

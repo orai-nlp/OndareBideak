@@ -210,28 +210,8 @@ um_pages }}</p>-->
 	{% endfor %}
 
 
-	<!-- PAGINATOR ITEMAK -->
-  	<div class="pagination">
-    <span class="step-links">
-    	
-        {% if items.has_previous %}
-            <a class="kolore-gris-lau" href="?page={{ items.previous_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
-            	<span class="icon-ob-arrow-left kolore-gris-ccc"> </span>{% trans 'Aurrekoak' %}
-            </a>
-        {% endif %}
-
-        <span class="current kolore-gris-ccc">
-            [{{ items.number }}/{{ items.paginator.num_pages }}]
-        </span>
-
-        {% if items.has_next %}
-            <a href="?page={{ items.next_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
-            	<span class="kolore-gris-lau">{% trans 'Hurrengoak' %} </span><span class="icon-ob-arrow-right kolore-gris-ccc"></span>
-            </a>
-        {% endif %}
-    </span>
-	</div>
-
+	<!-- bottom PAGINATION ITEMAK -->
+	{% include "_pagination.html" with items=items params="item" %}	  	
 
   </div> <!--itemak -->
   
@@ -256,27 +236,8 @@ um_pages }}</p>-->
 	<p class="asistentea_EzDago">{% trans "Animatu!" %}</p>
 {% endfor %}
 
-	<!-- PAGINATOR IBILBIDEAK-->
-  	
-  	<div class="pagination">
-    <span class="step-links">
-        {% if paths.has_previous %}
-            <a class="kolore-gris-lau" href="?page={{ paths.previous_page_number}}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
-               	<span class="icon-ob-arrow-left kolore-gris-ccc"> </span>{% trans 'Aurrekoak' %}
-			</a>
-        {% endif %}
-
-        <span class="current kolore-gris-ccc">
-            [{{ paths.number }} / {{ paths.paginator.num_pages }}]
-        </span>
-
-        {% if paths.has_next %}
-            <a href="?page={{ paths.next_page_number}}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
-            	<span class="kolore-gris-lau">{% trans 'Hurrengoak' %} </span><span class="icon-ob-arrow-right kolore-gris-ccc"></span>
-            </a>
-        {% endif %}
-    </span>
-	</div>
+	<!-- bottom PAGINATOR IBILBIDEAK-->
+	{% include "_pagination.html" with items=paths params="path" %}  	
 		
   </div><!-- ibilbideak -->
   
@@ -284,15 +245,6 @@ um_pages }}</p>-->
 <!--</div> panel -->	
 
 </div> <!-- tab content -->
-
-
-
-
-
-
-  	
-
-	
 
 
 {% if page.has_previous or page.has_next %}

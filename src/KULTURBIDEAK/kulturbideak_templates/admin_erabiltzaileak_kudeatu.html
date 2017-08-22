@@ -3,10 +3,7 @@
 {% load tags %}
 
 {% block additional_css %}
-
 <link href="{{ STATIC_URL }}css/datatables.min.css" rel="stylesheet">
-
-<link href="{{ STATIC_URL }}css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock additional_css %}
 
 
@@ -89,7 +86,7 @@
 
 
 
-{% block modals %}
+{% block custom_modals %}
 <div id="loading_modal" class="modal text-center" style="display:none;">
 	<h1>{% trans "Datuak eguneratzen..." %}</h1><img src="{{ STATIC_URL}}img/ajax-loader.gif"/>
 </div>
@@ -120,7 +117,7 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-{% endblock %}
+{% endblock custom_modals %}
 
 {% block pageEndScripts %}
 		

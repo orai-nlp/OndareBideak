@@ -106,6 +106,36 @@ div.item-extra-background{
 }
 
 
+/***********************************
+    loader / loading modal
+*************************************/
+#loading_modal{
+	position:absolute;
+}
+
+#loading_modal h6{
+	position:relative;
+	top:45%;
+}
+
+.loader{
+	top: 30%;
+	position: absolute;
+	background-image: url(/static/img/loader/ob-loader-backgrnd.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	width:100%;
+}
+
+.loader img{
+	width:10%;
+}
+
+
+/*  END loader / loading modal **/
+
+
 
 /* Bilaketa orrietako emaitzen bistaratea : cross_search.html */
 

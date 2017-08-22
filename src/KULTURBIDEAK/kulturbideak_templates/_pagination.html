@@ -1,0 +1,38 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+<div class="pagination">
+    <span class="step-links">
+    	
+        {% if items.has_previous %}
+        	{% if params == "item" %}
+            <a class="kolore-gris-lau" href="?page={{ items.previous_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
+            {% elif params == "path" %}
+            <a class="kolore-gris-lau" href="?page={{ items.previous_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
+            {% else %}
+            <a class="kolore-gris-lau" href="?page={{ items.previous_page_number }}">
+            {% endif %}
+            	 <span class="icon-ob-arrow-left kolore-gris-ccc"> </span>{% trans 'Aurrekoak' %}
+            </a>
+        {% endif %}
+
+        <span class="current kolore-gris-ccc">
+            [{{ items.number }}/{{ items.paginator.num_pages }}]
+        </span>
+
+        {% if items.has_next %}
+        	{% if params == "item" %}
+            <a href="?page={{ items.next_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=i&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">
+            {% elif params == "path" %}
+            <a href="?page={{ items.next_page_number }}&search_lang={{radioHizkuntza}}&search_input={{bilaketaGaldera}}&h={{h}}&h_id={{ hornitzailea.fk_user.id}}&z=p&hizkuntzakF={{hizkF}}&hornitzaileakF={{horniF}}&motakF={{motaF}}&ordenakF={{ordenaF}}&lizentziakF={{lizentziaF}}&besteakF={{besteaF}}">            
+            {% else %}
+            <a href="?page={{ items.next_page_number }}">
+            {% endif %}
+            	<span class="kolore-gris-lau">{% trans 'Hurrengoak' %} </span><span class="icon-ob-arrow-right kolore-gris-ccc"></span>
+            </a>
+        {% endif %}
+	</span>
+	<!--  <span class="emaitzaInfo"> -- {{itemak.paginator.count }} Item dataren arabera ordenatuta</span> -->
+</div>

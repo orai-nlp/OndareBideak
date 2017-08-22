@@ -669,9 +669,11 @@
 
 		{% block genericModals %}
 		<!-- page loading message modal -->
-		<div id="loading_modal" class="modal text-center" style="display:none;">
-			<h1>{% trans "Datuak kargatzen..." %}</h1>
-			<img src="{{ STATIC_URL}}img/ob-loader.gif"/>
+		<div id="loading_modal" class="modal text-center" style="display:none;">			
+			<div class="loader">
+				<img src="{{ STATIC_URL}}img/loader/ob-loader-animated-ezgif-fading-noback.png"/>				
+			</div>
+			<h6 class="kolore-txuria">{% trans "Datuak kargatzen..." %}</h6>
 		</div>
 		
 		
