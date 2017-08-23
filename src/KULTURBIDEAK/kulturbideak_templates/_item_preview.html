@@ -4,12 +4,11 @@
 {% load tags%}
 
 <div id="item_preview-element">
-	{% if momentukoItema.egunekoa %} 
-	<div class="chosen-item-mark">
+	 
+	<div id="chosen-item-mark" class="chosen-item-mark" {% if momentukoItema.egunekoa == 0 %} style="display:none;" {%endif%}>
 		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{momentukoItema.edm_type|lower}}" aria-hidden="true"></i>
    		<span class="backgrnd-gris-lau kolore-gris-0 bold">{% trans "Eguneko Itema" %}</span>
-	</div>			
-	{%endif%} 
+	</div>				
 			
 	<!--AUDIO ALA BIDEOA BADA IRUDIA ERE ERAKUTSI, BALDIN BADAGO-->
 	{% if momentukoItema.edm_type == "SOUND" or  momentukoItema.edm_type == "VIDEO"  %}

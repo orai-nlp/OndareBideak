@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 #from django.views.generic import direct_to_template
-from kulturbideak_app import views
+from kulturbideak_app import views as ob_views
 from KULTURBIDEAK.kulturbideak_app.views import kulturBideak
 from KULTURBIDEAK.kulturbideak_app.views import hasiera
 from KULTURBIDEAK.kulturbideak_app.views import erakutsi_item
@@ -42,16 +42,12 @@ from KULTURBIDEAK.kulturbideak_app.views import botoa_eman_path
 from KULTURBIDEAK.kulturbideak_app.views import botoa_kendu_path
 from KULTURBIDEAK.kulturbideak_app.views import nabigazioa_hasi
 from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_most_voted_paths
-from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_eguneko_itema
 from KULTURBIDEAK.kulturbideak_app.views import cross_search
 from KULTURBIDEAK.kulturbideak_app.views import autoplay_hasieratik
 from KULTURBIDEAK.kulturbideak_app.views import autocomplete
 from KULTURBIDEAK.kulturbideak_app.views import oaipmh_datubilketa
 from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_search
 from KULTURBIDEAK.kulturbideak_app.views import filtro_search
-from KULTURBIDEAK.kulturbideak_app.views import eguneko_itemak
-from KULTURBIDEAK.kulturbideak_app.views import eguneko_itema_kendu
-from KULTURBIDEAK.kulturbideak_app.views import eguneko_itema_gehitu
 from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_fitxa_editatu
 from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_arloa
 from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_where
@@ -65,14 +61,10 @@ from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_emaila
 from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_website
 from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_ordutegia
 from KULTURBIDEAK.kulturbideak_app.views import fitxa_gorde
-from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_eguneko_ibilbidea
-from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbideak
 from KULTURBIDEAK.kulturbideak_app.views import azkeneko_itemak
 from KULTURBIDEAK.kulturbideak_app.views import azkeneko_ibilbideak
 from KULTURBIDEAK.kulturbideak_app.views import ezabatu_ibilbidea
 from KULTURBIDEAK.kulturbideak_app.views import ezabatu_itema
-from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbidea_gehitu
-from KULTURBIDEAK.kulturbideak_app.views import eguneko_ibilbidea_kendu
 from KULTURBIDEAK.kulturbideak_app.views import ajax_path_edizio_aukerak_aldatu
 from KULTURBIDEAK.kulturbideak_app.views import admin_hornitzaile_fitxa_editatu
 from KULTURBIDEAK.kulturbideak_app.views import admin_erabiltzaileak_kudeatu
@@ -102,10 +94,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     #url(r'uploads/(?P<path>.*)$', views.serve),
     url(r'uploads/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
-   #url(r'^$', SearchView(), name='haystack_search'),
+    #url(r'^$', SearchView(), name='haystack_search'),
     url(r'^$', hasiera),
-    #url(r'brandy', brandy),
-    url(r'eguneko_itema_gehitu',eguneko_itema_gehitu),  
     #url(r'search', SearchView(), name='haystack_search'), 
     url(r'cross_search', cross_search),
     url(r'login', logina),
@@ -140,16 +130,16 @@ urlpatterns = patterns('',
     url(r'botoa_kendu_item', botoa_kendu_item),   
     url(r'botoa_eman_path', botoa_eman_path),
     url(r'botoa_kendu_path', botoa_kendu_path), 
+    url(r'ajax_egunekoa_aldatu_item',ob_views.ajax_egunekoa_aldatu_item),
+    url(r'ajax_egunekoa_aldatu_path',ob_views.ajax_egunekoa_aldatu_path),
+    url(r'ajax_egunekoak',ob_views.ajax_egunekoak),
     url(r'nabigazioa_hasi', nabigazioa_hasi),
     url(r'ajax_lortu_most_voted_paths', ajax_lortu_most_voted_paths),
-    url(r'ajax_lortu_eguneko_itema', ajax_lortu_eguneko_itema),   
     url(r'autoplay_hasieratik', autoplay_hasieratik),
     url(r'autocomplete', autocomplete),
     url(r'oaipmh_datubilketa',oaipmh_datubilketa),
     url(r'hornitzaile_search',hornitzaile_search),
     url(r'filtro_search',filtro_search),
-    url(r'eguneko_itemak',eguneko_itemak),
-    url(r'eguneko_itema_kendu',eguneko_itema_kendu),    
     url(r'admin_reset_user_password',admin_reset_user_password),
     url(r'admin_hornitzaile_fitxa_editatu',admin_hornitzaile_fitxa_editatu),
     url(r'admin_erabiltzaileak_kudeatu',admin_erabiltzaileak_kudeatu), 
@@ -169,14 +159,10 @@ urlpatterns = patterns('',
     url(r'ajax_edit_website',ajax_edit_website), 
     url(r'ajax_edit_ordutegia',ajax_edit_ordutegia), 
     url(r'fitxa_gorde',fitxa_gorde),
-    url(r'ajax_lortu_eguneko_ibilbidea',ajax_lortu_eguneko_ibilbidea),
-    url(r'eguneko_ibilbideak',eguneko_ibilbideak),
     url(r'azkeneko_itemak',azkeneko_itemak),
     url(r'azkeneko_ibilbideak',azkeneko_ibilbideak),
     url(r'ezabatu_ibilbidea',ezabatu_ibilbidea),
     url(r'ezabatu_itema',ezabatu_itema),
-    url(r'eguneko_ibilbidea_gehitu',eguneko_ibilbidea_gehitu),
-    url(r'eguneko_ibilbidea_kendu',eguneko_ibilbidea_kendu),
     url(r'ajax_path_edizio_aukerak_aldatu',ajax_path_edizio_aukerak_aldatu), 
     url(r'erab_form',get_user),
     url(r'berria_form',get_berria),

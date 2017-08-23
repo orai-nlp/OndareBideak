@@ -45,20 +45,23 @@
 		
 		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
 		<!--egunekoa bihurtu-->
+		<li id="eguneko_button_{{momentukoPatha.id}}" class="backgrnd-gris-lau center">
 			{% if momentukoPatha.egunekoa == 0 %}
-		<li class="backgrnd-gris-lau center">
-			<a class="btn-warning " title="{% trans 'Eguneko ibilbideetara gehitu' %}"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{momentukoPatha.id}}&nondik=ikusi" >
-           		<i class="fa fa-star square-back-lg kolore-{{item.edm_type|lower}}" aria-hidden="true"></i>
-           	</a>
-        </li>
+			<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'gehitu')" >
+    			<span class="square-back-vert-padding backgrnd-gris-lau">
+         			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
+         			<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau icon-ob-plus"></span>
+        		</span>
+    		</a>
+        	{% else %}
+			<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'kendu')" >
+    			<span class="square-back-vert-padding backgrnd-gris-lau">
+         			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
+         			<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau">&mdash;</span>
+        		</span>
+    		</a>		
 			{%endif%}
-			{% if momentukoPatha.egunekoa == 1 %}
-		<li class="backgrnd-gris-lau center">
-			<a class="btn-warning" title="{% trans 'Eguneko ibilbideetatik kendu' %}" type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{momentukoPatha.id}}&nondik=ikusi" >
-				<i class="fa fa-star-o square-back-lg kolore-{{itype}}" aria-hidden="true"></i>
-			</a>
 		</li>
-			{%endif%}
 		{%endif%}
 		
 		{% if user.id == momentukoPatha.fk_ob_user.id or user.is_superuser%}
@@ -211,13 +214,12 @@
 <div class="item_preview col-xs-12 col-sm-12 col-md-10 center">
 	
 	<!-- item preview-->
-	<div id="item_preview-element">
-		{% if momentukoPatha.egunekoa %} 
-		<div class="chosen-item-mark">
+	<div id="item_preview-element">		
+		<div id="chosen-item-mark" class="chosen-item-mark" {% if momentukoPatha.egunekoa == 0 %} style="display:none;" {%endif%}>
 			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-gris-bat" aria-hidden="true"></i>
    			<span class="backgrnd-gris-lau kolore-gris-0 bold">{% trans "Eguneko ibilbidea" %}</span>
 		</div>			
-		{%endif%}
+		
 		 
 		<a id="autoplay-button" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">			
 			{% if momentukoPatha.paths_thumbnail %}

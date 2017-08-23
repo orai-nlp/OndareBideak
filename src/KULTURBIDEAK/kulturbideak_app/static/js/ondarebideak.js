@@ -738,7 +738,7 @@ $(document).ready(function(){
 	$("#autocomplete-container").css({
 		left: (pos.left-10) + "px"		
 	});/*not sure why but the autocomplete-container is shown 10px to the right. Thus the correction*/
-	console.log("autocomplete lehioaren posizioa aldatuta:"+$("#autocomplete-container").css('left'));
+	//console.log("autocomplete lehioaren posizioa aldatuta:"+$("#autocomplete-container").css('left'));
 });
 
 
@@ -1224,9 +1224,6 @@ function update_path_node_answer(xmlHttp)
 
 
 
-
-
-
 //ibilbideak sortzeko arbela
 function set_pb(){
     if (document.getElementById("path_boxes") && (document.getElementById("path_boxes").children.length == 0)){
@@ -1234,6 +1231,13 @@ function set_pb(){
         
     }
 }
+
+/**
+ *  * END ibilbidea sortzeko funtzioak
+ *  * 
+ * **/
+
+
 
 function nabigatu(path_id,node_id)
 {
@@ -1245,346 +1249,91 @@ function nabigatu(path_id,node_id)
 }
 
 
-function egunekoaAldatuEtabilaketaFiltratu(item_id,aldaketa)
-{
-	var search_lang = document.getElementById('search_lang')
-	var hizkR=search_lang.options[search_lang.selectedIndex].value;
-	var galdera = document.getElementById('search_input').value;
-    
-      if(document.getElementById('hornitzailea_username'))
-	 {
-	    hornitzaile_search=document.getElementById('hornitzailea_username').value;
-	    horni_id=document.getElementById('hornitzaile_search').value; 
-	 }
-        else{
-	    hornitzaile_search="";
-	    horni_id="";
-	}
-    
-    var nireak = document.getElementById('nireak').value;
-    
-	var hizkuntzakF_ar = []; 
-	var hornitzaileakF_ar = [];
-	var motaF_ar = [];
-	var ordenaF_ar = [];
-	var lizentziaF_ar = [];
-	var besteF_ar = [];
-	
-	//Hizkuntzak
-	var EuhizkElement = document.getElementById('hizkuntza-eu');
-	var EshizkElement = document.getElementById('hizkuntza-es');
-	var EnhizkElement = document.getElementById('hizkuntza-en');
-	
-	//Ordena
-	var dataOrdenaElement = document.getElementById('ordena-dataDesc');
-	var data2OrdenaElement = document.getElementById('ordena-dataAsc');
-	var botoOrdenaElement = document.getElementById('ordena-botoak');
-	
-	//Beste batzuk
-	var egunekoaElement = document.getElementById('egunekoaF');
-	var proposatutakoaElement = document.getElementById('proposatutakoaF');
-	var wikifikatuaElement = document.getElementById('wikifikatuaF');
-	var irudiaDuElement = document.getElementById('irudiaDuF');
-	var irudiaEzDuElement = document.getElementById('irudiaEzDuF');
-	
-	var balioa;
-	
-	//HIZKUNTZAK
-	if (EuhizkElement.checked == true)
-	 {
-	 	balioa=EuhizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 }
-	 if (EshizkElement.checked == true)
-	 {
-	 	balioa=EshizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 
-	 }
-	 if (EnhizkElement.checked == true)
-	 {
-	 	balioa=EnhizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 
-	 }
-	 //HORNITZAILEAK
-         db_hornitzaileak_text=document.getElementById('db_hornitzaileak_text').value;
-         db_hornitzaileak=db_hornitzaileak_text.split("_");
-         for (var i = 0, length = db_hornitzaileak.length; i < length; i++)
-                {
-                        horniId=db_hornitzaileak[i];
-                        var horniElement=document.getElementById(horniId);
-                        console.log(horniElement);
-                        if(horniElement.checked == true)
-                        {
-                                balioa=horniElement.value;
-                                hornitzaileakF_ar.push(balioa);
-                        }
+/**
+ *  Eguneko item/pathak kargatzeko funtzioa (cross_search.html)
+ *   
+ * **/
 
-                }
-
-         //MOTA                                                                                                                      
-         db_motak_text=document.getElementById('db_motak_text').value;
-         db_motak=db_motak_text.split("_");
-         for (var i = 0, length = db_motak.length; i < length; i++)
-                {
-                        motaId=db_motak[i];
-                        var motaElement=document.getElementById(motaId);
-                        if(motaElement.checked == true)
-                        {
-                                balioa=motaElement.value;
-                                motaF_ar.push(balioa);
-                        }
-
-                }
-         //LIZENTZIA                                                                                                                 
-         db_lizentziak_text=document.getElementById('db_lizentziak_text').value;
-         db_lizentziak=db_lizentziak_text.split("_");
-
-         for (var i = 0, length = db_lizentziak.length; i < length; i++)
-                {
-                        lizentziaId=db_lizentziak[i];
-                        var lizentziaElement=document.getElementById(lizentziaId);
-
-                        if(lizentziaElement.checked == true)
-                        {
-                                balioa=lizentziaElement.value;
-                                lizentziaF_ar.push(balioa);
-
-                        }
-
-                }
- 
-
-	 //ORDENA
-	 if(dataOrdenaElement.checked == true)
-	 {
-	 	balioa=dataOrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-	 if(data2OrdenaElement.checked == true)
-	 {
-	 	balioa=data2OrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-	 if(botoOrdenaElement.checked == true)
-	 {
-	 	balioa=botoOrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-
-	 //Beste batzuk
-	  if(egunekoaElement.checked == true)
-	 {
-	 	balioa=egunekoaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	 if(proposatutakoaElement.checked == true)
-	 {
-	 	balioa=proposatutakoaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(wikifikatuaElement.checked == true)
-	 {
-	 	balioa=wikifikatuaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(irudiaDuElement.checked == true)
-	 {
-	 	balioa=irudiaDuElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(irudiaEzDuElement.checked == true)
-	 {
-	 	balioa=irudiaEzDuElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	 
-	 
-	 var hizkuntzakF=hizkuntzakF_ar.toString(); 
-	 var hornitzaileakF=hornitzaileakF_ar.toString(); 
-	 var motakF=motaF_ar.toString();
-	 var ordenakF=ordenaF_ar.toString();
-	 var lizentziakF=lizentziaF_ar.toString();
-	 var besteakF =besteF_ar.toString();
-	 
-	 var url = 'eguneko_itema_'+aldaketa+'?search_lang='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+item_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
-    window.location.href=url;
-	
+function ajax_egunekoak_lortu(){
+	// load from AJAX
+    $.ajax({
+        method : 'GET',
+        url : '/ajax_egunekoak',
+        dataType : 'html',
+        data : {
+        }
+    }).done(function(data) {
+        $("#modalEgunekoak").html(data);                
+        $("#modalEgunekoak").modal('show');
+    });
 }
 
-function egunekoaAldatuEtabilaketaFiltratu_ibilb(path_id,aldaketa)
+
+/** END Eguneko item/pathak kargatzeko funtzioa (cross_search.html) */
+
+
+/**
+ * 
+ * Eguneko item/path-en aldaketak ajax bidez
+ * 
+ * */
+
+function egunekoaAldatu(item_id,aldaketa,type)
 {
 	$('#loading_modal').modal('show');
-	var search_lang = document.getElementById('search_lang')
-	var hizkR=search_lang.options[search_lang.selectedIndex].value;
-	var galdera = document.getElementById('search_input').value;
+	// load from AJAX
+    $.ajax({
+        method : 'GET',
+        url : '/ajax_egunekoa_aldatu_item',
+        dataType : 'html',
+        data : {
+            id : item_id,
+            aldaketa: aldaketa,
+            itype: type
+        }
+    }).done(function(data) {
+    	//var response = $($.parseHTML(data));
+    	//var buttonLi = response[0].innerHTML;
+        $('#eguneko_button_'+item_id).html(data);
+        if (aldaketa == "gehitu"){
+        	$('#chosen-item-mark').show();
+        }
+        else {
+        	$('#chosen-item-mark').hide();
+        }
+        $('#loading_modal').modal('hide');
+    });
 	
+}    
 
-	 if(document.getElementById('hornitzailea_username'))
-	 {
-	 
-	    hornitzaile_search=document.getElementById('hornitzailea_username').value;
-	    horni_id=document.getElementById('hornitzaile_search').value; 
-	 }
-        else{
-	    hornitzaile_search="";
-	    horni_id="";
-	}
-        
-
-	var nireak = document.getElementById('nireak').value;
-
-	var hizkuntzakF_ar = []; 
-	var hornitzaileakF_ar = [];
-	var motaF_ar = [];
-	var ordenaF_ar = [];
-	var lizentziaF_ar = [];
-	var besteF_ar = [];
+function egunekoaAldatu_ibilb(path_id,aldaketa)
+{
+	$('#loading_modal').modal('show');
+	// load from AJAX
+    $.ajax({
+        method : 'GET',
+        url : '/ajax_egunekoa_aldatu_path',
+        dataType : 'html',
+        data : {
+            id : path_id,
+            aldaketa: aldaketa
+        }
+    }).done(function(data) {
+    	//var response = $($.parseHTML(data))
+    	//var buttonLi = response[0].innerHTML;
+        $('#eguneko_button_'+path_id).html(data);
+        if (aldaketa == "gehitu"){
+        	$('#chosen-item-mark').show();
+        }
+        else {
+        	$('#chosen-item-mark').hide();
+        }
+        $('#loading_modal').modal('hide');
+    });
 	
-	//Hizkuntzak
-	var EuhizkElement = document.getElementById('hizkuntza-eu');
-	var EshizkElement = document.getElementById('hizkuntza-es');
-	var EnhizkElement = document.getElementById('hizkuntza-en');
-	
-	//Ordena
-	var dataOrdenaElement = document.getElementById('ordena-dataDesc');
-	var data2OrdenaElement = document.getElementById('ordena-dataAsc');
-	var botoOrdenaElement = document.getElementById('ordena-botoak');
-	
-	//Beste batzuk
-	var egunekoaElement = document.getElementById('egunekoaF');
-	var proposatutakoaElement = document.getElementById('proposatutakoaF');
-	var wikifikatuaElement = document.getElementById('wikifikatuaF');
-	var irudiaDuElement = document.getElementById('irudiaDuF');
-	var irudiaEzDuElement = document.getElementById('irudiaEzDuF');
-	
-	var balioa;
-	//HIZKUNTZAK
-	if (EuhizkElement.checked == true)
-	 {
-	 	balioa=EuhizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 }
-	 if (EshizkElement.checked == true)
-	 {
-	 	balioa=EshizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 
-	 }
-	 if (EnhizkElement.checked == true)
-	 {
-	 	balioa=EnhizkElement.value;
-	 	hizkuntzakF_ar.push(balioa);
-	 
-	 }
-         //HORNITZAILEAK                                                                                                             
-         db_hornitzaileak_text=document.getElementById('db_hornitzaileak_text').value;
-         db_hornitzaileak=db_hornitzaileak_text.split("_");
-         for (var i = 0, length = db_hornitzaileak.length; i < length; i++)
-                {
-                        horniId=db_hornitzaileak[i];
-                        var horniElement=document.getElementById(horniId);
-                        console.log(horniElement);
-                        if(horniElement.checked == true)
-                        {
-                                balioa=horniElement.value;
-                                hornitzaileakF_ar.push(balioa);
-                        }
+}    
 
-                }
-         //MOTA                                                                                                                   
-                                                                                                                                   
-         db_motak_text=document.getElementById('db_motak_text').value;
-         db_motak=db_motak_text.split("_");
-         for (var i = 0, length = db_motak.length; i < length; i++)
-                {
-                        motaId=db_motak[i];
-                        var motaElement=document.getElementById(motaId);
-                        if(motaElement.checked == true)
-                        {
-                                balioa=motaElement.value;
-                                motaF_ar.push(balioa);
-                        }
-
-                }
-         //LIZENTZIA                                                                                                               
-                                                                                                                                    
-         db_lizentziak_text=document.getElementById('db_lizentziak_text').value;
-         db_lizentziak=db_lizentziak_text.split("_");
-
-         for (var i = 0, length = db_lizentziak.length; i < length; i++)
-                {
-                        lizentziaId=db_lizentziak[i];
-                        var lizentziaElement=document.getElementById(lizentziaId);
-
-                        if(lizentziaElement.checked == true)
-                        {
-                                balioa=lizentziaElement.value;
-                                lizentziaF_ar.push(balioa);
-
-                        }
-
-                }
-
-
-	 //ORDENA
-	 if(dataOrdenaElement.checked == true)
-	 {
-	 	balioa=dataOrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-	 if(data2OrdenaElement.checked == true)
-	 {
-	 	balioa=data2OrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-	 if(botoOrdenaElement.checked == true)
-	 {
-	 	balioa=botoOrdenaElement.value;
-	 	ordenaF_ar.push(balioa);
-	 }
-
-	 //Beste batzuk
-	  if(egunekoaElement.checked == true)
-	 {
-	 	balioa=egunekoaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	 if(proposatutakoaElement.checked == true)
-	 {
-	 	balioa=proposatutakoaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(wikifikatuaElement.checked == true)
-	 {
-	 	balioa=wikifikatuaElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(irudiaDuElement.checked == true)
-	 {
-	 	balioa=irudiaDuElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	  if(irudiaEzDuElement.checked == true)
-	 {
-	 	balioa=irudiaEzDuElement.value;
-	 	besteF_ar.push(balioa);
-	 }
-	 
-	 
-	 var hizkuntzakF=hizkuntzakF_ar.toString(); 
-	 var hornitzaileakF=hornitzaileakF_ar.toString(); 
-	 var motakF=motaF_ar.toString();
-	 var ordenakF=ordenaF_ar.toString();
-	 var lizentziakF=lizentziaF_ar.toString();
-	 var besteakF =besteF_ar.toString();
-	
-
-	var url = 'eguneko_ibilbidea_'+aldaketa+'?search_lang='+hizkR+'&search_input='+galdera+'&hizkuntzakF='+hizkuntzakF+'&hornitzaileakF='+hornitzaileakF+'&motakF='+motakF+'&ordenakF='+ordenakF+'&lizentziakF='+lizentziakF+'&besteakF='+besteakF+'&id='+path_id+'&nondik=bilaketa'+'&hornitzaile_search='+hornitzaile_search+'&horni_id='+horni_id+'&nireak='+nireak;   	
-    window.location.href=url;
-	
-}
+/** END Eguneko item/path-en aldaketak bertsio berria ajax bidez */
 
 
 function bilaketaFiltratu_db()

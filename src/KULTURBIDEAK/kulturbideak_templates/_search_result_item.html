@@ -93,16 +93,16 @@
                 	{%endif%}
 					
 					{% if request.user|has_group:'hornitzailea' or user.is_superuser %}
-				<li class="backgrnd-gris-lau relative">
+				<li id="eguneko_button_{{item.item_id}}" class="backgrnd-gris-lau relative">
 						{% if not item.item_id|is_in:eguneko_itemak %} 
-					<a class="" title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaAldatuEtabilaketaFiltratu({{item.item_id}},'gehitu')" >
+					<a class="btn-warning" title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaAldatu({{item.item_id}},'gehitu','{{itype}}')" >
 						<span class="square-back-vert-padding backgrnd-gris-lau">
 		            		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
 							<span class="icon-ob-plus backgrnd-txuria ob-fire-overlay kolore-gris-lau"></i>
     					</span>
                 	</a>
 						{%else%}
-                	<a class="btn-warning" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaAldatuEtabilaketaFiltratu({{item.item_id}},'kendu')" >
+                	<a class="btn-warning" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaAldatu({{item.item_id}},'kendu','{{itype}}')" >
 						<span class="square-back-vert-padding backgrnd-gris-lau">
 		            		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
 							<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau">&mdash;</i>

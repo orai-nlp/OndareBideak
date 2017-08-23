@@ -92,15 +92,19 @@
 			{% if request.user|has_group:'hornitzailea' %}
 				<!--egunekoa bihurtu-->
 				{% if momentukoPatha.egunekoa == 0 %}	
-				    <a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbide bihurtu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_gehitu?id={{momentukoPatha.id}}&nondik=editatu" >
-				  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				     </a>
-				{%endif%}
-				{% if momentukoPatha.egunekoa == 1 %}	
-				    <a class="btn btn-warning egunekoa-botoia" title="Eguneko ibilbidea ezabatu"  type="button" href="{{BASE_URL}}/eguneko_ibilbidea_kendu?id={{momentukoPatha.id}}&nondik=editatu" >
-				      <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-				      </a>
-					
+				<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'gehitu')" >
+    				<span class="square-back-vert-padding backgrnd-gris-lau">
+         				<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
+         				<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau icon-ob-plus"></span>
+        			</span>
+			    </a>
+    			{%else%}
+				<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'kendu')" >
+    				<span class="square-back-vert-padding backgrnd-gris-lau">
+        				<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
+        				<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau">&mdash;</span>
+       				</span>
+  				</a>
 				{%endif%}
 			
 			{%endif%}

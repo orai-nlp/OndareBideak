@@ -535,6 +535,3 @@ def restore_user_password(request):
     return render_to_response("ajax/ajax_response.html",{"response": True},context_instance=RequestContext(request))   
         
     
-    
-    
-   
