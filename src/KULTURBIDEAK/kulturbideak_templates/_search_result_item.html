@@ -79,15 +79,15 @@
                 	{% if user.id == item.item_user_id|to_int  or user.is_superuser%}
                 
 	            <li class="backgrnd-gris-lau">
-	            	<a class="btn-primary" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >
+	            	<a class="btn ob-botoia no-hover" title="Editatu itema"  type="button" href="{{BASE_URL}}/editatu_itema?id={{item.item_id}}" >
                     	<i class="icon-ob-edit square-back kolore-{{itype}}" aria-hidden="true"></i>
                     </a>
                 </li>
                 
                 <li class="backgrnd-gris-lau">
                 <!-- ezabatu -->
-                <a class="btn-danger ob-botoia" type="button" title="Itema ezabatu"  style="width:100;" onClick="deleteItem({{item.item_id}})" >
-               		<i class="icon-ob-times square-back kolore-{{itype}}" aria-hidden="true"></i>
+                <a class="btn ob-botoia no-hover" type="button" title="Itema ezabatu"  style="width:100;" onClick="deleteItem({{item.item_id}})" >
+               		<i class="icon-ob-trash square-back kolore-{{itype}}" aria-hidden="true"></i>
                 </a>
 				</li>
                 	{%endif%}

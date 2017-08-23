@@ -89,7 +89,7 @@
 				<!-- editatzeko aukera: ibilbidearen autorea da, supererabiltzailea da ala acces= 4 du-->
     	    	{% if user.id == path.path_fk_user_id|to_int  or user.is_superuser or path.acces == '4' %}
                 <li class="backgrnd-gris-lau">
-     				<a class="btn-default ob-botoia" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
+     				<a class="btn-default ob-botoia no-hover" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
       					<i class="icon-ob-edit square-back kolore-gris-0" aria-hidden="true"></i>
       				</a>
       			</li>
@@ -97,7 +97,7 @@
       			<!-- editatzeko aukera: acces==3 du eta hornitzailea da -->
       			{%if path.acces == '3' and request.user|has_group:'hornitzailea'%}
                 <li class="backgrnd-gris-lau">
-      				<a class="btn-default ob-botoia" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
+      				<a class="btn-default ob-botoia no-hover" type="button" href="{{BASE_URL}}/editatu_ibilbidea?id={{path.path_id}}" >
       		        	<i class="icon-ob-edit square-back kolore-gris-0" aria-hidden="true"></i>
       		   		</a>
  	  			</li>			
@@ -106,13 +106,13 @@
             	{% if user.id == path.path_fk_user_id|to_int  or user.is_superuser%}
             	<!-- ezabatu-->
                 <li class="backgrnd-gris-lau">
-            		<a class="btn-danger ob-botoia" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.path_id}})" >
-              			<i class="icon-ob-times square-back kolore-video" aria-hidden="true" style="width:100%;"></i>
+            		<a class="btn ob-botoia no-hover" type="button" title="Ezabatu ibilbidea" onClick="deletePath({{path.path_id}})" >
+              			<i class="icon-ob-trash square-back kolore-video" aria-hidden="true" style="width:100%;"></i>
             		</a>
             	</li>
             	<!-- edizio aukerak aldatu-->
                 <li class="backgrnd-gris-lau">
-	            	<a class="btn-success announce ob-botoia" data-toggle="modal" data-id="{{path.path_id}}" style="width:100%;">
+	            	<a class="btn ob-botoia no-hover" data-toggle="modal" data-id="{{path.path_id}}" style="width:100%;">
 	            		<i class="fa fa-share-square-o square-back kolore-gris-0" aria-hidden="true"></i>
 	           		</a>
             	</li>
