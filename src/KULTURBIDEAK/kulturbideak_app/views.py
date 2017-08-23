@@ -170,6 +170,18 @@ def get_azkenak():
     ap=path.objects.order_by('-creation_date')[:5]
     return (ai,ap)
 
+def get_all_paths(request):
+    
+    search_models_paths=[path]
+    #ADMIN BADA, GUZTIAK HARTU, ACCESS =1 DUTENAK ERE BAI
+    if request.user.is_superuser:
+        paths = SearchQuerySet().all().models(*search_models_paths).order_by('-path_creation_date')
+    else:
+        paths = SearchQuerySet().all().models(*search_models_paths).exclude(acces='1').order_by('-path_creation_date')
+    return paths 
+
+
+
 '''
     **************************************************
             ajax views related to cross_search.html
@@ -250,23 +262,7 @@ def itemak_hasiera(request):
     #print "itemak_hasiera"
     #DB-an GALDERA EGIN EGUNEKO/RANDOM/AZKENAK ITEMAK LORTZEKO 
     #Itemen hasierako pantailan erakutsi behar diren Itemen informazioa datu-basetik lortu eta pasa
-    '''
-    itemak=[]
-    itemak=item.objects.order_by('-edm_year')
     
-    paginator = Paginator(itemak, 26)
-
-    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.    
-    page = request.GET.get('page')
-    try:
-        itemak = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        itemak = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        itemak = paginator.page(paginator.num_pages)
-    '''
    
     (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
 
@@ -305,11 +301,11 @@ def itemak_hasiera(request):
     ordenaF=''
     lizentziaF=''
     besteaF=''
-    search_models_items=[item]
     
+    search_models_items=[item]
     items = SearchQuerySet().all().models(*search_models_items)
-    search_models_paths=[path]
-    paths = SearchQuerySet().all().models(*search_models_paths)
+    
+    paths = get_all_paths(request)
     
      
     #PAGINATOR ITEMS
@@ -368,32 +364,6 @@ def itemak_hasiera(request):
                                                    'lizentziaF':lizentziaF,
                                                    'besteaF':besteaF},context_instance=RequestContext(request))
           
-def eguneko_itemak(request):
-    itemak=[]
-    itemak=item.objects.filter(egunekoa=1)
-    
-    paginator = Paginator(itemak, 26)
-    
-   
-    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
- 
-    
-    page = request.GET.get('page')
-    try:
-        itemak = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        itemak = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        itemak = paginator.page(paginator.num_pages)
-    
-    #Proposatutakoak
-    ##if(item.objects.filter(proposatutakoa=1)):
-        ##itemak=item.objects.filter(proposatutakoa=1)
-        
-       
-    return render_to_response('eguneko_itemak.html',{'itemak':itemak},context_instance=RequestContext(request))
 
 def azkeneko_itemak(request):
     
@@ -408,28 +378,6 @@ def azkeneko_ibilbideak(request):
     azkenekoak=path.objects.order_by('-creation_date')[:5]
 
     return render_to_response('azkeneko_ibilbideak.html',{'azkenekoak':azkenekoak},context_instance=RequestContext(request))
-
-def eguneko_ibilbideak(request):
-    ibilbideak=[]
-    ibilbideak=path.objects.filter(egunekoa=1)
-    
-    paginator = Paginator(ibilbideak, 26)
-    
-   
-    type(paginator.page_range)  # `<type 'rangeiterator'>` in Python 2.
- 
-    
-    page = request.GET.get('page')
-    try:
-        ibilbideak = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        ibilbideak = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        ibilbideak = paginator.page(paginator.num_pages)
-
-    return render_to_response('eguneko_ibilbideak.html',{'ibilbideak':ibilbideak},context_instance=RequestContext(request))
 
 
 def admin_hornitzaile_fitxa_editatu(request):
@@ -769,8 +717,6 @@ def ibilbideak_hasiera(request):
    
     (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
    
-    #Egunekoak
-    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
     #Azkenak
     (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
@@ -806,15 +752,11 @@ def ibilbideak_hasiera(request):
     ordenaF=''
     lizentziaF=''
     besteaF=''
-    search_models_paths=[path]
+    
     search_models_items=[item]
     items = SearchQuerySet().all().models(*search_models_items)
-    #ADMIN BADA, GUZTIAK HARTU, ACCESS =1 DUTENAK ERE BAI
-    if request.user.is_superuser:
-    	paths = SearchQuerySet().all().models(*search_models_paths).order_by('-path_creation_date')
-    else:
-    	paths = SearchQuerySet().all().models(*search_models_paths).exclude(acces='1').order_by('-path_creation_date')
-        
+    
+    paths = get_all_paths(request)   
      
     #PAGINATOR PATHS
     paginator = Paginator(paths, 26)    
@@ -849,10 +791,8 @@ def ibilbideak_hasiera(request):
                                                    'erabiltzailea_form':erabiltzailea_form,
                                                    'non':non,
                                                    'ibilbide_bozkatuenak':ibilbide_bozkatuenak,
-                                                   'eguneko_ibilbideak':eguneko_ibilbideak,
                                                    'azken_ibilbideak':azken_ibilbideak,
                                                    'item_bozkatuenak':item_bozkatuenak,
-                                                   'eguneko_itemak':eguneko_itemak,
                                                    'azken_itemak':azken_itemak,
                                                    'db_hornitzaileak_text':db_hornitzaileak_text,
                                                    'db_hornitzaileak':db_hornitzaileak,

@@ -915,8 +915,9 @@ ul.button-row-horizontal a {
 }
 
 .button-row-vert li{
-   margin:1px;
-   min-height:50px;	
+   margin:1px 0px;
+   /*min-height:50px;*/
+   padding:10px 5px;
 }
 
 
@@ -941,9 +942,9 @@ p.item-field-title {
 
 #kudeaketa-bar{
 	position:fixed;
-	font-size:1.5em;
+	/*font-size:1.5em;*/
 	font-family:walsheim-light-web;
-	left:-1px;
+	left:0px;
 	z-index:1001;
 }
 

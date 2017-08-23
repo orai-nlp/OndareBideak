@@ -351,6 +351,22 @@ input[type="checkbox"] + label span i{
 	right: 5%;
 }
 
+.ob-fire-overlay-lg{
+	transition: .5s ease;
+	position: absolute;
+	z-index: 1000;
+	opacity: 1 !important;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+	border: 2px solid #999999 !important;
+	padding: 3px;
+	font-size: 6px;
+	bottom: 8%;
+	right: 8%;
+}
+
+
 /* END Ikono estiloak */
 
 /* custom modal dialog styles*/

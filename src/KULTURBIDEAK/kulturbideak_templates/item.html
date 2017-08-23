@@ -41,26 +41,26 @@
 <div id="kudeaketa-bar" class="path-info overflow">
 	<ul class="button-row-vert">              
     {% if user.is_authenticated %}
-		<li class="backgrnd-gris-lau">
-			<button class="btn-default gehitu-botoia" type="button" title="{% trans 'Lan eremura gehitu' %}" onclick="create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
+		<li class="backgrnd-gris-lau center" style="padding:5px 3px;"> <!-- this padding is a patch - needs review!! -->
+			<a class="btn" type="button" title="{% trans 'Lan eremura gehitu' %}" href="javascript:create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
 				<i class="icon-ob-plus square-back-lg kolore-{{itype}}" aria-hidden="true"></i>
-			</button>
+			</a>
 		</li>
 		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
 		<!--egunekoa bihurtu-->
-		<li id="eguneko_button_{{momentukoItema.id}}" class="backgrnd-gris-lau center">
+		<li id="eguneko_button_{{momentukoItema.id}}" class="backgrnd-gris-bi center relative">
 			{% if item.egunekoa == 0 %}
-			<a class="btn-warning" type="button" href="javascript:egunekoaAldatu({{momentukoItema.id}},'gehitu','{{itype}}')" >
-    			<span class="square-back-vert-padding backgrnd-gris-lau">
+			<a class="btn" type="button" href="javascript:egunekoaAldatu({{momentukoItema.id}},'gehitu','{{itype}}')" >
+    			<span class="square-back-vert-padding  backgrnd-gris-bi">
          			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
-         			<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau icon-ob-plus"></span>
+         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau icon-ob-plus"></span>
         		</span>
     		</a>
         	{% else %}
-			<a class="btn-warning" type="button" href="javascript:egunekoaAldatu({{momentukoItema.id}},'kendu','{{itype}}')" >
-    			<span class="square-back-vert-padding backgrnd-gris-lau">
+			<a class="btn" type="button" href="javascript:egunekoaAldatu({{momentukoItema.id}},'kendu','{{itype}}')" >
+    			<span class="square-back-vert-padding  backgrnd-gris-bi">
          			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
-         			<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau">&mdash;</span>
+         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau">&mdash;</span>
         		</span>
     		</a>		
 			{%endif%}
@@ -71,14 +71,14 @@
 
 		<!--editatu-->
 		<li class="backgrnd-gris-lau center">
-			<a class="btn-default" type="button" title="{% trans 'itema editatu' %}" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >
+			<a class="btn" type="button" title="{% trans 'itema editatu' %}" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >
               	<i class="icon-ob-edit square-back kolore-{{itype|lower}}" aria-hidden="true"></i>
 			</a>
 		</li>
 		<!-- ezabatu -->
-		<li class="backgrnd-gris-lau center">
-			<a class="btn-danger ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deleteItem({{item.id}})" >
-				<i class="icon-ob-times square-back kolore-{{itype}}" aria-hidden="true"></i>
+		<li class="backgrnd-gris-bi center">
+			<a class="btn ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deleteItem({{item.id}})" >
+				<i class="icon-ob-trash square-back kolore-{{itype}} backgrnd-gris-bi" aria-hidden="true"></i>
 			</a>
 		</li>
 		{%endif%}
@@ -411,7 +411,7 @@
 				</ul>
 			</div>		
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>                                
+                                <button type="button" class="btn kolore-gris-0 square-back no-hover eskuma" data-dismiss="modal">{% trans "Atera" %}</button>                                
                             </div>                            
                             <p><br/></p>                    
                     </div>                       
@@ -465,7 +465,7 @@
 						</div>
 						
                  	    <div class="modal-footer">
-                        	<button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>                                
+                        	<button type="button" class="btn kolore-gris-0 square-back no-hover eskuma" data-dismiss="modal">{% trans "Atera" %}</button>                                
                         </div>                            
                         <p><br/></p>                    
                     </div>                       

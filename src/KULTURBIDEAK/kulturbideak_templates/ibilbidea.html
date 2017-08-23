@@ -35,47 +35,47 @@
 <!-- left site management button menu -->
 <div id="kudeaketa-bar" class="path-info overflow">
 	<ul class="button-row-vert">   
-		<li class="backgrnd-gris-lau">
+		<li class="backgrnd-gris-lau center">
 			<!--ikusi -->
-			<a class="btn-primary" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
-				<span class="fa fa-eye square-back-lg kolore-txuria" aria-hidden="true"></span>
+			<a class="btn" type="button" title="{% trans 'ibilbidea ikusi' %}" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
+				<span class="icon-ob-eye square-back kolore-txuria" aria-hidden="true"></span>
 			</a>
 		</li>           
-    {% if user.is_authenticated %}
+    {% if request.user.is_authenticated %}
 		
 		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
 		<!--egunekoa bihurtu-->
-		<li id="eguneko_button_{{momentukoPatha.id}}" class="backgrnd-gris-lau center">
+		<li id="eguneko_button_{{momentukoPatha.id}}" class="backgrnd-gris-bi center relative">
 			{% if momentukoPatha.egunekoa == 0 %}
-			<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'gehitu')" >
-    			<span class="square-back-vert-padding backgrnd-gris-lau">
+			<a class="btn" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'gehitu')" >
+    			<span class="square-back-vert-padding backgrnd-gris-bi">
          			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
-         			<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau icon-ob-plus"></span>
+         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau icon-ob-plus"></span>
         		</span>
     		</a>
         	{% else %}
-			<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'kendu')" >
-    			<span class="square-back-vert-padding backgrnd-gris-lau">
+			<a class="btn" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'kendu')" >
+    			<span class="square-back-vert-padding backgrnd-gris-bi">
          			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
-         			<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau">&mdash;</span>
+         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau">&mdash;</span>
         		</span>
     		</a>		
 			{%endif%}
 		</li>
 		{%endif%}
 		
-		{% if user.id == momentukoPatha.fk_ob_user.id or user.is_superuser%}
-
+		{% if request.user.id == momentukoPatha.fk_user_id.id or user.is_superuser%}
+		
 		<!--editatu-->
 		<li class="backgrnd-gris-lau center">
-			<a class="btn-default" type="button" title="{% trans 'Editatu ibilbidea' %}" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}" >
-              	<i class="fa fa-edit square-back kolore-{{itype|lower}}" aria-hidden="true"></i>
+			<a class="btn" type="button" title="{% trans 'Editatu ibilbidea' %}" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}">
+              	<i class="icon-ob-edit square-back kolore-gris-0" aria-hidden="true"></i>
 			</a>
 		</li>
 		<!-- ezabatu -->
-		<li class="backgrnd-gris-lau center">
-			<a class="btn-danger ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deletePath({{momentukoPatha.id}})" >
-				<i class="fa fa-times square-back kolore-{{itype}}" aria-hidden="true"></i>
+		<li class="backgrnd-gris-bi center">
+			<a class="btn ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deletePath({{momentukoPatha.id}})" >
+				<i class="icon-ob-trash square-back kolore-gris-0 backgrnd-gris-bi" aria-hidden="true"></i>
 			</a>
 		</li>
 		{%endif%}
@@ -222,16 +222,17 @@
 		
 		 
 		<a id="autoplay-button" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">			
-			{% if momentukoPatha.paths_thumbnail %}
-				<img class="img-responsive ibilbide-irudia" alt="" src="{{momentukoPatha.paths_thumbnail}}"  onError="this.onerror=null;this.src='/uploads/NoIrudiItem.png';">
-			{% else %}
-				<img class="img-responsive" src="{{ STATIC_URL }}uploads//uploads/NoIrudiItem.png">
-			{% endif %}
 			<div class="overlay-path">
 				<p class="title-overlay">
 					<i class="fa fa-play kolore-gris-bat"></i>
 				</p>
 			</div>
+			{% if momentukoPatha.paths_thumbnail %}
+				<img class="img-responsive ibilbide-irudia" alt="" src="{{momentukoPatha.paths_thumbnail}}"  onError="this.onerror=null;this.src='/uploads/NoIrudiItem.png';">
+			{% else %}
+				<img class="img-responsive" src="{{ STATIC_URL }}uploads//uploads/NoIrudiItem.png">
+			{% endif %}
+			
 		</a>
 	</div>	
 		
@@ -245,8 +246,9 @@
 			<div class="comment more path-info-description">
 				{{momentukoPatha.dc_description}}
 			</div>
+			<div class="debug">{{momentukoPatha|debug}}</div>
 		</div>
-				
+{% comment %}				
 		<div id="item_moreInfo" class="path-info overflow">
 			<h3 class="kolore-gris-hiru">{% trans "Bestelako informazioa" %}</h3>
 			<ul class="">
@@ -255,7 +257,7 @@
 					<span class="fa fa-heart-empty" aria-hidden="true"></span>
 					{% trans "Adituek Proposatutakoa" %}
 				</li>
-				{%endif%}
+				{%endif%}				
 				{% if momentukoPatha.egunekoa %}
 				<li>
 					<span class="fa fa-bullhorn" aria-hidden="true"></span>
@@ -267,6 +269,7 @@
 				{%endif%}
 			</ul>						
 		</div>
+{% endcomment %}
 	</div>
 </div><!-- END item-preview -->
 	
@@ -440,7 +443,7 @@
 				</ul>
 			</div>		
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Atera" %}</button>                                
+                                <button type="button" class="btn kolore-gris-0 square-back no-hover eskuma" data-dismiss="modal">{% trans "Atera" %}</button>                                
                             </div>                            
                             <p><br/></p>                    
                     </div>                       
