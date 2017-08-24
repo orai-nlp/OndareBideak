@@ -1,0 +1,120 @@
+/******************************************
+  
+* This file overwrites video.js styles in order to customize the player. 
+
+* Only minimum changes are done, styles are mainly defined in video-js.css
+
+* NOTE: this file must me loaded after video-js.css
+
+* NOTE: some styling is done through javascript, e.g., the color of the progress bar.
+        This may be replaced in the future by css variables.
+
+**********************************************/
+
+
+.video-js .vjs-big-play-button {
+    font-size: 9em;   
+    line-height: 1em;
+  	height: 0em;
+  	width: 0em;
+    border: none;
+    background-color: transparent;    
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;    
+    margin-top: -0.75em;
+  	margin-left: -0.5em;  	 
+  	  	
+}
+
+.ob-video-skin .vjs-big-play-button {
+  	top: 50%;
+  	left: 50%;
+}
+
+.ob-audio-skin .vjs-big-play-button {
+	font-size: 15em;   
+	top: 60%;
+	left:15%;
+}
+.video-js:hover .vjs-big-play-button,
+.video-js .vjs-big-play-button:focus {
+	background-color: none !important;
+}
+
+
+.video-js .vjs-poster{
+	background-size:cover;
+}
+
+.video-js .vjs-volume-panel{
+	display:none;
+}
+
+.video-js .vjs-slider {
+	background-color: #666666;
+}
+
+.video-js .vjs-time-control{
+	font-family: walsheim-bold-web;
+}
+
+.video-js .vjs-progress-holder{
+	height:1.1em;
+}
+
+.vjs-icon-circle::before, .video-js .vjs-play-progress::before, .video-js .vjs-volume-level::before {
+    content: none;
+}
+
+.video-js .vjs-load-progress {
+	background-color: #95989A;
+}
+
+
+.ob-audio-skin .vjs-poster{
+	display: inline-block;
+  	vertical-align: middle;
+  	background-repeat: no-repeat;
+  	background-position: 50% 50%;
+  	background-size: 80%;
+  	background-color: #cccccc;
+  	cursor: pointer;
+  	margin: 0;
+  	padding: 0;
+  	position: absolute;
+  	top: 0;
+  	right: 0;
+  	bottom: 0;
+  	left: 0;  	
+  	height: 100%;
+  	max-width:30%;
+}
+
+.ob-audio-skin {
+	width:100%;
+}
+
+.ob-audio-skin .vjs-control-bar {
+	width:68%;
+	left:31%;
+	bottom:20px;
+}
+
+.ob-video-skin .vjs-control-bar {
+	width:96%;
+	left:2%;
+	bottom:10px;
+}
+
+.video-js .vjs-control-bar {
+	background-color:transparent;
+}
+
+/* This is the property that must me changed with javascript for the moment. 
+ * This is done in the template.
+
+.video-js .vjs-play-progress {
+    background-color: #fff;
+}
+*/

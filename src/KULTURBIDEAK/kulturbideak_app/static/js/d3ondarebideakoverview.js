@@ -211,8 +211,8 @@ var luzera = radio +20;
 
 var tree = d3.layout.tree()
     .size([width,height]);
-console.log("w "+width+" -  h "+height);
-console.log("path-overview - w "+divWidth+" -  h "+divHeight);
+//console.log("w "+width+" -  h "+height);
+//console.log("path-overview - w "+divWidth+" -  h "+divHeight);
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { 
         return [d.y-luzera, d.x]; });

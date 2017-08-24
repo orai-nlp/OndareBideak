@@ -5,6 +5,16 @@
 
 {% load tags%}
 
+{% block media_players %}
+{% if momentukoItema.edm_type|lower == "sound" or momentukoItema.edm_type|lower == "video" %}
+<link href="{{STATIC_URL}}css/video-js.min.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/ob-videojs.css" rel="stylesheet">
+<!-- If you'd like to support IE8 -->
+<script src="{{STATIC_URL}}/js/videojs-ie8.min.js"></script>
+{% endif %}
+{% endblock media_players %}
+
+
 {% block extra_markup %}
 <div class="item-extra-background"></div>
 {% endblock extra_markup %}
@@ -248,6 +258,7 @@
 				</div>
 			</div>
 				
+			{% comment %}
 			<div id="item_moreInfo" class="path-info overflow">
 				<h3 class="kolore-gris-hiru">{% trans "Bestelako informazioa" %}</h3>
 				<ul class="">
@@ -270,6 +281,7 @@
 					{%endif%}
 				</ul>
 			</div>
+			{% endcomment %}
 
 			<!-- </div> this tag should be removed, its a surplus-->
 		</div>
@@ -401,7 +413,7 @@
 						{% trans "Mota" %}:&nbsp;						
 						<span class="kolore-gris-hiru"> {% if momentukoItema.edm_type %}
 						<span class="kolore-{{momentukoItema.edm_type}}"><img class="mota-icon" src="{{STATIC_URL}}img/icons/{{momentukoItema.edm_type|lower}}.png">
-							{{momentukoItema.edm_type }}
+							{{momentukoItema.edm_type|lower }}
 							{%else%}
 							-
 							{% endif %} 
@@ -478,4 +490,17 @@
 <!-- END modal crossing-paths-->
 
 {% endblock custom_modals %}
+
+
+{% block pageEndScripts %}
+{% if momentukoItema.edm_type|lower == "sound" or momentukoItema.edm_type|lower == "video" %}
+<script src="{{STATIC_URL}}js/video.min.js"></script>
+<script src="{{STATIC_URL}}js/videojs-flash.min.js"></script>
+<script>
+	var player = videojs('ob-videojs', {techOrder: ['flash', 'html5']});
+	$(".vjs-play-progress.vjs-slider-bar").addClass("backgrnd-{{momentukoItema.edm_type|lower}}");
+</script>
+{% endif %}
+
+{% endblock pageEndScripts %}
 

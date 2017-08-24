@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load tags%}
+<div id="response">
+	{% if aldaketa == "kendu" %} 
+	<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{id}},'gehitu')" >
+    	<span class="square-back-vert-padding backgrnd-gris-bi">
+         	<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
+         	<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau icon-ob-plus"></span>
+        </span>
+    </a>
+    {%else%}
+	<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{id}},'kendu')" >
+    	<span class="square-back-vert-padding backgrnd-gris-bi">
+        	<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
+        	<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau">&mdash;</span>
+       	</span>
+  	</a>
+	{%endif%}
+</div>

@@ -1,0 +1,80 @@
+{% load i18n %} {% load tags%}
+
+<div id="tts" class="" style="display:none;">
+	<div id="preloadedImages"></div>
+	<p id="lerrojauzia1" class="clearfix"></p>
+	<div id="audiobotoiak" {% if not request.mobile or request.tablet %}{% else %} class="mobile"{% endif %}>
+		<div class="ezkerrean">
+			<a href="#" id="gelditubotoia" onClick="TTS.stopBotoia(); return false;" class="audiobotoia"
+				title="Gelditu" style="display: none">
+			</a>
+			<a href="#" id="hasierarabotoia" onClick="TTS.hasierara(); return false;"
+				class="audiobotoia" title="Hasierara" style="display: none">
+			</a>
+			<a href="#" id="atzeraparagrafoabotoia"	onClick="TTS.atzeraparagrafoa(); return false;" class="audiobotoia"
+				title="Aurreko paragrafora" style="display: none">
+			</a>
+			<a href="#" id="atzerabotoia" onClick="TTS.atzera(); return false;" 
+				class="audiobotoia" title="Aurreko esaldira" style="display: none">
+			</a>
+			<a href="#" id="playbotoia" onClick="TTS.entzun(); return false;"
+				class="audiobotoia play" title="Entzun" accesskey="p">
+			</a>
+			<a href="#" id="aurrerabotoia" onClick="TTS.aurrera(); return false;"
+				class="audiobotoia" title="Hurrengo esaldira" style="display: none">
+			</a>
+			<a href="#" id="aurreraparagrafoabotoia" onClick="TTS.aurreraparagrafoa(); return false;" class="audiobotoia"
+				title="Hurrengo paragrafora" style="display: none">
+			</a>
+			<a href="#" id="amaierarabotoia" onClick="TTS.amaierara(); return false;"
+				class="audiobotoia" title="Amaierara" style="display: none"></a>
+			<a href="#" id="joanbotoia" onClick="TTS.joan(); return false;"
+				class="audiobotoia"
+				title="Zati zehatz batera joateko, klik egin bertan eta jarraitu botoia sakatu"
+				style="display: none">
+			</a>
+			<a href="#" id="azalpentestua"
+				class="audiobotoia" onClick="TTS.entzun(); return false;"
+				title="Edukia entzun">
+				<span id="entzuntestua" class="ezkerrean">{% trans "Orria entzun" %}</span>
+			</a>
+			<a href="#" id="aboutbotoia"
+				onClick="TTS.about(); return false;" class="audiobotoia"
+				title="Honi buruz" accesskey="h" style="display: none">
+			</a>
+		</div>
+		<div id="bolumenakontrola" class="audiobotoia ezkerrean"
+			title="Bolumena" style="display: none">
+			<div class="banatzekoa"></div>
+			<a href="#" id="volume"
+				onClick="TTS.bolumenaerakutsiezkutatu(); return false;">
+			</a>
+			<a href="#" id="bolumenaslider"></a> 
+			<span id="bolumenatooltip" class="slidertooltipbolumena" style="display: none"></span>
+		</div>
+		<div id="abiadurakontrola" class="audiobotoia ezkerrean"
+			title="Irakurketaren abiadura" style="display: none">
+			<a href="#" id="abiadura" onClick="TTS.abiaduraerakutsiezkutatu(); return false;">
+			</a>
+			<a href="#" id="abiaduraslider" class="ezkerrean"></a> 
+				<span id="abiaduratooltip" class="slidertooltipabiadura" style="display: none"></span>
+		</div>
+		<div id="generoakontrola" class="audiobotoia ezkerrean"
+			title="Ahotsaren generoa" style="display: none">
+			<a href="#" id="genero" class="ezkerrean"
+				onClick="TTS.generoaerakutsiezkutatu(); return false;">
+			</a>
+			<div id="generoaukera" style="display: none">
+				<a href="#" id="generoemakumea" class="ezkerrean"
+					onClick="TTS.generoaaldatu(event); return false;" title="Emakumea"></a>
+				<div class="ezkerrean banatzekoa"></div>
+				<a href="#" id="generogizona" class="ezkerrean aukeratuta"
+					onClick="TTS.generoaaldatu(event); return false;" title="Gizona"></a>
+			</div>
+		</div>
+		<div class="banatzekoa"></div>
+		<a id="tts_elhuyar_logoa" href="https://www.elhuyar.eus/eu/site/hizketa-teknologiak"
+			title="Elhuyar Hizkuntza eta Teknologia" target="_blank">
+		</a>
+	</div>
+</div>

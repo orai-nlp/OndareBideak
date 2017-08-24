@@ -3,15 +3,22 @@
 {% load qr_tags %}
 {% load tags%}
 
+{% with itype=momentukoItema.edm_type|lower %}
+
+{% if itype == "sound" or itype == "video" %}
+<div id="item_preview-element" class="ob-audio">
+{% else%}
 <div id="item_preview-element">
-	 
+{% endif %}	 
+
 	<div id="chosen-item-mark" class="chosen-item-mark" {% if momentukoItema.egunekoa == 0 %} style="display:none;" {%endif%}>
-		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{momentukoItema.edm_type|lower}}" aria-hidden="true"></i>
+		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
    		<span class="backgrnd-gris-lau kolore-gris-0 bold">{% trans "Eguneko Itema" %}</span>
 	</div>				
 			
+	{% comment %}
 	<!--AUDIO ALA BIDEOA BADA IRUDIA ERE ERAKUTSI, BALDIN BADAGO-->
-	{% if momentukoItema.edm_type == "SOUND" or  momentukoItema.edm_type == "VIDEO"  %}
+	{% if itype == "sound" or  itype == "video"  %}
 				
 		{% if momentukoItema.ob_thumbnail%}
 						
@@ -21,16 +28,17 @@
 			
 		{%endif%}
 	{%endif%} 
+	{% endcomment %}
 
 	<!-- OBJEKTUA ERAKUTSI BALDIN BADAGO ETA BESTELA SAIATU DATU-BASEKO BESTE EREMU BATETAN AURKITZEN-->
 	<!-- TESTUA BADA -->
-	{% if momentukoItema.edm_type == "TEXT" %}			
+	{% if itype == "text" %}			
 		{% include "_item_preview_text.html" with momentukoItema=momentukoItema %}					
 	{%endif%}
 				
 			
 	<!-- IRUDIA BADA eta objektua baldin badu-->
-	{% if momentukoItema.edm_type == "IMAGE"  %}
+	{% if itype == "image"  %}
 					
 		{% if momentukoItema.edm_object%}
 	<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
@@ -45,23 +53,26 @@
 			
 			
 	<!-- AUDIOA BADA eta audio objectua baldin badu-->
-	{% if momentukoItema.edm_type == "SOUND" %}
+	{% if itype == "sound" %}
 		{% if momentukoItema.edm_object%}
-	<audio controls>
+		<!-- <audio controls> -->
+		<audio id="ob-videojs" class="video-js ob-audio-skin" controls preload="auto" height="250"
+  poster="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%}{{STATIC_URL}}img/icons/sound_fullres.png{% endif %}" data-setup="{}">
   	<!--<source src="{{momentukoItema.edm_object}}" type="audio/ogg">-->
-  		<source src="{{momentukoItema.edm_object}}" type="audio/mpeg">					
-	</audio>
+  			<source src="{{momentukoItema.edm_object}}" type="audio/mpeg">					
+		</audio>
 		{%else%}
 			{% include "_item_preview_sound.html" with momentukoItema=momentukoItema %}
 		{%endif%}
 	{%endif%}
-			
 	
 	<!--BIDEOA BADA-->
-	{% if momentukoItema.edm_type == "VIDEO"%}
+	{% if itype == "video" %}
 				
 		{% if momentukoItema.edm_object%}
-	<video width="320" height="240" controls>
+	<video id="ob-videojs" class="video-js ob-video-skin" controls preload="auto" height="480"
+  poster="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%}{{STATIC_URL}}img/icons/video_fullres.png{% endif %}" data-setup="{}">
+	<!-- <video width="320" height="240" controls> -->
   		<source src="{{momentukoItema.edm_object}}" type="video/mp4">
   		<source src="{{momentukoItema.edm_object}}" type="video/ogg">
   		<source src="{{momentukoItema.edm_object}}" type="video/x-flv">
@@ -94,7 +105,7 @@
 					<i class="icon-ob-qr" aria-hidden="true"> </i><span class="azpimarra-gris"> QR </span> 
 				</a>			
 			</li>
-			<li class="right-padding-0">
+			<li class="right-padding-0" style="max-width: 45px;">
 			{% if momentukoItema.edm_isshownat%}
 				<a class="kolore-beltza eskuma no-hover" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}">
 					<i class="icon-ob-eye" aria-hidden="true"></i><span class="azpimarra-gris"> {% trans "Ikusi jatorrizkoa" %}</span>
@@ -105,3 +116,6 @@
 	</div><!-- license info -->
 	
 </div>
+
+
+{% endwith %}

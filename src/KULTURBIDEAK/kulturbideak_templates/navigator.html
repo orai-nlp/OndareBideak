@@ -5,7 +5,7 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 
-{% with item.edm_type|lower as itype%}
+{% with item.edm_type|lower as itype %}
 <html>
 	<head>
 	
@@ -56,18 +56,22 @@
             var csrf_token = "{{ csrf_token }}";
             var erabiltzailea = "{{request.user.username}}";
 		</script>
-		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ob-utils.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3.min.js"></script>
 		
 		
+		{% if itype == "sound" or itype == "video" %}
+		
 		<!-- VIDEO PLAYERRA-->		
-		<script src="{{STATIC_URL}}mediaelement3.1.2/mediaelement-and-player.js"></script>
-		<link href="{{STATIC_URL}}mediaelement3.1.2/mediaelementplayer.css" rel="stylesheet">
-
-		<script type="text/javascript" src="{{STATIC_URL}}hdflvplayer4.1/swfobject.js"></script>
+		<link href="{{STATIC_URL}}css/video-js.min.css" rel="stylesheet">
+		<link href="{{STATIC_URL}}css/ob-videojs.css" rel="stylesheet">
+		<!-- If you'd like to support IE8 -->
+		<script src="{{STATIC_URL}}/js/videojs-ie8.min.js"></script>
 		
+		{% endif %}
 		
+		<!-- tts initialization -->		
 		<script>
   		//Autoplay-ak erabiltzen du aldagai hau, hurrengo orrira noiz berdideratu behar duen jakiteko
   		var isTTSReading = false;
@@ -181,12 +185,27 @@
 				<div class="col-md-5">
 					<ul id="panel-elements" class="center">
 						<li>
-							<a id="autoplay" class="" href="#" onclick="window.location = stopOrria;return false;">
+							{% if autoplay == 1 %} 
+							<a id="autoplay-play-pause" class=""  accesskey="p"
+								title="{% trans 'Gelditu erreprodukzioa' %}"
+								href="#" onClick="TTS.entzun(); aldatuAutoplayIkonoa();return false;">
+								<i class="icon-ob-pause"></i>
+							</a>
+							{% else%}
+							<a id="autoplay-play-pause" class=""  accesskey="p"
+								title="{% trans 'Abiatu erreprodukzioa' %}"
+								href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
 								<i class="icon-ob-play"></i>
 							</a>
-						</li>
+							{% endif %}
+						</li>						
 						<li>
-							<a id="autoplay" class="" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}"><i class="icon-ob-pause"></i></a>
+							<a id="autoplay-repeat" class="" title="{% trans 'Hasi erreprodukzioa hasieratik' %}" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
+								<i class="fa fa-repeat"></i>
+							</a>
+						</li> 
+						<li>
+							{% include "_tts_controls.html" %}
 						</li> 
 					</ul>
 				</div>
@@ -291,7 +310,34 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
 
+{% if itype == "sound" or itype == "video" %}
+<!-- video/audio player -->
+<script src="{{STATIC_URL}}js/video.min.js"></script>
+<script src="{{STATIC_URL}}js/videojs-flash.min.js"></script>
+<script>
+	var player = videojs('ob-videojs', {techOrder: ['flash', 'html5']});
+	$(".vjs-play-progress.vjs-slider-bar").addClass("backgrnd-{{itype}}");
+</script>
+{% endif %}
 
+<script>
+function aldatuAutoplayIkonoa()
+{
+	if (! $('#autoplay-play-pause i').hasClass("icon-ob-pause"))
+	{
+		document.getElementById('autoplay-play-pause').title = "{% trans 'Gelditu erreprodukzioa' %}";
+		$('#autoplay-play-pause i').removeClass();
+		$('#autoplay-play-pause i').addClass('icon-ob-pause');
+	}
+	else{
+		document.getElementById('autoplay-play-pause').title = "{% trans 'Abiatu erreprodukzioa' %}";
+		$('#autoplay-play-pause i').removeClass();
+		$('#autoplay-play-pause i').addClass('icon-ob-play');
+		
+	}		
+}
+
+</script>
 {% if autoplay == 1 %}
 
 <script>

@@ -963,6 +963,10 @@ div#item_preview-element {
 	position:relative;
 }
 
+div#item_preview-element.ob-audio {
+	width:90%;	
+}
+
 div#item_preview-description {
 	text-align:left;
 }
@@ -995,6 +999,23 @@ div#item_preview-description {
 	position:relative;
 	font-size:18px;
 	vertical-align:middle;
+}
+
+#ob-player{
+	display:inline-block;
+}
+
+#ob-player-thumbnail{
+	display:inline-block;
+	max-width:20%;
+}
+
+#ob-player-thumbnail img{
+	width:100%;
+}
+
+#ob-videojs{
+	display:inline-block;
 }
 
 /* END item.html CSS*/
