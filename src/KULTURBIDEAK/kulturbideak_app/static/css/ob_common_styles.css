@@ -104,6 +104,7 @@ a {
 
 a:hover {
 	color: #666666; 
+	text-decoration:none;	
 }
 
 a.kolore-gris-bat:hover {

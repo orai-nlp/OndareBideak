@@ -5,6 +5,8 @@
 
 {% load tags%}
 
+{% get_current_language as LANGUAGE_CODE %}
+
 {% block media_players %}
 {% if momentukoItema.edm_type|lower == "sound" or momentukoItema.edm_type|lower == "video" %}
 <link href="{{STATIC_URL}}css/video-js.min.css" rel="stylesheet">
@@ -13,6 +15,13 @@
 <script src="{{STATIC_URL}}/js/videojs-ie8.min.js"></script>
 {% endif %}
 {% endblock media_players %}
+
+
+
+{% block tts_head %}
+<!-- TTS for language: {{LANGUAGE_CODE}} -->
+{% include "_tts_head.html" with node=momentukoItema lang=LANGUAGE_CODE %}
+{% endblock tts_head %}
 
 
 {% block extra_markup %}
@@ -39,7 +48,7 @@
 				
 {% block content %}
 
-{% get_current_language as LANGUAGE_CODE %}
+
 
 {% with itype=momentukoItema.edm_type|lower %}
 
@@ -232,9 +241,16 @@
 	 	<!-- eskuineko zutabea sare sozialak -->
 		<div class="right col-md-2">
 			<div id="item_infobox" class="path-info overflow">				
-				<a class="aRight" href="" data-toggle="modal" data-target="#modal-metadata">
-					<i class="fa fa-address-card-o">&nbsp;&nbsp;</i>{% trans "Fitxa osoa ikusi" %}
+				<a class="" href="" data-toggle="modal" data-target="#modal-metadata" title="{% trans 'Fitxa osoa ikusi' %}">
+					<i class="fa fa-address-card-o">&nbsp;&nbsp;</i>
 				</a>
+				
+				<a id="autoplay-play-pause" class="aRight no-hover" href="#" onClick="TTS.entzun(); aldatuAutoplayIkonoa();return false;" title="{% trans 'Entzun itemari buruzko informazioa' %}" >
+					<span class="fa fa-assistive-listening-systems">: </span>
+					<i class="icon-ob-play"></i>					
+				</a>
+				{% include "_tts_controls.html" %}
+								
 			</div>
 		</div>
 	</div>			
@@ -501,6 +517,37 @@
 	$(".vjs-play-progress.vjs-slider-bar").addClass("backgrnd-{{momentukoItema.edm_type|lower}}");
 </script>
 {% endif %}
+
+<!-- TTS -->
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts_berezia.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
+<script>
+function aldatuAutoplayIkonoa()
+{
+	if (! $('#autoplay-play-pause i').hasClass("icon-ob-pause"))
+	{
+		document.getElementById('autoplay-play-pause').title = "{% trans 'Gelditu erreprodukzioa' %}";
+		$('#autoplay-play-pause i').removeClass();
+		$('#autoplay-play-pause i').addClass('icon-ob-pause');
+	}
+	else{
+		document.getElementById('autoplay-play-pause').title = "{% trans 'Abiatu erreprodukzioa' %}";
+		$('#autoplay-play-pause i').removeClass();
+		$('#autoplay-play-pause i').addClass('icon-ob-play');
+		
+	}		
+}
+</script>
+<!-- END TTS scripts -->
+
 
 {% endblock pageEndScripts %}
 

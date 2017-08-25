@@ -13,15 +13,9 @@
 		{% load bootstrap3 %}
 		
 		
-		{% block tts_styles %}
-		<!-- TTS -->
-		{% if not request.mobile or request.tablet %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts.css">
-		{% else %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts_mob.css">
-		{% endif %}		
-		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tinybox.css">
-		{% endblock tts_styles %}
+		{% block tts_head %}
+		{% include "_tts_head.html" with node=node lang=momentukoPatha.language %}
+		{% endblock tts_head %}
 	
 	
 		<link rel="stylesheet" href="{{STATIC_URL}}css/ob_common_styles.css" type="text/css">
@@ -70,27 +64,6 @@
 		<script src="{{STATIC_URL}}/js/videojs-ie8.min.js"></script>
 		
 		{% endif %}
-		
-		<!-- tts initialization -->		
-		<script>
-  		//Autoplay-ak erabiltzen du aldagai hau, hurrengo orrira noiz berdideratu behar duen jakiteko
-  		var isTTSReading = false;
-  
-		  //"Entzun Orria" sakatzerakoan narrazio osoa irakur dezan erabiltzen da
-  		var desk_osoa = "{{node.dc_description |lerroJauziakKendu| format_html | format_html | replace_quotes| safe }}"
-  					.replace(/<\/?[^>]+(>|$)/g,"");  
-  		if (!desk_osoa|| desk_osoa === ""){
-	  		desk_osoa ="{{node.dc_description |lerroJauziakKendu | safe}}";
-  		}
-  		// |safe|htmlEtiketakGarbitu
-  		//alert(desk_osoa);
-  
-  		//tts_berezia.js-ek erabiltzen du ze hizkuntzatan irakurri jakiteko, bukaeran hizkuntza: aldagaiean
-  		var path_hizkuntza="{{momentukoPatha.language}}";
-  
-		</script>
-		
-		
 		
 	</head>
 	

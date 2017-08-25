@@ -1,0 +1,28 @@
+{% load i18n %} {% load tags%}
+
+<!-- TTS -->
+{% if not request.mobile or request.tablet %}
+<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts.css">
+{% else %}
+<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts_mob.css">
+{% endif %}		
+<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tinybox.css">
+
+<!-- tts initialization -->		
+<script>
+	//Autoplay-ak erabiltzen du aldagai hau, hurrengo orrira noiz berdideratu behar duen jakiteko
+  	var isTTSReading = false;
+  
+	//"Entzun Orria" sakatzerakoan narrazio osoa irakur dezan erabiltzen da
+	var desk= "{{node.dc_description |lerroJauziakKendu| format_html | format_html | replace_quotes| safe }}";
+  	var desk_osoa = desk.replace(/<\/?[^>]+(>|$)/g,"");  
+  	if (! desk_osoa || desk_osoa === ""){
+		desk_osoa ="{{node.dc_description |lerroJauziakKendu|replace_quotes | safe}}";
+  	}
+  	// |safe|htmlEtiketakGarbitu
+  	//alert(desk_osoa);
+  
+  	//tts_berezia.js-ek erabiltzen du ze hizkuntzatan irakurri jakiteko, bukaeran hizkuntza: aldagaiean
+  	var path_hizkuntza="{{lang}}";
+  
+</script>

@@ -64,6 +64,11 @@ div.item-extra-background{
 	margin: 5px;
 	min-width:450px;
 }
+
+#item_img img{
+	width:100%;
+}
+
 #license_info {
 	margin: 5px;
 	font-size:10px;

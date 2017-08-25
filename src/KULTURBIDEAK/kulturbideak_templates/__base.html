@@ -5,17 +5,7 @@
 		{# Load the tag library #}
 		{% load bootstrap3 %}
 		
-		
-		{% block tts_styles %}
-		<!-- TTS -->
-		{% if not request.mobile or request.tablet %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts.css">
-		{% else %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tts_mob.css">
-		{% endif %}		
-		<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/tts/tinybox.css">
-		{% endblock tts_styles %}
-	
+				
 		{% block additional_css %}
 		{% endblock additional_css %}
 
@@ -49,23 +39,13 @@
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3.min.js"></script>
 
-		{% block media_players %}
-		<!-- VIDEO PLAYERRA-->		
-		<!--<script src="{{STATIC_URL}}mediaelement3.1.2/mediaelement-and-player.js"></script>
-		<link href="{{STATIC_URL}}mediaelement3.1.2/mediaelementplayer.css" rel="stylesheet">
-
-		<script type="text/javascript" src="{{STATIC_URL}}hdflvplayer4.1/swfobject.js"></script>
-
-		
-		<script src="/home/ubuntu/.npm/mediaelement/3.1.2/package/build/mediaelement-and-player.min.js"></script>
-		<link href="/home/ubuntu/.npm/mediaelement/3.1.2/package/build/mediaelementplayer.css" rel="stylesheet">
-		-->
-		<!--
-		<script src="https://cdn.jsdelivr.net/mediaelement/latest/mediaelement-and-player.min.js"></script>
-		<link href="https://cdn.jsdelivr.net/mediaelement/latest/mediaelementplayer.css" rel="stylesheet">
-		-->
-		
+		{% block media_players %}			
 		{% endblock media_players %}
+		
+		{% block tts_head %}					
+		{% endblock tts_head %}
+		
+		
 				
 		{% block text_editor %}
 		<!-- CKEDITOR-->
