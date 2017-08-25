@@ -49,7 +49,7 @@ img.navigator_bckgrnd {
 	width: 50px;
 	height:50px;
 	text-align:center;
-	vertical-align:center;
+	vertical-align:middle;
 } 
 /* END main window buttons */
 
@@ -71,12 +71,50 @@ img.navigator_bckgrnd {
 	height:60%;
 }
 
+
+#item_preview-element {
+	height:100%;
+}
+
+.no-irudi-item{	
+	height:90%;
+	overflow:none;
+	
+}
+/* item preview image styling and scale */
+
+
+
 #item_img {
 	display:block;
 	border:none;
 	padding:0;
-	height:100%;
+	max-height:100%;
 }
+
+#item_img img{
+	width:100%;	
+}
+
+
+#license_info {
+	margin: 5px;
+	font-size:10px;
+}
+#license_info > ul {
+	display:table;
+	width:80%;
+}
+
+#license_info > ul > li {
+	display:table-cell;
+	padding: 0 5px;
+}
+
+#qr_code_create_link {
+	color: #eeeeee !important;
+}
+/* END item preview image styling and scale */
 
 
 #item-description{
@@ -127,22 +165,6 @@ li.li-mota span{
 #navigator-item-info h2 {
 	margin-bottom:10px;
 }
-
-
-#navigator-item-info::-webkit-scrollbar{
-	width: 6px;
-    background-color: #F8F8F8;
-    padding:10px 0px;
-}
-
-#navigator-item-info::-webkit-scrollbar-thumb {
-    background-color: #333333;
-}
-
-#navigator-item-info::-webkit-scrollbar-track {
-    background-color: #f8f8f8;
-}
-
 
 /*** END navigator content ***/
 

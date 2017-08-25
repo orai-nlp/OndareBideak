@@ -14,7 +14,7 @@
   	var isTTSReading = false;
   
 	//"Entzun Orria" sakatzerakoan narrazio osoa irakur dezan erabiltzen da
-	var desk= "{{node.dc_description |lerroJauziakKendu| format_html | format_html | replace_quotes| safe }}";
+	var desk= "{{node.dc_description |lerroJauziakKendu| format_html | replace_quotes| safe }}";
   	var desk_osoa = desk.replace(/<\/?[^>]+(>|$)/g,"");  
   	if (! desk_osoa || desk_osoa === ""){
 		desk_osoa ="{{node.dc_description |lerroJauziakKendu|replace_quotes | safe}}";

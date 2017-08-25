@@ -3,7 +3,7 @@
 {% load qr_tags %}
 {% load tags%}
 
-<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >   
+<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >   
 	{% if '.mp3' in momentukoItema.edm_isshownby %}
 	
 		<audio controls>

@@ -122,13 +122,14 @@
 						<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
 						<div id="description" class="item-info-description">
 
-							<!-- <div class="clearfix"></div> -->
+							<!-- <div class="clearfix"></div> -->							
 						{% if autoplay == 1 %}
-								<span id="item-narrazioa" class="comment item-narrazio kolore-gris-lau">{{node.dc_description | format_html| format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+								<span id="item-narrazioa" class="comment item-narrazio kolore-gris-lau">{{node.dc_description | format_html| add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
 						{% else %}
-								<span  id="item-narrazioa" class="comment more item-narrazio kolore-gris-lau">{{node.dc_description | format_html |format_html| safe}}</span>				
+								<span  id="item-narrazioa" class="comment more item-narrazio kolore-gris-lau">{{node.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>																			
 						{%endif%}								
-								{% if item.dc_description %}
+								{% if item.dc_description %}		
+									<br/><br/>							
 									<div class="more item-info-description kolore-gris-lau">
 									{{ LANGUAGE_CODE|choose_description_language:item |format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags |safe}}
 									</div>
@@ -167,7 +168,7 @@
 							{% else%}
 							<a id="autoplay-play-pause" class=""  accesskey="p"
 								title="{% trans 'Abiatu erreprodukzioa' %}"
-								href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
+								href="#" onClick="TTS.entzun(); aldatuAutoplayIkonoa();return false;">
 								<i class="icon-ob-play"></i>
 							</a>
 							{% endif %}
@@ -268,7 +269,11 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- END IBILBIDEAREN MODALA -->
-		
+
+<!-- QR code modal --> 
+{% include "_QR_modal.html" %}
+<!-- END QR code modal -->
+
 
 <!-- page-end scripts -->
 <!-- TTS -->

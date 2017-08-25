@@ -466,8 +466,43 @@ div#comments {
 
 /* Scroll bar style*/
 .scrollbar{
-    overflow-y:scroll;
+    overflow-y:auto;
     scrollbar-base-color: #F8F8F8;
     scrollbar-track-color: #333333;
+    
 }
+
+.scrollbar::-webkit-scrollbar{
+	width: 6px;
+    background-color: #F8F8F8;
+    padding:10px 0px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #333333;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background-color: #f8f8f8;
+}
+
 /* END scroll bar style*/
+
+/* QR code link and modal styles */
+#qr_code{
+	text-align:center;
+}
+
+#qr_code_create_link i {
+	font-size:16px;	
+	vertical-align:bottom;
+}
+
+#qr_code_create_link {
+	font-family:walsheim-bold-web;	
+}
+
+#qr_code_create_link:hover {
+	text-decoration: none;
+}	
+/* END QR code link and modal styles */

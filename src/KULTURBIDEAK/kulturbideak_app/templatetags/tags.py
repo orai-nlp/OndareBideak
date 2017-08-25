@@ -111,10 +111,14 @@ def clean_http_prefix(value):
     return value.replace('http://www.http://','http://')
 
 @register.filter
-def format_html(value): 
-    html_parser = HTMLParser.HTMLParser()
-    first = html_parser.unescape(value)
-    return html_parser.unescape(first)
+def format_html(value):
+	
+	html_parser = HTMLParser.HTMLParser()
+	first = html_parser.unescape(value)
+	if re.search("&.+?;",first):
+		first=format_html(first)
+		
+	return first
 
 @register.filter
 def replace_quotes(value): 
@@ -714,7 +718,12 @@ def split(value):
     return value.split(' ')
     
     
-    
+@register.filter
+def setvar_license_icon_color(path):
+	if "nabigazio_item" in path or "nabigatu" in path:
+		return "kolore-gris-0"
+	
+	return "kolore-beltza"
     
     
     

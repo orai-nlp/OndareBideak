@@ -1,21 +1,4 @@
 
-#qr_code{
-	text-align:center;
-}
-
-#qr_code_create_link i {
-	font-size:16px;	
-	vertical-align:bottom;
-}
-
-#qr_code_create_link {
-	font-family:walsheim-bold-web;	
-}
-
-#qr_code_create_link:hover {
-	text-decoration: none;
-}	
-
 .d3label{
 	text-decoration: none;
 	color:#000000;
@@ -1028,20 +1011,24 @@ div#item_preview-description {
 
 /* ibilbidea.html CSS*/
 div.overlay-path{
-	transition: .5s ease;
+	font-size:5em;
+	padding: 20px;
+	width: 100%;
 	position: absolute;
+	z-index: 1001;
 	background: rgba(0, 0, 0, 0.2);
-	top: 60px;
-	left: -100px;
-	width: 200px;
-	height: 200px;
-	z-index: 1000;
+	background-clip: content-box;	
+    height: 100%;	
+    left:0px;
+    top:0px;
+    margin:0;
 	
 }
 
+
 div.overlay-path p{
-	padding:33%;
-	font-size:5em;	
+	position: relative;
+	top: 50%;
 }
 
 #autoplay{
@@ -1050,9 +1037,6 @@ div.overlay-path p{
 	margin-right:10px;
 }
 
-#autoplay-button{
-	position:relative;
-}
 /* END ibilbidea.html CSS*/
 
 

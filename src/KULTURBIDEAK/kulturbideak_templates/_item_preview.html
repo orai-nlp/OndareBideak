@@ -22,7 +22,7 @@
 				
 		{% if momentukoItema.ob_thumbnail%}
 						
-	<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%} # {%endif%}" target="{% if momentukoItema.ob_thumbnail %}_blank{%endif%}" >
+	<a id="item_img" class="img-responsive nabigItem scrollbar" href="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%} # {%endif%}" target="{% if momentukoItema.ob_thumbnail %}_blank{%endif%}" >
 		<img  style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
 	</a>
 			
@@ -41,8 +41,8 @@
 	{% if itype == "image"  %}
 					
 		{% if momentukoItema.edm_object%}
-	<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
-		 <img style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
+	<a id="item_img" class="img-responsive nabigItem scrollbar" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
+		 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
 	</a>
 		{%else%}
 			{% include "_item_preview_img.html" with momentukoItema=momentukoItema %}	
@@ -85,15 +85,16 @@
 					
 	{%endif%}
 	
-		
+	
+	{% with li_ikono_kolorea=request.path|setvar_license_icon_color  %}	
 	
 	<div id="license_info" class="path-info overflow">
 		<ul class="padding-0">
 			<li class="ezkerra left-padding-0">					
 				<p class="item-field-title kolore-gris-hiru">{% trans "Lizentzia" %}</p>				
-				<p class="kolore-beltza margin-0">
+				<p class="{{li_ikono_kolorea}} margin-0">
 			{% if momentukoItema.edm_rights%}
-					<a href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a>
+					<a class="{{li_ikono_kolorea}}" href="{{momentukoItema.edm_rights}}">{{momentukoItema.edm_rights}}</a>
 			{%else%}
 					-
 			{% endif %} 
@@ -107,14 +108,14 @@
 			</li>
 			<li class="right-padding-0" style="max-width: 45px;">
 			{% if momentukoItema.edm_isshownat%}
-				<a class="kolore-beltza eskuma no-hover" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}">
+				<a class="{{li_ikono_kolorea}} eskuma no-hover" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}" target="_blank">
 					<i class="icon-ob-eye" aria-hidden="true"></i><span class="azpimarra-gris"> {% trans "Ikusi jatorrizkoa" %}</span>
 				</a>	
 			{%endif%}
 			</li>
 		</ul>
 	</div><!-- license info -->
-	
+	{% endwith %}
 </div>
 
 
