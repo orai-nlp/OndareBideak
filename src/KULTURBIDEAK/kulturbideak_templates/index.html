@@ -47,12 +47,13 @@
 		<link rel="stylesheet" href="{{STATIC_URL}}css/ob_common_styles.css" type="text/css">
 		<link rel="stylesheet" href="{{STATIC_URL}}css/ondarebideak.css" type="text/css">
 
-		<!-- <script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script> -->
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
 		<script>
             var csrf_token = "{{ csrf_token }}";
             var erabiltzailea = "{{request.user.username}}";
 		</script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>
+		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/kulturbideak.js"></script>		
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
 
 	</head>
@@ -70,7 +71,46 @@
 	<div id="workspace"></div>
 	<!--goiko margina -->
 {% endif %}
-
+	
+	
+	{% block autocomplete %}
+	<!-- Autocomplete leihoa -->
+		<div id="autocomplete-div" class="container" style="display:none;">
+		<!-- <h2 class="titulu-kolorea autocomplete-galdera">Hauetakoren bat bilatzen duzu?</h2> -->
+			<div id="autocomplete-container" class="backgrnd-txuria row">
+				<h4 class="modal-inner-title kolore-gris-bi" style="padding-left:10px;">{% trans "Itemak" %}</h4>                                                                               
+				{% for i in "0123" %}
+					<div class="row search-result-modal">
+						<div id="auto{{i}}" class="thumbnail col-xs-2 col-md-2">
+							<a class="bilaketaEmaitza" id="a{{i}}" >
+								<img class="ob_thumbnail-mini" id="img{{i}}">
+								<div class="dark-overlay">
+									<i id="icon{{i}}"></i>
+								</div>
+							</a>														
+						</div>
+						<div class="caption col-xs-10 col-md-10">							
+							<ul class="caption-info bottom-padding-0 top-padding-0">
+								<li>
+									<h6><a id="h5{{i}}" class="bilaketaTitulua"></a></h6>
+                   				</li>    
+   								<li>
+   									<p id="p{{i}}"></p>
+   								</li>
+							</ul>	
+						</div>
+						<!-- <div class="autocompleteItem single_service wow fadeInUp" id="auto{{i}}" >
+							<a id="a{{i}}"><img class="autocomplete_irudia" id="img{{i}}"></a>
+							
+						</div> -->
+					</div>
+				{% endfor %}						
+			</div>					
+		</div>
+	<!-- END Autocomplete leihoa -->
+	{% endblock autocomplete %}
+	
+	
 	<header>
 		<div class="section_overlay">
 		{% block navbar %}
@@ -88,75 +128,14 @@
 
 	</header>
 
-
+	
 
     <!-- MODALS -->
-    
-    <!-- page loading message modal -->
-	<div id="loading_modal" class="modal text-center" style="display:none;">
-		<h1>{% trans "Datuak kargatzen..." %}</h1>
-		<img src="{{ STATIC_URL}}img/ob-loader.gif"/>
-	</div>
-		
-		
-	<!-- login modal -->
-	<div class="modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modalLabel" aria-hidden="true" >
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">				        		
-		    	<div class="modal-header">
-	               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			        <h4 class="modal-title" id="login-modal-title">{% trans "Sartu zure kontuan" %}</h4>
-   				</div>
-			    <div class="modal-body">
-			    	<form method="POST" class="form" action="">
-						{% csrf_token %}
-						{{ login_form }}
-						<input type="submit" name="login" class="login loginmodal-submit" value="{% trans 'Sartu' %}">
-					</form>
-			    </div>
-   				<div class="modal-footer">						
-       				<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       				<button type="button" class="btn btn-primary">Save changes</button>-->
-   				</div>
-
-				<!--<div class="login-help">
-				<a href="#">{% trans "Erregistratu" %}</a> - <a href="#">{% trans "Pasahitza ahaztu duzu?" %}</a>
-				</div>-->
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
-	<!-- register modal -->
-	<div class="modal" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modalLabel" aria-hidden="true" >
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">				        		
-		    	<div class="modal-header">
-	               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			        <h4 class="modal-title" id="login-modal-title">{% trans "Sortu kontua" %}</h4>
-   				</div>
-			    <div class="modal-body">
-					<form action="{{BASE_URL}}/erregistratu" method="post" class="form login-erregistratu">
-					{% csrf_token %}
-					{{ erabiltzailea_form.as_ul }}
-					<br/>
-
-					<button class="btn btn-default" type="submit" name="Erabiltzailea_gehitu">
-						{% trans "Erregistratu" %}
-					</button>
-					</form>
-				</div>
-   				<div class="modal-footer">						
-       				<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       				<button type="button" class="btn btn-primary">Save changes</button>-->
-   				</div>
-
-				<!--<div class="login-help">
-				<a href="#">{% trans "Erregistratu" %}</a> - <a href="#">{% trans "Pasahitza ahaztu duzu?" %}</a>
-				</div>-->
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
+   
+	
+	<!-- signin modals -->
+	{% include "_modals_generic.html" %}
+	
 	<!-- Modal - Help -->
 	<div id="modalNola" class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
@@ -186,7 +165,7 @@
 						ere azaldu daitezke bilaketaren emaitza gisa</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn kolore-gris-0 square-back no-hover eskuma" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 

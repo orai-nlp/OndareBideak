@@ -3,16 +3,16 @@
 <div id="response">
 	{% if aldaketa == "kendu" %} 
 		<a class="btn" title="{% trans 'Gehitu eguneko itema' %}"  type="button" href="javascript:egunekoaAldatu({{id}},'gehitu','{{itype}}')" >
-			<span class="square-back-vert-padding backgrnd-gris-bi">
+			<span class="square-back-vert-padding">
 		   		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
-				<span class="icon-ob-plus backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau"></span>
+				<span class="icon-ob-plus backgrnd-txuria kolore-gris-lau"></span>
 			</span>
         </a>
 	{%else%}
         <a class="btn" title="{% trans 'Gehitu eguneko itema' %}" type="button" href="javascript:egunekoaAldatu({{id}},'kendu','{{itype}}')" >
-			<span class="square-back-vert-padding backgrnd-gris-bi">
+			<span class="square-back-vert-padding">
 		    	<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
-				<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau">&mdash;</span>
+				<span class="backgrnd-txuria kolore-gris-lau">&mdash;</span>
     		</span>
 		</a>
 	{%endif%}

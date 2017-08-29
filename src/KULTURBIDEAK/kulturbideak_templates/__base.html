@@ -61,6 +61,8 @@
 		<link rel="stylesheet" href="{{STATIC_URL}}css/new_header_style.css" type="text/css">
 		{% endblock main_css %}
 		
+		{% block mapFunctions %}
+		
 		<script type="text/javascript">
 			//MAPA FUNTZIOAK
 			var global_map;
@@ -113,8 +115,9 @@
 			function load_map_nodo_editatu(map, options) {
 
                 global_map = map;
-        
-                if(markers.length>0 || {{ geoloc_latitude }} !=0.0)
+                
+                {% if geoloc_latitude %}
+                if(markers.length>0  ||  {{ geoloc_latitude| correct_float_format }} !=0.0 )
                 {
                     //Mapa zentratu
                     map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }}, {{geoloc_longitude | correct_float_format}}));
@@ -125,7 +128,7 @@
             		L.marker([{{ geoloc_latitude | correct_float_format }}, {{ geoloc_longitude | correct_float_format }}], {icon:greenIcon}).addTo(map).openPopup();
 
             	}
-
+                {% endif%}
             	// maparen click eventoa
             	map.on('click', function(e) {
                 if (markers.length > 0) {
@@ -156,7 +159,6 @@
 		
 		
 
-		{% block mapFunctions %}
 		<script type="text/javascript">
             //MAPA FUNTZIOAK
 			
@@ -210,7 +212,7 @@
 
                 global_map = map;
         
-                if(markers.length>0 || {{ geoloc_latitude }} !=0.0)
+                if(markers.length>0  {% if geoloc_latitude %} ||  {{ geoloc_latitude| correct_float_format }} !=0.0{% endif%} )
                 {
                     //Mapa zentratu
                     map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }}, {{geoloc_longitude | correct_float_format}}));
@@ -252,19 +254,23 @@
             function load_map(map, options) {
 
                 global_map = map;
-
-                if(markers.length>0 || {{ hornitzailea.geoloc_latitude }} !=0.0) 
+                
+                {% if hornitzailea.geoloc_latitude %}
+                if(markers.length>0  ||  {{ hornitzailea.geoloc_latitude| correct_float_format }} !=0.0 ) 
                 {
+                	
+               	
                 //Mapa zentratu
                 map.panTo(new L.LatLng({{ hornitzailea.geoloc_latitude | correct_float_format }}, {{ hornitzailea.geoloc_longitude | correct_float_format }}));
-
+                
+                
             	//Geolokalizazio zaharra beste kolore batekin erakutsi
             	var greenIcon = new LeafIcon({
                 	iconUrl : '{{STATIC_URL}}img/leaf-green.png'
             	});
             	L.marker([{{ hornitzailea.geoloc_latitude|correct_float_format }}, {{ hornitzailea.geoloc_longitude | correct_float_format }}], { icon:greenIcon }).addTo(map).openPopup();
             	}
-
+                {% endif %}
             // maparen click eventoa
             map.on('click', function(e) {
                 if (markers.length > 0) {
@@ -449,181 +455,31 @@
 					{% endblock content_div_def %}
 					
 					{% if mezua %}
-
 					<div class="alert alert-info" role="alert">
 						<strong>Ondo!</strong> {{mezua}}
+						<a id="alert-close-button" type=button onClick="$(this).parent().slideUp();return False;">
+							<i class="icon-ob-times eskuma"></i>
+						</a>
 					</div>
-
 					{%endif%}
+					
 					{% if errore_mezua %}
-
 					<div class="alert alert-danger" role="alert">
 						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 						<span class="sr-only">Error:</span>
 						<strong>Kontuz!</strong> {{errore_mezua}}
+						
+						<a id="alert-close-button" type=button onClick="$(this).parent().slideUp();return False;">
+							<i class="icon-ob-times eskuma"></i>
+						</a>						
 					</div>
-
 					{%endif%}
-					{% if nondik %}
-					<!-- TXUKUNTZEN-->
-					<div class="container">
-						<div class="row">
-							<div class="col-md-1"></div>
-							<div class="col-md-3">
-								<a class="img-responsive bilaketaEmaitza  thumbnail" href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" target="{% if item.edm_isshownby %}_blank{%endif%}" > {% if item.edm_object %} <!--<img  alt="{{item.dc_title}}" src="{% if item.edm_object %} {{item.edm_object}} {%else%} /uploads/NoIrudiItem.png {% endif %}">--> <img  alt="{{item.dc_title}}" src="{{item.edm_object}}"> {%elif item.edm_isshownby%} <iframe id="frame" src="{{item.edm_isshownby}}"></iframe> {%else %} <img  alt="ez du irudirik" src="/uploads/NoIrudiItem.png"> {% endif %} </a>
-
-								<div class="path-info overflow">
-
-									<ul class="nav  navbar-default">
-										<li>
-											<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-											{% trans "Lizentzia" %}:&nbsp;
-											<span class="kolore-gris-hiru"> {% if item.edm_rights%}
-												{{item.edm_rights}}
-												{%else%}
-												-
-												{% endif %} </span>
-
-										</li>
-									</ul>
-								</div>
-
-							</div>
-							<div class="col-md-6">
-								<div class="path-name overflow titulu-kolorea">
-									{% get_current_language as LANGUAGE_CODE %}
-									<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item| safe}} </h2>
-
-									<ul class="nav navbar-nav navbar-default">
-										<li>
-											{% if "VIDEO" in item.edm_type %}
-											<span class="glyphicon glyphicon-film" aria-hidden="true"></span>
-											{% endif %}
-											{% if "TEXT" in item.edm_type %}
-											<span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-											{% endif %}
-											{% if "IMAGE" in item.edm_type %}
-											<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
-											{% endif %}
-											{% if "SOUND" in item.edm_type %}
-											<span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
-											{% endif %}
-										</li>
-										<li>
-											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-											{% if item.dc_date %}
-											{{item.dc_date}}
-											{%else%}
-											-
-											{% endif %}
-										</li>
-
-										<li>
-											<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-
-											{{item.fk_ob_user.username}}
-										</li>
-									</ul>
-								</div>
-
-								<!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
-								<!--{{ LANGUAGE_CODE|choose_description_language:item |striptags |safe }}-->
-								<div class="path-info overflow ">
-									<div class="comment more item-info-description">
-
-										{{ LANGUAGE_CODE|choose_description_language:item |safe}}
-
-									</div>
-								</div>
-								<div class="path-info overflow">
-									<h3 class="titulu-kolorea">{% trans "EZAUGARRIAK" %}</h3>
-									<ul class="nav  navbar-default">
-										<li>
-											<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-											{% trans "Sortzailea" %}:&nbsp;
-											<span class="kolore-gris-hiru"> {% if item.dc_creator%}
-												{{item.dc_creator}}
-												{%else%}
-												-
-												{% endif %} </span>
-
-										</li>
-
-										<li>
-											<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-											{% trans "Hornitzailea" %}:&nbsp;
-											<span class="kolore-gris-hiru"> {% if item.edm_provider%}
-												{{item.edm_provider}}
-												{%else%}
-												-
-												{% endif %} </span>
-
-										</li>
-										<li>
-											<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-											{% trans "Gaia" %}:&nbsp;
-											<span class="kolore-gris-hiru"> {% if item.dc_subject%}
-												{{item.dc_subject}}
-												{%else%}
-												-
-												{% endif %} </span>
-
-										</li>
-										<li>
-											<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-											{% trans "Hizkuntza" %}:&nbsp;
-											<span class="kolore-gris-hiru"> {% if item.ob_language %}
-												{{item.ob_language}}
-												{%else%}
-												-
-												{% endif %} </span>
-
-										</li>
-										<li>
-											<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-											{% trans "Herrialdea" %}:&nbsp;
-											<span class="kolore-gris-hiru"> {% if item.edm_country %}
-												{{item.edm_country }}
-												{%else%}
-												-
-												{% endif %} </span>
-
-										</li>
-										<li>
-											<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-											{% trans "Data" %}:&nbsp;
-											<span class="kolore-gris-hiru"> {% if item.dc_date %}
-												{{item.dc_date }}
-												{%else%}
-												-
-												{% endif %} </span>
-
-										</li>
-										<li>
-											<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-											{% trans "Mota" %}:&nbsp;
-											<span class="kolore-gris-hiru"> {% if item.edm_type %}
-												{{item.edm_type }}
-												{%else%}
-												-
-												{% endif %} </span>
-
-										</li>
-
-										<li>
-											{% if item.edm_isshownat%}
-											<a  class="kolore-gris-hiru" title="{{viewAtSource}}" href="{{viewAtSource}}" target="_blank"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
-											{%endif%}
-										</li>
-									</ul>
-								</div>
-
-							</div>
-						</div>
-					</div>
-
+					
+					
+					{% comment %}
+					{% if nondik %}					
 					{% leaflet_map "yourmap" callback="load_map" %}
-					{%endif%}
+					{% endcomment %}
 					
 					
 					{% block content %}
@@ -647,72 +503,8 @@
 		{% endblock footer %}
 		<!-- END Footer -->
 
-		{% block genericModals %}
-		<!-- page loading message modal -->
-		<div id="loading_modal" class="modal text-center" style="display:none;">			
-			<div class="loader">
-				<img src="{{ STATIC_URL}}img/loader/ob-loader-animated-ezgif-fading-noback.png"/>				
-			</div>
-			<h6 class="kolore-txuria">{% trans "Datuak kargatzen..." %}</h6>
-		</div>
-		
-		
-		<!-- login modal -->
-		<div class="modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modalLabel" aria-hidden="true" >
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">				        		
-			    	<div class="modal-header">
-		               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				        <h4 class="modal-title" id="login-modal-title">{% trans "Sartu zure kontuan" %}</h4>
-    				</div>
-				    <div class="modal-body">
-				    	<form method="POST" class="form" action="">
-							{% csrf_token %}
-							{{ login_form }}
-							<input type="submit" name="login" class="login loginmodal-submit" value="{% trans 'Sartu' %}">
-						</form>
-				    </div>
-      				<div class="modal-footer">						
-        				<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        				<button type="button" class="btn btn-primary">Save changes</button>-->
-      				</div>
-
-					<!--<div class="login-help">
-					<a href="#">{% trans "Erregistratu" %}</a> - <a href="#">{% trans "Pasahitza ahaztu duzu?" %}</a>
-					</div>-->
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-		
-		<!-- register modal -->
-		<div class="modal" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modalLabel" aria-hidden="true" >
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">				        		
-		    		<div class="modal-header">
-	            	   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			        	<h4 class="modal-title" id="login-modal-title">{% trans "Sortu kontua" %}</h4>
-   					</div>
-			    	<div class="modal-body">
-						<form action="{{BASE_URL}}/erregistratu" method="post" class="form login-erregistratu">
-						{% csrf_token %}
-						{{ erabiltzailea_form.as_ul }}
-						<br/>
-						<button class="btn btn-default" type="submit" name="Erabiltzailea_gehitu">
-							{% trans "Erregistratu" %}
-						</button>
-						</form>
-					</div>
-   					<div class="modal-footer">						
-       					<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       					<button type="button" class="btn btn-primary">Save changes</button>-->
-   					</div>
-				<!--<div class="login-help">
-				<a href="#">{% trans "Erregistratu" %}</a> - <a href="#">{% trans "Pasahitza ahaztu duzu?" %}</a>
-				</div>-->
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-		
+		{% block genericModals %}		
+			{% include "_modals_generic.html" %}
 		{% endblock genericModals %}
 		
 		<!-- Template specific modals-->
@@ -741,7 +533,7 @@
 								{%endfor%}
 								<br/>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">
+									<button type="button" class="btn kolore-gris-0 square-back no-hover eskuma" data-dismiss="modal">
 										Atera
 									</button>
 								</div>

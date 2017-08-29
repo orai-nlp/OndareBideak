@@ -1,0 +1,119 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+
+<div id="kudeaketa-bar" class="path-info overflow">
+	<ul class="button-row-vert">  
+
+{% if type  == "item" %}
+            
+    {% if user.is_authenticated %}
+		<li class="backgrnd-gris-lau center" style="padding:5px 3px;"> <!-- this padding is a patch - needs review!! -->
+			<a class="btn" type="button" title="{% trans 'Lan eremura gehitu' %}" href="javascript:create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
+				<i class="icon-ob-plus square-back-lg kolore-{{itype}}" aria-hidden="true"></i>
+			</a>
+		</li>
+		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
+		<!--egunekoa bihurtu-->
+		<li id="eguneko_button_{{id}}" class="backgrnd-gris-bi center relative">
+			{% if item.egunekoa == 0 %}
+			<a class="btn" type="button" href="javascript:egunekoaAldatu({{id}},'gehitu','{{itype}}')" >
+    			<span class="square-back-vert-padding  backgrnd-gris-bi">
+         			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
+         			<span class="ob-fire-overlay-lg backgrnd-txuria kolore-gris-lau icon-ob-plus"></span>
+        		</span>
+    		</a>
+        	{% else %}
+			<a class="btn" type="button" href="javascript:egunekoaAldatu({{id}},'kendu','{{itype}}')" >
+    			<span class="square-back-vert-padding  backgrnd-gris-bi">
+         			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
+         			<span class="ob-fire-overlay-lg backgrnd-txuria kolore-gris-lau">&mdash;</span>
+        		</span>
+    		</a>		
+			{%endif%}
+		</li>					
+		{%endif%}
+		
+		{% if user.id == usr_id or user.is_superuser%}
+
+		<!--editatu-->
+		<li class="backgrnd-gris-lau center">
+			<a class="btn" type="button" title="{% trans 'itema editatu' %}" href="{{BASE_URL}}/editatu_itema?id={{id}}" >
+              	<i class="icon-ob-edit square-back kolore-{{itype|lower}}" aria-hidden="true"></i>
+			</a>
+		</li>
+		<!-- ezabatu -->
+		<li class="backgrnd-gris-bi center">
+			<a class="btn ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deleteItem({{id}})" >
+				<i class="icon-ob-trash square-back kolore-{{itype}} backgrnd-gris-bi" aria-hidden="true"></i>
+			</a>
+		</li>
+		{%endif%}
+	{%endif%}
+
+{% else %}
+
+
+	 {% comment %}
+		<li class="backgrnd-gris-lau center">
+			<!--ikusi -->
+			<a class="btn" type="button" title="{% trans 'ibilbidea ikusi' %}" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
+				<span class="icon-ob-eye square-back kolore-txuria" aria-hidden="true"></span>
+			</a>
+		</li>     
+		{% endcomment %}      
+
+    {% if request.user.is_authenticated %}
+		
+		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
+		<!--egunekoa bihurtu-->
+		<li id="eguneko_button_{{id}}" class="backgrnd-gris-bi center relative">
+			{% if momentukoPatha.egunekoa == 0 %}
+			<a class="btn" type="button" href="javascript:egunekoaAldatu_ibilb({{id}},'gehitu')" >
+    			<span class="square-back-vert-padding backgrnd-gris-bi">
+         			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
+         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau icon-ob-plus"></span>
+        		</span>
+    		</a>
+        	{% else %}
+			<a class="btn" type="button" href="javascript:egunekoaAldatu_ibilb({{id}},'kendu')" >
+    			<span class="square-back-vert-padding backgrnd-gris-bi">
+         			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
+         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau">&mdash;</span>
+        		</span>
+    		</a>		
+			{%endif%}
+		</li>
+		{%endif%}
+		
+		{% if request.user.id == usr_id or user.is_superuser%}
+		
+		<!--editatu-->
+		<li class="backgrnd-gris-lau center">
+			<a class="btn" type="button" title="{% trans 'Editatu ibilbidea' %}" href="{{BASE_URL}}/editatu_ibilbidea?id={{id}}">
+              	<i class="icon-ob-edit square-back kolore-gris-0" aria-hidden="true"></i>
+			</a>
+		</li>
+		<!-- ezabatu -->
+		<li class="backgrnd-gris-bi center">
+			<a class="btn ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deletePath({{id}})" >
+				<i class="icon-ob-trash square-back kolore-gris-0 backgrnd-gris-bi" aria-hidden="true"></i>
+			</a>
+		</li>
+		{%endif%}
+	{%endif%}
+				<!--
+			</br>
+			<li class="backgrnd-gris-lau center">
+			<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
+			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+			AUTOPLAY
+			</a>
+			</li>
+			-->
+
+{%endif%}
+	</ul>	
+</div>

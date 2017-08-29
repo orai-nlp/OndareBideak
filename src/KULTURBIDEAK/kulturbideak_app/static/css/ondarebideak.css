@@ -533,7 +533,7 @@ h4.modal-inner-title {
 }
 
 #path_boxes {
-	width: 98%;
+	width: 94%;
 	height: 600px;
 	display: block;
 	border: 1px solid #808080;
@@ -546,6 +546,8 @@ h4.modal-inner-title {
 #path_boxes svg {
 	width: 100%;
 	height: 100%;
+	position:absolute;
+	left: -40px;
 }
 
 .pb_box {
@@ -924,7 +926,7 @@ ul.button-row-horizontal a {
 p.item-field-title {
 	 text-transform: uppercase;
 	 font-size:0.8em;
-	 width:100%;
+	 width:100%;bootstrap md offset
 	 text-align:left;
 }
 
@@ -989,6 +991,29 @@ div#item_preview-description {
 	vertical-align:middle;
 }
 
+.chosen-item-mark-edit{	
+	transition: .5s ease;
+	opacity:1 !important;
+	background: transparent !important;
+	line-height:25px;
+}
+
+.chosen-item-mark-edit span{
+	padding:8px 10px;
+	margin-left:-10px;
+	z-index:1001;
+	position:relative;
+	font-size:10px;		
+}
+
+.chosen-item-mark-edit i{
+	padding:15px;
+	z-index:1002;	
+	position:relative;
+	font-size:18px;
+	vertical-align:middle;
+}
+
 #ob-player{
 	display:inline-block;
 }
@@ -1007,6 +1032,55 @@ div#item_preview-description {
 }
 
 /* END item.html CSS*/
+
+/* editatu_itema.html CSS*/
+#create-edit-item-form select {
+	line-height:1.2em;
+}
+#create-edit-item-form input[type="file"] {
+	line-height:1.2em;
+}
+/* END editatu_itema.html CSS*/
+
+
+/* editatu_ibilbidea.html CSS*/
+div.item-fitxa-line3{	
+	width:100%;
+	padding-top:20px;
+}
+
+ul.fitxa-line3-props {
+	padding: 12px 0;
+}
+ul.fitxa-line3-props li {
+	display:inline-block;	
+}
+
+#d3-path-board{
+	margin-top:-100px;
+	z-index:1006;
+	position:relative;	
+	padding:20px;
+}
+
+#d3-path-board #path_boxes {
+	z-index:1005;
+	outline: 35px solid #666;
+	height:570px;
+	position:relative;
+}
+
+#d3-path-board #path_boxes svg{
+	top:-20px;
+	left:-120px;
+}
+
+#d3-path-board #div_you_want_to_blink {
+	z-index:1006;
+	position:relative;	
+}
+
+/* END editatu_ibilbidea.html CSS*/
 
 
 /* ibilbidea.html CSS*/

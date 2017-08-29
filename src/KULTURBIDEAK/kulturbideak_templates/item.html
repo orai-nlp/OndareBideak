@@ -57,54 +57,9 @@
 <input type="hidden" id="irudia_{{id}}" value="{{irudia}}"/>
 <input type="hidden" id="mota_{{id}}" value="{{momentukoItema.edm_type}}"/>
 
-<div id="kudeaketa-bar" class="path-info overflow">
-	<ul class="button-row-vert">              
-    {% if user.is_authenticated %}
-		<li class="backgrnd-gris-lau center" style="padding:5px 3px;"> <!-- this padding is a patch - needs review!! -->
-			<a class="btn" type="button" title="{% trans 'Lan eremura gehitu' %}" href="javascript:create_workspace_box({{id}}, {{ request.user.id }});" style="line-height:0.8;">
-				<i class="icon-ob-plus square-back-lg kolore-{{itype}}" aria-hidden="true"></i>
-			</a>
-		</li>
-		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
-		<!--egunekoa bihurtu-->
-		<li id="eguneko_button_{{momentukoItema.id}}" class="backgrnd-gris-bi center relative">
-			{% if item.egunekoa == 0 %}
-			<a class="btn" type="button" href="javascript:egunekoaAldatu({{momentukoItema.id}},'gehitu','{{itype}}')" >
-    			<span class="square-back-vert-padding  backgrnd-gris-bi">
-         			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
-         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau icon-ob-plus"></span>
-        		</span>
-    		</a>
-        	{% else %}
-			<a class="btn" type="button" href="javascript:egunekoaAldatu({{momentukoItema.id}},'kendu','{{itype}}')" >
-    			<span class="square-back-vert-padding  backgrnd-gris-bi">
-         			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
-         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau">&mdash;</span>
-        		</span>
-    		</a>		
-			{%endif%}
-		</li>					
-		{%endif%}
-		
-		{% if user.id == item.fk_ob_user.id or user.is_superuser%}
-
-		<!--editatu-->
-		<li class="backgrnd-gris-lau center">
-			<a class="btn" type="button" title="{% trans 'itema editatu' %}" href="{{BASE_URL}}/editatu_itema?id={{item.id}}" >
-              	<i class="icon-ob-edit square-back kolore-{{itype|lower}}" aria-hidden="true"></i>
-			</a>
-		</li>
-		<!-- ezabatu -->
-		<li class="backgrnd-gris-bi center">
-			<a class="btn ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deleteItem({{item.id}})" >
-				<i class="icon-ob-trash square-back kolore-{{itype}} backgrnd-gris-bi" aria-hidden="true"></i>
-			</a>
-		</li>
-		{%endif%}
-	{%endif%}
-	</ul>	
-</div>
-
+<!-- sidebar management buttons menu -->
+{% include "_side_buttons.html" with type="item" id=id itype=itype usr_id=momentukoItema.fk_ob_user.id %}
+<!-- END sidebar management buttons menu -->
 
 <div class="container fitxa backgrnd-{{momentukoItema.edm_type|lower}}">
 	<div class="item-fitxa-line1">
@@ -121,16 +76,24 @@
 		<div class="item-fitxa-line1">
 			<p class="ezkerra item-data kolore-txuria">
 				<span class="">
-				 {% if momentukoItema.edm_year %}
-					{% with momentukoItema.edm_year|date:"Y . m . d" as date %}
+				{% if item.edm_year %}
+					{% with item.edm_year|date:"Y . m . d" as date %}
 					{% if date and date.strip%}
 						{{date}}
 					{%else%}
-						{{momentukoItema.edm_year|data_formatua}}
+						{{item.edm_year|data_formatua}}
 					{% endif %}	
 					{% endwith %}		
-				{%else%}
-					-
+				{% elif item.dc_date %}
+					{% with item.dc_date|date:"Y . m . d" as date %}
+					{% if date and date.strip%}
+						{{date}}
+					{%else%}
+						{{item.dc_date|data_formatua}}
+					{% endif %}	
+					{% endwith %}
+				{% else %}
+					-	
 				{% endif %}
 				</span>
 			</p>
@@ -147,16 +110,24 @@
 		</div>		 
 		<br />-->
 		
-		<ul class="button-row-horizontal eskuma">
-			{% if botatuDu == 1 %}
-           	<li><a class="" type="button" href="{{BASE_URL}}/botoa_eman_item?id={{id}}" disabled> <i class="fa fa-thumbs-up" aria-hidden="true"></i> </a></li>
-			<li><a class="" type="button" href="#" > <b class="eskuma titulu-kolorea">{{botoKopurua}}</b> </a></li>
-			<li><a class="" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{id}}" > <i class="fa fa-thumbs-down" aria-hidden="true"></i> </a></li>
-			{%else%}
-			<li><a class="" type="button" href="{{BASE_URL}}/botoa_eman_item?id={{id}}" > <i class="fa fa-thumbs-up" aria-hidden="true"></i> </a></li>
-			<li><a class="" type="button" href="#"> <b>{{botoKopurua}}</b> </a></li>
-			<li><a class="" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{id}}" disabled > <i class="fa fa-thumbs-down" aria-hidden="true"></i> </a></li>
-			{%endif%}
+		<ul class="button-row-horizontal eskuma">			
+           	<li>
+           		<a class="" type="button" href="{{BASE_URL}}/botoa_eman_item?id={{id}}" {% if botatuDu == 1 %} disabled{% endif %}>
+           			<i class="fa fa-thumbs-up" aria-hidden="true"></i> 
+           		</a>
+           	</li>
+			<li>
+				<a class="" type="button" href="#" > 
+					<b class="eskuma kolore-gris-lau">
+					{% if botoKopurua %}{{botoKopurua}}{% else %} 0 {% endif %}
+					</b> 
+				</a>
+			</li>
+			<li>
+				<a class="" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{id}}"  {% if botatuDu != 1 %} disabled{% endif %} >
+			 		<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+			 	</a>
+			 </li>			
         </ul>    
 		
 		{%endif%}
@@ -273,33 +244,7 @@
 
 				</div>
 			</div>
-				
-			{% comment %}
-			<div id="item_moreInfo" class="path-info overflow">
-				<h3 class="kolore-gris-hiru">{% trans "Bestelako informazioa" %}</h3>
-				<ul class="">
-					{% if item.proposatutakoa %}
-					<li>
-						<span class="fa fa-heart-empty" aria-hidden="true"></span>
-						{% trans "Adituek Proposatutakoa" %}
-
-					</li>
-					{%endif%}
-					{% if item.egunekoa %}
-					<li>
-						<span class="fa fa-bullhorn" aria-hidden="true"></span>
-						{% trans "Egunekoa" %}
-
-					</li>
-					{%endif%}
-					{% if not item.egunekoa and not item.proposatutakoa%}
-					- - -
-					{%endif%}
-				</ul>
-			</div>
-			{% endcomment %}
-
-			<!-- </div> this tag should be removed, its a surplus-->
+							
 		</div>
 		
 	</div>
@@ -520,8 +465,8 @@
 
 <!-- TTS -->
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script>
+<!-- <script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script> -->
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>

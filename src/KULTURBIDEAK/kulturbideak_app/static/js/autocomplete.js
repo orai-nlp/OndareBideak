@@ -167,3 +167,10 @@
       })
       window.autocomplete.setup()
     })
+    
+    $(document).ready(function() {
+      window.autocomplete = new Autocomplete({
+        form_selector: '.autocomplete-me-2'
+      })
+      window.autocomplete.setup()
+    })

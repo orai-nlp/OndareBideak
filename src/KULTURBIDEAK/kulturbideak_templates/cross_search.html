@@ -188,7 +188,7 @@ um_pages }}</p>-->
  	
  	{% for item in items %}
  	
- 		{% include "_search_result_item.html"%} 	 
+ 		{% include "_search_result_item.html" with item=item %} 	 
 	
 	{% empty %}
 		<p>{% trans "Ez da erantzunik aurkitu." %}</p>

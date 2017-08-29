@@ -120,18 +120,18 @@
 
 			    {% if request.user|has_group:'hornitzailea'  or user.is_superuser%}
                 <li id="eguneko_button_{{path.path_id}}" class="backgrnd-gris-lau relative">
-        		    {% if not path.path_id|is_in:eguneko_ibilbideak %}             
+        		    {% if not path.path_id|is_in_list:eguneko_pathak %}             
             		<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{path.path_id}},'gehitu')" >
             			<span class="square-back-vert-padding backgrnd-gris-lau">
             				<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
-            				<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau icon-ob-plus"></span>
+            				<span class="ob-fire-overlay backgrnd-txuria kolore-gris-lau icon-ob-plus"></span>
             			</span>
             		</a>
     		        {%else%}
 	            	<a class="btn-warning" type="button" href="javascript:egunekoaAldatu_ibilb({{path.path_id}},'kendu')" >
     	          		<span class="square-back-vert-padding backgrnd-gris-lau">
             				<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
-            				<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau">&mdash;</span>
+            				<span class="ob-fire-overlay backgrnd-txuria kolore-gris-lau">&mdash;</span>
             			</span>
         	    	</a>
             		{%endif%}

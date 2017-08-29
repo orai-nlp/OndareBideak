@@ -33,65 +33,7 @@
 
 				
 <!-- left site management button menu -->
-<div id="kudeaketa-bar" class="path-info overflow">
-	<ul class="button-row-vert">   
-		<li class="backgrnd-gris-lau center">
-			<!--ikusi -->
-			<a class="btn" type="button" title="{% trans 'ibilbidea ikusi' %}" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}">
-				<span class="icon-ob-eye square-back kolore-txuria" aria-hidden="true"></span>
-			</a>
-		</li>           
-    {% if request.user.is_authenticated %}
-		
-		{% if request.user|has_group:'hornitzailea' or user.is_superuser%}
-		<!--egunekoa bihurtu-->
-		<li id="eguneko_button_{{momentukoPatha.id}}" class="backgrnd-gris-bi center relative">
-			{% if momentukoPatha.egunekoa == 0 %}
-			<a class="btn" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'gehitu')" >
-    			<span class="square-back-vert-padding backgrnd-gris-bi">
-         			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
-         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau icon-ob-plus"></span>
-        		</span>
-    		</a>
-        	{% else %}
-			<a class="btn" type="button" href="javascript:egunekoaAldatu_ibilb({{momentukoPatha.id}},'kendu')" >
-    			<span class="square-back-vert-padding backgrnd-gris-bi">
-         			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
-         			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau">&mdash;</span>
-        		</span>
-    		</a>		
-			{%endif%}
-		</li>
-		{%endif%}
-		
-		{% if request.user.id == momentukoPatha.fk_user_id.id or user.is_superuser%}
-		
-		<!--editatu-->
-		<li class="backgrnd-gris-lau center">
-			<a class="btn" type="button" title="{% trans 'Editatu ibilbidea' %}" href="{{BASE_URL}}/editatu_ibilbidea?id={{momentukoPatha.id}}">
-              	<i class="icon-ob-edit square-back kolore-gris-0" aria-hidden="true"></i>
-			</a>
-		</li>
-		<!-- ezabatu -->
-		<li class="backgrnd-gris-bi center">
-			<a class="btn ob-botoia" type="button" title="{% trans 'itema ezabatu' %}" onClick="deletePath({{momentukoPatha.id}})" >
-				<i class="icon-ob-trash square-back kolore-gris-0 backgrnd-gris-bi" aria-hidden="true"></i>
-			</a>
-		</li>
-		{%endif%}
-	{%endif%}
-				<!--
-			</br>
-			<li class="backgrnd-gris-lau center">
-			<a class="btn btn-common" href="{{BASE_URL}}/autoplay_hasieratik?path_id={{path_id}}">
-			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-			AUTOPLAY
-			</a>
-			</li>
-			-->
-	
-	</ul>	
-</div>
+{% include "_side_buttons.html" with type="path" id=path_id usr_id=momentukoPatha.fk_user_id.id %}
 <!-- END left site management button menu -->
 
 <div class="container fitxa backgrnd-gris-hiru">
@@ -131,17 +73,25 @@
 		</div>		 
 		<br />-->
 		
-		<ul class="button-row-horizontal eskuma">
-			{% if botatuDu == 1 %}
-           	<li><a class="kolore-txuria" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" disabled> <i class="fa fa-thumbs-up" aria-hidden="true"></i> </a></li>
-			<li><a class="kolore-txuria" type="button" href="#" > <b class="eskuma titulu-kolorea">{{botoKopuruaPath}}</b> </a></li>
-			<li><a class="kolore-txuria" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" > <i class="fa fa-thumbs-down" aria-hidden="true"></i> </a></li>
-			{%else%}
-			<li><a class="kolore-txuria" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" > <i class="fa fa-thumbs-up" aria-hidden="true"></i> </a></li>
-			<li><a class="kolore-txuria" type="button" href="#"> <b>{{botoKopuruaPath}}</b> </a></li>
-			<li><a class="kolore-txuria" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}" disabled > <i class="fa fa-thumbs-down" aria-hidden="true"></i> </a></li>
-			{%endif%}
-        </ul>    
+		<ul class="button-row-horizontal eskuma">			
+           	<li>
+           		<a class="" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" {% if botatuDu == 1 %} disabled{% endif %}>
+           			<i class="fa fa-thumbs-up kolore-txuria" aria-hidden="true"></i> 
+           		</a>
+           	</li>
+			<li>
+				<a class="" type="button" href="#" > 
+					<b class="eskuma kolore-txuria">
+					{% if botoKopurua %}{{botoKopurua}}{% else %} 0 {% endif %}
+					</b> 
+				</a>
+			</li>
+			<li>
+				<a class="" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}"  {% if botatuDu != 1 %} disabled{% endif %} >
+			 		<i class="fa fa-thumbs-down kolore-txuria" aria-hidden="true"></i>
+			 	</a>
+			 </li>			
+        </ul>        
 		
 		{%endif%}
 		<!-- social network sharing buttons -->

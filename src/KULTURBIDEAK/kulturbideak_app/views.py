@@ -140,6 +140,15 @@ def get_egunekoak():
     
     return (ei,ep)
     
+def get_egunekoak_list():
+    ei=[]
+    ep=[]
+    ei=item.objects.filter(egunekoa=1).values_list('id', flat=True)
+    ep=path.objects.filter(egunekoa=1).values_list('id', flat=True)
+    
+    return (ei,ep)
+        
+    
 def get_bozkatuenak():
     item_bozkatuenak=[]
     bozkatuenak_item_zerrenda= votes_item.objects.annotate(votes_count=Count('item')).order_by('-votes_count')[:10]
@@ -266,6 +275,8 @@ def itemak_hasiera(request):
    
     (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
 
+    (egunekoak_i,egunekoak_p)=get_egunekoak_list()
+    
     #Azkenak
     (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
@@ -341,6 +352,8 @@ def itemak_hasiera(request):
     return render_to_response('cross_search.html',{'login_form':login_form,
                                                    'erabiltzailea_form':erabiltzailea_form,
                                                    'non':non,
+                                                   'eguneko_itemak':egunekoak_i,
+                                                   'eguneko_pathak':egunekoak_p,
                                                    'ibilbide_bozkatuenak':ibilbide_bozkatuenak,
                                                    'azken_ibilbideak':azken_ibilbideak,
                                                    'item_bozkatuenak':item_bozkatuenak,
@@ -717,6 +730,9 @@ def ibilbideak_hasiera(request):
    
     (login_form, erabiltzailea_form) = log_sign_in_forms(request) 
    
+    #Egunekoen id zerrendak
+    (egunekoak_i,egunekoak_p)=get_egunekoak_list()
+   
     #Azkenak
     (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
@@ -790,6 +806,8 @@ def ibilbideak_hasiera(request):
     return render_to_response('cross_search.html',{'login_form':login_form,
                                                    'erabiltzailea_form':erabiltzailea_form,
                                                    'non':non,
+                                                   'eguneko_itemak':egunekoak_i,
+                                                   'eguneko_pathak':egunekoak_p,
                                                    'ibilbide_bozkatuenak':ibilbide_bozkatuenak,
                                                    'azken_ibilbideak':azken_ibilbideak,
                                                    'item_bozkatuenak':item_bozkatuenak,
@@ -2547,18 +2565,16 @@ def login_egin_(request):
     return False
 
 def logina(request):
-    """Login function. 
-    BUG: the workspace is not shown until page is reloaded once logged in."""
+    """Login function. """
     #!! Workspace bat sortu
     #Datu-basean: workspace eta usr_workspace taula eguneratu behar dira
     logina=LoginForm(request.POST)
-    # return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
     if logina.is_valid():
         login_egin_(request)
         return render_to_response('ajax/ajax_login.html',{'mezua':_("Ongi etorri OndareBideak sistemara")},context_instance=RequestContext(request))
     else:
         logina=LoginForm()
-        #return render_to_response('logina.html',{'logina':logina},context_instance=RequestContext(request))
+        
 
 def db_oaipmh_bilketa(cd):
     """ oai-pmh baseURL batetik abiatuta itemak EDM formatuan jetsi eta metadatuak datu-basean gorde"""
@@ -3258,16 +3274,19 @@ def editatu_itema(request):
         else:
             objektu_url=""
         
-               
+        
+        (eu,en,es)=(False,False,False)
         ob_language=''
         #Hizkuntza kontrola
         if 'eu' in request.POST:
             ob_language="eu"
+            eu=True
         if 'es' in request.POST:
             ob_language=ob_language +" es"
+            es=True
         if 'en' in request.POST:
             ob_language=ob_language +" en"
-        
+            en=True
         
         '''
         AMAIA:    
@@ -3426,9 +3445,38 @@ Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
          
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
         #update_index.Command().handle(age=1)
-        non="fitxaE"
+        #non="fitxaE"
+        non="itema_editatu" #Mapako baimenak kontrolatzeko erabiliko da hau
+
         item_obj=item.objects.get(id=item_id)
-        return render_to_response('base.html',{'non':non,'item':item_obj,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':ob_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
+        itemForm=ItemEditatuForm(initial={'hidden_Item_id':item_id,
+                                          'titulua': dc_title,
+                                          'deskribapena': dc_description,
+                                          'gaia':dc_subject,
+                                          'eskubideak':dc_rights,
+                                          'mota':edm_type,
+                                          'herrialdea':edm_country,
+                                          'jatorrizkoa': edm_isshownat,
+                                          'sortzailea':dc_creator,                                          
+                                          'lizentzia':edm_rights,
+                                          'data':dc_date,
+                                          'eu':eu,
+                                          'es':es,
+                                          'en':en})
+        return render_to_response('editatu_itema.html',{'non':non,
+                                               'item':item_obj,
+                                               'itemForm':itemForm,
+                                               'mezua':"itema editatu da",
+                                               'nondik':"editatu_itema",
+                                               'hizkuntza':ob_language,
+                                               'irudia':irudia_url,
+                                               'titulua':dc_title,
+                                               'herrialdea':edm_country,
+                                               'hornitzailea':edm_provider,
+                                               'eskubideak':edm_rights,
+                                               'urtea':dc_date,
+                                               'geoloc_latitude':latitude,
+                                               'geoloc_longitude':longitude},context_instance=RequestContext(request))
     
         #return render_to_response('base.html',{'non':non,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
     
@@ -3543,12 +3591,25 @@ Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
         non="itema_editatu" #Mapako baimenak kontrolatzeko erabiliko da hau
        
         
-        itema=ItemEditatuForm(initial={'hidden_Item_id':item_id,'titulua': titulua, 'deskribapena': deskribapena, 'gaia':gaia,'eskubideak':eskubideak, 'mota':mota, 'herrialdea':herrialdea , 'jatorrizkoa': jatorrizkoa, 'sortzailea':sortzailea,'gaia':gaia, 'lizentzia':lizentzia, 'data':data,'eu':eu,'es':es,'en':en})
+        itemForm=ItemEditatuForm(initial={'hidden_Item_id':item_id,
+                                          'titulua': titulua,
+                                          'deskribapena': deskribapena,
+                                          'gaia':gaia,
+                                          'eskubideak':eskubideak,
+                                          'mota':mota,
+                                          'herrialdea':herrialdea,
+                                          'jatorrizkoa': jatorrizkoa,
+                                          'sortzailea':sortzailea,
+                                          'lizentzia':lizentzia,
+                                          'data':data,
+                                          'eu':eu,
+                                          'es':es,
+                                          'en':en})
         return render_to_response('editatu_itema.html',{"non":non,
                                                         'geoloc_longitude':geoloc_longitude,
                                                         'geoloc_latitude':geoloc_latitude,
                                                         'item':item_tupla,
-                                                        'itema':itema,
+                                                        'itemForm':itemForm,
                                                         'id':item_id,
                                                         'irudia':irudia,
                                                         'titulua':titulua,
@@ -3660,7 +3721,7 @@ def nire_ibilbideak_erakutsi(request):
     userID=request.user.id
     
     #Egunekoak
-    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak()    
+    (eguneko_itemak,eguneko_ibilbideak)=get_egunekoak_list()    
     #Azkenak
     (azken_itemak,azken_ibilbideak)=get_azkenak()    
     #Bozkatuenak
@@ -3734,7 +3795,32 @@ def nire_ibilbideak_erakutsi(request):
         items = paginator.page(paginator.num_pages)
     '''
     nireak="1"
-    return render_to_response('cross_search.html',{'nireak':nireak,'non':non,'ibilbide_bozkatuenak':ibilbide_bozkatuenak,'eguneko_ibilbideak':eguneko_ibilbideak,'azken_ibilbideak':azken_ibilbideak,'item_bozkatuenak':item_bozkatuenak,'eguneko_itemak':eguneko_itemak,'azken_itemak':azken_itemak,'db_hornitzaileak_text':db_hornitzaileak_text,'db_hornitzaileak':db_hornitzaileak,'db_motak_text':db_motak_text,'db_motak':db_motak,'db_lizentziak_text':db_lizentziak_text,'db_lizentziak':db_lizentziak,'z':z,'items':items,'paths':paths,'bilaketa_filtroak':bilaketa_filtroak,'bilaketaGaldera':galdera,'radioHizkuntza':hizkuntza,'hizkF':hizkF,'horniF':horniF,'motaF':motaF,'ordenaF':ordenaF,'lizentziaF':lizentziaF,'besteaF':besteaF},context_instance=RequestContext(request))   
+    return render_to_response('cross_search.html',{'nireak':nireak,
+                                                   'non':non,
+                                                   'ibilbide_bozkatuenak':ibilbide_bozkatuenak,
+                                                   'eguneko_pathak':eguneko_ibilbideak,
+                                                   'azken_ibilbideak':azken_ibilbideak,
+                                                   'item_bozkatuenak':item_bozkatuenak,
+                                                   'eguneko_itemak':eguneko_itemak,
+                                                   'azken_itemak':azken_itemak,
+                                                   'db_hornitzaileak_text':db_hornitzaileak_text,
+                                                   'db_hornitzaileak':db_hornitzaileak,
+                                                   'db_motak_text':db_motak_text,
+                                                   'db_motak':db_motak,
+                                                   'db_lizentziak_text':db_lizentziak_text,
+                                                   'db_lizentziak':db_lizentziak,
+                                                   'z':z,
+                                                   'items':items,
+                                                   'paths':paths,
+                                                   'bilaketa_filtroak':bilaketa_filtroak,
+                                                   'bilaketaGaldera':galdera,
+                                                   'radioHizkuntza':hizkuntza,
+                                                   'hizkF':hizkF,
+                                                   'horniF':horniF,
+                                                   'motaF':motaF,
+                                                   'ordenaF':ordenaF,
+                                                   'lizentziaF':lizentziaF,
+                                                   'besteaF':besteaF},context_instance=RequestContext(request))   
     
     
  

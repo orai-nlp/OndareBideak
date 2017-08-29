@@ -3,7 +3,23 @@
 {% load i18n %}
 {% load leaflet_tags %}
 
-{% block content %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block media_players %}
+{% if momentukoItema.edm_type|lower == "sound" or momentukoItema.edm_type|lower == "video" %}
+<link href="{{STATIC_URL}}css/video-js.min.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/ob-videojs.css" rel="stylesheet">
+<!-- If you'd like to support IE8 -->
+<script src="{{STATIC_URL}}/js/videojs-ie8.min.js"></script>
+{% endif %}
+{% endblock media_players %}
+
+
+
+{% block tts_head %}
+<!-- TTS for language: {{LANGUAGE_CODE}} -->
+{% include "_tts_head.html" with node=item lang=LANGUAGE_CODE %}
+{% endblock tts_head %}
 
 {% block sidebar%}
 <div id="sidebar"></div>
@@ -13,371 +29,289 @@
 <div id="content_div" class="col-sm-12 col-md-12 col-lg-12" align="center">
 {% endblock content_div_def %}
 
+{% block content %}
+
+{% with itype=item.edm_type|lower %}
+
+
+<!-- sidebar management buttons menu -->
+{% include "_side_buttons.html" with type="item" id=id itype=itype usr_id=item.fk_ob_user.id %}
+<!-- END sidebar management buttons menu -->
 
 <div class="itema_gehitu">
 
+{% comment %}
+{% if mezua %}
+<div id="messages">{{mezua}}</div>
+{% endif %}
+{% endcomment %}
 
-<div class="container">
-<div class="row">
-  <div class="col-md-1">
-    
-    </div>
-  <div class="col-md-3">
-    <a class="img-responsive bilaketaEmaitza  thumbnail" href="{% if item.edm_isshownby %}{{item.edm_isshownby}}{%else%} # {%endif%}" target="{% if item.edm_isshownby %}_blank{%endif%}" >
-      {% if item.ob_thumbnail %}
-      <!--<img  alt="{{item.dc_title}}" src="{% if item.ob_thumbnail %} {{item.ob_thumbnail}} {%else%} /uploads/NoIrudiItem.png {% endif %}">-->
-      <img  alt="{{item.dc_title}}" src="{{item.ob_thumbnail}}">
-      {%elif item.edm_isshownby%}
-     
-     	 <iframe id="frame" src="{{item.edm_isshownby}}">
-	 	 </iframe>
-	   {%else%}
-	   		<img  alt="{{item.dc_title}}" src="/uploads/NoIrudiItem.png">
-      {% endif %}
-      
-      </a>
-    
-    <div class="path-info overflow">
-      
-      <ul class="nav  navbar-default">
-	<li>
-	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  {% trans "Lizentzia" %}:&nbsp;
-	  <span class="kolore-gris-hiru">
-	    {% if item.edm_rights%}
-	    {{item.edm_rights}}
-	    {%else%}
-	     -
-	    {% endif %}
-	    </span>
-	  
-	  </li>
-	</ul>
-      </div>
-    
-    </div><!--col-3-->
-  <div class="col-md-6">
-    <div class="path-name overflow titulu-kolorea">
-      {% get_current_language as LANGUAGE_CODE %}
-      
-      <h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item |format_html|safe}} </h2>
-      
-      <ul class="nav navbar-nav navbar-default">
-	<li>
-	  {% if "VIDEO" in item.edm_type %}
-	  <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
-	  {% endif %}
-	  {% if "TEXT" in item.edm_type %}
-	  <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-	  {% endif %}
-	  {% if "IMAGE" in item.edm_type %}
-	  <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
-	  {% endif %}
-	  {% if "SOUND" in item.edm_type %}
-	  <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
-	  {% endif %}
-	  </li>
-	<li>
-	  <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-	  {% if item.edm_year %}
-	  {{item.edm_year}}
-	  {%else%}
-	     -
-	  {% endif %}
-	  </li>
-	
-	<li>
-	  <!-- itemak erabiiltzailearekin lotutakoan hau aldatu, username erakutsi-->
-	  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-	  
-	  {{item.fk_ob_user.username}}
-	  </li>
-	</ul>
-      </div>
-    
-    
-    
-    <!-- Wikifikazioko linkak erakutsi nahi EZ baldin baditut striptags erabili-->
-    <!--{{ LANGUAGE_CODE|choose_description_language:item |striptags |safe }}-->
-    <div class="path-info overflow ">
-      <div class="comment more item-info-description">
-	
-	{{ LANGUAGE_CODE|choose_description_language:item |safe}}
-	
+<div class="container fitxa backgrnd-{{itype|lower}}">
+	<div class="item-fitxa-line1">
+	<!-- ezkerreko zutabea, mota eta gurutzatzen diren ibilbideak -->
+	<div class="left col-md-2">
+		<ul class="mota-crossing" >
+			<li class="li-mota">
+				<span class="kolore-beltza"><i class="icon-ob-{{itype}}"></i> {% trans itype %}</span>
+			</li>
+		</ul>
 	</div>
-      </div>
-    <div class="path-info overflow">
-      <h3 class="titulu-kolorea">{% trans "EZAUGARRIAK" %}</h3>
-      <ul class="nav  navbar-default">
-	<li>
-	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  {% trans "Sortzailea" %}:&nbsp;
-	  <span class="kolore-gris-hiru">
-	    {% if item.dc_creator%}
-	    {{item.dc_creator}}
-	    {%else%}
-	     -
-	    {% endif %}
-	    </span>
-	  
-	  </li>
-	
-	<li>
-	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  {% trans "Hornitzailea" %}:&nbsp;
-	  <span class="kolore-gris-hiru">
-	    {% if item.edm_provider%}
-	    {{item.edm_provider}}
-	    {%else%}
-	     -
-	    {% endif %}
-	    </span>
-	  
-	  
-	  </li>
-	<li>
-	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  {% trans "Gaia" %}:&nbsp;
-	  <span class="kolore-gris-hiru">
-	    {% if item.dc_subject%}
-	    {{item.dc_subject}}
-	    {%else%}
-	     -
-	    {% endif %}
-	    </span>
-	  
-	  
-	  </li>
-	<li>
-	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  {% trans "Hizkuntza" %}:&nbsp;
-	  <span class="kolore-gris-hiru">
-	    {% if item.ob_language %}
-	    {{item.ob_language}}
-	    {%else%}
-	     -
-	    {% endif %}
-	    </span>
-	  
-	  
-	  </li>
-	<li>
-	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  {% trans "Herrialdea" %}:&nbsp;
-	  <span class="kolore-gris-hiru">
-	    {% if item.edm_country %}
-	    {{item.edm_country }}
-	    {%else%}
-	     -
-	    {% endif %}
-	    </span>
-	  
-	  
-	  </li>
-	<li>
-	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  {% trans "Data" %}:&nbsp;
-	  <span class="kolore-gris-hiru">
-	    {% if item.dc_date %}
-	    {{item.dc_date }}
-	    {%else%}
-	     -
-	    {% endif %}
-	    </span>
-	  
-	  
-	  </li>
-	<li>
-	  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-	  {% trans "Mota" %}:&nbsp;
-	  <span class="kolore-gris-hiru">
-	    {% if item.edm_type %}
-	    {{item.edm_type }}
-	    {%else%}
-	     -
-	    {% endif %}
-	    </span>
-	  
-	  
-	  </li>
-	<li>
-	  {% if item.edm_isshownat%}
-	  <a  class="kolore-gris-hiru" title="{{viewAtSource}}" href="{{viewAtSource}}" target="_blank"><b><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {% trans "Ikusi jatorrizkoa" %}</b></a>
-	  {%endif%}
-	  </li>
-	</ul>
-      </div>
-    <div class="path-info overflow">
-      <h3 class="titulu-kolorea">{% trans "Bestelako informazioa" %}</h3>
-      <ul class="nav navbar-nav navbar-default">
-	{% if item.proposatutakoa %}
-	<li>
-	  <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-	  {% trans "Adituek Proposatutakoa" %}
-	  
-	  </li>
-	{%endif%}
-	{% if item.egunekoa %}
-	<li>
-	  <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-	  {% trans "Egunekoa" %}
-	  
-	  </li>
-	{%endif%}
-	{% if not item.egunekoa and not item.proposatutakoa%}
-	- - -
-	{%endif%}
-	</ul>
-      </div>
-    <div class="path-info overflow">
-			{% if user.is_authenticated %}
-			<h3 class="titulu-kolorea">{% trans "Kudeaketa Aukerak" %}</h3>
-						
-  			<button class="btn btn-default gehitu-botoia" type="button" title="lan eremura gehitu" onclick="create_workspace_box({{id}}, {{ request.user.id }});">
- 				
- 				{% trans "Gehitu" %}
- 				<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-			</button>
-			
-			
-				<!--ikusi-->
-				<a class="btn btn-primary" type="button" href="{{BASE_URL}}/erakutsi_item?id={{id}}">
-       				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-       			</a>
-				
-			{% if request.user|has_group:'hornitzailea' %}
-				<!--egunekoa bihurtu-->
-				{% if item.egunekoa == 0 %}	
-				 <a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_gehitu?id={{item.id}}&nondik=editatu" >
-				   <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				   </a>
-				{%endif%}
-				{% if item.egunekoa == 1 %}	
-				 <a class="btn btn-warning egunekoa-botoia" title="Gehitu eguneko itema"  type="button" href="{{BASE_URL}}/eguneko_itema_kendu?id={{item.id}}&nondik=editatu" >
-				   <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-				   </a>
-					
-				{%endif%}
-			
-			{%endif%}
-		
-			
-       		{% if user.id == item.fk_ob_user.id %}
-			
-					<!-- ezabatu -->
-					<a class="btn btn-danger" type="button" title="itema ezabatu" onClick="deleteItem({{id}})" >				
- 					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-					</a>
-			{%endif%}
-		{%endif%}  		
+	<!-- erdiko zutabea, zabalena, titulua eta informazio nagusia -->
+	<div class="center col-md-8">
+		<div class="item-fitxa-line1">
+			<p class="ezkerra item-data kolore-txuria">
+				<span class="">
+				{% if item.edm_year %}
+					{% with item.edm_year|date:"Y . m . d" as date %}
+					{% if date and date.strip%}
+						{{date}}
+					{%else%}
+						{{item.edm_year|data_formatua}}
+					{% endif %}	
+					{% endwith %}		
+				{% elif item.dc_date %}
+					{% with item.dc_date|date:"Y . m . d" as date %}
+					{% if date and date.strip%}
+						{{date}}
+					{%else%}
+						{{item.dc_date|data_formatua}}
+					{% endif %}	
+					{% endwith %}
+				{% else %}
+					-	
+				{% endif %}
+				</span>
+			</p>
+			<h2 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
 		</div>
-    <div class="path-info overflow">
-      
-      <!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
-      {%if itemPaths %}
-      <!-- class="crossingPaths"-->
-      <div class=""><h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} ({{itemPaths.count}})</h3>
-	{% for node in itemPaths %}
-	{% if forloop.counter < 4 %}
-				<a href="nabigazioa_hasi?path_id={{node.fk_path_id.id}}">{{node.fk_path_id.dc_title}} </a>&nbsp;&nbsp;
+	</div>
+	<!-- eskuineko zutabea sare sozialak -->
+	<div class="right col-md-2">
+		<!-- BOTAZIO SISTEMA-->
+		{% if user.is_authenticated %}
+
+		<!-- <div class="eskuma">
+			<a class="titulu-kolorea eskuma" type="button" href="#">{% trans "Kultur itema gustoko duzu?" %}</a>
+		</div>		 
+		<br />-->
+		
+		<ul class="button-row-horizontal eskuma">			
+           	<li>
+           		<a class="" type="button" href="{{BASE_URL}}/botoa_eman_item?id={{id}}" {% if botatuDu == 1 %} disabled{% endif %}>
+           			<i class="fa fa-thumbs-up" aria-hidden="true"></i> 
+           		</a>
+           	</li>
+			<li>
+				<a class="" type="button" href="#" > 
+					<b class="eskuma kolore-gris-lau">
+					{% if botoKopurua %}{{botoKopurua}}{% else %} 0 {% endif %}
+					</b> 
+				</a>
+			</li>
+			<li>
+				<a class="" type="button" href="{{BASE_URL}}/botoa_kendu_item?id={{id}}"  {% if botatuDu != 1 %} disabled{% endif %} >
+			 		<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+			 	</a>
+			 </li>			
+        </ul>    
+		
+		{%endif%}
+		<!-- social network sharing buttons -->
+		{% include "_sharing.html" with buttonColor="beltza" %}
+			
+	</div> 
+	</div>
+	<div class="item-fitxa-line2">
+		<!-- ezkerreko zutabea, mota eta gurutzatzen diren ibilbideak -->
+		<div class="left col-md-2">
+			<ul class="mota-crossing" >
+				<li class="center">
+					<div id="crossingPaths" class="path-info overflow">
+
+				<!-- ITEMA AZALTZEN DE LEHEN 5 IBILBIDEAK ERAKUTSI. GAINONTZEKOAK MODAL BATEAN-->
+				{%if itemPaths %}
+					<a class="crossingPathsTitle" href="" data-toggle="modal" data-target="#modal-crossing"><b>{{itemPaths.count}}</b> {% trans "Ibilbide" %}</a>
+				
+				{% else %}
+					<a class="crossingPathsTitle" href="" data-toggle="modal" data-target="#modal-crossing"><b>0</b> {% trans "Ibilbide" %}</a>
+					<div style="color: #666666;" id="div_you_want_to_blink"> <i class="fa fa-info-circle" aria-hidden="true"></i> {% trans "Izan lehena item honekin ibilbide bat sortzen!" %}</div>
+											
 				{%endif%}
-				{%endfor%}
-				<!--</br>-->
-				{% if itemPaths|length  >= 4 %} <!-- ONDOREN >= 4 JARRI-->
-	  <a class="aRight" href="" data-toggle="modal" data-target="#modalMore"><span class="glyphicon glyphicon-plus">&nbsp;&nbsp;</span></a>
-	  </div>
-	  {%endif%}
-	  
-	<!--  </div>-->
-      {% else %}
-      <h3 class="titulu-kolorea">{% trans "Ze ibilbidetan?" %} &nbsp; - </h3>
-      {%endif%}
-      </div>
-    </div><!-- col-6-->
-  <div class="col-md-2">
-     
-    </div>
-</div><!--row-->
-</div> <!--container-->
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- erdiko zutabea, zabalena, titulua eta informazio nagusia -->
+		<div class="center col-md-8">
+			<ul class="item-fitxa-info-ul">
+				<!-- creator -->
+				<li>
+					<p class="item-field-title kolore-gris-hiru">{% trans "Sortzailea" %}</p>						
+					<p class="kolore-beltza">
+					{% if item.dc_creator%}
+					{{item.dc_creator|format_html|safe}}
+					{%else%}
+					-
+					{% endif %}
+					</p>
+				</li>
+				<!-- provider -->
+				<li>
+					<p class="item-field-title kolore-gris-hiru">{% trans "Hornitzailea" %}</p>
+					<p class="kolore-beltza"> {% if item.edm_dataprovider%}
+						{{item.edm_dataprovider}} ({{item.edm_provider}})
+						{%else%}
+						{{item.edm_provider}}
+						{% endif %}
+					</p>
+				</li>
+				<!-- subject -->
+				<li>
+					<p class="item-field-title kolore-gris-hiru">{% trans "Gaia" %}</p>
+					<p class="kolore-beltza"> {% if item.dc_subject%}
+						{{item.dc_subject|format_html|safe}}
+						{%else%}
+						-
+						{% endif %} 
+					</p>
+				</li>
+				<!-- language /country -->
+				<li>
+					<p class="item-field-title kolore-gris-hiru">{% trans "Hizkuntza eta jatorria" %}</p>
+					<p class="kolore-beltza">
+					{% if item.ob_language %}
+						{{item.ob_language | ob_language_errep_kendu}}
+					{%else%}
+						-
+					{% endif %}
+						&nbsp;-&nbsp;
+					{% if item.edm_country %}
+						{{item.edm_country }}
+					{%else%}
+						-
+					{% endif %} 
+					 </p>
+				</li>
+			</ul>
+	 	</div>
+	 	<!-- eskuineko zutabea sare sozialak -->
+		<div class="right col-md-2">
+			<div id="item_infobox" class="path-info overflow">				
+				<a class="" href="" data-toggle="modal" data-target="#modal-metadata" title="{% trans 'Fitxa osoa ikusi' %}">
+					<i class="fa fa-address-card-o">&nbsp;&nbsp;</i>
+				</a>
+				
+				<a id="autoplay-play-pause" class="aRight no-hover" href="#" onClick="TTS.entzun(); aldatuAutoplayIkonoa();return false;" title="{% trans 'Entzun itemari buruzko informazioa' %}" >
+					<span class="fa fa-assistive-listening-systems">: </span>
+					<i class="icon-ob-play"></i>					
+				</a>
+				{% include "_tts_controls.html" %}
+								
+			</div>
+		</div>
+	</div>			
+</div><!-- container fitxa: end of colored background -->
+
+<div class="item_preview col-xs-12 col-sm-12 col-md-10 center">
+
+	{% include "_item_preview.html" with momentukoItema=item %}
+	
+	<div id="item_preview-description" class="backgrnd-txuria">
+		<div class="path-info overflow ">
+			<div class="comment more item-info-description">
+					{{ LANGUAGE_CODE|choose_description_language:item|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
+			</div>
+		</div>
+				
+	</div>
+		
+</div>
+</div><!-- itema_gehitu -->
+
 
 	
 <div class="container">
 <div class="row">
-  <div class="col-md-1">
-    </div>
-  
-  <div class="col-md-9">
-	<form action="{{BASE_URL}}/editatu_itema" method="post" class="form"  enctype="multipart/form-data">
+  <div class="col-md-9 col-md-offset-1">
+	<form id="create-edit-item-form" class="ezkerra full-width" action="{{BASE_URL}}/editatu_itema" method="post" class="form"  enctype="multipart/form-data">
 		{% csrf_token %}
-		{{ itema.titulua.errors}}
-		{{ itema.deskribapena.errors}}
+		{{ itemForm.titulua.errors}}
+		{{ itemForm.deskribapena.errors}}
 		<input type="hidden" id="id" value="{{id}}">
 		<!-- FORMULARIOA -->
-		<!--{{itema}}-->
+		<!--{{itemForm}}-->
 		<input id="id_hidden_Item_id" type="hidden" name="hidden_Item_id" value="{{id}}">
-		
-		<label for="id_titulua">{% trans "Titulua" %}:</label>
-		{{itema.titulua}}
-		
-		<label for="id_deskribapena">{% trans "Deskribapena"%}:</label>
-		{{itema.deskribapena}}
-		
-		<label for="id_sortzailea">{% trans "Sortzailea" %}:</label>
-		{{itema.sortzailea}}
-		
-		<label for="id_gaia">{% trans "Gaia" %}:</label>
-		{{itema.gaia}}
-		
-		<label for="id_herrialdea">{% trans "Herrialdea" %}:</label>
-		{{itema.herrialdea}}
-		
-		<label for="id_data">{% trans "Data" %}:</label>
-		<br />
-		{{itema.data}}
-		<br />
-
-		<label for="id_jatorrizkoa">{% trans "Jatorrizkoa" %}:</label>
-		{{itema.jatorrizkoa}}
-		
-		<label for="id_eskubideak">{% trans "Eskubideak" %}:</label>
-		{{itema.eskubideak}}
-		
-		<label for="id_lizentzia">{% trans "Lizentzia" %}:</label>
-		{{itema.lizentzia}}
-		<br />
-		
-		<label for="id_mota">{% trans "Mota" %}:</label>
-		{{itema.mota}}
-		<br />
-		
-		<label for="id_mota"> Ondare-objektua:</label>
-		{{itema.objektua}}
-		<br />
-		
-		<label for="id_irudia">{% trans "Irudia" %}:</label>
-		{{itema.irudia}}
-		<br />
-		
-		<label for="id_hizkuntzak">{% trans "Hizkuntzak" %}:</label>
-		<br />
-		eu{{itema.eu}}
-		es{{itema.es}}
-		en{{itema.en}}
-		
-		<br/>
-		<br/>
-		<!-- GEOLOKALIZAZIOA -->
-		<label for="id_geolokalizazioa">Geolokalizazioa:</label>
-		<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
-		<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
+		<ul >
+			<li>
+			<label for="id_titulua" class="ezkerra">{% trans "Titulua" %}:</label>
+			{{itemForm.titulua}}
+			</li>
+			<li>
+			<label for="id_deskribapena" class="ezkerra">{% trans "Deskribapena"%}:</label>
+			{{itemForm.deskribapena}}
+			</li>
+		<li>
+			<label for="id_sortzailea" class="ezkerra">{% trans "Sortzailea" %}:</label>
+			{{itemForm.sortzailea}}
+			</li>
+		<li>
+			<label for="id_gaia" class="ezkerra">{% trans "Gaia" %}:</label>
+			{{itemForm.gaia}}
+		</li>
+		<li>
+			<label for="id_herrialdea" class="ezkerra">{% trans "Herrialdea" %}:</label>
+			{{itemForm.herrialdea}}
+		</li>
+		<li>
+			<label for="id_data" class="ezkerra">{% trans "Data" %}:</label>		
+			{{itemForm.data}}
+		</li>
+		<li>
+			<label for="id_jatorrizkoa" class="ezkerra">{% trans "Jatorrizkoa" %}:</label>
+			{{itemForm.jatorrizkoa}}
+		</li>		
+		<li>
+			<label for="id_eskubideak" class="ezkerra">{% trans "Eskubideak" %}:</label>
+			{{itemForm.eskubideak}}
+		</li>
+		<li>
+			<label for="id_lizentzia" class="ezkerra">{% trans "Lizentzia" %}:</label>
+			{{itemForm.lizentzia}}
+		</li>
+		<li>
+			<label for="id_mota" class="ezkerra">{% trans "Mota" %}:</label>
+			{{itemForm.mota}}
+		</li>
+		<li>
+			<label for="id_mota" class="ezkerra">{% trans 'Ondare-objektua' %}:</label>
+			{{itemForm.objektua}}
+		</li>
+		<li>
+			<label for="id_irudia" class="ezkerra">{% trans "Irudia" %}:</label>
+			{{itemForm.irudia}}
+		</li>
+		<li>
+			<label for="id_hizkuntzak" class="ezkerra">{% trans "Hizkuntzak" %}:</label>
+			<br />
+			eu{{itemForm.eu}}
+			es{{itemForm.es}}
+			en{{itemForm.en}}
+		</li>
+		<li>
+			<!-- GEOLOKALIZAZIOA -->
+			<label for="id_geolokalizazioa" class="ezkerra">{% trans 'Geolokalizazioa' %}:</label>
+			<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
+			<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
             
-		{% leaflet_map "yourmap" callback="load_map" %}
+			{% leaflet_map "yourmap" callback="load_map" %}
 		
-		<!-- END GEOLOKALIZAZIOA -->
+			<!-- END GEOLOKALIZAZIOA -->
+		</li>
+     		</ul>
      		
-   		 <button class="btn btn-default" name="aldatu" type="submit">
-   		 Aldatu
-  		  </button>
+   			<button class="btn square-back kolore-txuria eskuma no-hover" name="aldatu" type="submit">
+   		 	{% trans 'Aldatu' %}
+  		  	</button>
        			
        			
       		
@@ -389,4 +323,50 @@
   </div>
 </div>
 </div>
+
+{% endwith %}
+
 {% endblock %} 
+
+{% block pageEndScripts %}
+{% if item.edm_type|lower == "sound" or item.edm_type|lower == "video" %}
+<script src="{{STATIC_URL}}js/video.min.js"></script>
+<script src="{{STATIC_URL}}js/videojs-flash.min.js"></script>
+<script>
+	var player = videojs('ob-videojs', {techOrder: ['flash', 'html5']});
+	$(".vjs-play-progress.vjs-slider-bar").addClass("backgrnd-{{item.edm_type|lower}}");
+</script>
+{% endif %}
+
+<!-- TTS -->
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
+<!-- <script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script> -->
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts_berezia.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
+<script>
+function aldatuAutoplayIkonoa()
+{
+	if (! $('#autoplay-play-pause i').hasClass("icon-ob-pause"))
+	{
+		document.getElementById('autoplay-play-pause').title = "{% trans 'Gelditu erreprodukzioa' %}";
+		$('#autoplay-play-pause i').removeClass();
+		$('#autoplay-play-pause i').addClass('icon-ob-pause');
+	}
+	else{
+		document.getElementById('autoplay-play-pause').title = "{% trans 'Abiatu erreprodukzioa' %}";
+		$('#autoplay-play-pause i').removeClass();
+		$('#autoplay-play-pause i').addClass('icon-ob-play');
+		
+	}		
+}
+</script>
+<!-- END TTS scripts -->
+
+
+{% endblock pageEndScripts %}

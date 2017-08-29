@@ -30,8 +30,9 @@
 				
 			<ul class="caption-info">
 				<li>
-				    <span class="kolore-gris-bi">
+				    <span class="kolore-gris-bi">				   
 				{% if item.edm_year %}
+					-{{item.dc_date}}-
 					{% with item.edm_year|date:"Y . m . d" as date %}
 					{% if date and date.strip%}
 						{{date}}
@@ -39,9 +40,17 @@
 						{{item.edm_year|data_formatua}}
 					{% endif %}	
 					{% endwith %}		
-				{%else%}
+				{% elif item.dc_date %}
+					{% with item.dc_date|date:"Y . m . d" as date %}
+					{% if date and date.strip%}
+						{{date}}
+					{%else%}
+						{{item.dc_date|data_formatua}}
+					{% endif %}	
+					{% endwith %}
+				{% else %}
 					-	
-				{% endif %}				
+				{% endif %}		
 					</span>			
 				</li>
 							
@@ -94,20 +103,20 @@
 					
 					{% if request.user|has_group:'hornitzailea' or user.is_superuser %}
 				<li id="eguneko_button_{{item.item_id}}" class="backgrnd-gris-lau relative">
-						{% if not item.item_id|is_in:eguneko_itemak %} 
-					<a class="btn-warning" title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaAldatu({{item.item_id}},'gehitu','{{itype}}')" >
+						{% if item.item_id|is_in_list:eguneko_itemak %} 
+					<a class="btn-warning" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaAldatu({{item.item_id}},'kendu','{{itype}}')" >
 						<span class="square-back-vert-padding backgrnd-gris-lau">
 		            		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
-							<span class="icon-ob-plus backgrnd-txuria ob-fire-overlay kolore-gris-lau"></i>
-    					</span>
-                	</a>
-						{%else%}
-                	<a class="btn-warning" title="Ezabatu eguneko itema" type="button" href="javascript:egunekoaAldatu({{item.item_id}},'kendu','{{itype}}')" >
-						<span class="square-back-vert-padding backgrnd-gris-lau">
-		            		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
-							<span class="backgrnd-txuria ob-fire-overlay kolore-gris-lau">&mdash;</i>
+							<span class="ob-fire-overlay backgrnd-txuria kolore-gris-lau">&mdash;</i>
     					</span>
 					</a>
+						{%else%}
+                	<a class="btn-warning" title="Gehitu eguneko itema"  type="button" href="javascript:egunekoaAldatu({{item.item_id}},'gehitu','{{itype}}')" >
+						<span class="square-back-vert-padding backgrnd-gris-lau">
+		            		<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
+							<span class="ob-fire-overlay icon-ob-plus backgrnd-txuria kolore-gris-lau"></i>
+    					</span>
+                	</a>
 						{%endif%}
 				</li>
                 	{%endif%}			

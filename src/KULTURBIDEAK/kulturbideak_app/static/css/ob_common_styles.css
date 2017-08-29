@@ -246,6 +246,10 @@ i {
 	border-radius:0px;
 }
 
+.full-width{
+	width:100% !important;
+}
+
 /* checkbox styles*/
 
 input[type="checkbox"]{
@@ -367,7 +371,9 @@ input[type="checkbox"] + label span i{
 	right: 8%;
 }
 
-
+a#alert-close-button{
+	font-size:8px;
+}
 /* END Ikono estiloak */
 
 /* custom modal dialog styles*/
@@ -506,3 +512,18 @@ div#comments {
 	text-decoration: none;
 }	
 /* END QR code link and modal styles */
+
+
+/* Botoien estiloak */
+.to-footer-alone{
+    margin-top:30px;
+}
+
+.to-footer{
+   	/*bottom and right are specified to position the button below the form aligned in the footer*/
+	position:absolute;
+	bottom: -56px; 
+ 	right:15px;
+}
+
+/* END Botoien estiloak */

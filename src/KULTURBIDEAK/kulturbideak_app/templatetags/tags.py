@@ -62,6 +62,15 @@ def is_in(id,list):
     return 0
 
 @register.filter
+def is_in_list(id,list): 
+
+	 if int(id) in list:
+	 	return True
+	 
+	 return False
+
+
+@register.filter
 def get_item_image(item): 
     img=item    
     return img

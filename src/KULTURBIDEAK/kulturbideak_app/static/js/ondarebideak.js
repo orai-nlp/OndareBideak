@@ -732,7 +732,7 @@ $('#formEguneratu').submit(function(e) {
 });
 
 
-//Ibilbidea eguneratzean irudia gordetzeko
+//Autocomplete-aren leihoa ongi kokatzeko.
 $(document).ready(function(){
 	pos = $("#search-box").offset();
 	$("#autocomplete-container").css({
@@ -1294,7 +1294,15 @@ function egunekoaAldatu(item_id,aldaketa,type)
     }).done(function(data) {
     	//var response = $($.parseHTML(data));
     	//var buttonLi = response[0].innerHTML;
-        $('#eguneko_button_'+item_id).html(data);
+    	var bckclass=$('#eguneko_button_'+item_id).attr('class').split(/\s+/)[0];
+    	var bckCircle=$('#eguneko_button_'+item_id+' span[class^=ob-fire-overlay]')
+		.attr('class').split(/\s+/)[0];
+    	$('#eguneko_button_'+item_id).html(data);
+    	$('#eguneko_button_'+item_id+' span.square-back-vert-padding').addClass(bckclass);
+    	var plusminus = $('#eguneko_button_'+item_id+' span.backgrnd-txuria.kolore-gris-lau')
+    	var current=plusminus.attr('class');
+    	var addto = bckCircle+' '+current;
+    	plusminus.attr('class',addto);
         if (aldaketa == "gehitu"){
         	$('#chosen-item-mark').show();
         }
@@ -1321,7 +1329,15 @@ function egunekoaAldatu_ibilb(path_id,aldaketa)
     }).done(function(data) {
     	//var response = $($.parseHTML(data))
     	//var buttonLi = response[0].innerHTML;
+    	var bckclass=$('#eguneko_button_'+path_id).attr('class').split(/\s+/)[0];   
+    	var bckCircle=$('#eguneko_button_'+path_id+' span[class^=ob-fire-overlay]')
+    					.attr('class').split(/\s+/)[0];
         $('#eguneko_button_'+path_id).html(data);
+    	$('#eguneko_button_'+path_id+' span.square-back-vert-padding').addClass(bckclass);
+    	var plusminus = $('#eguneko_button_'+path_id+' span.backgrnd-txuria.kolore-gris-lau')
+    	var current=plusminus.attr('class');
+    	var addto = bckCircle+' '+current;
+    	plusminus.attr('class',addto);
         if (aldaketa == "gehitu"){
         	$('#chosen-item-mark').show();
         }

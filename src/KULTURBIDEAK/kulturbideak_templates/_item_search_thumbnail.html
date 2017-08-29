@@ -34,27 +34,7 @@
                     </li>    
 				{%endif%}
 				</ul>
-{% comment %}				
-                                {% if item.edm_provider %}
-                                        <span class="bilaketaEremua" id="hornitzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> {% trans "Hornitzailea" %}: </span><span class="kolore-gris-hiru"> {{item.edm_provider}} </span><br />
-                                {%endif%}
-                                {% if item.dc_creator %}
-                                        <span class="bilaketaEremua" id="sortzailea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Sortzailea" %}: <span class="kolore-gris-hiru">{{item.dc_creator}}</span><br />
-                                {%endif%}
-                                {% if item.dc_subject %}
-                                        <span class="bilaketaEremua" id="gaia"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Gaia" %}: <span class="kolore-gris-hiru">{{item.dc_subject}}</span><br />
-                                {%endif%}
-                                {% if item.edm_country %}
-                                        <span class="bilaketaEremua" id="herrialdea"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Herrialdea" %}: </span><span class="kolore-gris-hiru">{{item.edm_country}}</span><br />
-                                {%endif%}
-                                {% if item.ob_language %}
-                                        <span class="bilaketaEremua" id="hizkuntza"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Hizkuntza" %}: </span><span class="kolore-gris-hiru">{{item.ob_language | ob_language_errep_kendu}}</span><br />
-                                {%endif%}                              
-                                {% if item.edm_type %}
-                                        <span class="bilaketaEremua"  id="mota"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{% trans "Mota" %}: <span class="kolore-gris-hiru">{{item.edm_type}}</span><br />
-                                {%endif%}
-                                
-{% endcomment %}
+
 		</div>	 <!-- caption -->			    
 		<div class="kudeaketa">                       
 		</div> <!-- kudeaketa buttons -->
