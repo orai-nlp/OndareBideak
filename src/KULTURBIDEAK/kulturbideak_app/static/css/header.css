@@ -21,6 +21,7 @@
 {
 	margin-left:52px;
 }
+
 .header-main-links
 {	
 	/*font-weight: 900;*/
@@ -111,6 +112,17 @@ a.header-custom-link-underline span{
 	top:10%;
 	margin-left:2px;
 }
+
+@media screen and (max-width: 640px){
+	#search_icons{
+		right:45px;			
+	}	
+
+	#search_lang_div:after{
+		margin-right: -34px;
+	}
+}
+
 
 #search_icons button:hover{
 	background:none;	

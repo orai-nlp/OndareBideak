@@ -1,11 +1,7 @@
 {% load i18n %}
 {% load tags%}
 
-<!-- CSS media query on a link element -->
-
-<link rel="stylesheet" media="(min-width: 600px)" href="{{STATIC_URL}}css/karrusela.css" type="text/css">
-
-
+<link rel="stylesheet" href="{{STATIC_URL}}css/karrusela.css" type="text/css">
 
 <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="5000" id="bs-carousel">
   <!-- Overlay -->
@@ -24,14 +20,14 @@
     <div class="item slides active">
       <div class="slide-1"> <!-- ITEM PROPOSAMENA-->
       
-      	<div class="container laukia">
+      	<div class="container laukia carousel-image">
 			<div class="row">
 				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
 					<img src="{% if egunekoItem.ob_thumbnail%} {{egunekoItem.ob_thumbnail|clean_http_prefix}} {% elif egunekoItem.edm_object %} {{egunekoItem.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}" class="img-responsive " title="{{egunekoItem.dc_title}}" />
 						
        			</div>
        			<!-- INFO-->
-       			<div class="col-md-5 karratua backgrnd-{{egunekoItem.edm_type|lower}}"> 
+       			<div class="col-md-5 karratua carousel-infobox backgrnd-{{egunekoItem.edm_type|lower}}"> 
        				<div class="row"> <!--nested-->
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer marra-iluna mota-irudia"> {% trans "Itema" %} &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  
@@ -66,13 +62,13 @@
     <div class="item slides">
       <div class="slide-2"> <!-- IBILBIDE PROPOSAMENA-->
       
-      	<div class="container laukia ">
+      	<div class="container laukia carousel-image">
 			<div class="row">
 				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
 				<img src="{% if egunekoPath.paths_thumbnail %}{{egunekoPath.paths_thumbnail}}{% else %}/uploads/NoIrudiBide.png{% endif %}" class="img-responsive " title="{{egunekoPath.dc_title}}" />
        			
        			</div>
-       			<div class="col-md-5 karratua backgrnd-gris-lau"> 
+       			<div class="col-md-5 karratua carousel-infobox backgrnd-gris-lau"> 
        				<div class="row"> <!--nested-->
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer-argia marra-horia mota-irudia"> {% trans "Ibilbidea"%}        					
@@ -101,12 +97,12 @@
       <div class="item slides">
       <div class="slide-3"> <!-- HORNITZAILE PROPOSAMENA-->
       
-      	<div class="container laukia">
+      	<div class="container laukia carousel-image">
 			<div class="row">
 				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
 				{% if egunekoHornitzaile.argazkia %} <img src="{{egunekoHornitzaile.argazkia|clean_http_prefix}}" class="img-responsive " title="{{egunekoHornitzaile.izena}}" /> {% else %} <img src="{{egunekoHornitzaile.ikonoa|clean_http_prefix}}" class="img-responsive " title="{{egunekoHornitzaile.izena}}" /> {% endif %}
        			</div>
-       			<div class="col-md-5 karratua backgrnd-gris-lau"> 
+       			<div class="col-md-5 carousel-infobox karratua backgrnd-gris-lau"> 
        				<div class="row"> <!--nested-->
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Hornitzailea"%} 
@@ -138,13 +134,13 @@
       <div class="item slides">
       <div class="slide-4"> <!-- EGUNEKO BERRIA PROPOSAMENA-->
       
-      	<div class="container laukia">
+      	<div class="container laukia carousel-image">
 			<div class="row">
 				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
 				<img class="img-responsive " src="{{erakBerria.argazkia}}" title="{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}">
 			
        			</div>
-       			<div class="col-md-5 karratua backgrnd-gris-lau">
+       			<div class="col-md-5 karratua carousel-infobox backgrnd-gris-lau">
        				<div class="row"> <!--nested-->
        					<div class="col-md-6 col-md-offset-1">
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Berria"%} 

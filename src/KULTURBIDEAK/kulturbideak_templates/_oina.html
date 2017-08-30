@@ -3,51 +3,32 @@
 
 <!-- CSS media query on a link element -->
 
-<link rel="stylesheet" media="(min-width: 600px)" href="{{STATIC_URL}}css/oina_style.css" type="text/css">
+<link rel="stylesheet" href="{{STATIC_URL}}css/oina.css" type="text/css">
 
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="row"> <!-- nested columns -->
-   			 <div class="col-md-5">
+<div id="ob-footer" class="container-fluid">
+	<div class="row"> <!-- nested columns -->
+   		<div class="col-md-5">
    			 	<p class="logo_ob_oina"> <img src="{{STATIC_URL}}img/logo/ob_logo_karratu_beltz.png"> </p>
    			 	<p class="oina-desk kolore-gris-bi"> {% trans "OndareBideak plataforma eta bere teknologia GNU GPL V3 lizentziapean banatutako software librea da." %} </p>
    			 	<p class="oina-desk kolore-gris-bi"> {% trans "OndareBideak-ek erakutsitako item kulturalek haien lizentzia propioak dituzte eta eskuzabaltasunez bertan jarri dituzten erakundeen menpekoak dira."%} </p>
    			 	<p class="oina-text-bat"><span class="kolore-video">&nbsp;&ndash;&nbsp;</span><a href="https://github.com/Elhuyar/OndareBideak" target="_blank"> github </a>&nbsp;&nbsp;<span class="kolore-video">&nbsp;&ndash;&nbsp;</span><a href="mailto:ondarebideak@elhuyar.eus" target="_blank"> ondarebideak@elhuyar.eus </a></p>
    			 
-   			 </div>
-   			 <div class="col-md-7">
-   			 	<p class="logo_ob_oina"></p>
-   			 	<p class="gara-title"> {% trans "Garatzaileak" %} </p>
-   			 	<p class="logo-zerrenda">
-   			 	<div class="row">
+   		</div>
+   		<div class="col-md-7">
+   			{% if not request.mobile %} 
+   			<p class="logo_ob_oina"></p>
+   			{% endif %}
+   			<p class="gara-title"> {% trans "Garatzaileak" %} </p>
+   		 	<div id="logo-div" class="row">
 					<!--GipuzkoakoMuseoak_4.jpg-->					
-					<div class="col-md-2 text-center logo-gm">
-						<img src="{{STATIC_URL}}img/dev-logos/GM-wb.png" alt="Gipuzkoako Museoak" width="100%">
-					</div>
-					<div class="col-md-2 text-center logo-dss">
-						<img src="{{STATIC_URL}}img/dev-logos/dss2016-wb.png" alt="DSS2016eu" width="100%">
-					</div>
-					
-					<div class="col-md-2 text-center logo-elh">
-						<img src="{{STATIC_URL}}img/dev-logos/elh-wb.png" alt="Elhuyar">
-					</div>
-					<div class="col-md-2 text-center logo-em">
-						<img src="{{STATIC_URL}}img/dev-logos/ekm-wb.png" alt="Euskomedia">
-					</div>
-					<div class="col-md-2 text-center logo-ehu">
-						<img class="ehu_logoa " src="{{STATIC_URL}}img/dev-logos/ehu-wb.png" alt="EHU-UPV" >
-						
-					</div>
-					<div class="col-md-2 text-center logo-ixa">
-						<img src="{{STATIC_URL}}img/dev-logos/ixa-wb.png" alt="IXA taldea">
-					</div>
-				</div>
-   			 </p>
-   			 </div>
-			</div><!-- nested columns -->
-		</div><!-- 12 columns -->
-	</div> <!--row-->
-	
+					<div class="col-xs-4 col-md-2 text-center" style="background-image:url('{{STATIC_URL}}img/dev-logos/GM-wb.png');"></div>
+					<div class="col-xs-4 col-md-2 text-center" style="background-image:url('{{STATIC_URL}}img/dev-logos/dss2016-wb.png');"></div>
+					<div id="logo-elh" class="col-xs-4 col-md-2 text-center" style="background-image:url('{{STATIC_URL}}img/dev-logos/elh-wb.png');"></div>
+					<div id="logo-em" class="col-xs-4 col-md-2 text-center" style="background-image:url('{{STATIC_URL}}img/dev-logos/ekm-wb.png');"></div>
+					<div id="logo-ehu" class="col-xs-4 col-md-2 text-center" style="background-image:url('{{STATIC_URL}}img/dev-logos/ehu-wb.png');"></div>
+					<div id="logo-ixa" class="col-xs-4 col-md-2 text-center" style="background-image:url('{{STATIC_URL}}img/dev-logos/ixa-wb.png');"></div>
+			</div>   			 
+   		</div>
+	</div><!--  row nested columns -->	
 </div>

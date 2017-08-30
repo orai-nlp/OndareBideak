@@ -98,7 +98,7 @@ div.item-extra-background{
     loader / loading modal
 *************************************/
 #loading_modal{
-	position:absolute;
+	position:fixed;
 }
 
 #loading_modal h6{
@@ -1120,6 +1120,7 @@ div.similar-items{
 	padding:50px 20px;
 	background-color:#f8f8f8;
 }
+
 
 img.similar-img {
 	width:95%;

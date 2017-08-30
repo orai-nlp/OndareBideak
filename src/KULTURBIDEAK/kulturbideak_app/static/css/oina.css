@@ -1,0 +1,63 @@
+
+#ob-footer{	
+	margin-bottom:30px;
+}
+
+
+.logo_ob_oina {
+	width:100%;
+	margin-top:27px;
+	margin-bottom:18px;
+	padding-left:15px;
+	min-height:80px;
+}
+
+.logo_ob_oina img {
+	width:117px;
+	margin-top:27px;
+	margin-bottom:18px;
+	margin-left:0px;
+}
+
+.oina-text-bat{
+	margin: 10px 0 0 0;
+	padding-left:15px;
+	font-family: walsheim-bold-web;
+	color:#333333;
+	font-size: 12px !important;
+	
+}
+.oina-desk {
+	padding: 0 30px 0 15px;
+	font-size: 9px !important;
+	margin:0;
+}
+
+.gara-title {
+	font-family: walsheim-bold-web;
+	font-size: 12px !important;
+	margin: 20px 0;   
+   
+}
+
+#logo-div {
+	display: table;
+	width:100%;
+}
+
+#logo-div div{
+	display: table-cell;
+	padding:5px 5px;
+	max-width:16%;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+	background-clip:content-box;
+	background-origin:content-box;
+	height:45px;
+}
+
+#logo-div > div > img{
+	width:100%;
+}
+
