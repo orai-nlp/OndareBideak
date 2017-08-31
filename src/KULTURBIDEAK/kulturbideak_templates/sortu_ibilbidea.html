@@ -3,14 +3,31 @@
 {% load i18n %}
 {% load leaflet_tags %}
 {% block mapFunctions %}
-
 {% endblock %} 
+
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block page_div_def %}			
+<div id="main_page">
+{% endblock page_div_def %}		
+
+{% block orria_div_def %}			
+	<div id="orria" class="container orria">
+{% endblock orria_div_def %}
+	
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content_div_def %}		
+<div id="content_div">
+{% endblock content_div_def %}
+
 
 {% block content %}
 
-<button id="create_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modalwindow" >
+<button id="create_path_button" type="button" class="btn square-back no-hover kolore-txuria" id="menuLink" data-toggle="modal" data-target="#modalwindow" >
 	<span  aria-hidden="true"> 
-		<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"> 
+		<span class="fa fa-floppy-o" aria-hidden="true"> 
        	</span> 
     	Gorde Ibilbidea   
     </span> 	

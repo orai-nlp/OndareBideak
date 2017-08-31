@@ -9,9 +9,9 @@
 
 		{% if "sortu_ibilbidea" in request.get_full_path %}
 
-		<div class="asistentea_ws" id="ws_botoia_barruan">
+		<div class="asistentea_ws kolore-gris-hiru" id="ws_botoia_barruan">
 
-			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+			<span class="fa fa-info-circle" aria-hidden="true"></span>
 			Jetsi beheko arbelera nahi dituzun itemak. Itemaren gainean ipini
 			sagua eta geziari klikatu.
 
@@ -20,14 +20,13 @@
 		{%else%}
 		<div id="ws_botoia_barruan">
 
-			<div class="asistentea_ws">
-				<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-				Item nahikoa aukeratu dituzu? sortu ibilbidea hemen sakatuta: <a
-					type="button" class="btn btn-default btn-xs pathBotoia"
-					href="sortu_ibilbidea">{% trans "sortu ibilbidea" %} <i
-					class="fa fa-pencil-square-o" aria-hidden="true"> </i>
-				</a>
-
+			<div class="asistentea_ws kolore-gris-hiru">
+				<span class="fa fa-info-circle" aria-hidden="true"></span>
+				Item nahikoa aukeratu dituzu? sortu ibilbidea hemen sakatuta: 
+					<a type="button" class="pathBotoia no-hover kolore-txuria backgrnd-gris-lau" href="sortu_ibilbidea">
+						{% trans "sortu ibilbidea" %} 
+						<i class="fa fa-pencil-square-o" aria-hidden="true"> </i>
+					</a>
 			</div>
 
 		</div>
@@ -35,7 +34,7 @@
 	</div>
 	<div id="ws_botoia_kanpoan">
 		<button type="button"
-			class="btn btn-default btn-xs pathBotoia_kanpoan "
+			class="pathBotoia_kanpoan no-hover kolore-txuria backgrnd-gris-lau"
 			onclick="toggle_workspace();">
 			<span class="fa fa-cog" aria-hidden="true"> </span>
 			{% trans "Lan eremua" %}

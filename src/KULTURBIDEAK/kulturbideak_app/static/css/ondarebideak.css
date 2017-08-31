@@ -36,10 +36,10 @@ body {
 
 div.item-extra-background{
 	position:absolute;
-	top:90px;
+	top:85px; /* put to 85px to fit both in pc and mobile devices*/
 	background-color: #f8f8f8;
 	width:100%;
-	height:200px;
+	height:210px;
 	z-index:-1;
 }
 
@@ -368,7 +368,7 @@ h4.modal-inner-title {
 #workspace {
 	position: fixed;
 	width: 80%;
-	min-width: 800px;
+	/*min-width: 800px;*/
 	left: 10%;
 	text-align: center;
 	z-index: 10000;
@@ -476,30 +476,31 @@ h4.modal-inner-title {
 	width:100%;
 	height:100%;
 	position:absolute;
-	vertical-align:miright;
 	text-align:center;"
 }
 
 
-.pathBotoia {
-	background-color:#333333;
-	color:#ffffff;
+.pathBotoia {		
 	position:absolute; 
-	right:90px;
+	right:50px;
 	top:0;
 	font-size: 0.9em;
 	font-family:walsheim-bold-web;
+	padding:2px 3px;
+	border: none !important;
+	border-radius: 0 !important;
 }
 
 .pathBotoia_kanpoan{
-	background-color:#333333;	
-	color:#ffffff;
 	display:block;
 	right:120px;
 	margin-top:-3px;
 	float:right;
 	font-size: 1em;
 	font-family:walsheim-bold-web;
+	padding:2px 3px;
+	border: none !important;
+	border-radius: 0 !important;
 }
 /* END - Workspace / Lan eremua */
 
@@ -838,7 +839,12 @@ h4.modal-inner-title {
 div.fitxa {
 	padding-top:50px;
 	height:600px;
+	padding: 0px 50px;
+	background-size:contain;
+	background-clip:content-box;
+	background-origin:content-box;
 }
+
 div#item_infobox{
 	width:100%;
 }
@@ -847,11 +853,13 @@ div.item-fitxa-line1{
 	float:left;
 	width:100%;
 	margin-bottom:30px;
+	padding:50px 20px 0 0;
 }
 
 div.item-fitxa-line2{	
 	width:100%;
-	margin-bottom:30px;
+	padding-right:20px;
+	/*margin-bottom:30px;*/
 }
 
 /* item-fitxa: mota ikono estiloak*/
@@ -873,6 +881,7 @@ li.li-mota-path span{
 	border-bottom: 3px solid #FFDA3E;
 	padding: 5px 15px;
 }
+
 
 /* END item-fitxa:mota ikono estiloak*/
 
@@ -913,7 +922,7 @@ ul.button-row-horizontal a {
 
 .item-fitxa-info-ul{
 	width:100%;
-	padding:0;	
+	padding:0 0 20px 0;	
 }
 
 .item-fitxa-info-ul li{
@@ -1489,10 +1498,11 @@ h2.uppercase {
 
 /* mapa geografikoarentzako estiloak*/
 #geo_map {
-	margin: 20px 0px;
+	/*margin: 20px 0px;*/
+	margin:auto;
 }
 #yourmap {
-	border-radius: 10px;
+	border-radius: none;
 }
 
 /* Sare sozialen atala*/
@@ -1542,46 +1552,12 @@ span.helptext {
     padding:0 3px 0 3px;
 }
 
-@media only screen and (max-width: 991px)
-{
 
-	#brand-logo img {
-		width:150px;
-	}
-	
-	.index-brand{
-		margin-left:50px;	
-	}
-	
-	#hizkuntza_aukeraketa_id ul.nav li{
-		display:inline-block;
-	}
-	
-	#home_menu li{
-		display:inline-block;
-	}
-			
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-    .navbar-collapse.collapse {
-        display: none !important;
-    }
-    .navbar-collapse.collapse.in {
-        display: block !important;
-    }
-    .navbar-header .collapse, .navbar-toggle {
-        display:block !important;
-    }
-    .navbar-header {
-        float:none;
-    }
-}
 
 .asistentea{
 	background: transparent none repeat scroll 0 0;
-    color: rgb(223, 170, 0) !important;
-    font: bold 20px Arial;
+    font-size:14px;
+    font-family:walsheim-bold-web;
     height: 86px;
     padding: 0;
     text-align: center;
@@ -1590,10 +1566,12 @@ span.helptext {
 }
 .asistentea_ws{
 	background: transparent none repeat scroll 0 0;
-    color: rgb(223, 170, 0) !important;
-    font: bold 17px Arial;
+    /*color: rgb(223, 170, 0) !important;*/
+    /*font: bold 17px Arial;*/
+    font-size:14px;
+    font-family:walsheim-bold-web;
     /*height: 86px;*/
-    padding: 2;
+    padding: 2px;
     text-align: center;
     vertical-align: middle;
     /*width: 134px;*/
@@ -1601,8 +1579,8 @@ span.helptext {
 
 .asistentea_EzDago{
 	background: transparent none repeat scroll 0 0;
-    color: rgb(223, 170, 0) !important;
-    font: bold 17px Arial;
+    font-size:14px;
+    font-family:walsheim-bold-web;
     /*height: 86px;*/
     padding: 2;
     text-align: center;
@@ -1776,6 +1754,91 @@ ul {
 	width:90% !important;
 }
 
+/************************************************
+
+      Media Queries
+
+**************************************************/
 
 
+
+@media only screen and (max-width: 991px)
+{
+	/* _navbar.html */
+	.navbar-collapse.collapse {
+        display: none !important;
+    }
+    .navbar-collapse.collapse.in {
+        display: block !important;
+    }
+    .navbar-header .collapse, .navbar-toggle {
+        display:block !important;
+    }
+    .navbar-header {
+        float:none;
+    }
+	
+}
+
+@media only screen and (max-width: 991px)
+{
+	/* _navbar.html */	
+	#brand-logo img {
+		width:150px;
+	}
+	
+	.index-brand{
+		margin-left:50px;	
+	}
+	
+	#hizkuntza_aukeraketa_id ul.nav li{
+		display:inline-block;
+	}
+	
+	#home_menu li{
+		display:inline-block;
+	}
+	
+	/* item.html */
+	ul.mota-crossing {
+		padding:0;
+	}
+	li.li-mota span{
+		padding: 5px;
+	}
+
+	.crossingPathsTitle {
+		padding: 0 5px;			
+	}
+	#div_you_want_to_blink{
+		font-size:12px;
+	}
+	.button-row-horizontal li{
+		padding:5px;
+	}
+	.asistentea_ws{
+		font-size: 14px;
+		text-align:left;
+		padding-left:20px;
+	}
+	.pathBotoia{
+		right:50px;
+	}
+	
+}
+
+@media only screen and (max-width: 768px)
+{
+	.item-fitxa-info-ul li{
+		display: block;
+		width:50%;
+		padding:5px;
+		text-align:center;
+	}
+	.asistentea_ws{
+		font-size: 13px;
+		text-align:left;
+		padding-left:10px;
+	}
+}
 
