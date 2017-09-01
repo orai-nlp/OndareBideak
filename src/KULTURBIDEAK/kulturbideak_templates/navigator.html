@@ -43,6 +43,7 @@
 		{% leaflet_js %}
 		{% leaflet_css %}
 		{% load qr_tags %}
+		
 
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/readmore.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autocomplete.js"></script>
@@ -68,8 +69,8 @@
 	</head>
 	
 	
-	<body>
-		<div id="main-div" class="bg backgrnd-beltza">
+	<body id="landscapeBody">
+		<div id="main-div" class="bg backgrnd-beltza {% if request.mobile %}padding-0{% endif %}">
 			<!-- elementuak erakusteko panela -->
 			<div id="navigator-content">
 				<!-- atzeko irudia -->
@@ -88,13 +89,12 @@
 				<!-- botoiak -->
 				<div id="buttons">
 					<ul>
-						<li class="square-back-lg backgrnd-gris-0">
+						<li class="backgrnd-gris-0">
 							<button id="create_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modaloverview" >
 								<i class="fa fa-map-signs backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i>
 							</button>
-							<a href=""></a>
 						</li>
-						<li class="square-back-lg backgrnd-gris-0">
+						<li class="backgrnd-gris-0">
 							<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}"><i class="icon-ob-times backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i></a>
 						</li>
 					</ul>
@@ -109,7 +109,7 @@
 				<!-- END elementua -->
 				<!-- Deskribapena -->
 				<div id="item-description" class="backgrnd-{{itype}}">
-					<div class="left-padding-0 col-md-2">
+					<div class="padding-0 col-sm-2 ezkerra">
 						<ul class="ul-mota" >
 							<li class="li-mota">
 								<span class="kolore-beltza">
@@ -144,7 +144,7 @@
 			
 			<!-- nabigazio-kontrola -->
 			<div id="control-panel" class="backgrnd-gris-lau">
-				<div class="col-md-4">
+				<div class="col-xs-4 col-md-4">
 					<ul id="ctrlpanel-info" class="left-padding-0">
 						<li id="ctrlpanel-logo">
 							<img src="{{STATIC_URL}}/img/icons/path.png">
@@ -156,7 +156,7 @@
 					</ul>
 				</div>
 				<!-- kontrolak -->
-				<div class="col-md-5">
+				<div class="col-xs-4 col-md-5">
 					<ul id="panel-elements" class="center">
 						<li>
 							{% if autoplay == 1 %} 
@@ -185,7 +185,7 @@
 				</div>
 				<!-- END kontrolak -->
 				<!-- aurrera/atzera botoiak -->
-				<div class="col-md-3">
+				<div class="col-xs-4 col-md-3">
 					<ul id="fwrd-bckwrd">
 						<li>
 							<button class="btn backgrnd-gris-lau kolore-gris-0" type="button" onclick="nabigatu({{path_id}},{{aurrekoak.0.fk_item_id_id}})"><i class="icon-ob-arrow-left"></i><span class="capitalize kolore-gris-bi"> {% trans 'aurrekoa' %}</span></button>

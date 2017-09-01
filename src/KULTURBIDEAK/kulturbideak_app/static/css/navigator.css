@@ -10,6 +10,37 @@ html,body {
 }
 
 
+/**************************************************************
+	 force the navigator to always appear in landscape mode
+****************************************************************/
+#landscapeBody { 
+	display:block; 
+}
+
+@media only screen and (orientation:portrait){
+	
+	#landscapeBody {
+		height: 100vw;
+    	-webkit-transform: rotate(90deg);
+    	-moz-transform: rotate(90deg);
+    	-o-transform: rotate(90deg);
+    	-ms-transform: rotate(90deg);
+    	transform: rotate(90deg);
+  	}
+}
+@media only screen and (orientation:landscape){
+
+	#landscapeBody {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+  	}
+
+}
+
+
 /**********************
   main navigator window 
  **********************/
@@ -123,7 +154,7 @@ img.navigator_bckgrnd {
 	bottom:95px;
 	right:0;
 	z-index:1001;
-	padding: 80px 30px 20px 20px;
+	padding: 60px 30px 20px 20px; /*originally 80 30 20 20 */
 	height: 50%;
 }
 
@@ -244,3 +275,28 @@ li.li-mota span{
 }
 
 /* END path map modal window */
+
+
+/**********************
+    Media Queries 
+ **********************/
+
+@media only screen and (max-width:991px){
+
+	/* control panel */
+	.ctrlpanel-path-title{
+		font-size: 22px;		
+	}
+	
+	 #fwrd-bckwrd{
+	 	padding:0;
+	 }
+	 
+	 #item-description{
+	 	padding: 40px 20px 20px 20px;
+	 }
+	/* END control panel */
+	
+}
+
+

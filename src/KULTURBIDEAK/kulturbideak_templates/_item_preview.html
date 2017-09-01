@@ -6,9 +6,9 @@
 {% with itype=momentukoItema.edm_type|lower %}
 
 {% if itype == "sound" or itype == "video" %}
-<div id="item_preview-element" class="ob-audio">
+<div id="item_preview-element" class="ob-audio relative">
 {% else%}
-<div id="item_preview-element">
+<div id="item_preview-element" class="relative">
 {% endif %}	 
 
 	<div id="chosen-item-mark" class="chosen-item-mark" {% if momentukoItema.egunekoa == 0 %} style="display:none;" {%endif%}>
@@ -42,7 +42,7 @@
 					
 		{% if momentukoItema.edm_object%}
 	<a id="item_img" class="img-responsive nabigItem scrollbar" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
-		 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
+		 <img  style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.edm_object|clean_http_prefix}}">
 	</a>
 		{%else%}
 			{% include "_item_preview_img.html" with momentukoItema=momentukoItema %}	

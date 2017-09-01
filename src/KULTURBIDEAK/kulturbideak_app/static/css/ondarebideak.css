@@ -960,6 +960,7 @@ div#item_preview-element {
 	border:none;
 	border-radius:0;
 	position:relative;
+	max-width:90%;
 }
 
 div#item_preview-element.ob-audio {
@@ -1038,6 +1039,7 @@ div#item_preview-description {
 
 #ob-videojs{
 	display:inline-block;
+	max-width:100%;
 }
 
 /* END item.html CSS*/
@@ -1093,6 +1095,12 @@ ul.fitxa-line3-props li {
 
 
 /* ibilbidea.html CSS*/
+
+div#item_preview-element.ob-path-preview {
+	max-width:75%;	
+}
+
+
 div.overlay-path{
 	font-size:5em;
 	padding: 20px;
@@ -1130,6 +1138,9 @@ div.similar-items{
 	background-color:#f8f8f8;
 }
 
+.similar-div{
+	margin-bottom:10px;
+}
 
 img.similar-img {
 	width:95%;
@@ -1778,6 +1789,27 @@ ul {
         float:none;
     }
 	
+	.navbar-toggle {
+    	display: block !important;
+    	width: 60px;
+    	height: 60px;
+	}
+	
+	.navbar-toggle .icon-bar {
+    	display: block;
+    	width: 40px;
+    	height: 5px;
+    	margin: 6px 0;
+    	border-radius: 1px;
+	}
+}
+
+@media only screen and (max-width: 1024px)
+{
+	/* item.html */
+	ul.mota-crossing {
+		padding:0;
+	}		
 }
 
 @media only screen and (max-width: 991px)
@@ -1794,15 +1826,8 @@ ul {
 	#hizkuntza_aukeraketa_id ul.nav li{
 		display:inline-block;
 	}
+		
 	
-	#home_menu li{
-		display:inline-block;
-	}
-	
-	/* item.html */
-	ul.mota-crossing {
-		padding:0;
-	}
 	li.li-mota span{
 		padding: 5px;
 	}

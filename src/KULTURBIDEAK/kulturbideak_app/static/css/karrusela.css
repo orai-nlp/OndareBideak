@@ -169,7 +169,7 @@ Image credits: unsplash.com
     margin-bottom: 19px;
     margin-top: -10px;
 }
-karrusel-describapena-argia p {
+.karrusel-describapena-argia p {
 
 	color: #ffffff;
     font-family: walsheim-light-web;
@@ -195,24 +195,33 @@ karrusel-describapena-argia p {
 
 
 /********************************/
+/*     Carousel indicator       */
+/********************************/
+.carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    z-index: 15;
+    width: 100%;
+    padding-left: 0;
+    margin-left: 0;
+    text-align: center;
+    list-style: none;
+}
+
+
+
+/********************************/
 /*            Overlay           */
 /********************************/
 .overlay {
     position: absolute;
-    width: 100%;
+    /*width: 100%;*/
     height: 35%;   
     padding-top:45px;
     background-color:#f8f8f8;
    
 }
-
-div.index-extra-background{
-	position: absolute;
-    width: 100%;
-    padding-top:200px;
-    height:150px;
-}
-
 
 /********************************/
 /*       Slides backgrounds     */
