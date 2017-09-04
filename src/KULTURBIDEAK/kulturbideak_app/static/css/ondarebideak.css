@@ -1,12 +1,4 @@
 
-.d3label{
-	text-decoration: none;
-	color:#000000;
-	font-size: 14px;
-	line-height:19px;
-	font-family: walsheim-web,Dosis, sans-serif;
-}
-
 /* egitura nagusiak */
 body {
 	font-family: walsheim-web, Verdana, Arial, sans-serif;
@@ -397,21 +389,22 @@ h4.modal-inner-title {
 
 
 .ws_box {
-
 	cursor: move;
 	display: inline-block;
 	height: 100px; /* MAD */
-	margin: 4px;/* MAD */
+	margin: 15px 4px;/* MAD */
 	padding: 10px;
 	vertical-align: top;
 	width: 97px;/* MAD */
+	position:relative;
 }
 
 .wsb_image {
-	border-radius: 50%;
+	border-radius: none; /*50%;*/
 	float: left;
 	height: 50px;
-	margin-right: 10px;
+	margin:auto;
+	/*margin-right: 10px;*/
 	pointer-events: none;
 	width: 50px;
 	border-style: solid;
@@ -437,7 +430,7 @@ h4.modal-inner-title {
 	font-weight: bold;
 	float: right;
 	margin: 2px;
-	color: #c03035;
+	color: #333333;
 }
 
 .ws_box:hover .wsb_button {
@@ -454,7 +447,7 @@ h4.modal-inner-title {
 	display: inline-block;
 	font-size: 12pt;
 	/*font-weight: bold;*/
-	float: right;
+	float: left;
 	margin: 2px;
 	color:#333333;/*31708f;*/
 	/*border: 1px dotted #808080;*/

@@ -80,6 +80,21 @@
 	background-color:#CCCCCC !important;
 }
 
+/* ertz koloreak */
+.border-video {
+	border:1px solid #FF563D !important;
+}
+.border-text {
+	border:1px solid #FFDA3E !important;
+}
+.border-image {
+	border:1px solid #40D7FF !important;
+}
+.border-sound {
+	border:1px solid #5AED64 !important;
+}
+
+
 
 /* hasierako patailan: data, gehiago ikusiren gezia...*/
 .kolore-txuria { 
@@ -380,6 +395,15 @@ input[type="checkbox"] + label span i{
 a#alert-close-button{
 	font-size:8px;
 }
+
+.d3label{
+	text-decoration: none;
+	color:#000000;
+	font-size: 14px;
+	line-height:19px;
+	font-family: walsheim-web,Dosis, sans-serif;
+}
+
 /* END Ikono estiloak */
 
 /* custom modal dialog styles*/

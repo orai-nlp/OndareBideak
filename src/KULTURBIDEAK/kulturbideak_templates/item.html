@@ -469,15 +469,17 @@
 
 <!-- TTS -->
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
-<!-- <script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script> -->
+<!-- JQUERY is already loaded 
+ <script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>-->
+<!-- JQUERY-ui tts uses jquery-ui-1.8 but the newer version works well
+ <script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script> -->
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.12.1.min.js"></script> 
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tts_berezia.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
+
 <script>
 function aldatuAutoplayIkonoa()
 {

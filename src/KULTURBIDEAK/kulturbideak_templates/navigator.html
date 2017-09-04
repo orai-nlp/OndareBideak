@@ -90,12 +90,12 @@
 				<div id="buttons">
 					<ul>
 						<li class="backgrnd-gris-0">
-							<button id="create_path_button" type="button" class="btn btn-info" id="menuLink" data-toggle="modal" data-target="#modaloverview" >
-								<i class="fa fa-map-signs backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i>
-							</button>
+							<a href="#" id="map" type="button" class="btn" id="menuLink" data-toggle="modal" data-target="#modaloverview" >
+								<i class="fa fa-map-signs square-back-lg backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i>
+							</a>
 						</li>
 						<li class="backgrnd-gris-0">
-							<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}"><i class="icon-ob-times backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i></a>
+							<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path_id}}"><i class="icon-ob-times square-back-lg backgrnd-gris-0 kolore-gris-hiru" aria-hidde=true></i></a>
 						</li>
 					</ul>
 				</div>
@@ -278,15 +278,16 @@
 <!-- page-end scripts -->
 <!-- TTS -->
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/wgxpath.install.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script>
+<!-- JQUERY is already loaded 
+ <script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-1.7.2.min.js"></script>-->
+<!-- JQUERY-ui tts uses jquery-ui-1.8 but the newer version works well
+ <script type="text/javascript" src="{{STATIC_URL}}js/tts/jquery-ui-1.8.21.custom.min.js"></script> -->
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.12.1.min.js"></script> 
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/crel.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/classList.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/soundmanager2-jsmin.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tts_berezia.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tts.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/tts/tinybox.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/tts/enyo.js"></script>
 
 {% if itype == "sound" or itype == "video" %}
 <!-- video/audio player -->
@@ -306,15 +307,23 @@ function aldatuAutoplayIkonoa()
 		document.getElementById('autoplay-play-pause').title = "{% trans 'Gelditu erreprodukzioa' %}";
 		$('#autoplay-play-pause i').removeClass();
 		$('#autoplay-play-pause i').addClass('icon-ob-pause');
+		$("#item-description").css("z-index",1000);
 	}
 	else{
 		document.getElementById('autoplay-play-pause').title = "{% trans 'Abiatu erreprodukzioa' %}";
 		$('#autoplay-play-pause i').removeClass();
 		$('#autoplay-play-pause i').addClass('icon-ob-play');
-		
-	}		
+		$("#item-description").css("z-index",1001);
+	}
+	
 }
+/*********************************
+ *  Video js interactions
+ * *******************************/
 
+$(document).on("click", ".vjs-play-control",function(){
+	$("#item-description").css("z-index",1001);  
+});
 </script>
 {% if autoplay == 1 %}
 

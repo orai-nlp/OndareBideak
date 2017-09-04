@@ -1,6 +1,15 @@
 /***************************
 *    Utils
 ****************************/
+
+var obColors={
+	'image' : '#40D7FF',
+	'text' : '#FFDA3E',
+	'sound' : '#5AED64',
+	'video' : '#FF563D',
+	};
+
+
 // function to get multiline labels for d3 svg text elements
 function insertLineBreaksD3(d) {
     var el = d3.select(this);
@@ -228,7 +237,8 @@ var svg = d3.select("#path_boxes_overview").append("svg")
       var p = d3.select(this);
       if (p.select("circle").classed("aukeratuta") == true){
         //NODOA EZ DAGO AUKERATUTA
-        d3.selectAll("circle").style({stroke: 'steelblue'});
+        //d3.selectAll("circle").style({stroke: function (d){ var t=d.attr("class").replace(/^aukeratua /); return obColors[t];}});
+    	d3.selectAll("circle").style({stroke: 'steelblue'});
         p.select("circle").style({stroke: 'red'});
         p.select("circle").classed("aukeratuta",false);
       } else {
@@ -350,8 +360,14 @@ function update(source) {
   nodeEnter.append("circle")
     .attr("id",function(d) {
      return 'nodo: '+tituluaGarbitu(d.name,false); }) //Maddalen
-    .attr("class", "aukeratuta")
-    .attr("r", function(d){
+    .attr("class",function(d) { return "aukeratuta "+d.mota.toLowerCase();})
+    /*.attr("width", function(d){
+            return radio*2;
+    })
+    .attr("height", function(d){
+            return radio*2;
+    })*/
+    .attr("r",function(d){
             return radio;
     })
     .style("stroke", function(d){ 

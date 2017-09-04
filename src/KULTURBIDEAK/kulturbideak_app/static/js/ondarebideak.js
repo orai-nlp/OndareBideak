@@ -471,47 +471,27 @@ function add_workspace_box(box_id,text_value,image_value,mota){
     ws_box.addEventListener('dragenter',wsb_handleDragEnter);
     ws_box.addEventListener('dragleave',wsb_handleDragLeave);
 
+    
+    //Motaren arabera irudia agertzeko    
+    var wsb_typeImage = document.createElement("div");
+    wsb_typeImage.setAttribute("class","wsb_typeImage");
+    var typei=document.createElement("i");
+    typei.setAttribute("class","icon-ob-"+mota.toLowerCase()+" kolore-"+mota.toLowerCase());
+    wsb_typeImage.appendChild(typei);
+    ws_box.appendChild(wsb_typeImage);
+    
     var wsb_button = document.createElement("span");
     wsb_button.setAttribute("class","wsb_button");
     wsb_button.setAttribute("onclick","remove_me(this.parentNode,"+box_id+");");
     wsb_button.setAttribute("title","Ezabatu");
     var trashglyph = document.createElement("span");
-    trashglyph.setAttribute("class","glyphicon glyphicon-trash");
+    trashglyph.setAttribute("class","icon-ob-trash");
     trashglyph.setAttribute("aria-hidden","true");
     wsb_button.appendChild(trashglyph);
     /*wsb_button.appendChild(document.createTextNode("Ezabatu"));*/
     ws_box.appendChild(wsb_button);
     
-    //Motaren arabera irudia agertzeko    
-    var wsb_typeImage = document.createElement("div");
-    wsb_typeImage.setAttribute("class","wsb_typeImage");
-    var typeglyph = document.createElement("img");
-
-    typeglyph.setAttribute("class","mota-icon");
-    typeglyph.setAttribute("src","/static/img/icons/"+mota.toLowerCase()+".png");
-    /*if(mota=='IMAGE')
-    {
-    	typeglyph.setAttribute("class","glyphicon glyphicon-camera mota-icon");
-    }
-    else if(mota=='TEXT')
-    {
-    	typeglyph.setAttribute("class","glyphicon glyphicon-file mota-icon");
-    }
-    else if(mota=='SOUND')
-    {
-    	typeglyph.setAttribute("class","glyphicon glyphicon-headphones mota-icon");
-    }
-    else if(mota=='VIDEO')
-    {
-    	typeglyph.setAttribute("class","glyphicon glyphicon-film mota-icon");
-    }
-    else
-    {
-    	typeglyph.setAttribute("class","");
-    }
-    typeglyph.setAttribute("aria-hidden","true");*/
-    wsb_typeImage.appendChild(typeglyph);
-    ws_box.appendChild(wsb_typeImage);
+   
     
     
     if ((new RegExp("sortu_ibilbidea$").test(window.location.href) == true) || (new RegExp("editatu_ibilbidea").test(window.location.href) == true)){
@@ -529,7 +509,7 @@ function add_workspace_box(box_id,text_value,image_value,mota){
     } else {  
     }
     var wsb_image = document.createElement("img");
-    wsb_image.setAttribute("class","wsb_image");
+    wsb_image.setAttribute("class","wsb_image border-"+mota.toLowerCase());
     var image_value2=image_value.replace("http://www.http","http"); //konponketa
     image_value=image_value2;
     wsb_image.setAttribute("src",image_value);
@@ -1677,5 +1657,8 @@ function aldatu_hornitzaile_egoera(id)
 	var url = 'admin_eguneko_hornitzaileak_kudeatu?id='+id;   	
     window.location.href=url;
 }
+
+
+
 
 
