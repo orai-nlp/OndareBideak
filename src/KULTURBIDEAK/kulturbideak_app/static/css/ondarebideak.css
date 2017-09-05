@@ -40,6 +40,12 @@ div.item-extra-background{
 	min-width:450px;
 }
 
+#item_img_text {
+	margin: 5px;
+	min-width: 800px;
+}
+
+
 #item_img img{
 	width:100%;
 }
@@ -967,6 +973,10 @@ div#item_preview-description {
     color: #666666;
 }
 
+.item-info-description iframe {
+	margin-left:20%;
+}
+
 .chosen-item-mark{	
 	transition: .5s ease;
 	position: absolute;
@@ -1197,18 +1207,6 @@ div.similar-thumbnail{
 	padding-left: 50px;
 }
 /* END _similar_items.html*/
-
-/* HEADERRAREN ESTILOA*/
-
-.navbar-brand-berria {
-	float: left;
-	font-size: 35px !important;
-	height: 70px !important;
-	line-height: 0;
-	padding: 20px !important;
-}
-
-/* END - HEADERRAREN ESTILOA*/
 
 .kolorea {
 	background-color: #31708f !important;
@@ -1803,6 +1801,10 @@ ul {
 	ul.mota-crossing {
 		padding:0;
 	}		
+	
+	#item_img_text {
+		min-width: 700px;
+	}
 }
 
 @media only screen and (max-width: 991px)
@@ -1842,7 +1844,9 @@ ul {
 	.pathBotoia{
 		right:50px;
 	}
-	
+	#item_img_text {
+		min-width: 500px;
+	}
 }
 
 @media only screen and (max-width: 768px)
@@ -1858,5 +1862,6 @@ ul {
 		text-align:left;
 		padding-left:10px;
 	}
+	
 }
 

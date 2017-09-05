@@ -13,6 +13,11 @@ def proxyPassHttp(url):
 	return re.sub('^\s*http://','/kanpora/', url)
 
 @register.filter
+def leading_wspace(url):	
+	return re.sub('^\s*','', url)
+
+
+@register.filter
 def lerroJauziakKendu(sarrera):
 
 	return sarrera.replace("\n","");
@@ -95,8 +100,8 @@ def cut_words(input,num):
 
 @register.filter
 def add_ekm_prefix_to_desc(value): 
-    value=value.replace('="/ImgsAuna/','="http://www.euskomedia.org/ImgsAuna/')
-    value=value.replace('href="/aunamendi/', 'href="http://www.euskomedia.org/aunamendi/')
+    value=value.replace('="/ImgsAuna/','="http://aunamendi.eusko-ikaskuntza.eus/ImgsAuna/')
+    value=value.replace('href="/aunamendi/', 'href="http://aunamendi.eusko-ikaskuntza.eus/aunamendi/')
     
     return value
 

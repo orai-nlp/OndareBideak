@@ -144,7 +144,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Nola bilatu?</h4>
+					<h4 class="modal-title">{% trans "Nola bilatu?" %}</h4>
 				</div>
 				<div class="modal-body">
 					<p>Lehendabizi galdera zein hizkuntzatan burutuko duzun
@@ -163,13 +163,44 @@
 						ere azaldu daitezke bilaketaren emaitza gisa</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn kolore-gris-0 square-back no-hover eskuma" data-dismiss="modal">Close</button>
+					<button type="button" class="btn kolore-gris-0 square-back no-hover eskuma" data-dismiss="modal">{% trans "Atera" %}</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<!-- Modal - Help video-->
+	<div id="modalHelpVideo" class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">{% trans "Hasi OndareBideak erabiltzen!" %}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="center">
+						<video id="ob-videojs" class="video-js ob-video-skin" controls preload="auto"  width="640" height="512"
+  	poster="" data-setup="{}">
+							<!-- <video width="320" height="240" controls> -->
+  							<source src="{{BASE_URL}}/{{STATIC_URL}}video/ob_tutorial_eu_musika.mp4" type="video/mp4">
+  							{% trans "Your browser does not support the video tag." %}
+						</video>
+					
+					</div>					
+				<div class="modal-footer">
+					<button type="button" class="btn kolore-gris-0 square-back no-hover eskuma" data-dismiss="modal">{% trans "Atera" %}</button>
 				</div>
 			</div>
 
 		</div>
 	</div>
 	<!-- END MODALS -->
+	
 	
 </body>
 </html>

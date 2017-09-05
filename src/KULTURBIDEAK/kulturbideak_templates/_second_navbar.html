@@ -48,21 +48,27 @@
     <div class="col-md-4 padding-0">
     	<ul id="kopuruak" class="padding-0 center"> <!-- nested columns -->
    			<li class="left-padding-0">
-   				<p class="kopuruak kopuru-marra-gorria "> {{itemKop}}k </p>
-   			 	<p class="kopuru-azpiko-testua"> <a href="itemak_hasiera">{% trans "Item" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i> </a></p>
+   				<a href="itemak_hasiera">
+   					<p class="kopuruak kopuru-marra-gorria "> {{itemKop}}k </p>
+   			 		<p class="kopuru-azpiko-testua"> {% trans "Item" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i></p>
+   				</a>
    			</li>
    			<li>
-   			 	<p class="kopuruak kopuru-marra-berdea "> {{ibilbideKop}}</p> <!--32 -->
-   			 	<p class="kopuru-azpiko-testua"> <a href="ibilbideak_hasiera">{% trans "Ibilbideak" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i> </a> </p>
+   				<a href="ibilbideak_hasiera">
+	   			 	<p class="kopuruak kopuru-marra-berdea "> {{ibilbideKop}}</p> <!--32 -->
+   				 	<p class="kopuru-azpiko-testua"> {% trans "Ibilbideak" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i></p>
+   				</a>
    			</li>
    			<li>
-   			 	<p class="kopuruak kopuru-marra-urdina"> {{hornitzaileKop}} </p><!--42 -->
-   			 	<p class="kopuru-azpiko-testua"> <a href="hornitzaileak_hasiera">{% trans "Hornitzaileak" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i></a></p>
+	   			<a href="hornitzaileak_hasiera">
+   				 	<p class="kopuruak kopuru-marra-urdina"> {{hornitzaileKop}} </p><!--42 -->
+   				 	<p class="kopuru-azpiko-testua"> {% trans "Hornitzaileak" %} &nbsp; <i class="kolore-gris-bat fa fa-arrow-right" aria-hidden="true"></i></p>
+   				 </a>
    			</li>
    		</ul>
    	</div>
     <div class="col-md-3">
-    	<p class="galdera"> <a href="{{STATIC_URL}}video/ob_tutorial_eu_musika.mkv">{% trans "Nola sortu ibilbidea?" %}</a></p>
+    	<p class="galdera"> <a href="#" data-toggle="modal" data-target="#modalHelpVideo">{% trans "Nola sortu ibilbidea?" %}</a></p>
     </div> <!--.col-md-3 -->
    </div> <!-- row-->
 </div><!-- /.container-fluid -->

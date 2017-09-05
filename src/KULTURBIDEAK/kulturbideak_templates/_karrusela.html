@@ -21,41 +21,44 @@
       <div class="slide-1"> <!-- ITEM PROPOSAMENA-->
       
       	<div class="container laukia carousel-image">
+      	<a href="{{BASE_URL}}/erakutsi_item?id={{egunekoItem.id}}"> 
 			<div class="row">
-				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
+				<div class="col-xs-12 col-sm-5 karratua"> <!-- ARGAZKIA-->
 					<img src="{% if egunekoItem.ob_thumbnail%} {{egunekoItem.ob_thumbnail|clean_http_prefix}} {% elif egunekoItem.edm_object %} {{egunekoItem.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}" class="img-responsive " title="{{egunekoItem.dc_title}}" />
 						
        			</div>
        			<!-- INFO-->
-       			<div class="col-md-5 karratua carousel-infobox backgrnd-{{egunekoItem.edm_type|lower}}"> 
-       				<div class="row"> <!--nested-->
-       					<div class="col-md-6 col-md-offset-1">
+       			<div class="col-xs-12 col-sm-5 karratua carousel-infobox backgrnd-{{egunekoItem.edm_type|lower}}"> 
+       				<div class="scrollbar"> <!--nested-->
+       					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-zer marra-iluna mota-irudia"> {% trans "Itema" %} &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  
        							<span class="icon-ob-{{egunekoItem.edm_type|lower}} kolore-gris-lau"></span>
        							<span class="letra-arina"> &nbsp;  {% trans egunekoItem.edm_type|lower %} </span>
        						 </p>
        					</div>
-       					<div class="col-md-6 col-md-offset-1">
+       					<div class="col-sm-6 col-sm-offset-1">
        						{% if egunekoItem.edm_year%}
        							<p class="karrusel-data">{{egunekoItem.edm_year|date:"y . m . d"}}</p> <!-- |date:"y.m.d"-->
        						{%else%}
        							<p class="karrusel-data">{{currentDate|date:"Y . m . d"}}</p>       						
        						{%endif%}
        					</div>
-       					<div class="col-md-10 col-md-offset-1">
+       					<div class="col-sm-10 col-sm-offset-1">
        						<p class="karrusel-title"> {{ LANGUAGE_CODE|choose_title_language:egunekoItem|format_html|safe}}  </p>
        					</div>	
-       					<div class="col-md-10 col-md-offset-1">
+       					<div class="col-sm-10 col-sm-offset-1">
        						<p class="karrusel-describapena"> {{ LANGUAGE_CODE|choose_description_language:egunekoItem|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe | get_substring_150}}  </p>
        					</div>			
-       					<div class="col-md-4 col-md-offset-8">
-       						<p class="karrusel-gehiago"> <a href="{{BASE_URL}}/erakutsi_item?id={{egunekoItem.id}}"> {% trans "Ikusi gehiago" %} &nbsp;<span class="icon-ob-arrow-right kolore-txuria" aria-hidden="true"></span> </a></p>
+       					<div class="col-sm-5 col-sm-offset-6">
+       						<p class="karrusel-gehiago">
+       							{% trans "Ikusi gehiago" %} &nbsp;	<span class="icon-ob-arrow-right kolore-txuria" aria-hidden="true"></span>
+       						</p>
        					</div>		
        				
        				</div>
        			</div>
        		</div><!--row-->
-       		
+       		</a>
        </div><!--slide-1 -->
       </div><!--container-->
     </div><!--item slide-->
@@ -63,34 +66,37 @@
       <div class="slide-2"> <!-- IBILBIDE PROPOSAMENA-->
       
       	<div class="container laukia carousel-image">
+      	<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{egunekoPath.id}}"> 
 			<div class="row">
-				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
+				<div class="col-xs-12 col-sm-5 karratua"> <!-- ARGAZKIA-->
 				<img src="{% if egunekoPath.paths_thumbnail %}{{egunekoPath.paths_thumbnail}}{% else %}/uploads/NoIrudiBide.png{% endif %}" class="img-responsive " title="{{egunekoPath.dc_title}}" />
        			
        			</div>
-       			<div class="col-md-5 karratua carousel-infobox backgrnd-gris-lau"> 
-       				<div class="row"> <!--nested-->
-       					<div class="col-md-6 col-md-offset-1">
+       			<div class="col-xs-12 col-sm-5 karratua carousel-infobox backgrnd-gris-lau"> 
+       				<div class="scrollbar"> <!--nested-->
+       					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-zer-argia marra-horia mota-irudia"> {% trans "Ibilbidea"%}        					
        					</div>
-       					<div class="col-md-6 col-md-offset-1">
+       					<div class="col-sm-6 col-sm-offset-1">
        						<!-- Datak: letrak maiuskulaz ala minuskulaz gauza desberdina ematen dute. Adb. M : hilea letraz, m: hilea zenbakiz-->
        						<p class="karrusel-data">  {{ egunekoPath.creation_date |date:"Y . m . d" }} </p>
        					</div>
-       					<div class="col-md-5 col-md-offset-1">
+       					<div class="col-sm-7 col-sm-offset-1">
        						<p class="karrusel-title-argia"> {{ egunekoPath.dc_title }} </p>
        					</div>	
-       					<div class="col-md-10 col-md-offset-1">
+       					<div class="col-sm-10 col-sm-offset-1">
        						<p class="karrusel-describapena-argia"> {{egunekoPath.dc_description | get_substring_150}} ... </p>
        					</div>			
-       					<div class="col-md-4 col-md-offset-8">
-       						<p class="karrusel-gehiago-argia">  <a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{egunekoPath.id}}"> {% trans "Ikusi gehiago" %} &nbsp;<span class="kolore-horia icon-ob-arrow-right" aria-hidden="true"></span></a></p>
+       					<div class="col-sm-5 col-sm-offset-6">
+       						<p class="karrusel-gehiago-argia">
+       							{% trans "Ikusi gehiago" %} &nbsp;<span class="kolore-horia icon-ob-arrow-right" aria-hidden="true"></span>
+       						</p>
        					</div>		
        				
        				</div>
        			</div>
        		</div><!--row-->
-       		
+       		</a>
        </div><!--slide-2 -->
       </div><!--container-->
     </div><!--item slide-->
@@ -98,36 +104,36 @@
       <div class="slide-3"> <!-- HORNITZAILE PROPOSAMENA-->
       
       	<div class="container laukia carousel-image">
+      	<a href="{{BASE_URL}}/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h">
 			<div class="row">
-				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
+				<div class="col-xs-12 col-sm-5 karratua"> <!-- ARGAZKIA-->
 				{% if egunekoHornitzaile.argazkia %} <img src="{{egunekoHornitzaile.argazkia|clean_http_prefix}}" class="img-responsive " title="{{egunekoHornitzaile.izena}}" /> {% else %} <img src="{{egunekoHornitzaile.ikonoa|clean_http_prefix}}" class="img-responsive " title="{{egunekoHornitzaile.izena}}" /> {% endif %}
        			</div>
-       			<div class="col-md-5 carousel-infobox karratua backgrnd-gris-lau"> 
-       				<div class="row"> <!--nested-->
-       					<div class="col-md-6 col-md-offset-1">
+       			<div class="col-xs-12 col-sm-5 carousel-infobox karratua backgrnd-gris-lau"> 
+       				<div class="scrollbar"> <!--nested-->
+       					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Hornitzailea"%} 
        					</div>
-       					<div class="col-md-6 col-md-offset-1">
+       					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-data">  {{  currentDate |date:"Y . m . d" }} </p>
        					</div>
-       					<div class="col-md-5 col-md-offset-1">
+       					<div class="col-sm-7 col-sm-offset-1">
        						<p class="karrusel-title-argia"> {{egunekoHornitzaile.izena}} </p>
        					</div>	
-       					<div class="col-md-10 col-md-offset-1 karrusel-describapena-argia">
+       					<div class="col-sm-10 col-sm-offset-1 karrusel-describapena-argia">
        						<p class="karrusel-describapena-argia"> {{egunekoHornitzaile.deskribapena |format_html| safe |get_substring_150 | safe }} ... </p>
        					</div>			
-       					<div class="col-md-4 col-md-offset-8">
+       					<div class="col-sm-5 col-sm-offset-6">
        						<p class="karrusel-gehiago-argia"> 
-       							<a href="{{BASE_URL}}/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h"> {% trans "Ikusi gehiago" %} &nbsp;
+       						 {% trans "Ikusi gehiago" %} &nbsp;
        								<span class="kolore-horia icon-ob-arrow-right" aria-hidden="true"></span>
-       							</a>
        						</p>
        					</div>		
        				
        				</div>
        			</div>
        		</div><!--row-->
-       		
+       </a>		
        </div><!--slide-3 -->
       </div><!--container-->
     </div><!--item slide-->
@@ -135,37 +141,38 @@
       <div class="slide-4"> <!-- EGUNEKO BERRIA PROPOSAMENA-->
       
       	<div class="container laukia carousel-image">
+			<a href="{{ erakBerria.url }}" title="{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}">
 			<div class="row">
-				<div class="col-md-5 karratua"> <!-- ARGAZKIA-->
+				<div class="col-xs-12 col-sm-5 karratua"> <!-- ARGAZKIA-->
 				<img class="img-responsive " src="{{erakBerria.argazkia}}" title="{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}">
 			
        			</div>
-       			<div class="col-md-5 karratua carousel-infobox backgrnd-gris-lau">
-       				<div class="row"> <!--nested-->
-       					<div class="col-md-6 col-md-offset-1">
+       			<div class="col-xs-12 col-sm-5 karratua carousel-infobox backgrnd-gris-lau">
+       				<div class="scrollbar"> <!--nested-->
+       					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Berria"%} 
        					</div>
-       					<div class="col-md-6 col-md-offset-1">
+       					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-data">  {{  currentDate |date:"Y . m . d" }} </p> 
        					</div>
-       					<div class="col-md-5 col-md-offset-1">
+       					<div class="col-sm-7 col-sm-offset-1">
        						<p class="karrusel-title-berria-argia"> {{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}} </p>
        					</div>	
-       					<div class="col-md-10 col-md-offset-1">
+       					<div class="col-sm-10 col-sm-offset-1">
        						<p class="karrusel-describapena-argia"> {{ LANGUAGE_CODE|choose_karrusel_desk_language:erakBerria|format_html|safe}} </p>
        					</div>			
-       					<div class="col-md-4 col-md-offset-8">
+       					<div class="col-sm-5 col-sm-offset-6">
        						<p class="karrusel-gehiago-argia"> 
-       							<a href="{{ erakBerria.url }}" title="{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}"> {% trans "Ikusi gehiago" %} &nbsp;
+       							 {% trans "Ikusi gehiago" %} &nbsp;
        								<span class="kolore-horia icon-ob-arrow-right" aria-hidden="true"></span>
-       							</a>
        						</p>
        					</div>		
        				
        				</div>
        			</div>
        		</div><!--row-->
-       		
+   			</a>
+   
        </div><!--slide-4 -->
       </div><!--container-->
     </div><!--item slide-->

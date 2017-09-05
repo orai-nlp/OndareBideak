@@ -9,6 +9,15 @@
 	border-color: #f8f8f8 !important;
 }
 
+.navbar-brand-berria {
+	float: left;
+	font-size: 35px !important;
+	height: 70px !important;
+	line-height: 0;
+	padding: 20px !important;
+}
+
+
 #new-logo img
 {
 	width:117px;
@@ -175,6 +184,10 @@ a.header-custom-link-underline span{
 }
 
 
-
+@media only screen and (min-width: 991px) and (max-width: 1086px){
+	.nav > li > a {
+		padding:10px;
+	}
+}
 
 

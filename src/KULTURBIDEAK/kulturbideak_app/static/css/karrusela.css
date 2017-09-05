@@ -39,10 +39,9 @@ Image credits: unsplash.com
 
 /*Maddalen berria 
  .carousel-inner {
-    padding-left: 95px !important;
-   /* padding-top: 35px !important;*/
-   
-    width: 95% !important;
+   padding-left: 95px !important;
+   padding-top: 35px !important;
+   width: 95% !important;
  }
 */
 .laukia {
@@ -240,13 +239,85 @@ Image credits: unsplash.com
 /*          Media Queries       */
 /********************************/
 
-@media screen and (max-width: 640px){
-	 .carousel-infobox {
-	 	position:absolute;
-	 	top:100%;
-	 	left:0%;
-	 	z-index:1010;	 
-	 }
-    
-    
+@media screen and (min-width: 768px) and (max-width: 991px){
+	.fade-carousel .slides .slide-1, 
+	.fade-carousel .slides .slide-2,
+	.fade-carousel .slides .slide-3 {
+  		height: 30vh;
+	}     
+	.laukia, .laukia img {
+		 height: 24vh;/* inherit slide-1..ena*/
+	}
+	.karratua, .fade-carousel, .fade-carousel .carousel-inner .item {
+		height: 24vh;	
+	}
+	.karrusel-describapena-argia, .karrusel-describapena-argia p,.karrusel-describapena,.karrusel-zer,.karrusel-zer-argia {
+		font-size:15px;
+	}
+
+	.karrusel-gehiago{
+		font-size:12px;
+	}
+
+	.karrusel-title-berria-argia, .karrusel-title-argia, .karrusel-title{
+		font-size:20px;
+	}
+	.karrusel-data{
+		font-size:18px;
+		margin-bottom: 10px;
+    	margin-top: 5px;
+	}
+	
+	.karrusel-zer{
+		margin-bottom: 10px;
+    	margin-top: 11px;
+	}
+	
 }
+
+@media screen and (max-width: 768px){
+	.fade-carousel .slides .slide-1, 
+	.fade-carousel .slides .slide-2,
+	.fade-carousel .slides .slide-3 {
+  		height: 80vh;
+	}     
+	.laukia {
+		 height: 72vh;/* inherit slide-1..ena*/
+	}
+	.fade-carousel, .fade-carousel .carousel-inner .item {
+		height: 72vh;	
+	}
+	.karratua, .laukia img {
+		height: 36vh;
+	} 
+	
+	.karrusel-describapena-argia, .karrusel-describapena-argia p,.karrusel-describapena,.karrusel-zer,.karrusel-zer-argia {
+		font-size:14px;
+	}
+
+	.karrusel-gehiago{
+		font-size:12px;
+	}
+
+	.karrusel-title-berria-argia, .karrusel-title-argia, .karrusel-title{
+		font-size:18px;
+	}
+	.karrusel-data{
+		font-size:16px;
+		margin-bottom: 5px;
+    	margin-top: 5px;
+	}
+	
+	.karrusel-zer{
+		margin-bottom: 5px;
+    	margin-top: 5px;
+	}
+	.carousel-infobox {
+	 	position:absolute;
+	 	top:50%;
+	 	left:0%;
+	 	z-index:1010;	
+	 	scroll:auto; 
+	 }  
+}
+
