@@ -21,7 +21,7 @@
 	<div class="row ibilbide-propos_img_list"> <!--Ibilbideen irudiak -->
 		{% for path in ibilbideak %}
 		<div class="col-xs-6 col-md-3 ibilb-padding">
-			<div class="ibilbide-img-index-tam">
+			<div class="ibilbide-img-index-tam relative">
 				{% if path.paths_thumbnail %}
 					<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{path.id}}"> <img class="img-responsive " src="{{path.paths_thumbnail}}"> 	
 				{%else%}

@@ -23,12 +23,12 @@
       	<div class="container laukia carousel-image">
       	<a href="{{BASE_URL}}/erakutsi_item?id={{egunekoItem.id}}"> 
 			<div class="row">
-				<div class="col-xs-12 col-sm-5 karratua"> <!-- ARGAZKIA-->
+				<div class="col-xs-12 col-sm-6 karratua"> <!-- ARGAZKIA-->
 					<img src="{% if egunekoItem.ob_thumbnail%} {{egunekoItem.ob_thumbnail|clean_http_prefix}} {% elif egunekoItem.edm_object %} {{egunekoItem.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}" class="img-responsive " title="{{egunekoItem.dc_title}}" />
 						
        			</div>
        			<!-- INFO-->
-       			<div class="col-xs-12 col-sm-5 karratua carousel-infobox backgrnd-{{egunekoItem.edm_type|lower}}"> 
+       			<div class="col-xs-12 col-sm-6 karratua carousel-infobox backgrnd-{{egunekoItem.edm_type|lower}}"> 
        				<div class="scrollbar"> <!--nested-->
        					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-zer marra-iluna mota-irudia"> {% trans "Itema" %} &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  
@@ -68,11 +68,11 @@
       	<div class="container laukia carousel-image">
       	<a href="{{BASE_URL}}/nabigazioa_hasi?path_id={{egunekoPath.id}}"> 
 			<div class="row">
-				<div class="col-xs-12 col-sm-5 karratua"> <!-- ARGAZKIA-->
+				<div class="col-xs-12 col-sm-6 karratua"> <!-- ARGAZKIA-->
 				<img src="{% if egunekoPath.paths_thumbnail %}{{egunekoPath.paths_thumbnail}}{% else %}/uploads/NoIrudiBide.png{% endif %}" class="img-responsive " title="{{egunekoPath.dc_title}}" />
        			
        			</div>
-       			<div class="col-xs-12 col-sm-5 karratua carousel-infobox backgrnd-gris-lau"> 
+       			<div class="col-xs-12 col-sm-6 karratua carousel-infobox backgrnd-gris-lau"> 
        				<div class="scrollbar"> <!--nested-->
        					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-zer-argia marra-horia mota-irudia"> {% trans "Ibilbidea"%}        					
@@ -106,10 +106,10 @@
       	<div class="container laukia carousel-image">
       	<a href="{{BASE_URL}}/hornitzaile_search?h={{egunekoHornitzaile.fk_user.username}}&h_id={{egunekoHornitzaile.fk_user.id}}&z=h">
 			<div class="row">
-				<div class="col-xs-12 col-sm-5 karratua"> <!-- ARGAZKIA-->
+				<div class="col-xs-12 col-sm-6 karratua"> <!-- ARGAZKIA-->
 				{% if egunekoHornitzaile.argazkia %} <img src="{{egunekoHornitzaile.argazkia|clean_http_prefix}}" class="img-responsive " title="{{egunekoHornitzaile.izena}}" /> {% else %} <img src="{{egunekoHornitzaile.ikonoa|clean_http_prefix}}" class="img-responsive " title="{{egunekoHornitzaile.izena}}" /> {% endif %}
        			</div>
-       			<div class="col-xs-12 col-sm-5 carousel-infobox karratua backgrnd-gris-lau"> 
+       			<div class="col-xs-12 col-sm-6 carousel-infobox karratua backgrnd-gris-lau"> 
        				<div class="scrollbar"> <!--nested-->
        					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Hornitzailea"%} 
@@ -143,11 +143,11 @@
       	<div class="container laukia carousel-image">
 			<a href="{{ erakBerria.url }}" title="{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}">
 			<div class="row">
-				<div class="col-xs-12 col-sm-5 karratua"> <!-- ARGAZKIA-->
+				<div class="col-xs-12 col-sm-6 karratua"> <!-- ARGAZKIA-->
 				<img class="img-responsive " src="{{erakBerria.argazkia}}" title="{{ LANGUAGE_CODE|choose_karrusel_titulu_language:erakBerria|format_html|safe}}">
 			
        			</div>
-       			<div class="col-xs-12 col-sm-5 karratua carousel-infobox backgrnd-gris-lau">
+       			<div class="col-xs-12 col-sm-6 karratua carousel-infobox backgrnd-gris-lau">
        				<div class="scrollbar"> <!--nested-->
        					<div class="col-sm-6 col-sm-offset-1">
        						<p class="karrusel-zer-argia marra-horia"> {% trans "Berria"%} 

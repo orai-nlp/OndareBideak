@@ -734,7 +734,7 @@ def split(value):
     
 @register.filter
 def setvar_license_icon_color(path):
-	if "nabigazio_item" in path or "nabigatu" in path:
+	if "nabigazio_item" in path or "nabigatu" in path or "autoplay" in path:
 		return "kolore-gris-0"
 	
 	return "kolore-beltza"
