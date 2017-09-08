@@ -5,6 +5,10 @@
 {% block mapFunctions %}
 {% endblock %} 
 
+{% block d3_svg %}
+<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3.min.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}css/ob-svg.css" type="text/css">								
+{% endblock d3_svg %}
 
 {% block sidebar%}
 <div id="sidebar"></div>
@@ -61,7 +65,7 @@
 		
 		<ul class="button-row-horizontal eskuma">			
            	<li>
-           		<a class="" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" {% if botatuDu == 1 %} disabled{% endif %}>
+           		<a class="" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{momentukoPatha.id}}&item_id={{path_nodeak.0.id}}" {% if botatuDu == 1 %} disabled{% endif %}>
            			<i class="fa fa-thumbs-up kolore-txuria" aria-hidden="true"></i> 
            		</a>
            	</li>
@@ -73,7 +77,7 @@
 				</a>
 			</li>
 			<li>
-				<a class="" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}"  {% if botatuDu != 1 %} disabled{% endif %} >
+				<a class="" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{momentukoPatha.id}}&item_id={{path_nodeak.0.id}}"  {% if botatuDu != 1 %} disabled{% endif %} >
 			 		<i class="fa fa-thumbs-down kolore-txuria" aria-hidden="true"></i>
 			 	</a>
 			 </li>			
@@ -92,7 +96,7 @@
 			<ul class="mota-crossing" >
 				<li class="li-mota-path">
 					<span>
-						 <a class="kolore-gris-bat" type="button" title="ibilbidea ikusi" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{node_id}}"> <i class="icon-ob-eye" aria-hidden="true"></i> IKUSI </a>
+						 <a class="kolore-gris-bat" type="button" title="{% trans 'ibilbidea ikusi' %}" href="{{BASE_URL}}/nabigazio_item?path_id={{momentukoPatha.id}}&item_id={{path_nodeak.0.fk_item_id.id}}"> <i class="icon-ob-eye" aria-hidden="true"></i> IKUSI </a>
 					</span>
 				</li>
 			</ul>

@@ -767,9 +767,18 @@ h4.modal-inner-title {
 }
 
 .item_path_aukerak-icon{
-	height:50px;
-	width:50px;
+	padding:11px;
+	margin:3px;
 }
+
+.item_path_aukerak-icon-heart{
+	padding:13px 12px 12px 11px;
+}
+
+.item_path_aukerak-icon-fire{
+	padding:13px 16px;
+}
+
 
 /*END bilaketa filtroen estiloak*/
 
@@ -944,6 +953,7 @@ p.item-field-title {
 	font-family:walsheim-light-web;
 	left:0px;
 	z-index:1001;
+	min-width:50px;
 }
 
 div.item_preview {
@@ -1225,45 +1235,7 @@ tr.spaceUnder > th {
 
 /*CSS svg*/
 
-.node circle {
-	fill: #fff;
-	stroke: steelblue;
-	stroke-width: 3px;
-}
 
-.node text {
-	font: 12px sans-serif;
-}
-
-.link {
-	stroke: #499;
-	stroke-opacity: .6;
-	fill: none;
-}
-circle .selectedNode {
-	width: 50px;
-	height: 50px;
-	stroke-width: 3px;
-	stroke: 'red';
-}
-
-circle .unselectedNode {
-	width: 50px;
-	height: 50px;
-	stroke: steelblue;
-	stroke-width: 3px;
-}
-
-.templink {
-	fill: none;
-	stroke: none;
-	stroke-width: 3px;
-}
-
-#logoa {
-	margin-top: -10px;
-	width: 195px;
-}
 .btn-common {
 	border: 0px solid #0099ae;/* 1px solid #0099ae;*/
 	color: #0099ae;

@@ -2467,7 +2467,25 @@ def botoa_eman_path(request):
     #Ezkerreko zutabea ez erakusteko
     non="fitxaE"
     #return render_to_response('nabigazio_item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
-    return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    return render_to_response('ibilbidea.html',{"non":non,
+                                                "comment_form": comment_form,
+                                                "comment_parent_form": comment_parent_form,
+                                                "comments": comments,
+                                                'itemPaths':itemPaths,
+                                                'pathqrUrl':pathqrUrl,
+                                                'itemqrUrl':itemqrUrl,
+                                                'botoKopuruaItem':botoKopuruaItem,
+                                                'botoKopuruaPath':botoKopuruaPath,
+                                                'botatuDuPath':botatuDuPath,
+                                                'botatuDuItem':botatuDuItem,
+                                                'path_id':path_id,
+                                                'momentukoPatha':path_tupla,
+                                                'node_id':item_id,
+                                                'path_nodeak': nodes,
+                                                'momentukoNodea':momentukoNodea,
+                                                'momentukoItema':momentukoItema,
+                                                'hurrengoak':hurrengoak,
+                                                'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 def botoa_kendu_path(request):
@@ -2542,7 +2560,25 @@ def botoa_kendu_path(request):
    
     #Ezkerreko zutabea ez erakusteko
     non="fitxaE"
-    return render_to_response('ibilbidea.html',{"non":non,"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+    return render_to_response('ibilbidea.html',{"non":non,
+                                                "comment_form": comment_form,
+                                                "comment_parent_form": comment_parent_form,
+                                                "comments": comments,
+                                                'itemPaths':itemPaths,
+                                                'pathqrUrl':pathqrUrl,
+                                                'itemqrUrl':itemqrUrl,
+                                                'botoKopuruaItem':botoKopuruaItem,
+                                                'botoKopuruaPath':botoKopuruaPath,
+                                                'botatuDuPath':botatuDuPath,
+                                                'botatuDuItem':botatuDuItem,
+                                                'path_id':path_id,
+                                                'momentukoPatha':path_tupla,
+                                                'node_id':item_id,
+                                                'path_nodeak': nodes,
+                                                'momentukoNodea':momentukoNodea,
+                                                'momentukoItema':momentukoItema,
+                                                'hurrengoak':hurrengoak,
+                                                'aurrekoak':aurrekoak},context_instance=RequestContext(request))
 
 
 

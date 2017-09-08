@@ -37,14 +37,13 @@
 		</script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/ondarebideak.js"></script>
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/autoplay.js"></script>
-		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3.min.js"></script>
+		
 
 		{% block media_players %}			
 		{% endblock media_players %}
 		
 		{% block tts_head %}					
 		{% endblock tts_head %}
-		
 		
 				
 		{% block text_editor %}
@@ -59,6 +58,11 @@
 		<link rel="stylesheet" href="{{STATIC_URL}}css/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
 		<link rel="stylesheet" href="{{STATIC_URL}}css/ob-icons.css" type="text/css">
 		{% endblock main_css %}
+
+		{% block d3_svg %}
+		{% endblock d3_svg %}
+		
+
 		
 		{% block mapFunctions %}
 		

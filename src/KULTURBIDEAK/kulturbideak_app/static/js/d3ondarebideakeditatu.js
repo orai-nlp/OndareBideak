@@ -1,6 +1,15 @@
 /***************************
 *    Utils
 ****************************/
+
+var obColors={
+	'image' : '#40D7FF',
+	'text' : '#FFDA3E',
+	'sound' : '#5AED64',
+	'video' : '#FF563D',
+	};
+
+
 // function to get multiline labels for d3 svg text elements
 function insertLineBreaksD3(d) {
     var el = d3.select(this);
@@ -17,8 +26,8 @@ function insertLineBreaksD3(d) {
         //    continue;
         //}
         
-    if (i>= words.length/2){
-            var tspan = el.appentrued('tspan').text(words[i]);
+	if (i>= words.length/2){
+            var tspan = el.append('tspan').text(words[i]);
             if (i > 0)
         tspan.attr('x', 0).attr('dy', '15');
     }
@@ -53,9 +62,6 @@ function htmlDecode(input){
 
 function tituluaGarbitu (titulua,moztu){ 
         
-    //var tituluaJat=titulua.replace(/&lt;/g, "<");
-    //tituluaJat=tituluaJat.replace(/&gt;/g, ">");
-    //tituluaJat=tituluaJat.replace(/&quot;/g, "");
     titulua=titulua.replace(/^\s+/,"");
     var tituluaJat=htmlDecode(titulua);
     titulua=tituluaJat;
@@ -109,7 +115,7 @@ function tituluaGarbitu (titulua,moztu){
     if (titulua ==""){
         titulua=tituluaJat;                
     }
-    titulua=titulua.replace(/<div class=\"?titulu_lg\"?>(.*?)<\/div>/, "$1");
+    titulua=titulua.replace(/<div class=\"titulu_lg\">(.*?)<\/div>/, "$1");
     
     if (moztu==true && titulua.length>15){
         return titulua.substr(0,14)+"...";
@@ -120,6 +126,25 @@ function tituluaGarbitu (titulua,moztu){
 
 }
 
+function getBrowserInfo()
+{
+	var ua = navigator.userAgent, tem,
+	M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	if(/trident/i.test(M[1]))
+	{
+		tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+		return 'IE '+(tem[1] || '');
+	}
+	if(M[1]=== 'Chrome')
+	{
+		tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+		if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+	}
+	M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+	if((tem= ua.match(/version\/(\d+)/i))!= null) 
+		M.splice(1, 1, tem[1]);
+	return M.join(' ');
+}
 
 
 /***************************
@@ -583,7 +608,46 @@ function sortu(data){
                     }            
                 }
             }); 
-            
+       
+        /**
+        //Zakarrontzi irudia gehitu. Zakarrontzi honetan klik egiten baduzu nodoa ezabatu dezakezu.
+        nodeEnter.append("text")
+            .attr("id",function(d) { 
+                var z = "trash"+d.id;
+                return z; }).append("tspan")
+                //.attr("xlink:href","http://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png")
+                .attr("class","icon-ob-trash svg-trash-icon")
+                .attr("x", function(d) { return 45;})
+                .attr("y", function(d) { return -20;})
+                .attr("height", 15)
+                .attr("width", 15)
+                .on('click', function(d) { 
+                if (d.parent.name == "ROOT"){
+                    alert("Nodoa hau ezin da ezabatu");
+                    return;
+                } else {
+                    var result = confirm(" Nodoa ezabatu nahi duzu? ");
+                    if (result) {
+                        var index = d.parent.children.indexOf(d);
+                        if (index>-1){
+                            d.parent.children.splice(index, 1);
+                        }
+                        if (d.children !=undefined){
+                            var index2 = d.children.length;
+                            for (var i=0;i<index2;i++){
+                                d.children[i].parent = d.parent;
+                                d.parent.children.push(d.children[i]);
+                            }  
+                        }
+                        update(root);
+                    } else {
+                        alert("Nodoa ez da ezabatu.");
+                    }            
+                }
+            }); 
+        */
+        
+        
           //Nodoari motaren arabera irudi bat gehitu.
    		
    		nodeEnter.append("image")
@@ -604,7 +668,7 @@ function sortu(data){
         nodeEnter.append("circle")
             .attr("id",function(d) {
                 return 'nodo: '+tituluaGarbitu(d.name,false);  })
-            .attr("class", "aukeratuta")
+            .attr("class",function(d) { return "aukeratuta stroke-"+d.mota.toLowerCase();})
             .attr("r", function(d){
                 if (nodes.length>=10){
                     return radio-10;

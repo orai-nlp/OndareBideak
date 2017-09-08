@@ -7,6 +7,7 @@ var obColors={
 	'text' : '#FFDA3E',
 	'sound' : '#5AED64',
 	'video' : '#FF563D',
+	'selected' : '#666666',
 	};
 
 
@@ -29,8 +30,8 @@ function insertLineBreaksD3(d) {
 	if (i>= words.length/2){
             var tspan = el.append('tspan').text(words[i]);
             if (i > 0)
-		tspan.attr('x', 0).attr('dy', '15');
-	}
+        tspan.attr('x', 0).attr('dy', '15');
+    }
     }
 }
 
@@ -238,11 +239,14 @@ var svg = d3.select("#path_boxes_overview").append("svg")
       if (p.select("circle").classed("aukeratuta") == true){
         //NODOA EZ DAGO AUKERATUTA
         //d3.selectAll("circle").style({stroke: function (d){ var t=d.attr("class").replace(/^aukeratua /); return obColors[t];}});
-    	d3.selectAll("circle").style({stroke: 'steelblue'});
-        p.select("circle").style({stroke: 'red'});
+    	//d3.selectAll("circle").style({stroke: 'steelblue'});
+        p.select("circle").style("stroke",obColors['selected']);
+        p.select("circle").attr("r",function(d){
+            return radio+5;
+        })
         p.select("circle").classed("aukeratuta",false);
       } else {
-        p.select("circle").style({stroke: 'steelblue'});
+        p.select("circle").style("stroke",function(d) { return obColors[d.type]});
         p.select("circle").classed("aukeratuta",true);
       }
       
@@ -321,7 +325,7 @@ function update(source) {
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { 
-    d.y = d.depth * 100;});
+    d.y = d.depth * 100;});obColors['selected'];
 
   // Nodoak deklaratu
     var node = svg.selectAll("g.node")
@@ -360,7 +364,7 @@ function update(source) {
   nodeEnter.append("circle")
     .attr("id",function(d) {
      return 'nodo: '+tituluaGarbitu(d.name,false); }) //Maddalen
-    .attr("class",function(d) { return "aukeratuta "+d.mota.toLowerCase();})
+    .attr("class", "aukeratuta") //function(d) { return "aukeratuta stroke-"+d.mota.toLowerCase();}
     /*.attr("width", function(d){
             return radio*2;
     })
@@ -368,9 +372,22 @@ function update(source) {
             return radio*2;
     })*/
     .attr("r",function(d){
-            return radio;
+    	//urla erabili uneko nodoa aukeratua den erabakitzeko
+		var id_url = window.location.href.substr((window.location.href.indexOf("item_id=")+8),window.location.href.length);            
+        if (id_url.indexOf("&")>0){
+            var id_url = id_url.substr(0,id_url.indexOf("&"));
+        }
+        //URL-KO ITEM_ID-A NODOAREN ID-A BADA ORDUAN GORRIZ MARGOTUKO DU.    
+        if (d.id == id_url){
+        	return radio+7;
+        }  
+        
+        return radio;
     })
-    .style("stroke", function(d){ 
+    .attr("type",function(d){
+            return d.mota.toLowerCase();
+    })
+    /*.style("stroke", function(d){ 
         var id_url = window.location.href.substr((window.location.href.indexOf("item_id=")+8),window.location.href.length);
             
         if (id_url.indexOf("&")>0){
@@ -390,7 +407,35 @@ function update(source) {
             if (d.id == id_url){
                 return 'red';
             }
-        }})            
+        }})*/
+    	.style("stroke", function(d){
+    		//urla erabili uneko nodoa aukeratua den erabakitzeko
+    		var id_url = window.location.href.substr((window.location.href.indexOf("item_id=")+8),window.location.href.length);            
+            if (id_url.indexOf("&")>0){
+                var id_url = id_url.substr(0,id_url.indexOf("&"));
+            }
+            //URL-KO ITEM_ID-A NODOAREN ID-A BADA ORDUAN GORRIZ MARGOTUKO DU.    
+            if (d.id == id_url){
+            	return obColors['selected'];
+            }      
+                
+            //Bestela nodoari eman dagokion motaren kolorea    
+    		return obColors[d.mota.toLowerCase()];
+    	})
+    	.style("stroke-width", function(d){
+    		//urla erabili uneko nodoa aukeratua den erabakitzeko
+    		var id_url = window.location.href.substr((window.location.href.indexOf("item_id=")+8),window.location.href.length);            
+            if (id_url.indexOf("&")>0){
+                var id_url = id_url.substr(0,id_url.indexOf("&"));
+            }
+            //URL-KO ITEM_ID-A NODOAREN ID-A BADA ORDUAN GORRIZ MARGOTUKO DU.    
+            if (d.id == id_url){
+            	return "7px";
+            }      
+                
+            //Bestela nodoari eman dagokion motaren kolorea    
+    		return "3px";
+    	})
         .style("fill", function(d) { 
             var ir = "#"+d.id;
             return  "url("+ir+")";});
