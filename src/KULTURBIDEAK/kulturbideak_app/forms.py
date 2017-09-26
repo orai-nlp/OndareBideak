@@ -15,6 +15,13 @@ HIZKUNTZA_CHOICES = (
     (3, 'Ingelesa'),
 )
 
+HIZKUNTZA_CHOICES_ISV = (
+    ('eu', _('Euskera')),
+    ('es', _('Gaztelania')),   
+    ('en', _('Ingelesa')),
+)
+
+
 MOTA_CHOICES = (
     (1, 'TEXT'),
     (2, 'VIDEO'),   
@@ -302,8 +309,7 @@ class ChangePasswordForm(forms.Form):
         except:
                 pass
     
-    
-#    https://docs.djangoproject.com/en/1.8/ref/forms/fields/#multiplechoicefield   
+     
 class ItemGehituForm(Form):
     """Item berri bat gehitzeko formularioa kargatzen du"""
     titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("titulua"),"type":"text", "class":"form-control"}))
@@ -321,32 +327,8 @@ class ItemGehituForm(Form):
     #text, audio, video, image
     objektua= forms.FileField()
     irudia=ImageField(max_length=32,required=False)
-    #hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
-
-    eu = forms.BooleanField(
-        label = _("eu"),
-        required = False,
-        widget=forms.CheckboxInput(attrs={"type":"check", 
-                                "placeholder":_("Euskera")
-                                })
-    )
-    es = forms.BooleanField(
-        label = _("es"),
-        required = False,
-        widget=forms.CheckboxInput(attrs={"type":"check", 
-                                "placeholder":_("Gaztelania")
-                                })
-    )
-    en = forms.BooleanField(
-        label = _("en"),
-        required = False,
-        widget=forms.CheckboxInput(attrs={"type":"check", 
-                                "placeholder":_("Ingelesa")
-                                })
-    )
-
-    
-    
+    hizkuntza = forms.MultipleChoiceField(choices=HIZKUNTZA_CHOICES_ISV,widget=forms.CheckboxSelectMultiple())
+       
     
 class ItemEditatuForm(Form):
     """Item bat editatzeko formularioa kargatzen du"""
@@ -366,29 +348,8 @@ class ItemEditatuForm(Form):
     eskubideak=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("Objektuaren eskubideen inguruko egin beharreko azalpenak edo kontutan hartu beharreko xehetasunak. Testu librea."),"type":"text", "class":"form-control"}))
     lizentzia=ChoiceField(required=False,  choices=LIZENTZIA_CHOICES)
     irudia=ImageField(max_length=32,required=False)
-    #hizkuntza=ChoiceField(required=False,  choices=HIZKUNTZA_CHOICES)
+    hizkuntza = forms.MultipleChoiceField(choices=HIZKUNTZA_CHOICES_ISV,widget=forms.CheckboxSelectMultiple())
     hidden_Item_id = CharField(label='reset',max_length=256, widget=forms.HiddenInput())
-    eu = forms.BooleanField(
-        label = _("eu"),
-        required = False,
-        widget=forms.CheckboxInput(attrs={"type":"check", 
-                                "placeholder":_("Euskera")
-                                })
-    )
-    es = forms.BooleanField(
-        label = _("es"),
-        required = False,
-        widget=forms.CheckboxInput(attrs={"type":"check", 
-                                "placeholder":_("Gaztelania")
-                                })
-    )
-    en = forms.BooleanField(
-        label = _("en"),
-        required = False,
-        widget=forms.CheckboxInput(attrs={"type":"check", 
-                                "placeholder":_("Ingelesa")
-                                })
-    )
     
     
     

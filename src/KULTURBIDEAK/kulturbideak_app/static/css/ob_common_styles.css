@@ -269,6 +269,10 @@ p.separator{
 	
 }
 
+li.horizontal-list {
+	display:inline-block;
+}
+
 /* checkbox styles*/
 
 input[type="checkbox"]{

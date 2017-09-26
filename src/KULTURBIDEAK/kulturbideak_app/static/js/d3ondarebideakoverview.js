@@ -240,13 +240,14 @@ var svg = d3.select("#path_boxes_overview").append("svg")
         //NODOA EZ DAGO AUKERATUTA
         //d3.selectAll("circle").style({stroke: function (d){ var t=d.attr("class").replace(/^aukeratua /); return obColors[t];}});
     	//d3.selectAll("circle").style({stroke: 'steelblue'});
-        p.select("circle").style("stroke",obColors['selected']);
+        //p.select("circle").style("stroke",obColors['selected']);
         p.select("circle").attr("r",function(d){
-            return radio+5;
+            return radio+10;
         })
+        p.select("circle").style("stroke-width","10px");
         p.select("circle").classed("aukeratuta",false);
       } else {
-        p.select("circle").style("stroke",function(d) { return obColors[d.type]});
+        //p.select("circle").style("stroke",function(d) { return obColors[d.type]});
         p.select("circle").classed("aukeratuta",true);
       }
       
@@ -379,7 +380,7 @@ function update(source) {
         }
         //URL-KO ITEM_ID-A NODOAREN ID-A BADA ORDUAN GORRIZ MARGOTUKO DU.    
         if (d.id == id_url){
-        	return radio+7;
+        	return radio+10;
         }  
         
         return radio;
@@ -408,18 +409,7 @@ function update(source) {
                 return 'red';
             }
         }})*/
-    	.style("stroke", function(d){
-    		//urla erabili uneko nodoa aukeratua den erabakitzeko
-    		var id_url = window.location.href.substr((window.location.href.indexOf("item_id=")+8),window.location.href.length);            
-            if (id_url.indexOf("&")>0){
-                var id_url = id_url.substr(0,id_url.indexOf("&"));
-            }
-            //URL-KO ITEM_ID-A NODOAREN ID-A BADA ORDUAN GORRIZ MARGOTUKO DU.    
-            if (d.id == id_url){
-            	return obColors['selected'];
-            }      
-                
-            //Bestela nodoari eman dagokion motaren kolorea    
+    	.style("stroke", function(d){    	  
     		return obColors[d.mota.toLowerCase()];
     	})
     	.style("stroke-width", function(d){
@@ -430,7 +420,7 @@ function update(source) {
             }
             //URL-KO ITEM_ID-A NODOAREN ID-A BADA ORDUAN GORRIZ MARGOTUKO DU.    
             if (d.id == id_url){
-            	return "7px";
+            	return "10px";
             }      
                 
             //Bestela nodoari eman dagokion motaren kolorea    

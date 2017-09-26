@@ -1,6 +1,11 @@
 {% extends "__base.html" %}
+{% load tags %}
+{% load i18n %}
 {% load leaflet_tags %}
 
+{% block content_div_def %}		
+<div id="content_div" class="col-sm-12 col-md-8 col-md-offset-2" align="center">
+{% endblock content_div_def %}
 
 {% block content %}
 
@@ -10,7 +15,7 @@
 		{% csrf_token %}
 		{{ itema.titulua.errors}}
 		{{ itema.deskribapena.errors}}
-		<!--{{itema}}-->
+		{%comment%}<!--{{ itema }}-->{%endcomment%}
 		<label for="id_titulua">Titulua:</label>
 		{{itema.titulua}}
 		
@@ -53,11 +58,19 @@
 		{{itema.irudia}}
 		<br />
 		
-		<label for="id_hizkuntzak">Hizkuntzak:</label>
-		<br />
-		eu{{itema.eu}}
-		es{{itema.es}}
-		en{{itema.en}}
+			
+			<label for="id_hizkuntzak" class="ezkerra">{% trans "Hizkuntzak" %}:</label>
+			<ul id="id_hizkuntza">						
+		    {% for pk, choice in itema.hizkuntza.field.widget.choices %}
+			<li class="horizontal-list">
+	            <input id="id_hizkuntza_{{ forloop.counter0 }}" name="hizkuntza" type="checkbox" value="{{pk}}"/>		
+				<label class="filter-label padding-10" for="id_hizkuntza_{{ forloop.counter0 }}">
+   	        		<span><i class="icon-ob-check"></i></span> {{ choice }}		
+   	        	</label>		
+			</li>
+			{% endfor %}
+			</ul>
+
 		
 		<br/>
 		<br/>
@@ -68,7 +81,7 @@
             
 		{% leaflet_map "yourmap" callback="load_map" %}
      		
-   		 <button class="btn btn-default" type="submit">
+   		 <button class="btn square-back kolore-txuria eskuma no-hover" name="gehitu" type="submit">
    		 Gehitu
   		  </button>
        			

@@ -1582,11 +1582,25 @@ function deletePath(id){
     }
 }
 function deleteItem(id){
-    var conf = confirm("Ziur zaude kultu itema ezabatu nahi duzula?");
+    var conf = confirm("Ziur zaude kultur itema ezabatu nahi duzula?");
     if(conf == true){
-        alert("Ados...itema ezabatuko da ");
-        var url = 'ezabatu_itema?id='+id;   	
-    	window.location.href=url;
+    	$.ajax({
+            method : 'GET',
+            url : '/ezabatu_itema',
+            dataType : 'html',
+            data : {
+                id : id
+            }
+        }).done(function(data) {
+        	var msgdiv = "<div class=\"alert alert-info col-xs-12 col-md-8 col-md-offset-2\" role=\"alert\">" +
+        			"<strong>"+data[0]+".</strong>" +
+        			"<a id=\"alert-close-button\" type=button " +
+        			"onClick=\"$(this).parent().slideUp();return False;\">" +
+        			"<i class=\"icon-ob-times eskuma\"></i></a></div>";
+            $('#content-div').prepend(msgdiv);
+        });
+        //alert("Ados...itema ezabatuko da ");
+        //var url = 'ezabatu_itema?id='+id;   	
     }
 }
 

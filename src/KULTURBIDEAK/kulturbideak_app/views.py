@@ -2645,14 +2645,14 @@ def oaipmh_datubilketa(request):
             baseurl=cd['baseurl']
             mezua=_("Hornitzailearen izena:")+str(request.user.username)+".\n"+_("OAI Url-a")+str(baseurl)+"\n"+_("Bidali mezua hornitzaileari: ")+str(request.user.email)
             send_mail('OndareBideak - Itemak inportatzeko eskaera', mezua, 'ondarebideak@elhuyar.com',['ondarebideak@elhuyar.com'], fail_silently=False)
-            return render_to_response('base.html',{'mezua':_("Zure eskaera jaso dugu. Itemen bilketa prest dagoenean jasoko duzu posta elektroniko bat.")},context_instance=RequestContext(request))
+            return render_to_response('__base.html',{'mezua':_("Zure eskaera jaso dugu. Itemen bilketa prest dagoenean jasoko duzu posta elektroniko bat.")},context_instance=RequestContext(request))
            
             '''
             if db_oaipmh_bilketa(cd):
                
-                return render_to_response('base.html',{'mezua':"Itemak ondo biltegiratu dira"},context_instance=RequestContext(request))
+                return render_to_response('__base.html',{'mezua':"Itemak ondo biltegiratu dira"},context_instance=RequestContext(request))
             else:
-                return render_to_response('base.html',{'errore_mezua':"ERROREA: Itemak EZ DIRA ondo biltegiratu"},context_instance=RequestContext(request))
+                return render_to_response('__base.html',{'errore_mezua':"ERROREA: Itemak EZ DIRA ondo biltegiratu"},context_instance=RequestContext(request))
             '''
         else:
                 return render_to_response("oaipmh_datubilketa.html",{"oaipmhform":oaipmhform},context_instance=RequestContext(request)) 
@@ -2676,9 +2676,9 @@ def erregistratu(request):
                 
                 #IF Hornitzailea izan nahi badu
                 if cd["hornitzailea"]:
-                    return render_to_response('base.html',{'mezua':_("OndareBideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.com")},context_instance=RequestContext(request)) 
+                    return render_to_response('__base.html',{'mezua':_("OndareBideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.com")},context_instance=RequestContext(request)) 
                 else:
-                    return render_to_response('base.html',{'mezua':_("OndareBideak sisteman Erregistratu zara")},context_instance=RequestContext(request))
+                    return render_to_response('__base.html',{'mezua':_("OndareBideak sisteman Erregistratu zara")},context_instance=RequestContext(request))
    
         else:
             #return render_to_response("izena_eman.html",{"bilaketa":bilaketa_form,"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
@@ -2785,7 +2785,7 @@ def perfila_erakutsi(request):
                
                 #new_user = authenticate(username=cd["username"],password=cd["password"],email=cd["posta"])
                 #return redirect("/search")
-                return render_to_response('base.html',{'mezua':_("Zure erabiltzaile Perfila eguneratu duzu")},context_instance=RequestContext(request))
+                return render_to_response('__base.html',{'mezua':_("Zure erabiltzaile Perfila eguneratu duzu")},context_instance=RequestContext(request))
    
         else:
             return render_to_response("perfila_erakutsi.html",{"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
@@ -2825,7 +2825,7 @@ def pasahitza_aldatu(request):
                
                 #new_user = authenticate(username=cd["username"],password=cd["password"],email=cd["posta"])
                 #return redirect("/search")
-                return render_to_response('base.html',{'mezua':_("Zure Pasahitza aldatu da")},context_instance=RequestContext(request))
+                return render_to_response('__base.html',{'mezua':_("Zure Pasahitza aldatu da")},context_instance=RequestContext(request))
    
         else:
             return render_to_response("pasahitza_aldatu.html",{"erabiltzailea":pasahitza_aldatu_form},context_instance=RequestContext(request))
@@ -2858,7 +2858,11 @@ def ezabatu_itema(request):
         #itemComment
         itemComment.objects.filter(itema__id=id).delete()
         
-        return render_to_response('base.html',{'mezua':_("Kultur Itema ezabatu da")},context_instance=RequestContext(request))
+        response=_("Kultur Itema ezabatu da")               
+    else:
+        response=_("Ez da item Id-rik jaso, beraz ez da ezer ezabatu")
+        
+    return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))
     
  
 def ezabatu_ibilbidea(request):
@@ -2873,7 +2877,7 @@ def ezabatu_ibilbidea(request):
         pathComment.objects.filter(patha__id=id).delete()
         
         
-        return render_to_response('base.html',{'mezua':_("Ibilbidea ezabatu da")},context_instance=RequestContext(request))
+        return render_to_response('__base.html',{'mezua':_("Ibilbidea ezabatu da")},context_instance=RequestContext(request))
     
 
 def editatu_ibilbidea(request):
@@ -3288,6 +3292,7 @@ def editatu_itema(request):
         edm_type =request.POST['mota']
         edm_isshownat=request.POST['jatorrizkoa']
         dc_date=request.POST['data']
+        hizkuntzak=request.POST.getlist('hizkuntza',[])
         
         irudia_url=""
         user_id=request.user.id
@@ -3314,15 +3319,16 @@ def editatu_itema(request):
         (eu,en,es)=(False,False,False)
         ob_language=''
         #Hizkuntza kontrola
-        if 'eu' in request.POST:
+        if 'eu' in hizkuntzak:
             ob_language="eu"
             eu=True
-        if 'es' in request.POST:
+        if 'es' in hizkuntzak:
             ob_language=ob_language +" es"
             es=True
-        if 'en' in request.POST:
+        if 'en' in hizkuntzak:
             ob_language=ob_language +" en"
             en=True
+        
         
         '''
         AMAIA:    
@@ -3514,7 +3520,7 @@ Unknown    <edm:rights rdf:resource="http://www.europeana.eu/rights/unknown/"/>
                                                'geoloc_latitude':latitude,
                                                'geoloc_longitude':longitude},context_instance=RequestContext(request))
     
-        #return render_to_response('base.html',{'non':non,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
+        #return render_to_response('__base.html',{'non':non,'mezua':"itema editatu da",'nondik':"editatu_itema",'hizkuntza':dc_language,'irudia':irudia_url,'titulua':dc_title,'herrialdea':edm_country,'hornitzailea':edm_provider,'eskubideak':edm_rights,'urtea':dc_date,'geoloc_latitude':latitude,'geoloc_longitude':longitude},context_instance=RequestContext(request))
     
     else:
         #Hasieran hemendik sartuko da eta Datu-basetik kargatuko dira itemaren datuak
@@ -3880,6 +3886,7 @@ def itema_gehitu(request):
         dc_rights=request.POST['eskubideak']
         edm_rights=request.POST['lizentzia']
         dc_date=request.POST['data']
+        hizkuntzak=request.POST.getlist('hizkuntza',[])
         irudia_url=""
         user_id=request.user.id
         
@@ -3915,16 +3922,9 @@ def itema_gehitu(request):
             dc_language="en"
             edm_language="en"
         '''
-        ob_language=""
         #Hizkuntza kontrola
-        if request.POST.get('eu'):
-            ob_language="eu"
-        if request.POST.get('es'):
-            ob_language=ob_language +" es"
-        if request.POST.get('en'):
-            ob_language=ob_language +" en"
-    
-        
+        ob_language=" ".join(hizkuntzak)
+                
         edm_type=request.POST['mota']
         if(edm_type=="4"):
             edm_type="SOUND"        
@@ -4031,7 +4031,7 @@ def itema_gehitu(request):
         #Haystack update_index EGIN berria gehitzeko. age=1 pasata azkeneko ordukoak bakarrik hartzen dira berriak bezala
         #update_index.Command().handle(age=1)
          
-        return render_to_response('base.html',{'mezua':"item berria gehitu da"},context_instance=RequestContext(request))
+        return render_to_response('__base.html',{'mezua':_("item berria gehitu da")},context_instance=RequestContext(request))
     else:
     
     	print "ELSE"
@@ -4179,7 +4179,7 @@ def gorde_ibilbidea(request):
     #Haystack update_index EGIN!!!
     update_index.Command().handle()
     
-    return render_to_response('base.html',{'mezua':"Ibilbide berria sortu da"},context_instance=RequestContext(request))
+    return render_to_response('__base.html',{'mezua':"Ibilbide berria sortu da"},context_instance=RequestContext(request))
     
 def ajax_workspace_item_gehitu(request):
     

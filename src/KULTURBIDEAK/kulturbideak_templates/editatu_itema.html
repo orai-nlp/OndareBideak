@@ -283,19 +283,28 @@
 			{{itemForm.mota}}
 		</li>
 		<li>
-			<label for="id_mota" class="ezkerra">{% trans 'Ondare-objektua' %}:</label>
+			<label for="id_objektua" class="ezkerra">{% trans 'Ondare-objektua' %}:</label>
 			{{itemForm.objektua}}
 		</li>
 		<li>
 			<label for="id_irudia" class="ezkerra">{% trans "Irudia" %}:</label>
 			{{itemForm.irudia}}
 		</li>
-		<li>
+		<li>			
 			<label for="id_hizkuntzak" class="ezkerra">{% trans "Hizkuntzak" %}:</label>
-			<br />
-			eu{{itemForm.eu}}
-			es{{itemForm.es}}
-			en{{itemForm.en}}
+			<ul id="id_hizkuntza">			
+			{% with item_lang=item.ob_language|ob_language_errep_kendu %}
+		    {% for pk, choice in itemForm.hizkuntza.field.widget.choices %}
+			<li class="horizontal-list">
+	            <input id="id_hizkuntza_{{ forloop.counter0 }}" name="hizkuntza" type="checkbox" value="{{pk}}"
+	            {% if pk in item_lang %}checked="true"{%endif%}/>		
+				<label class="filter-label padding-10" for="id_hizkuntza_{{ forloop.counter0 }}">
+   	        		<span><i class="icon-ob-check"></i></span> {{ choice }}		
+   	        	</label>		
+			</li>
+			{% endfor %}
+			{% endwith %}
+			</ul>
 		</li>
 		<li>
 			<!-- GEOLOKALIZAZIOA -->
