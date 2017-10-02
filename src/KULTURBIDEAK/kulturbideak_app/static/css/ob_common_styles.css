@@ -273,6 +273,11 @@ li.horizontal-list {
 	display:inline-block;
 }
 
+
+.button-font-small {
+	font-size:14px;
+}
+
 /* checkbox styles*/
 
 input[type="checkbox"]{

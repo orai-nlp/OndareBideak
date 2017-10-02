@@ -10,7 +10,10 @@ register = template.Library()
 
 @register.filter
 def proxyPassHttp(url):	
-	return re.sub('^\s*http://','/kanpora/', url)
+	result=re.sub('^\s*http://www.http://','http://', url)
+	result=re.sub('^\s*http://','/kanpora/', result)
+	
+	return result
 
 @register.filter
 def leading_wspace(url):	
@@ -74,7 +77,14 @@ def is_in_list(id,list):
 	 
 	 return False
 
+@register.filter
+def is_handle(value): 
 
+	 if re.match(r'^*.(jpg|png|jpeg|tiff|gif)$', sarrera, flags=re.IGNORECASE):
+	 	return True
+	 
+	 return False
+	
 @register.filter
 def get_item_image(item): 
     img=item    
@@ -122,7 +132,7 @@ def convert_newline2br(value):
 
 @register.filter
 def clean_http_prefix(value): 
-    return value.replace('http://www.http://','http://')
+    return re.sub('^\s*http://www.http://','http://')
 
 @register.filter
 def format_html(value):

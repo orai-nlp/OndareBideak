@@ -375,7 +375,9 @@
 				<div id="autocomplete-div" class="container" style="display:none;">
 					<!-- <h2 class="titulu-kolorea autocomplete-galdera">Hauetakoren bat bilatzen duzu?</h2> -->
 					<div id="autocomplete-container" class="backgrnd-txuria row">
-						<h4 class="modal-inner-title kolore-gris-bi" style="padding-left:10px;">{% trans "Itemak" %}</h4>                                                                               
+						<button type="button" class="close button-font-small" onclick="$('#autocomplete-div').hide();return false;"><span class="icon-ob-times"></span></button>
+						<h4 class="modal-inner-title kolore-gris-bi" style="padding-left:10px;">{% trans "Itemak" %}</h4>
+		                                                                               
 						{% for i in "0123" %}
 						<div class="row search-result-modal">
 							<div id="auto{{i}}" class="thumbnail col-xs-2 col-md-2">
