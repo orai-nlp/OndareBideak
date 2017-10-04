@@ -861,14 +861,18 @@ def hornitzaileak_hasiera(request):
 
 def autocomplete(request):
     
-    sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:4]
+    sqs_item = SearchQuerySet().autocomplete(item_autocomp=request.GET.get('q', ''))[:4]
+    sqs_path = SearchQuerySet().autocomplete(path_autocomp=request.GET.get('q', ''))[:4]
     #suggestions = [result.item_id for result in sqs]
     
     #suggestions = [result.dc_title for result in sqs]
     
     # html ETIKETEN GARBIKETA EGIN HEMEN
     suggestions=[]
-    for result in sqs:
+    suggestions_img=[]
+    suggestions_src=[]
+    suggestions_type=[]
+    for result in sqs_item:
         titulua = result.dc_title
         titulua = titulua.replace("<div class=\"titulu_es\">", " ")
         titulua = titulua.replace("</div>", " ")
@@ -879,32 +883,61 @@ def autocomplete(request):
         titulua = titulua.replace("<div class=\"titulu_lg\">", " ")
         suggestions.append(titulua)
     
+        if result.ob_thumbnail:
+            suggestions_img.append(result.ob_thumbnail)
+        else:
+            suggestions_img.append(result.edm_object)
     
-    #print suggestions
-    suggestions_id = [result.item_id for result in sqs]
-    #suggestions_img = [result.edm_object for result in sqs]
-    
-    suggestions_img=[]
-    for result in sqs:
-    	if result.ob_thumbnail:
-    	    suggestions_img.append(result.ob_thumbnail)
-    	else:
-    		suggestions_img.append(result.edm_object)
-    
-    #suggestions_src = [result.edm_provider for result in sqs]
-    suggestions_src=[]
-    for result in sqs:
-        if result.edm_provider == "herritarra" or result.edm_provider == "Herritarra" :
+        if re.match("herritarra", result.edm_provider,flags=re.IGNORECASE):
             src=result.dc_creator
             suggestions_src.append(src)
         else:
             src=result.edm_provider
             suggestions_src.append(src)
     
-    suggestions_type=[]
-    for result in sqs:
+    
         type=result.edm_type
         suggestions_type.append(type)
+    
+    #print suggestions
+    suggestions_id = [result.item_id for result in sqs_item]
+    #suggestions_img = [result.edm_object for result in sqs]
+    
+    
+    suggestionsp=[]
+    suggestions_imgp=[]
+    suggestions_srcp=[]
+    suggestions_typep=[]
+    for result in sqs_path:
+        if result.path_status < 2:
+            continue
+        
+        titulua = result.path_dc_title
+        titulua = titulua.replace("<div class=\"titulu_es\">", " ")
+        titulua = titulua.replace("</div>", " ")
+        titulua = titulua.replace("<div class=\"titulu_en\">", " ")
+        #titulua = titulua.replace("</div>", " ")
+        titulua = titulua.replace("<div class=\"titulu_eu\">", " ")
+        #titulua = titulua.replace("</div>", " ")
+        titulua = titulua.replace("<div class=\"titulu_lg\">", " ")
+        suggestionsp.append(titulua)
+    
+        if result.path_thumbnail:
+            suggestions_imgp.append(result.path_thumbnail)
+        else:
+            suggestions_imgp.append('/static/path.png')
+    
+        src=User.objects.get(id=result.path_fk_user_id).username
+        suggestions_srcp.append(src)
+         
+        suggestions_typep.append('path')
+    
+    #print suggestions
+    suggestions_idp = [result.path_id for result in sqs_path]
+    #suggestions_img = [result.edm_object for result in sqs]
+    
+    
+    
     
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
@@ -913,7 +946,12 @@ def autocomplete(request):
         'results_id': suggestions_id,
         'results_img':suggestions_img,
         'results_src':suggestions_src,
-        'results_type':suggestions_type
+        'results_type':suggestions_type,
+        'resultsp': suggestionsp,
+        'results_idp': suggestions_idp,
+        'results_imgp':suggestions_imgp,
+        'results_srcp':suggestions_srcp,
+        'results_typep':suggestions_typep,
     })
     print the_data
     return HttpResponse(the_data, content_type='application/json')
@@ -2676,14 +2714,18 @@ def erregistratu(request):
                 
                 #IF Hornitzailea izan nahi badu
                 if cd["hornitzailea"]:
-                    return render_to_response('__base.html',{'mezua':_("OndareBideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.com")},context_instance=RequestContext(request)) 
+                    return render_to_response('__base.html',{'erabiltzailea_form':erabiltzailea_form,                                                             
+                                                             'mezua':_("OndareBideak sisteman Erregistratu zara. Momentu honetan erabiltzaile arrunt bezala zaude erregistratuta. Hornitzaile izateko eskaera bideratuta dago. Zure posta elektronikoan mezu bat jasoko duzu hornitzaile izateko baimena eskuratzen duzunean. Edozein zalantza jarri gurekin kontaktuan: ondarebideak@elhuyar.eus")},context_instance=RequestContext(request)) 
                 else:
-                    return render_to_response('__base.html',{'mezua':_("OndareBideak sisteman Erregistratu zara")},context_instance=RequestContext(request))
+                    return render_to_response('__base.html',{'erabiltzailea_form':erabiltzailea_form,
+                                                             'mezua':_("OndareBideak sisteman Erregistratu zara")},context_instance=RequestContext(request))
    
         else:
             #return render_to_response("izena_eman.html",{"bilaketa":bilaketa_form,"erabiltzailea":erabiltzailea_form},context_instance=RequestContext(request))
-            return render_to_response("erregistratu.html",{"erabiltzailea_form":erabiltzailea_form},context_instance=RequestContext(request))
-    return render_to_response("erregistratu.html",{"erabiltzailea_form":erabiltzailea_form},context_instance=RequestContext(request))
+            return render_to_response('__base.html',{'erabiltzailea_form':erabiltzailea_form,
+                                                     'mezua':_("Errorea erregistroa burutzean ziurtatu datu guztiak ongi jarri dituzula")},context_instance=RequestContext(request))
+    return render_to_response('__base.html',{'erabiltzailea_form':erabiltzailea_form,
+                                             'mezua':_("Errorea erregistroa burutzean, saiatu berriro mesedez. Berriro huts egiten badu jarri gurekin kontaktuan: ondarebideak@elhuyar.eus")},context_instance=RequestContext(request))
 
 def db_erregistratu_erabiltzailea(cd):
     """Erabiltzaile bat erregistratzen du"""

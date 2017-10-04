@@ -34,8 +34,8 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     #item_user_id = indexes.CharField(model_attr='fk_ob_user')
     item_user_id =indexes.EdgeNgramField(use_template=True,template_name='search/indexes/kulturbideak_app/item_user.txt')
     # We add this for autocomplete.
-    content_auto = indexes.EdgeNgramField(model_attr='dc_title')
-    #item_autocomp = indexes.EdgeNgramField(model_attr='dc_title')
+    #content_auto = indexes.EdgeNgramField(model_attr='dc_title')
+    item_autocomp = indexes.EdgeNgramField(model_attr='dc_title')
     #content_auto = indexes.EdgeNgramField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text.txt')
     
     
@@ -105,6 +105,7 @@ class pathIndex(indexes.SearchIndex, indexes.Indexable):
     path_dc_title = indexes.CharField(model_attr='dc_title')
     path_dc_subject = indexes.CharField(model_attr='dc_subject')
     path_dc_description = indexes.CharField(model_attr='dc_description')
+    path_status = indexes.CharField(model_attr='paths_status')
     path_lom_length = indexes.CharField(model_attr='lom_length')
     path_thumbnail = indexes.CharField(model_attr='paths_thumbnail')
     language = indexes.CharField(model_attr='language')
@@ -114,7 +115,7 @@ class pathIndex(indexes.SearchIndex, indexes.Indexable):
     acces =  indexes.CharField(model_attr='acces')
     
      # We add this for autocomplete.
-    #path_autocomp = indexes.EdgeNgramField(model_attr='dc_title')
+    path_autocomp = indexes.EdgeNgramField(model_attr='dc_title')
     
     # LANGUAGE FIELDS:
     text_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_eu.txt')

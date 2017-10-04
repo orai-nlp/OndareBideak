@@ -19,14 +19,14 @@
 		<!--egunekoa bihurtu-->
 		<li id="eguneko_button_{{id}}" class="backgrnd-gris-bi center relative">
 			{% if item.egunekoa == 0 %}
-			<a class="btn" type="button" href="javascript:egunekoaAldatu({{id}},'gehitu','{{itype}}')" >
+			<a class="btn" type="button" title="{% trans 'Eguneko proposamenetara gehitu' %}" href="javascript:egunekoaAldatu({{id}},'gehitu','{{itype}}')" >
     			<span class="square-back-vert-padding  backgrnd-gris-bi">
          			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
          			<span class="ob-fire-overlay-lg backgrnd-txuria kolore-gris-lau icon-ob-plus"></span>
         		</span>
     		</a>
         	{% else %}
-			<a class="btn" type="button" href="javascript:egunekoaAldatu({{id}},'kendu','{{itype}}')" >
+			<a class="btn" type="button" title="{% trans 'Eguneko proposamenetatik kendu' %}" href="javascript:egunekoaAldatu({{id}},'kendu','{{itype}}')" >
     			<span class="square-back-vert-padding  backgrnd-gris-bi">
          			<i class="icon-ob-fire circle-back kolore-gris-lau backgrnd-{{itype}}" aria-hidden="true"></i>
          			<span class="ob-fire-overlay-lg backgrnd-txuria kolore-gris-lau">&mdash;</span>
@@ -71,14 +71,14 @@
 		<!--egunekoa bihurtu-->
 		<li id="eguneko_button_{{id}}" class="backgrnd-gris-bi center relative">
 			{% if momentukoPatha.egunekoa == 0 %}
-			<a class="btn" type="button" href="javascript:egunekoaAldatu_ibilb({{id}},'gehitu')" >
+			<a class="btn" type="button" title="{% trans 'Eguneko proposamenetara gehitu' %}" href="javascript:egunekoaAldatu_ibilb({{id}},'gehitu')" >
     			<span class="square-back-vert-padding backgrnd-gris-bi">
          			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
          			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau icon-ob-plus"></span>
         		</span>
     		</a>
         	{% else %}
-			<a class="btn" type="button" href="javascript:egunekoaAldatu_ibilb({{id}},'kendu')" >
+			<a class="btn" type="button" title="{% trans 'Eguneko proposamenetatik kendu' %}" href="javascript:egunekoaAldatu_ibilb({{id}},'kendu')" >
     			<span class="square-back-vert-padding backgrnd-gris-bi">
          			<i class="icon-ob-fire circle-back kolore-gris-lau" aria-hidden="true"></i>
          			<span class="backgrnd-txuria ob-fire-overlay-lg kolore-gris-lau">&mdash;</span>

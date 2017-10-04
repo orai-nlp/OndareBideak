@@ -71,8 +71,7 @@
 		{%for db_hornitzailea in db_hornitzaileak%}
 			&nbsp;&nbsp;
 			<input type="checkbox" id="{{db_hornitzailea}}" name="{{db_hornitzailea}}" value="{{db_hornitzailea}}" onclick="bilaketaFiltratu_db()" {%if db_hornitzailea in horniF%}checked{%endif%}>
-			<label class="filter-label" for="{{db_hornitzailea}}"><span><i class="icon-ob-check"></i></span> {{db_hornitzailea}}</label>
-			<br/>
+			<label class="filter-label ezkerra" for="{{db_hornitzailea}}"><span><i class="icon-ob-check"></i></span> {{db_hornitzailea}}</label>			
 		{% endfor %}
 	</div>
 	<br />

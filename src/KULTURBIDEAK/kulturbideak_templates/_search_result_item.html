@@ -31,8 +31,7 @@
 			<ul class="caption-info">
 				<li>
 				    <span class="kolore-gris-bi">				   
-				{% if item.edm_year %}
-					-{{item.dc_date}}-
+				{% if item.edm_year %}					
 					{% with item.edm_year|date:"Y . m . d" as date %}
 					{% if date and date.strip%}
 						{{date}}

@@ -17,17 +17,18 @@ def proxyPassHttp(url):
 
 @register.filter
 def leading_wspace(url):	
+	"""delete leading white spaces. """
 	return re.sub('^\s*','', url)
 
 
 @register.filter
 def lerroJauziakKendu(sarrera):
-
+	"""delete new line chars. """
 	return sarrera.replace("\n","");
 
 @register.filter
 def htmlEtiketakGarbitu(sarrera):
-
+	"""Clean html tags. """
 	return sarrera.replace("/<\/?[^>]+(>|$)/g", "");
 
 
@@ -50,8 +51,7 @@ def urlpath_exists(path):
 
 @register.filter
 def data_formatua(sarrera):
-	
-	
+	"""format data. """
 	if re.match(r'^\s*\"[^\"]+\"\s*$', sarrera):
 		output= sarrera.replace('"','')
 		if output == "0":
@@ -79,11 +79,11 @@ def is_in_list(id,list):
 
 @register.filter
 def is_handle(value): 
-
-	 if re.match(r'^*.(jpg|png|jpeg|tiff|gif)$', sarrera, flags=re.IGNORECASE):
+	"""check if url contains image suffix. """
+	if re.match(r'^.*\.(jpg|png|jpeg|tiff|gif)$', value, flags=re.IGNORECASE):
 	 	return True
 	 
-	 return False
+	return False
 	
 @register.filter
 def get_item_image(item): 
@@ -132,7 +132,7 @@ def convert_newline2br(value):
 
 @register.filter
 def clean_http_prefix(value): 
-    return re.sub('^\s*http://www.http://','http://')
+    return re.sub('^\s*http://www.http://','http://', value)
 
 @register.filter
 def format_html(value):

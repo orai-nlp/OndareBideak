@@ -404,6 +404,34 @@
 							</div> -->
 							</div>
 						{% endfor %}
+						<br/>	
+       					<h4 class="modal-inner-title kolore-gris-bi">{% trans "Ibilbideak" %}</h4>		
+		       			{% for i in "0" %}
+					<div class="row search-result-modal">
+						<div id="autop{{i}}" class="thumbnail col-xs-2 col-md-2">
+							<a class="bilaketaEmaitza" id="ap{{i}}" >
+								<img class="ob_thumbnail-mini" id="imgp{{i}}">
+								<div class="dark-overlay">
+									<i id="iconp{{i}}"></i>
+								</div>
+							</a>														
+						</div>
+						<div class="caption col-xs-10 col-md-10">							
+							<ul class="caption-info bottom-padding-0 top-padding-0">
+								<li>
+									<h6><a id="h5p{{i}}" class="bilaketaTitulua"></a></h6>
+                   				</li>    
+   								<li>
+   									<p id="pp{{i}}"></p>
+   								</li>
+							</ul>	
+						</div>
+						<!-- <div class="autocompleteItem single_service wow fadeInUp" id="auto{{i}}" >
+							<a id="a{{i}}"><img class="autocomplete_irudia" id="img{{i}}"></a>
+							
+						</div> -->
+					</div>
+						{% endfor %}		
 						
 					</div>					
 				</div>
@@ -509,6 +537,7 @@
 		<!-- END Footer -->
 
 		{% block genericModals %}		
+			<!-- signin modals -->
 			{% include "_modals_generic.html" %}
 		{% endblock genericModals %}
 		

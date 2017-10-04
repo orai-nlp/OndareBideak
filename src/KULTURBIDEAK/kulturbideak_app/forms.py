@@ -58,12 +58,12 @@ class OaipmhForm(Form):
     
 class LoginForm(Form):
     """Erabiltzaile bat logeatzeko formularioa kargatzen du"""
-    erabiltzailea=CharField(max_length=150,required=True, widget=TextInput(attrs={"placeholder":_("erabiltzailea"),"type":"text", "class":"form-control"}))
-    pasahitza=CharField(max_length=32, widget=PasswordInput(attrs={"placeholder":_("pasahitza"),"type":"password", "class":"form-control"}),required=True)
+    erabiltzailea=CharField(max_length=150,required=True, widget=TextInput(attrs={"placeholder":_("Erabiltzailea"),"type":"text", "class":"form-control"}))
+    pasahitza=CharField(max_length=32, widget=PasswordInput(attrs={"placeholder":_("Pasahitza"),"type":"password", "class":"form-control"}),required=True)
 
     def clean_erabiltzailea(self):
         """Erabiltzailea existitzen den konprobatzen da"""
-        error_message =_("Erabiltazilea ez dago erregistratua")
+        error_message =_("Erabiltzailea ez dago erregistratua")
         try:
             e=User.objects.get(username=self.cleaned_data["erabiltzailea"])
             return self.cleaned_data["erabiltzailea"]
@@ -89,11 +89,11 @@ class BerriaForm(forms.Form):
     titulua_eu=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Titulua (EU)"),"type":"text", "class":"form-control","id":"InputTitleEU"}),required=True)
     #desk_eu=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("Deskribapena (EU)"),"type":"text", "class":"form-control","id":"InputDeskEU"}),required=True)
     desk_eu = forms.CharField(max_length=1000,
-            label = _("deskribapena"),
+            label = _("Deskribapena"),
             required = False,
             widget=forms.Textarea(attrs={"type":"text", 
                                     "class":"form-control",
-                                    "placeholder":_("deskribapena"),
+                                    "placeholder":_("Deskribapena"),
                                     "rows":"3",
                                  })
     )
@@ -101,11 +101,11 @@ class BerriaForm(forms.Form):
     titulua_es=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Titulua (ES)"),"type":"text", "class":"form-control","id":"InputTitleES"}),required=False)
     #desk_es=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("Deskribapena (ES)"),"type":"text", "class":"form-control","id":"InputDeskES"}),required=False)
     desk_es = forms.CharField(max_length=1000,
-            label = _("deskribapena"),
+            label = _("Deskribapena"),
             required = False,
             widget=forms.Textarea(attrs={"type":"text", 
                                     "class":"form-control",
-                                    "placeholder":_("deskribapena"),
+                                    "placeholder":_("Deskribapena"),
                                     "rows":"3",
                                  })
     )
@@ -114,22 +114,22 @@ class BerriaForm(forms.Form):
     titulua_en=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Titulua (EN)"),"type":"text", "class":"form-control","id":"InputTitleEN"}),required=False)
     #desk_en=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("Deskribapena (EN)"),"type":"text", "class":"form-control","id":"InputDeskEN"}),required=False)
     desk_en = forms.CharField(max_length=1000,
-            label = _("deskribapena"),
+            label = _("Deskribapena"),
             required = False,
             widget=forms.Textarea(attrs={"type":"text", 
                                     "class":"form-control",
-                                    "placeholder":_("deskribapena"),
+                                    "placeholder":_("Deskribapena"),
                                     "rows":"3",
                                  })
     )
     titulua_fr=CharField(max_length=200,widget=TextInput(attrs={"placeholder":_("Titulua (FR)"),"type":"text", "class":"form-control","id":"InputTitleFR"}),required=False)
     #desk_fr=CharField(max_length=1000,widget=TextInput(attrs={"placeholder":_("Deskribapena (FR)"),"type":"text", "class":"form-control","id":"InputDeskFR"}),required=False)
     desk_fr = forms.CharField(max_length=1000,
-            label = _("deskribapena"),
+            label = _("Deskribapena"),
             required = False,
             widget=forms.Textarea(attrs={"type":"text", 
                                     "class":"form-control",
-                                    "placeholder":_("deskribapena"),
+                                    "placeholder":_("Deskribapena"),
                                     "rows":"3",
                                  })
     )
@@ -186,7 +186,7 @@ class CreateUserForm(forms.Form):
     username=CharField(max_length=100,widget=TextInput(attrs={"placeholder":_("Erabiltzailea"),"type":"text", "class":"form-control","id":"InputUser"}))
     
     hornitzailea = forms.BooleanField(
-        label = _("hornitzailea"),
+        label = _("Hornitzailea"),
         required = False,
         widget=forms.CheckboxInput(attrs={"type":"check",
                                           "class":"checkbox-inline",                                           
@@ -312,14 +312,14 @@ class ChangePasswordForm(forms.Form):
      
 class ItemGehituForm(Form):
     """Item berri bat gehitzeko formularioa kargatzen du"""
-    titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("titulua"),"type":"text", "class":"form-control"}))
-    deskribapena=CharField(max_length=1500,required=True, widget=TextInput(attrs={"placeholder":_("deskribapena"),"type":"text", "class":"form-control"}))
+    titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("Titulua"),"type":"text", "class":"form-control"}))
+    deskribapena=CharField(max_length=1500,required=True, widget=TextInput(attrs={"placeholder":_("Deskribapena"),"type":"text", "class":"form-control"}))
     sortzailea=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("objektu digitalaren sortzailearen izena ipini, bestela balio lehenetsi bezala 'Herritarra' agertuko da"),"type":"text", "class":"form-control"}))
     # date : momentukoa
-    gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
+    gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Gaia"),"type":"text", "class":"form-control"}))
     herrialdea=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("herrialdea"),"type":"text", "class":"form-control"}))
     #data = DateField(required=False,widget=TextInput(attrs={"placeholder":_("data")}))
-    data = CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("data"),"type":"text", "class":"form-control"}))
+    data = CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Data"),"type":"text", "class":"form-control"}))
     jatorrizkoa=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Jatorrizko Url-a"),"type":"text", "class":"form-control"}))
     eskubideak=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("Objektuaren eskubideen inguruko egin beharreko azalpenak edo kontutan hartu beharreko xehetasunak. Testu librea."),"type":"text", "class":"form-control"}))
     lizentzia=ChoiceField(required=False,  choices=LIZENTZIA_CHOICES)
@@ -332,15 +332,15 @@ class ItemGehituForm(Form):
     
 class ItemEditatuForm(Form):
     """Item bat editatzeko formularioa kargatzen du"""
-    titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("titulua"),"type":"text", "class":"form-control"}))
+    titulua=CharField(max_length=500,required=True, widget=TextInput(attrs={"placeholder":_("Titulua"),"type":"text", "class":"form-control"}))
     #  sortzailea: logeatuta dagoen erabiltzailea
-    deskribapena=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("deskribapena"),"type":"text", "class":"form-control"}))
-    sortzailea=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("objektu digitalaren sortzailearen izena ipini, bestela balio lehenetsi bezala 'Herritarra' agertuko da"),"type":"text", "class":"form-control"}))
+    deskribapena=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Deskribapena"),"type":"text", "class":"form-control"}))
+    sortzailea=CharField(max_length=300,required=False, widget=TextInput(attrs={"placeholder":_("Objektu digitalaren sortzailearen izena ipini, bestela balio lehenetsi bezala 'Herritarra' agertuko da"),"type":"text", "class":"form-control"}))
     # date : momentukoa
-    gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("gaia"),"type":"text", "class":"form-control"}))
-    herrialdea=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("herrialdea"),"type":"text", "class":"form-control"}))
+    gaia=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Gaia"),"type":"text", "class":"form-control"}))
+    herrialdea=CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Herrialdea"),"type":"text", "class":"form-control"}))
     #data = DateField(required=False,widget=TextInput(attrs={"placeholder":_("data")}))
-    data = CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("data"),"type":"text", "class":"form-control"}))    
+    data = CharField(max_length=150,required=False, widget=TextInput(attrs={"placeholder":_("Data"),"type":"text", "class":"form-control"}))    
     mota=ChoiceField(required=False,  choices=MOTA_CHOICES)
     #text, audio, video, image
     objektua= forms.FileField()
@@ -359,11 +359,11 @@ class ItemEditatuForm(Form):
 
 class CommentForm(forms.Form):
     comment = forms.CharField(max_length=500,
-            label = _("Comment"),
+            label = _("Iruzkina"),
             required = True,
             widget=forms.Textarea(attrs={"type":"text", 
                                     "class":"form-control",
-                                    "placeholder":_("Comment"),
+                                    "placeholder":_("Iruzkina"),
                                     "rows":"3",
                                  })
     )
@@ -372,11 +372,11 @@ class CommentForm(forms.Form):
 
 class CommentParentForm(forms.Form):
     comment = forms.CharField(max_length=500,
-            label = _("Comment"),
+            label = _("Iruzkina"),
             required = True,
             widget=forms.Textarea(attrs={"type":"text", 
                                     "class":"form-control",
-                                    "placeholder":_("Comment"),
+                                    "placeholder":_("Iruzkina"),
                                     "rows":"3",
                                  })
     )
@@ -415,11 +415,11 @@ class UploadForm(forms.Form):
 class CoordinatesForm(forms.Form):
 
     coordinates = forms.CharField(
-            label = _("coodinates"),
+            label = _("Koordenatuak"),
             required = False,
             widget=forms.HiddenInput(attrs={"type":"text", 
                                     "class":"form-control",
-                                    "placeholder":_("Coordinates")
+                                    "placeholder":_("Koordenatuak")
                                  })
     )
     
