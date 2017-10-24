@@ -53,19 +53,19 @@
 
     Autocomplete.prototype.show_results = function(data) {
       // Remove any existing results.
-      $('.ac-results').remove()
-    
-      var results = data.results || []
-      var results_id = data.results_id || [] //mad
-      var results_img = data.results_img || [] //mad
-      var results_src = data.results_src || [] //mad
-      var results_type = data.results_type || [] //mad
+      $('.ac-results').remove();
+      $('.ac-result').remove();
+      var results = data.results || [];
+      var results_id = data.results_id || []; //mad
+      var results_img = data.results_img || []; //mad
+      var results_src = data.results_src || []; //mad
+      var results_type = data.results_type || []; //mad
       
-      var resultsp = data.resultsp || []
-      var results_idp = data.results_idp || [] //isv
-      var results_imgp = data.results_imgp || [] //isv
-      var results_srcp = data.results_srcp || [] //isv
-      var results_typep = data.results_typep || [] //isv
+      var resultsp = data.resultsp || [];
+      var results_idp = data.results_idp || []; //isv
+      var results_imgp = data.results_imgp || []; //isv
+      var results_srcp = data.results_srcp || []; //isv
+      var results_typep = data.results_typep || []; //isv
       
       var pathname = window.location.pathname; // Returns path only
 	 
@@ -195,20 +195,34 @@
     			  var div_emaitza= document.getElementById(div_id);
 
     			  var elemA=document.getElementById(a_id);
-    			  elemA.setAttribute('href', a_href);
-
+    			  if (elemA)
+    			  {
+    				  elemA.setAttribute('href', a_href);
+    			  }
     			  var elemImg=document.getElementById(img_id);
-    			  elemImg.setAttribute('src', img_src);
+    			  if (elemImg)
+    			  {
+    				  elemImg.setAttribute('src', img_src);
+    			  }
 
     			  var elemIcon=document.getElementById(icon_id);
-    			  elemIcon.setAttribute('class',"overlay-icon-mini icon-ob-path kolore-gris");
+    			  if (elemIcon)
+    			  {
+    				  elemIcon.setAttribute('class',"overlay-icon-mini icon-ob-path kolore-gris");
+    			  }
 
     			  var elemH5=document.getElementById(h5_id);
-    			  elemH5.textContent = h5_text;
-    			  elemH5.setAttribute('href', a_href);
+    			  if (elemH5)
+    			  {
+    				  elemH5.textContent = h5_text;
+        			  elemH5.setAttribute('href', a_href);
+    			  }
 
     			  var elemP=document.getElementById(p_id);
-    			  elemP.textContent = p_text;
+    			  if (elemP)
+    			  {    				  
+        			  elemP.textContent = p_text;
+    			  }
 
     			  //div_emaitza.appendChild(elemImg);
 

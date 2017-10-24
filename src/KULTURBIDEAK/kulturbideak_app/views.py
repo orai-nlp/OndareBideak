@@ -909,7 +909,7 @@ def autocomplete(request):
     suggestions_srcp=[]
     suggestions_typep=[]
     for result in sqs_path:
-        if result.path_status < 2:
+        if result.acces < 2:
             continue
         
         titulua = result.path_dc_title

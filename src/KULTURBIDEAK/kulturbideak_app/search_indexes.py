@@ -105,7 +105,6 @@ class pathIndex(indexes.SearchIndex, indexes.Indexable):
     path_dc_title = indexes.CharField(model_attr='dc_title')
     path_dc_subject = indexes.CharField(model_attr='dc_subject')
     path_dc_description = indexes.CharField(model_attr='dc_description')
-    path_status = indexes.CharField(model_attr='paths_status')
     path_lom_length = indexes.CharField(model_attr='lom_length')
     path_thumbnail = indexes.CharField(model_attr='paths_thumbnail')
     language = indexes.CharField(model_attr='language')
