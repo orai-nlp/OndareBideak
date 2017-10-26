@@ -3,7 +3,7 @@
 *    Global variables
 ****************************/
 
-var serverUrl = "http://obprototipoa.elhuyar.eus"
+var serverUrl = "https://www.ondarebideak.eus"
 
 /***************************
 *    Utils
@@ -212,5 +212,12 @@ function nabigatu(path_id,node_id)
 }
 
 
-
+function correctCssJs(elem,url)
+{
+	if (url.contains("DBKVisorBibliotecaWEB")){
+		var toreplc = $(elem).document.head.innerHTML();
+		var newhead = toreplc.replace(/\/WAS\/CORP\/DBKVisorBibliotecaWEB/g, "/kanpora/w390w.gipuzkoa.net/WAS/CORP/DBKVisorBibliotecaWEB/");
+		$(elem).document.head.innerHTML(newhead);
+	}
+}
 

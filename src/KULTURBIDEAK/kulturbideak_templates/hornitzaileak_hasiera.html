@@ -52,7 +52,7 @@
             <div class="hornitzaile-text">
                 <p class="hornitzaile-name left kolore-gris-lau"><b>{{hornitzaile.izena}}</b></p>
                 <p class="hornitzaile-mota kolore-gris-bi">{{hornitzaile.erakundeMota}}</p>
-                <div class="hornitzaile-desk kolore-gris-hiru">{{ hornitzaile.deskribapena|slice:"0:100" |format_html |safe}}... </div>
+                <div class="hornitzaile-desk kolore-gris-hiru">{{ hornitzaile.deskribapena|slice:"0:100" |format_html:1 |safe}}... </div>
                 <a class="hornitzaile-link kolore-gris-lau" href="/hornitzaile_search?h={{hornitzaile.fk_user.username}}&h_id={{hornitzaile.fk_user.id}}&z=h">{% trans "Ikusi Hornitzailea" %}</a>
             	
             </div>

@@ -79,11 +79,11 @@
 			<div id="navigator-content">
 				<!-- atzeko irudia -->
 				<div id="back-image" class="backgrnd-gris-hiru">
-					<img title="{% if node.dc_title %}{{ LANGUAGE_CODE|choose_title_language:node|format_html|safe}}{% endif%}"
+					<img title="{% if node.dc_title %}{{ LANGUAGE_CODE|choose_title_language:node|format_html:1|safe}}{% endif%}"
 					{% if item.ob_thumbnail%}
-					src="{{item.ob_thumbnail|clean_http_prefix}}" class="navigator_bckgrnd" 
+					src="{{item.ob_thumbnail|proxyPassHttp}}" class="navigator_bckgrnd" 
 					{% elif item.edm_object %}
-					src="{{item.edm_object|clean_http_prefix}}" class="navigator_bckgrnd" 
+					src="{{item.edm_object|proxyPassHttp}}" class="navigator_bckgrnd" 
 					{%else%}
 					src="{{STATIC_URL}}img/icons/path_fullres_zuri.png" class="navigator_bckgrnd crop-80" 
 					{% endif %}>
@@ -123,19 +123,19 @@
 						</ul>
 					</div>
 					<div id="navigator-item-info" class="col-md-10 scrollbar margin-0">
-						<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
+						<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}} </h2>
 						<div id="description" class="item-info-description">
 
 							<!-- <div class="clearfix"></div> -->							
 						{% if autoplay == 1 %}
-								<span id="item-narrazioa" class="comment item-narrazio kolore-gris-lau">{{node.dc_description | format_html| add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
+								<span id="item-narrazioa" class="comment item-narrazio kolore-gris-lau">{{node.dc_description | format_html:1| add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>
 						{% else %}
-								<span  id="item-narrazioa" class="comment more item-narrazio kolore-gris-lau">{{node.dc_description | format_html |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>																			
+								<span  id="item-narrazioa" class="comment more item-narrazio kolore-gris-lau">{{node.dc_description | format_html:1 |add_ekm_prefix_to_desc|correct_wikification_url_tags| safe}}</span>																			
 						{%endif%}								
 								{% if item.dc_description %}		
 									<br/><br/>							
 									<div class="more item-info-description kolore-gris-lau">
-									{{ LANGUAGE_CODE|choose_description_language:item |format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags |safe}}
+									{{ LANGUAGE_CODE|choose_description_language:item |format_html:1|add_ekm_prefix_to_desc|correct_wikification_url_tags |safe}}
 									</div>
 								{% endif %}
 								</div>					

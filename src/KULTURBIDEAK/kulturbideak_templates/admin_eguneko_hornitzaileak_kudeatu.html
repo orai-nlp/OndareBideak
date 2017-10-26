@@ -45,7 +45,7 @@
 		<tr name="{{ horni.id }}">
 			<td>{{ horni.id }}</td>
 			<td>{{ horni.izena }}</td>
-			<td title="{{ horni.deskribapena |format_html |safe}}" >{{ horni.deskribapena |format_html | get_substring |safe}} ...</td>
+			<td title="{{ horni.deskribapena |format_html:1 |safe}}" >{{ horni.deskribapena |format_html:1 | get_substring |safe}} ...</td>
 			<td>{{ horni.erakundeMota }}</td>
 			<td>{{ horni.telefonoa }}</td>
 			<td>{{ horni.emaila }}</td>

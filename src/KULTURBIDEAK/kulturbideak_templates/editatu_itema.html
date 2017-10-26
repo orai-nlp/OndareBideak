@@ -6,7 +6,7 @@
 {% get_current_language as LANGUAGE_CODE %}
 
 {% block media_players %}
-{% if momentukoItema.edm_type|lower == "sound" or momentukoItema.edm_type|lower == "video" %}
+{% if item.edm_type|lower == "sound" or item.edm_type|lower == "video" %}
 <link href="{{STATIC_URL}}css/video-js.min.css" rel="stylesheet">
 <link href="{{STATIC_URL}}css/ob-videojs.css" rel="stylesheet">
 <!-- If you'd like to support IE8 -->
@@ -18,7 +18,10 @@
 
 {% block tts_head %}
 <!-- TTS for language: {{LANGUAGE_CODE}} -->
-{% include "_tts_head.html" with node=item lang=LANGUAGE_CODE %}
+
+{% with item.ob_language|ob_language_errep_kendu|leading_wspace as tts_lang %}
+{% include "_tts_head.html" with node=item lang=tts_lang %}
+{% endwith %}
 {% endblock tts_head %}
 
 {% block sidebar%}
@@ -82,7 +85,7 @@
 				{% endif %}
 				</span>
 			</p>
-			<h2 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
+			<h2 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}} </h2>
 		</div>
 	</div>
 	<!-- eskuineko zutabea sare sozialak -->
@@ -149,7 +152,7 @@
 					<p class="item-field-title kolore-gris-hiru">{% trans "Sortzailea" %}</p>						
 					<p class="kolore-beltza">
 					{% if item.dc_creator%}
-					{{item.dc_creator|format_html|safe}}
+					{{item.dc_creator|format_html:1|safe}}
 					{%else%}
 					-
 					{% endif %}
@@ -169,7 +172,7 @@
 				<li>
 					<p class="item-field-title kolore-gris-hiru">{% trans "Gaia" %}</p>
 					<p class="kolore-beltza"> {% if item.dc_subject%}
-						{{item.dc_subject|format_html|safe}}
+						{{item.dc_subject|format_html:1|safe}}
 						{%else%}
 						-
 						{% endif %} 
@@ -179,7 +182,7 @@
 				<li>
 					<p class="item-field-title kolore-gris-hiru">{% trans "Hizkuntza eta jatorria" %}</p>
 					<p class="kolore-beltza">
-					{% if item.ob_language %}
+					{% if ite m.ob_language %}
 						{{item.ob_language | ob_language_errep_kendu}}
 					{%else%}
 						-
@@ -219,7 +222,7 @@
 	<div id="item_preview-description" class="backgrnd-txuria">
 		<div class="path-info overflow ">
 			<div class="comment more item-info-description">
-					{{ LANGUAGE_CODE|choose_description_language:item|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
+					{{ LANGUAGE_CODE|choose_description_language:item|format_html:1|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
 			</div>
 		</div>
 				

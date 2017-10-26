@@ -5,14 +5,21 @@ import re
 import HTMLParser
 import requests
 
+from django.conf import settings
+
+
 from django.contrib.auth.models import User, Group
 register = template.Library()
 
 @register.filter
 def proxyPassHttp(url):	
 	result=re.sub('^\s*http://www.http://','http://', url)
-	result=re.sub('^\s*http://','/kanpora/', result)
-	
+	result=re.sub('liburuklik.euskadi.net','liburuklik.euskadi.eus', result)
+	result=re.sub('www.euskomedia.org','aunamendi.eusko-ikaskuntza.eus', result)
+	result=re.sub('^\s*http://','/kanpora/', result)	
+	if re.search(r'DBKVisorBibliotecaWEB', result, flags=re.IGNORECASE):
+		result+='&contenido=meta'
+
 	return result
 
 @register.filter
@@ -110,8 +117,8 @@ def cut_words(input,num):
 
 @register.filter
 def add_ekm_prefix_to_desc(value): 
-    value=value.replace('="/ImgsAuna/','="http://aunamendi.eusko-ikaskuntza.eus/ImgsAuna/')
-    value=value.replace('href="/aunamendi/', 'href="http://aunamendi.eusko-ikaskuntza.eus/aunamendi/')
+    value=value.replace('="/ImgsAuna/','="/kanpora/aunamendi.eusko-ikaskuntza.eus/ImgsAuna/')
+    value=value.replace('href="/aunamendi/', 'href="/kanpora/aunamendi.eusko-ikaskuntza.eus/aunamendi/')
     
     return value
 
@@ -131,16 +138,15 @@ def convert_newline2br(value):
     return value
 
 @register.filter
-def clean_http_prefix(value): 
-    return re.sub('^\s*http://www.http://','http://', value)
-
-@register.filter
-def format_html(value):
+def format_html(value, max):
 	
 	html_parser = HTMLParser.HTMLParser()
 	first = html_parser.unescape(value)
-	if re.search("&.+?;",first):
-		first=format_html(first)
+	if max >= 5:
+		return first;
+	else:
+		if re.search("&.+?;",first):
+			first=format_html(first,(max+1))
 		
 	return first
 
@@ -630,7 +636,7 @@ def choose_description_language(interfaceLang, item):
         deskribapena_es=deskribapena_es.replace("<div class=\"desc_es\">", " ")
         deskribapena_es=deskribapena_es.replace("</div>", " ")
 
-        deskribapena_es=format_html(deskribapena_es)
+        deskribapena_es=format_html(deskribapena_es,1)
         deskribapena_es=re.sub('<p class=".*?">',"",deskribapena_es)
         deskribapena_es=re.sub("</?p>","",deskribapena_es)
 
@@ -643,7 +649,7 @@ def choose_description_language(interfaceLang, item):
         deskribapena_en=deskribapena_en.replace("<div class=\"desc_en\">", " ")
         deskribapena_en=deskribapena_en.replace("</div>", " ")
 
-        deskribapena_en=format_html(deskribapena_en)
+        deskribapena_en=format_html(deskribapena_en,1)
         deskribapena_en=re.sub('<p class=".*?">',"",deskribapena_en)
         deskribapena_en=re.sub("</?p>","",deskribapena_en)
 
@@ -662,7 +668,7 @@ def choose_description_language(interfaceLang, item):
         #deskribapena_eu=deskribapena_eu.replace('&quot;&gt;','">')
         #deskribapena_eu=deskribapena_eu.replace('&lt;/p&gt;','</p>')
         #deskribapena_eu=deskribapena_eu.replace('&lt;p&gt;','<p>')
-        deskribapena_eu=format_html(deskribapena_eu) 
+        deskribapena_eu=format_html(deskribapena_eu,1) 
         deskribapena_eu=re.sub('<p class=".*?">',"",deskribapena_eu) 
         deskribapena_eu=re.sub("</?p>","",deskribapena_eu)
         #print deskribapena_eu
@@ -696,7 +702,7 @@ def choose_description_language(interfaceLang, item):
         #deskribapena=deskribapena.replace('&lt;/p&gt;','</p>')
         #deskribapena=deskribapena.replace('&lt;p&gt;','<p>')
 
-        deskribapena=format_html(deskribapena) 
+        deskribapena=format_html(deskribapena,1) 
         deskribapena=re.sub('<p class=".*?">',"",deskribapena) 
         deskribapena=re.sub("</?p>","",deskribapena) 
 

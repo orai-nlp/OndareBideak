@@ -4748,7 +4748,7 @@ def ajax_edit_arloa(request):
          
         else:
             response = None
-            return render_to_response("ajax/ajax_area_response.html",{"response": response,},context_instance=RequestContext(request.request))  
+            return render_to_response("ajax/ajax_area_response.html",{"response": response,},context_instance=RequestContext(request))  
 
 def ajax_edit_telefonoa(request):
    
@@ -4766,7 +4766,7 @@ def ajax_edit_telefonoa(request):
          
         else:
             response = None
-            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))  
               
 def ajax_edit_emaila(request):
    
@@ -4784,7 +4784,7 @@ def ajax_edit_emaila(request):
          
         else:
             response = None
-            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))  
 
 def ajax_edit_website(request):
    
@@ -4796,13 +4796,15 @@ def ajax_edit_website(request):
         if not request.user.is_anonymous():
             
             hornitzailea.objects.filter(fk_user__id=user_id).update(website=web)
+
+            print "website datua berria",web,user_id
           
             response= web
             return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))       
          
         else:
             response = None
-            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))  
               
 
               
@@ -4822,7 +4824,7 @@ def ajax_edit_ordutegia(request):
          
         else:
             response = None
-            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))  
               
   
 
@@ -4842,7 +4844,7 @@ def ajax_edit_izena(request):
          
         else:
             response = None
-            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))  
         
 def ajax_edit_deskribapena(request):
    
@@ -4863,7 +4865,7 @@ def ajax_edit_deskribapena(request):
          
         else:
             response = None
-            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))  
         
 def ajax_edit_kokalekua (request):
    
@@ -4881,7 +4883,7 @@ def ajax_edit_kokalekua (request):
          
         else:
             response = None
-            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request.request))  
+            return render_to_response("ajax/ajax_response.html",{"response": response},context_instance=RequestContext(request))  
 
 
 

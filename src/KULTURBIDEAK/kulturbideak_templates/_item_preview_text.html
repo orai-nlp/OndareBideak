@@ -5,25 +5,25 @@
 
 {%if momentukoItema.edm_object%}
 	<!-- EDM object -->
-	<a id="item_img_text" class="img-responsive nabigItem scrollbar" href="{{momentukoItema.edm_object }}" target="_blank" > 					
+	<a id="item_img_text" class="img-responsive nabigItem scrollbar" href="{{momentukoItema.edm_object}}" target="_blank" > 					
 	{% if '.pdf' in momentukoItema.edm_object %}
 		<object data="{{momentukoItema.edm_object|proxyPassHttp}}" type="application/pdf" width="100%" height="90%">
-		<iframe id="kk" src="{{momentukoItema.edm_object|proxyPassHttp }}" style="border: none;" width="100%" height="90%">
+		<iframe id="kk1" src="{{momentukoItema.edm_object|proxyPassHttp}}" style="border: none;" width="100%" height="90%">
 		<img class="no-irudi-item" alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
 		</object>
 	{% elif '.html' in momentukoItema.edm_object %}
-   		<img class="no-irudi-item" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		<img class="no-irudi-item" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
 	{%else%}
 		<object data="{{momentukoItema.edm_object|proxyPassHttp}}" type="application/pdf" width="100%" height="90%">
-		<iframe id="kk" src="{{momentukoItema.edm_object|proxyPassHttp }}" style="border: none;" width="100%" height="90%">
+		<iframe id="kk2" src="{{momentukoItema.edm_object|proxyPassHttp}}" style="border: none;" width="100%" height="90%" onload="correctCssJs(this,'{{momentukoItema.edm_isshownat}}')">
 		<img class="no-irudi-item" alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
 		</object>
 		<!--ALA?-->
 		<!--
 		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
-   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
    		</a>
 		-->
 	{%endif%}
@@ -34,22 +34,22 @@
 	<a id="item_img_text" class="img-responsive nabigItem scrollbar" href="{{momentukoItema.edm_isshownby }}" target="_blank" > 							
 	{% if '.pdf' in momentukoItema.edm_isshownby %}
 		<object data="{{momentukoItema.edm_isshownby|proxyPassHttp}}" type="application/pdf" width="100%" height="90%">
-		<iframe id="kk" src="{{momentukoItema.edm_isshownby|proxyPassHttp }}" style="border: none;" width="100%" height="90%">
+		<iframe id="kk3" src="{{momentukoItema.edm_isshownby|proxyPassHttp }}" style="border: none;" width="100%" height="90%">
 		<img class="no-irudi-item" alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
 		</object>
 	{% elif '.html' in momentukoItema.edm_isshownby %}
-   		<img class="no-irudi-item" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		<img class="no-irudi-item" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
 	{%else%}
-		<object data="{{momentukoItema.edm_isshownby}}" type="application/pdf" width="100%" height="90%">
-		<iframe id="kk" src="{{momentukoItema.edm_isshownby|proxyPassHttp }}" style="border: none;" width="100%" height="90%">
+		<object data="{{momentukoItema.edm_isshownby|proxyPassHttp}}" type="application/pdf" width="100%" height="90%">
+		<iframe id="kk4" src="{{momentukoItema.edm_isshownby|proxyPassHttp }}" style="border: none;" width="100%" height="90%" onload="correctCssJs(this,'{{momentukoItema.edm_isshownby}}')">
 		<img class="no-irudi-item" alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
 		</object>
 		<!--ALA?-->
 		<!--
 		<a id="item_img" class="img-responsive nabigItem thumbnail" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >
-   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
    		</a>
 		-->
 	{%endif%}
@@ -57,25 +57,28 @@
 	
 {%elif momentukoItema.edm_isshownat%}
 	<!-- EDM isshownat -->	
-	<a id="item_img_text" class="img-responsive nabigItem scrollbar" href="{{momentukoItema.edm_isshownat}}" target="_blank" >
+	<a id="item_img_text" class="img-responsive nabigItem scrollbar" href="{{momentukoItema.edm_isshownat|proxyPassHttp}}" target="_blank" >
 	{% if '.pdf' in momentukoItema.edm_isshownat %}
-		<object data="{{momentukoItema.edm_isshownat}}" type="application/pdf" width="100%" height="90%">
-		<iframe id="kk" src="{{momentukoItema.edm_isshownat|proxyPassHttp }}" style="border: none;" width="100%" height="90%">
+		<object data="{{momentukoItema.edm_isshownat|proxyPassHttp}}" type="application/pdf" width="100%" height="90%">
+		<iframe id="kk5" src="{{momentukoItema.edm_isshownat|proxyPassHttp }}" style="border: none;" width="100%" height="90%">
 		<img class="no-irudi-item" alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
 		</object>
 	{% elif '.html' in momentukoItema.edm_isshownat %}
-   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
 	{%else%}
-		<object data="{{momentukoItema.edm_isshownat}}" type="application/pdf" width="100%" height="90%">
-		<iframe id="kk" src="{{momentukoItema.edm_isshownat|proxyPassHttp }}" style="border: none;" width="100%" height="90%">
+		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail|proxyPassHttp}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>
+		{%comment%}
+		<object data="{{momentukoItema.edm_isshownat|proxyPassHttp}}" type="application/pdf" width="100%" height="90%">
+		<iframe id="kk6" src="{{momentukoItema.edm_isshownat|proxyPassHttp }}" style="border: none;" width="100%" height="90%" onload="correctCssJs(this,'{{momentukoItema.edm_isshownat|proxyPassHttp}}')">
 		<img class="no-irudi-item" alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 		</iframe>		
 		</object>
+		{%endcomment%}
 		<!--ALA?-->
 		<!--
 		<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_isshownat %}{{momentukoItema.edm_isshownat}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownat %}_blank{%endif%}" >
-   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
+   		<img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" {% if momentukoItema.ob_thumbnail %} src="{{momentukoItema.ob_thumbnail}}" {%else%} src="/uploads/NoIrudiItem.png"{%endif%}>		
    		</a>
 		-->
 	{%endif%}
@@ -83,6 +86,6 @@
 {%else%}
 	<!-- preview last resort -->
 	<a id="item_img_text" class="img-responsive nabigItem" href="# " target="" >
-   		<img class="no-irudi-item" style="height:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="/uploads/NoIrudiItem.png">		
+   		<img class="no-irudi-item" style="height:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" src="/uploads/NoIrudiItem.png">		
    	</a>
 {%endif%}

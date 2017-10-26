@@ -318,6 +318,13 @@ input[type="checkbox"] + label span i{
 }
 
 
+img:before {
+	content: ' ';
+    display: block;
+    background-image: url('/uploads/NoIrudiItem.png');
+}
+
+
  /*****************************
   END estilo orokorrak
   *****************************/

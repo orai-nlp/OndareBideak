@@ -10,7 +10,7 @@
 		<div class="thumbnail col-xs-2 col-md-2">
 			
 			<a class="bilaketaEmaitza"  href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" >
-				<img class="ob_thumbnail" title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}{% endif%}" src="{% if item.ob_thumbnail%} {{item.ob_thumbnail|clean_http_prefix}} {% elif item.edm_object %} {{item.edm_object|clean_http_prefix}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
+				<img class="ob_thumbnail" title="{% if item.dc_title %}{{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}}{% endif%}" src="{% if item.ob_thumbnail%} {{item.ob_thumbnail|proxyPassHttp}} {% elif item.edm_object %} {{item.edm_object|proxyPassHttp}} {%else%} /uploads/NoIrudiItem.png {% endif %}">
 				<div class="dark-overlay">
 					<i class="icon-ob-{{item.edm_type|lower}} kolore-{{item.edm_type|lower}} overlay-icon"></i>
 				</div>
@@ -55,7 +55,7 @@
 							
             {% if item.dc_title %}
 				<li>
-					<h6><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}}</a></h6>
+					<h6><a class="bilaketaTitulua" title="{{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}}" href="{{BASE_URL}}/erakutsi_item?id={{item.item_id}}" id="titulua">{{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}}</a></h6>
                 </li>    
 			{%endif%}
 			{% if item.edm_provider %}

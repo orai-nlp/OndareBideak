@@ -6,7 +6,7 @@
 <a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >
      
       {% if momentukoItema.ob_thumbnail %} 
-	  <img id="prev_ob_thumb" style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html|safe}}" src="{{momentukoItema.ob_thumbnail|clean_http_prefix}}">
+	  <img id="prev_ob_thumb" style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" src="{{momentukoItema.ob_thumbnail|proxyPassHttp}}">
 	 
      {% elif '.pdf' in momentukoItema.edm_isshownby %}
 	<object data="{{momentukoItema.edm_isshownby}}" type="application/pdf" width="100%" height="60%">

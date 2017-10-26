@@ -7,6 +7,8 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 
+
+				
 {% block media_players %}
 {% if momentukoItema.edm_type|lower == "sound" or momentukoItema.edm_type|lower == "video" %}
 <link href="{{STATIC_URL}}css/video-js.min.css" rel="stylesheet">
@@ -19,8 +21,10 @@
 
 
 {% block tts_head %}
-<!-- TTS for language: {{LANGUAGE_CODE}} -->
-{% include "_tts_head.html" with node=momentukoItema lang=LANGUAGE_CODE %}
+<!-- TTS for language: {{momentukoItema.ob_language}} -->
+{% with momentukoItema.ob_language|ob_language_errep_kendu|leading_wspace as tts_lang %}
+{% include "_tts_head.html" with node=momentukoItema lang=tts_lang %}
+{% endwith %}
 {% endblock tts_head %}
 
 
@@ -98,9 +102,9 @@
 				</span>
 			</p>
 			{% if not request.mobile %}
-			<h2 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h2>
+			<h2 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}} </h2>
 			{% else %}
-			<h3 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html|safe}} </h3>
+			<h3 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}} </h3>
 			{% endif %}
 		</div>
 	</div>
@@ -168,7 +172,7 @@
 					<p class="item-field-title kolore-gris-hiru">{% trans "Sortzailea" %}</p>						
 					<p class="kolore-beltza">
 					{% if momentukoItema.dc_creator%}
-					{{momentukoItema.dc_creator|format_html|safe}}
+					{{momentukoItema.dc_creator|format_html:1|safe}}
 					{%else%}
 					-
 					{% endif %}
@@ -188,7 +192,7 @@
 				<li>
 					<p class="item-field-title kolore-gris-hiru">{% trans "Gaia" %}</p>
 					<p class="kolore-beltza"> {% if momentukoItema.dc_subject%}
-						{{momentukoItema.dc_subject|format_html|safe}}
+						{{momentukoItema.dc_subject|format_html:1|safe}}
 						{%else%}
 						-
 						{% endif %} 
@@ -244,7 +248,7 @@
 			<div class="path-info overflow ">
 				<div class="comment more item-info-description">
 
-					{{ LANGUAGE_CODE|choose_description_language:item|format_html|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
+					{{ LANGUAGE_CODE|choose_description_language:item|format_html:1|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe}}
 
 				</div>
 			</div>

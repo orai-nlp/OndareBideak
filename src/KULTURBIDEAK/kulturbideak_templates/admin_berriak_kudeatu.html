@@ -51,13 +51,13 @@
 		<tr name="{{ berria.id }}">
 			<td class="mk_desc">{{ berria.id }}</td>
 			<td class="mk_title">{{ berria.title_eu }}</td>
-			<td class="mk_desc">{{ berria.desk_eu|format_html|safe }}</td>
+			<td class="mk_desc">{{ berria.desk_eu|format_html:1|safe }}</td>
 			<td class="mk_title">{{ berria.title_es }}</td>
-			<td class="mk_desc">{{ berria.desk_es|format_html|safe }}</td>
+			<td class="mk_desc">{{ berria.desk_es|format_html:1|safe }}</td>
 			<td class="k_title">{{ berria.title_en }}</td>
-			<td class="mk_desc">{{ berria.desk_en|format_html|safe }}</td>
+			<td class="mk_desc">{{ berria.desk_en|format_html:1|safe }}</td>
 			<td class="mk_title">{{ berria.title_fr }}</td>
-			<td class="mk_desc">{{ berria.desk_fr|format_html|safe }}</td>
+			<td class="mk_desc">{{ berria.desk_fr|format_html:1|safe }}</td>
 			<td class="mk_date">{{ berria.data|date:"Y.m.d" }}</td>
 			<td class="mk_visible">
 				<i class="fa {% if berria.erakutsi == 1 %} fa-check green {% else %} fa-times red{% endif %}" aria-hidden="true"></i>

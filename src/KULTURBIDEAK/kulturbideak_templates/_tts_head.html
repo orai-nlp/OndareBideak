@@ -14,7 +14,7 @@
   	var isTTSReading = false;
   
 	//"Entzun Orria" sakatzerakoan narrazio osoa irakur dezan erabiltzen da
-	var desk= "{{node.dc_description |lerroJauziakKendu| format_html | replace_quotes| safe }}";
+	var desk= "{{node.dc_description |lerroJauziakKendu| format_html:1 | replace_quotes| safe }}";
   	var desk_osoa = desk.replace(/<\/?[^>]+(>|$)/g,"");  
   	if (! desk_osoa || desk_osoa === ""){
 		desk_osoa ="{{node.dc_description |lerroJauziakKendu|replace_quotes | safe}}";
@@ -24,5 +24,6 @@
   
   	//tts_berezia.js-ek erabiltzen du ze hizkuntzatan irakurri jakiteko, bukaeran hizkuntza: aldagaiean
   	var path_hizkuntza="{{lang}}";
+  	path_hizkuntza=path_hizkuntza.substring(0,2);
   
 </script>

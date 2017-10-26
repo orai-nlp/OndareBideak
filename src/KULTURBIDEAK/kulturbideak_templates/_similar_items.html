@@ -7,7 +7,7 @@
 
 
 	<div class="row similar-items">
-		<h2 class="kolore-gris-lau antzekoTitulua">{% trans "Antzeko itemak" %} <span class="kolore-gris-bi">{{ mlt|length }}</span></h2>
+		<h2 class="kolore-gris-lau antzekoTitulua">{% trans "Antzeko itemak" %} <span class="kolore-gris-bi">4</span></h2>{%comment%}{{ mlt|length }}{%endcomment%}
 
 			{% for antzekoa in mlt %}
 			{% if forloop.counter < 5 %}
@@ -19,14 +19,14 @@
 						{% if antzekoa.ob_thumbnail %}
 						
 							{% if antzekoa.ob_thumbnail|urlpath_exists == 'True' %}
-						  		<img class="similar-img" title="{{antzekoa.dc_title}}" src="{{ antzekoa.ob_thumbnail|clean_http_prefix }}">
+						  		<img class="similar-img" title="{{antzekoa.dc_title}}" src="{{ antzekoa.ob_thumbnail|proxyPassHttp }}">
 						  	{%else%}
 						  		<img class="similar-img" title="{{antzekoa.dc_title}}" src="/uploads/NoIrudiItem.png">
 						  	{%endif%}
 						{% elif antzekoa.edm_object %}
 							{% if antzekoa.edm_object|urlpath_exists == 'True' and 'SOUND' not in antzekoa.edm_type and 'VIDEO' not in antzekoa.edm_type%}
 						 
-								<img class="similar-img" title="{{antzekoa.dc_title}}" src="{{ antzekoa.edm_object|clean_http_prefix }}">
+								<img class="similar-img" title="{{antzekoa.dc_title}}" src="{{ antzekoa.edm_object|proxyPassHttp }}">
 							{%else%}
 						  		<img class="similar-img" title="{{antzekoa.dc_title}}" src="/uploads/NoIrudiItem.png">
 						  	{%endif%}
@@ -40,7 +40,7 @@
 						<div class="similar-overlay caption">
 							<p class="marra_overlay">&nbsp;&nbsp;&nbsp;</p>
 							{% if antzekoa.dc_title%}
-							<p class="title_overlay kolore-txuria" title="{{ LANGUAGE_CODE|choose_title_language:antzekoa|format_html|safe}}">{{ LANGUAGE_CODE|choose_title_language:antzekoa|format_html|cut_text:35|safe}}</p>
+							<p class="title_overlay kolore-txuria" title="{{ LANGUAGE_CODE|choose_title_language:antzekoa|format_html:1|safe}}">{{ LANGUAGE_CODE|choose_title_language:antzekoa|format_html:1|cut_text:35|safe}}</p>
 							{%endif%}						
 							<p class="creator_overlay kolore-gris-bat"> <i class="icon-ob-usr kolore-video" aria-hidden=true></i><span class="kolore-gris-0"> {{antzekoa.edm_provider}}</span></p>							
 							<i class="icon-ob-{{item.edm_type|lower}} overlay-icon kolore-{{item.edm_type|lower}}"></i>
