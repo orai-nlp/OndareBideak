@@ -15,7 +15,9 @@ register = template.Library()
 def proxyPassHttp(url):	
 	result=re.sub('^\s*http://www.http://','http://', url)
 	result=re.sub('liburuklik.euskadi.net','liburuklik.euskadi.eus', result)
-	result=re.sub('www.euskomedia.org','aunamendi.eusko-ikaskuntza.eus', result)
+        if not re.search('.(pdf|jpg|flv)$',result):
+                result=re.sub('www.euskomedia.org','aunamendi.eusko-ikaskuntza.eus', result)
+
 	result=re.sub('^\s*http://','/kanpora/', result)	
 	if re.search(r'DBKVisorBibliotecaWEB', result, flags=re.IGNORECASE):
 		result+='&contenido=meta'

@@ -2,8 +2,8 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.template import RequestContext, loader
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, render, redirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.shortcuts import render_to_response, render, redirect, get_object_or_404 
 from django.utils.translation import ugettext as _,get_language
 from itertools import islice, chain
 from django.utils import simplejson
@@ -978,6 +978,8 @@ def cross_search(request):
         galdera=request.GET['search_input']
         #zein paginator den
         z=request.GET['z']
+    else:
+        return redirect("/itemak_hasiera")
   
     items=[]
     paths=[]
@@ -1110,8 +1112,8 @@ def hornitzaile_search(request):
     search_models_items = [item]
     search_models_paths = [path]
     
-    #Hornitzaileak taula gehitzen ditugunean agian hau aldatuko da
-    hornitzaile_erab=User.objects.get(username=hornitzaile_izena)
+    #Hornitzaileak taula gehitzen ditugunean agian hau aldatuko da    
+    hornitzaile_erab=get_object_or_404(User,username=hornitzaile_izena)
     
     #Itemak erabiltzaileekin lotzean hau aldatu
     #items = SearchQuerySet().all().filter(fk_ob_user__id=hornitzaile_id).models(*search_models_items) 
@@ -2237,7 +2239,10 @@ def nabigatu(request):
            
             autoplaypages.append(berria)
     '''
-    momentukoPatha=path.objects.get(id=path_id)                                                                                
+    try:
+        momentukoPatha=path.objects.get(id=path_id)
+    except:
+        raise Http404("Incorrect path id, or path does not exist")                                                                                                                                                  
     #Ibilbidearen Hasierak hartu                                                                                                  
     nodes = []                                                                                                                    
     erroak= node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)                                                        
@@ -2648,7 +2653,8 @@ def logina(request):
         return render_to_response('ajax/ajax_login.html',{'mezua':_("Ongi etorri OndareBideak sistemara")},context_instance=RequestContext(request))
     else:
         logina=LoginForm()
-        
+        return redirect("/")
+
 
 def db_oaipmh_bilketa(cd):
     """ oai-pmh baseURL batetik abiatuta itemak EDM formatuan jetsi eta metadatuak datu-basean gorde"""
@@ -2975,7 +2981,7 @@ def erakutsi_item(request):
         
         #KOMENTARIOA IDATZI DA
         id=request.POST['id']
-        item_tupla = item.objects.get(pk=id)
+        item_tupla = get_object_or_404(item, pk=id)
         
         if not request.user.is_anonymous() and "submit_comment" in request.POST: # make a comment
         
@@ -2997,7 +3003,7 @@ def erakutsi_item(request):
         #ITEMA BISITATU NAHI DA 
         if 'id' in request.GET:
             id=request.GET['id']        
-            item_tupla = item.objects.get(pk=id)
+            item_tupla = get_object_or_404(item, pk=id)
             
     titulua=item_tupla.dc_title
     herrialdea=item_tupla.edm_country
