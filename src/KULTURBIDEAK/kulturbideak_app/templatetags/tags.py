@@ -121,7 +121,7 @@ def cut_words(input,num):
 def add_ekm_prefix_to_desc(value): 
     value=value.replace('="/ImgsAuna/','="/kanpora/aunamendi.eusko-ikaskuntza.eus/ImgsAuna/')
     value=value.replace('href="/aunamendi/', 'href="/kanpora/aunamendi.eusko-ikaskuntza.eus/aunamendi/')
-    
+    value=value.replace('http://maps.google.com', 'https://maps.google.com')
     return value
 
 @register.filter

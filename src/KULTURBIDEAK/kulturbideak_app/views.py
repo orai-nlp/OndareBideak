@@ -966,6 +966,9 @@ def cross_search(request):
         
     #Defektuz itemen orria erakusteko
     z="i"
+    #Defektuzko hizkuntza interfazearena:
+    hizkuntza=django.utils.translation.get_language_from_request(request)
+    
     # Helburu hizkuntza guztietan burutuko du bilaketa
     if(request.POST) and ('login' not in request.POST):
         hizkuntza=request.POST['search_lang']  
@@ -978,8 +981,8 @@ def cross_search(request):
         galdera=request.GET['search_input']
         #zein paginator den
         z=request.GET['z']
-    else:
-        return redirect("/itemak_hasiera")
+    #else:
+    #    return redirect("/itemak_hasiera")
   
     items=[]
     paths=[]

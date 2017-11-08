@@ -182,7 +182,7 @@
 				<li>
 					<p class="item-field-title kolore-gris-hiru">{% trans "Hizkuntza eta jatorria" %}</p>
 					<p class="kolore-beltza">
-					{% if ite m.ob_language %}
+					{% if item.ob_language %}
 						{{item.ob_language | ob_language_errep_kendu}}
 					{%else%}
 						-
