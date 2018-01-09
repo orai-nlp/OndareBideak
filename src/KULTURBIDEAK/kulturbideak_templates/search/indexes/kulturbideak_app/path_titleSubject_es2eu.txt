@@ -1,0 +1,4 @@
+{% if object.language == "es"%}
+{{ object.dc_title }}
+{{ object.dc_subject }}
+{%endif%}

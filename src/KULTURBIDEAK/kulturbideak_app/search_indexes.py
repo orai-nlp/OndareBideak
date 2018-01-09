@@ -40,49 +40,34 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     
     
     # LANGUAGE FIELDS:
+    titleSubject_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_eu.txt')
     text_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_eu.txt')
-    #title_eu=indexes.CharField()
-    #description_eu=indexes.CharField()
-    #subject_eu=indexes.CharField()
-    
+       
+    titleSubject_eu2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_eu2es.txt')
     text_eu2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_eu2es.txt')
-    #title_eu2es=indexes.CharField()
-    #description_eu2es=indexes.CharField()
-    #subject_eu2es=indexes.CharField()
-    
+     
+    titleSubject_eu2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_eu2en.txt')
     text_eu2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_eu2en.txt')
-    #title_eu2en=indexes.CharField()
-    #description_eu2en=indexes.CharField()
-    #subject_eu2en=indexes.CharField()
-    
-    
+           
+    titleSubject_es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_es.txt')
     text_es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_es.txt')
-    #title_es=indexes.CharField()
-    #description_es=indexes.CharField()
-    #subject_es=indexes.CharField()
-    
+       
+    titleSubject_es2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_es2eu.txt')
     text_es2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_es2eu.txt')
-    #title_es2eu=indexes.CharField()
-    #description_es2eu=indexes.CharField()
-    #subject_es2eu=indexes.CharField()
     
+    titleSubject_es2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_es2en.txt')
     text_es2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_es2en.txt')
-    #title_es2en=indexes.CharField()
-    #description_es2en=indexes.CharField()
-    #subject_es2en=indexes.CharField()
-    
-    
+     
+    titleSubject_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_en.txt')
     text_en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_en.txt')
-    #title_en=indexes.CharField()
-    #description_en=indexes.CharField()
-    #subject_en=indexes.CharField()
-    
+      
+    titleSubject_en2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_en2eu.txt')
     text_en2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_en2eu.txt')
-    #title_en2eu=indexes.CharField()
-    #description_en2eu=indexes.CharField()
-    #subject_en2eu=indexes.CharField()
-    
+   
+    titleSubject_en2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_en2es.txt')
     text_en2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_en2es.txt')
+
+    
     #title_en2es=indexes.CharField()
     #description_en2es=indexes.CharField()
     #subject_en2es=indexes.CharField()
@@ -117,24 +102,33 @@ class pathIndex(indexes.SearchIndex, indexes.Indexable):
     path_autocomp = indexes.EdgeNgramField(model_attr='dc_title')
     
     # LANGUAGE FIELDS:
+    titleSubject_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_eu.txt')
     text_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_eu.txt')
        
+    titleSubject_eu2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_eu2es.txt')
     text_eu2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_eu2es.txt')
      
+    titleSubject_eu2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_eu2en.txt')
     text_eu2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_eu2en.txt')
            
+    titleSubject_es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_es.txt')
     text_es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_es.txt')
        
+    titleSubject_es2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_es2eu.txt')
     text_es2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_es2eu.txt')
     
+    titleSubject_es2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_es2en.txt')
     text_es2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_es2en.txt')
      
+    titleSubject_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_en.txt')
     text_en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_en.txt')
       
+    titleSubject_en2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_en2eu.txt')
     text_en2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_en2eu.txt')
    
+    titleSubject_en2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_titleSubject_en2es.txt')
     text_en2es= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/path_text_en2es.txt')
-  
+    
     
     def get_model(self):
         return path

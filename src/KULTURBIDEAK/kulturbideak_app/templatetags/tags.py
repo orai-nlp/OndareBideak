@@ -614,6 +614,32 @@ def choose_language_text_not_target(Lang, item):
     text=text + " " + desk
     
     return text
+
+@register.filter
+def choose_language_title_target(Langs, item):
+    hizkuntzak=Langs.split("2")
+    jat=hizkuntzak[0]
+    helb=hizkuntzak[1]
+    
+    text=""
+    #TITULUA
+    titulua=item.dc_title
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    titulu_lang={}
+    titulu_lang['es']=get_lang_field(titulua,"es","titulu")
+    titulu_lang['en']=get_lang_field(titulua,"en","titulu")
+    titulu_lang['eu']=get_lang_field(titulua,"eu","titulu")
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+
+    #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
+    if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":
+        titulua=item.dc_title
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
+        titulua=titulua.replace("</div>", " ")
+
+    text=jat_helb_aukeratu(jat,helb,titulu_lang,titulua)       
+    return text
+
     
 @register.filter
 def choose_description_language(interfaceLang, item):
@@ -760,6 +786,50 @@ def setvar_license_icon_color(path):
     
     
     
-    
-    
+def get_lang_field(inputtext,lang,field):
+        field_lang=field+'_'+lang 
+	match_found = re.search(r'<div class=\"'+re.escape(field_lang)+r'\">(.*?)</div>', inputtext)	
+	reslt=""
+	if match_found:
+		reslt=match_found.group(0)
+		reslt=re.replace(r'<div class=\"'+re.escape(field_lang)+r'\">',r' ',result)
+		reslt=result.replace("</div>", " ")
+        
+        return reslt
+      
+   
+def jat_helb_aukeratu(src,tgt,fields,defaulttext):
+	
+    if src == "eu":
+         
+        if fields['eu'] != "":
+            text=fields['eu']
+            if(tgt=="es" and fields['es'] != ""):
+                text= ""
+            if(tgt=="en" and fields['en'] != ""):
+                text= ""          
+        else:        
+            text= defaulttext
+            
+    if src == "es":
+        if titulu_es != "":
+            text= fields['es'] 
+            if(tgt=="en" and fields['en'] != ""):
+                text= ""
+            if(tgt=="eu" and fields['eu'] != ""):
+                text= ""        
+        else:        
+            text= defaulttext
+                
+    if src == "en":        
+        if titulu_en != "":
+            text= fields['en']
+            if(tgt=="es" and fields['es'] != ""):
+                text= ""
+            if(tgt=="eu" and fields['eu'] != ""):
+                text= ""       
+        else:        
+            text= defaulttext
+        
+    return text
     

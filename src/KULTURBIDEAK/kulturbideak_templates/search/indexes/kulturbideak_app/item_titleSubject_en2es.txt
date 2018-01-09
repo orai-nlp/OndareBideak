@@ -1,0 +1,5 @@
+{%load tags%}
+{% if "en" in object.ob_language%}
+{{"en2es"|choose_language_title_target:object}}
+{{ object.dc_subject }}
+{%endif%}
