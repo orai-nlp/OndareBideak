@@ -1,0 +1,72 @@
+{% load i18n %}
+{% load leaflet_tags %}
+{% load qr_tags %}
+{% load tags%}
+
+	<button type="button" class="close button-font-small" onclick="$('#autocomplete-div').hide();return false;"><span class="icon-ob-times"></span></button>				
+	{% if items %}
+	<h4 class="modal-inner-title kolore-gris-bi" style="padding-left:10px;">{% trans "Itemak" %}</h4>                                                                               
+	<div id="autocomplete_items">
+		<div id="autocomplete_paths"></div>
+		{% for item in items %}
+		<div class="row search-result-modal">
+			<div id="auto_item{{item.id}}" class="thumbnail col-xs-2 col-md-2">
+				<a class="bilaketaEmaitza" id="a{{item.id}}"
+					href="{{BASE_URL}}/erakutsi_item?id={{item.id}}"> <img
+					class="ob_thumbnail-mini" id="img{{item.id}}" src="{{item.img}}">
+					<div class="dark-overlay">
+						<i id="icon{{item.id}}"
+							class="overlay-icon-mini icon-ob-{{item.type}} kolore-{{item.type}}"></i>
+					</div>
+				</a>
+			</div>
+			<div class="caption col-xs-10 col-md-10">
+				<ul class="caption-info bottom-padding-0 top-padding-0">
+					<li>
+						<h6>
+							<a id="h5{{item.id}}" class="bilaketaTitulua"
+								href="{{BASE_URL}}/erakutsi_item?id={{item.id}}">{{ lang|choose_title_language_str:item.title|format_html:1|safe}}</a>
+						</h6>
+					</li>
+					<li>
+						<p id="p{{item.id}}">{{item.src}}</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+	{% if paths %} 
+	<br />
+	<h4 class="modal-inner-title kolore-gris-bi">{% trans "Ibilbideak" %}</h4>
+	<div id="ajax_paths">
+		{% for i in paths %}
+		<div class="row search-result-modal">
+			<div id="auto_path{{i.id}}" class="thumbnail col-xs-2 col-md-2">
+				<a class="bilaketaEmaitza" id="a{{i.id}}"
+					href="{{BASE_URL}}/nabigazioa_hasi?path_id={{i.id}}"> <img
+					class="ob_thumbnail-mini" id="img{{i.id}}" src="{{i.img}}">
+					<div class="dark-overlay">
+						<i id="icon{{i.id}}"
+							class="overlay-icon-mini icon-ob-{{i.type}} kolore-{{i.type}}"></i>
+					</div>
+				</a>
+			</div>
+			<div class="caption col-xs-10 col-md-10">
+				<ul class="caption-info bottom-padding-0 top-padding-0">
+					<li>
+						<h6>
+							<a id="h6{{i.id}}" class="bilaketaTitulua"
+								href="{{BASE_URL}}/nabigazioa_hasi?path_id={{i.id}}">{{ lang|choose_title_language_str:i.title|format_html:1|safe}}</a>
+						</h6>
+					</li>
+					<li>
+						<p id="p{{i.id}}">{{i.src}}</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
