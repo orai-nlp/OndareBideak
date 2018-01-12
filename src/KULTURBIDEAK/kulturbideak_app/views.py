@@ -859,7 +859,67 @@ def hornitzaileak_hasiera(request):
                                                              'hornitzaileak':hornitzaileak}, context_instance=RequestContext(request))
     
 
+
 def autocomplete(request):
+    sqs_item = SearchQuerySet().autocomplete(item_autocomp=request.GET.get('q', ''))[:4]
+    sqs_path = SearchQuerySet().autocomplete(path_autocomp=request.GET.get('q', ''))[:4]
+
+    hizkuntza=django.utils.translation.get_language_from_request(request)
+    suggestions=[]    
+    for result in sqs_item:
+        one_suggestion={}
+        titulua = result.dc_title
+        one_suggestion['title']=titulua
+    
+        if result.ob_thumbnail:
+            one_suggestion['img']=result.ob_thumbnail
+        else:
+            one_suggestion['img']=result.edm_object
+    
+        if re.match("herritarra", result.edm_provider,flags=re.IGNORECASE):
+            one_suggestion['src']=result.dc_creator
+        else:
+            one_suggestion['src']=result.edm_provider           
+    
+        one_suggestion['type']=result.edm_type        
+        one_suggestion['id']=result.item_id
+        
+        suggestions.append(one_suggestion)
+        
+    suggestionsp=[]
+    for result in sqs_path:
+        if result.acces < 2:
+            continue
+        
+        one_suggestion={}
+        titulua = result.path_dc_title
+        one_suggestion['title']=titulua
+    
+        if result.path_thumbnail:
+            one_suggestion['img']=result.path_thumbnail
+        else:
+            one_suggestion['img']='/static/path.png'
+    
+        one_suggestion['src']=User.objects.get(id=result.path_fk_user_id).username
+        one_suggestion['type']='path'
+        one_suggestion['id']=result.path_id
+    
+        suggestionsp.append(one_suggestion)
+        
+    # Make sure you return a JSON object, not a bare list.
+    # Otherwise, you could be vulnerable to an XSS attack.
+    the_data = json.dumps({
+        'items': suggestions,
+        'paths': suggestionsp,
+    })
+    
+    return render_to_response('ajax/ajax_autocomplete.html',{'items':suggestions,
+                                                             'paths':suggestionsp,
+                                                             'lang':hizkuntza},context_instance=RequestContext(request))
+
+
+
+def autocomplete_old(request):
     
     sqs_item = SearchQuerySet().autocomplete(item_autocomp=request.GET.get('q', ''))[:4]
     sqs_path = SearchQuerySet().autocomplete(path_autocomp=request.GET.get('q', ''))[:4]
@@ -995,16 +1055,16 @@ def cross_search(request):
      
         #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
         #items=SearchQuerySet.all()filter(SQ(text_eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_eu'}" + galdera)|(text_es2eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_es2eu'}" + galdera)|(text_en2eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_en2eu'}" + galdera)).models(*search_models_items)
-        items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
-        paths = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+        items = SearchQuerySet().all().filter(SQ(titleSubject_eu=galdera)|SQ(text_eu=galdera)|SQ(titleSubject_es2eu=galdera)|SQ(text_es2eu=galdera)|SQ(titleSubject_en2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
+        paths = SearchQuerySet().all().filter(SQ(titleSubject_eu=galdera)|SQ(text_eu=galdera)|SQ(titleSubject_es2eu=galdera)|SQ(text_es2eu=galdera)|SQ(titleSubject_en2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
  
     elif hizkuntza == 'es':
        
         #items = itemIndex.objects.filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera))
         #paths = pathIndex.objects.filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera))
        
-        items = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
-        paths = SearchQuerySet().all().filter(SQ(text_es=galdera)|SQ(text_eu2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
+        items = SearchQuerySet().all().filter(SQ(titleSubject_es=galdera)|SQ(text_es=galdera)|SQ(titleSubject_eu2es=galdera)|SQ(text_eu2es=galdera)|SQ(titleSubject_en2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_items)
+        paths = SearchQuerySet().all().filter(SQ(titleSubject_es=galdera)|SQ(text_es=galdera)|SQ(titleSubject_eu2es=galdera)|SQ(text_eu2es=galdera)|SQ(titleSubject_en2es=galdera)|SQ(text_en2es=galdera)).models(*search_models_paths)
     
     
         
@@ -1013,8 +1073,8 @@ def cross_search(request):
         #items = itemIndex.objects.filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera))
         #paths = pathIndex.objects.filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera))
 
-        items = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
-        paths = SearchQuerySet().all().filter(SQ(text_en=galdera)|SQ(text_eu2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
+        items = SearchQuerySet().all().filter(SQ(titleSubject_en=galdera)|SQ(text_en=galdera)|SQ(titleSubject_eu2en=galdera)|SQ(text_eu2en=galdera)|SQ(titleSubject_es2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_items)
+        paths = SearchQuerySet().all().filter(SQ(titleSubject_en=galdera)|SQ(text_en=galdera)|SQ(titleSubject_eu2en=galdera)|SQ(text_eu2en=galdera)|SQ(titleSubject_es2en=galdera)|SQ(text_es2en=galdera)).models(*search_models_paths)
 
     
     #'Zirriborroak' (acces=1) diren ibilbideak baztertu

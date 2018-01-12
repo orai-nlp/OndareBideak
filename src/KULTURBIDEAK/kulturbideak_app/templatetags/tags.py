@@ -215,40 +215,16 @@ def correct_wikification_url_tags(value):
     return value
 
 @register.filter
-def choose_title_language(interfaceLang, item):
+def choose_title_language(lang, item):
     
     if item is None:
         return ""
      
     titulua=item.dc_title
-    titulu_es=""
-    titulu_en=""
-    titulu_eu=""
+    titulu_es=get_lang_field(titulua,"es","titulu")
+    titulu_en=get_lang_field(titulua,"en","titulu")
+    titulu_eu=get_lang_field(titulua,"eu","titulu")
     #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
-    match_es = re.search('<div class=\"titulu_es\">(.*?)</div>', titulua)
-
-    if match_es:
-        titulu_es=match_es.group(0)
-        titulu_es=titulu_es.replace("<div class=\"titulu_es\">", " ")
-        titulu_es=titulu_es.replace("</div>", " ")              
-    else:
-        titulu_es=""
-        
-    match_en = re.search('<div class=\"titulu_en\">(.*?)</div>', titulua)
-    if match_en:
-        titulu_en=match_en.group(0)
-        titulu_en=titulu_en.replace("<div class=\"titulu_en\">", " ")
-        titulu_en=titulu_en.replace("</div>", " ")
-    else:
-        titulu_en=""
-    
-    match_eu = re.search('<div class=\"titulu_eu\">(.*?)</div>', titulua)
-    if match_eu:
-        titulu_eu=match_eu.group(0)
-        titulu_eu=titulu_eu.replace("<div class=\"titulu_eu\">", " ")
-        titulu_eu=titulu_eu.replace("</div>", " ")
-    else:
-        titulu_eu=""
     
     #titulua= !!!erabaki defektuzkoa zein den eu,en,es
     if titulu_eu:
@@ -263,19 +239,19 @@ def choose_title_language(interfaceLang, item):
         titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
         titulua=titulua.replace("</div>", " ")
         
-    if interfaceLang == "eu":
+    if lang == "eu":
          
         if titulu_eu != "":
             return titulu_eu          
         else:        
             return titulua
-    elif interfaceLang == "es":
+    elif lang == "es":
         if titulu_es != "":
             return titulu_es          
         else:        
             return titulua
                 
-    elif interfaceLang == "en":
+    elif lang == "en":
          
         if titulu_en != "":
             return titulu_en          
@@ -283,7 +259,54 @@ def choose_title_language(interfaceLang, item):
             return titulua
     else:
         return titulua
-            
+
+@register.filter
+def choose_title_language_str(lang, itemStr):
+    
+    if itemStr is None:
+        return ""
+     
+    titulua=itemStr
+    titulu_es=get_lang_field(titulua,"es","titulu")
+    titulu_en=get_lang_field(titulua,"en","titulu")
+    titulu_eu=get_lang_field(titulua,"eu","titulu")
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    
+    #titulua= !!!erabaki defektuzkoa zein den eu,en,es
+    if titulu_eu:
+        titulua=titulu_eu
+    elif titulu_es:
+        titulua=titulu_es
+    else:
+        titulua=titulu_en
+    #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
+    if titulua =="":
+        titulua=itemStr
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
+        titulua=titulua.replace("</div>", " ")
+        
+    if lang == "eu":
+         
+        if titulu_eu != "":
+            return titulu_eu          
+        else:        
+            return titulua
+    elif lang == "es":
+        if titulu_es != "":
+            return titulu_es          
+        else:        
+            return titulua
+                
+    elif lang == "en":
+         
+        if titulu_en != "":
+            return titulu_en          
+        else:        
+            return titulua
+    else:
+        return titulua
+
+      
 @register.filter       
 def choose_karrusel_desk_language(interfaceLang, berria):
 
@@ -345,93 +368,13 @@ def choose_karrusel_titulu_language(interfaceLang, berria):
 def choose_language_text(Lang, item):
     
     text=""
-    #TITULUA
-    titulua=item.dc_title
-    titulu_es=""
-    titulu_en=""
-    titulu_eu=""
-    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
-    match_es = re.search('<div class=\"titulu_es\">(.*?)</div>', titulua)
-
-    if match_es:
-        titulu_es=match_es.group(0)
-        titulu_es=titulu_es.replace("<div class=\"titulu_es\">", " ")
-        titulu_es=titulu_es.replace("</div>", " ")
-    else:
-        titulu_es=""
-        
-    match_en = re.search('<div class=\"titulu_en\">(.*?)</div>', titulua)
-    if match_en:
-        titulu_en=match_en.group(0)
-        titulu_en=titulu_en.replace("<div class=\"titulu_en\">", " ")
-        titulu_en=titulu_en.replace("</div>", " ")
-    else:
-        titulu_en=""
-    
-    match_eu = re.search('<div class=\"titulu_eu\">(.*?)</div>', titulua)
-    if match_eu:
-        titulu_eu=match_eu.group(0)
-        titulu_eu=titulu_eu.replace("<div class=\"titulu_eu\">", " ")
-        titulu_eu=titulu_eu.replace("</div>", " ")
-    else:
-        titulu_eu=""
-    
-    
-    #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
-    if titulu_eu =="" and titulu_es =="" and titulu_en =="":
-        titulua=item.dc_title
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
-        titulua=titulua.replace("</div>", " ")
-        
-    if Lang == "eu":
-         
-        if titulu_eu != "":
-            text=titulu_eu          
-        else:        
-            text= titulua
-    if Lang == "es":
-        if titulu_es != "":
-            text= titulu_es          
-        else:        
-            text= titulua
-                
-    if Lang == "en":
-         
-        if titulu_en != "":
-            text= titulu_en          
-        else:        
-            text= titulua
     
     #DESKRIBAPENA
     deskribapena=item.dc_description
-    deskribapena_es=""
-    deskribapena_en=""
-    deskribapena_eu=""
+    deskribapena_es=get_lang_field(deskribapena,"es","desc")
+    deskribapena_en=get_lang_field(deskribapena,"en","desc")
+    deskribapena_eu=get_lang_field(deskribapena,"eu","desc")
     #espresio erregularrak erabilita hizkuntza desberdinetako deskribapenak atera
-    match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena)
-
-    if match_es:
-        deskribapena_es=match_es.group(0)
-        deskribapena_es=deskribapena_es.replace("<div class=\"desc_es\">", " ")
-        deskribapena_es=deskribapena_es.replace("</div>", " ")
-    else:
-        deskribapena_es=""
-        
-    match_en = re.search('<div class=\"desc_en\">(.*?)</div>', deskribapena)
-    if match_en:
-        deskribapena_en=match_es.group(0)
-        deskribapena_en=deskribapena_en.replace("<div class=\"desc_en\">", " ")
-        deskribapena_en=deskribapena_en.replace("</div>", " ")
-    else:
-        deskribapena_en=""
-    
-    match_eu = re.search('<div class=\"desc_eu\">(.*?)</div>', deskribapena)
-    if match_eu:
-        deskribapena_eu=match_eu.group(0)
-        deskribapena_eu=deskribapena_eu.replace("<div class=\"desc_eu\">", " ")
-        deskribapena_eu=deskribapena_eu.replace("</div>", " ")
-    else:
-        deskribapena_eu=""
     
     #DBko deskribapenak hizkuntza kontrolik ez badu
     if deskribapena_eu=="" and deskribapena_es=="" and deskribapena_en=="":
@@ -443,26 +386,49 @@ def choose_language_text(Lang, item):
     if Lang == "eu":
          
         if deskribapena_eu != "":
-            text=text +" "+ deskribapena_eu          
+            text=deskribapena_eu          
         else:        
-            text=text +" "+ deskribapena
+            text=deskribapena
         
     if Lang == "es":
         if deskribapena_es != "":
-            text=text +" "+ deskribapena_es          
+            text=deskribapena_es          
         else:        
-            text=text +" "+ deskribapena
+            text=deskribapena
                 
     if Lang == "en":
          
         if deskribapena_en != "":
-            text=text +" "+ deskribapena_en          
+            text=deskribapena_en          
         else:        
-            text=text +" "+ deskribapena
-
+            text=deskribapena
     
     return text
 
+
+@register.filter
+def choose_title_language_search(lang, item):
+    
+    if item is None:
+        return ""
+     
+    titulua=item.dc_title
+    titulu_lang={}
+    titulu_lang['es']=get_lang_field(titulua,"es","titulu")
+    titulu_lang['en']=get_lang_field(titulua,"en","titulu")
+    titulu_lang['eu']=get_lang_field(titulua,"eu","titulu")
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    
+    if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":
+        titulua=item.dc_title
+        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
+        titulua=titulua.replace("</div>", " ")
+        
+          
+    if titulu_lang[lang] != "":
+        return titulu_lang[lang]          
+    else:        
+        return titulua
 
 
 
@@ -471,149 +437,27 @@ def choose_language_text_not_target(Lang, item):
     hizkuntzak=Lang.split("2")
     jat=hizkuntzak[0]
     helb=hizkuntzak[1]
-    
+
     text=""
-    #TITULUA
-    titulua=item.dc_title
-    titulu_es=""
-    titulu_en=""
-    titulu_eu=""
-    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
-    match_es = re.search('<div class=\"titulu_es\">(.*?)</div>', titulua)
-
-    if match_es:
-        titulu_es=match_es.group(0)
-        titulu_es=titulu_es.replace("<div class=\"titulu_es\">", " ")
-        titulu_es=titulu_es.replace("</div>", " ")
-    else:
-        titulu_es=""
-        
-    match_en = re.search('<div class=\"titulu_en\">(.*?)</div>', titulua)
-    if match_en:
-        titulu_en=match_en.group(0)
-        titulu_en=titulu_en.replace("<div class=\"titulu_en\">", " ")
-        titulu_en=titulu_en.replace("</div>", " ")
-    else:
-        titulu_en=""
-    
-    match_eu = re.search('<div class=\"titulu_eu\">(.*?)</div>', titulua)
-    if match_eu:
-        titulu_eu=match_eu.group(0)
-        titulu_eu=titulu_eu.replace("<div class=\"titulu_eu\">", " ")
-        titulu_eu=titulu_eu.replace("</div>", " ")
-    else:
-        titulu_eu=""
-    
-    
-    #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
-    if titulu_eu =="" and titulu_es =="" and titulu_en =="":
-        titulua=item.dc_title
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
-        titulua=titulua.replace("</div>", " ")
-        
-    if jat == "eu":
-         
-        if titulu_eu != "":
-            text=titulu_eu
-            if(helb=="es" and titulu_es != ""):
-                text= ""
-            if(helb=="en" and titulu_en != ""):
-                text= ""          
-        else:        
-            text= titulua
-    if jat == "es":
-        if titulu_es != "":
-            text= titulu_es 
-            if(helb=="en" and titulu_en != ""):
-                text= ""
-            if(helb=="eu" and titulu_eu != ""):
-                text= ""        
-        else:        
-            text= titulua
-                
-    if jat == "en":        
-        if titulu_en != "":
-            text= titulu_en
-            if(helb=="es" and titulu_es != ""):
-                text= ""
-            if(helb=="eu" and titulu_eu != ""):
-                text= ""       
-        else:        
-            text= titulua
-    
-    #DESKRIBAPENA
+    #TITULUA                                                                                                                                
     deskribapena=item.dc_description
-    deskribapena_es=""
-    deskribapena_en=""
-    deskribapena_eu=""
-    #espresio erregularrak erabilita hizkuntza desberdinetako deskribapenak atera
-    match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena)
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera                                                                
+    deskribapena_lang={}
+    deskribapena_lang['es']=get_lang_field(deskribapena,"es","desc")
+    deskribapena_lang['en']=get_lang_field(deskribapena,"en","desc")
+    deskribapena_lang['eu']=get_lang_field(deskribapena,"eu","desc")
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera                                                                
 
-    if match_es:
-        deskribapena_es=match_es.group(0)
-        deskribapena_es=deskribapena_es.replace("<div class=\"desc_es\">", " ")
-        deskribapena_es=deskribapena_es.replace("</div>", " ")
-    else:
-        deskribapena_es=""
-        
-    match_en = re.search('<div class=\"desc_en\">(.*?)</div>', deskribapena)
-    if match_en:
-        deskribapena_en=match_es.group(0)
-        deskribapena_en=deskribapena_en.replace("<div class=\"desc_en\">", " ")
-        deskribapena_en=deskribapena_en.replace("</div>", " ")
-    else:
-        deskribapena_en=""
-    
-    match_eu = re.search('<div class=\"desc_eu\">(.*?)</div>', deskribapena)
-    if match_eu:
-        deskribapena_eu=match_eu.group(0)
-        deskribapena_eu=deskribapena_eu.replace("<div class=\"desc_eu\">", " ")
-        deskribapena_eu=deskribapena_eu.replace("</div>", " ")
-    else:
-        deskribapena_eu=""
-    
-    #DBko deskribapenak hizkuntza kontrolik ez badu
-    if deskribapena_eu=="" and deskribapena_es=="" and deskribapena_en=="":
+    #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada                                                                            
+    if deskribapena_lang['eu'] =="" and deskribapena_lang['es'] =="" and deskribapena_lang['en'] =="":
         deskribapena=item.dc_description
         deskribapena=deskribapena.replace("<div class=\"desc_lg\">", " ")
         deskribapena=deskribapena.replace("</div>", " ")
-        
-    
-    if jat == "eu":
-         
-        if deskribapena_eu != "":
-            desk= deskribapena_eu  
-            if(helb=="es" and deskribapena_es != ""):
-                desk=""
-            if(helb=="en" and deskribapena_en != ""):
-                desk=""
-        else:        
-            desk= deskribapena
-        
-    if jat == "es":
-        if deskribapena_es != "":
-            desk= deskribapena_es          
-            if(helb=="eu" and deskribapena_eu != ""):
-                desk=""
-            if(helb=="en" and deskribapena_en != ""):
-                desk=""
-        else:        
-            desk= deskribapena
-                
-    if jat == "en":
-         
-        if deskribapena_en != "":
-            desk= deskribapena_en
-            if(helb=="eu" and deskribapena_eu != ""):
-                desk=""
-            if(helb=="es" and deskribapena_es != ""):
-                desk=""
-        else:        
-            desk= deskribapena
 
-    text=text + " " + desk
-    
+    text=jat_helb_aukeratu(jat,helb,deskribapena_lang,deskribapena)
+
     return text
+
 
 @register.filter
 def choose_language_title_target(Langs, item):
@@ -648,61 +492,11 @@ def choose_description_language(interfaceLang, item):
         return ""
     
     deskribapena=item.dc_description
-    deskribapena_es=""
-    deskribapena_en=""
-    deskribapena_eu=""
+    deskribapena_es=get_lang_field(deskribapena,"es","desc")
+    deskribapena_en=get_lang_field(deskribapena,"en","desc")
+    deskribapena_eu=get_lang_field(deskribapena,"eu","desc")
     #espresio erregularrak erabilita hizkuntza desberdinetako deskribapenak atera
-    #Kontuz! .*? expresioak ez ditu lerro saltoak onartzen, Aunamendirekin adibidez arazoak
-    #re.DOTALL
-    #Make the '.' special character match any character at all, including a newline; without this flag, '.' will match anything except a newline.
-    #match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena,re.DOTALL) ??ERROREA EMATEN DU
 
-    match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena)
-
-    if match_es:
-        deskribapena_es=match_es.group(0)
-        deskribapena_es=deskribapena_es.replace("<div class=\"desc_es\">", " ")
-        deskribapena_es=deskribapena_es.replace("</div>", " ")
-
-        deskribapena_es=format_html(deskribapena_es,1)
-        deskribapena_es=re.sub('<p class=".*?">',"",deskribapena_es)
-        deskribapena_es=re.sub("</?p>","",deskribapena_es)
-
-    else:
-        deskribapena_es=""
-        
-    match_en = re.search('<div class=\"desc_en\">(.*?)</div>', deskribapena)
-    if match_en:
-        deskribapena_en=match_en.group(0)
-        deskribapena_en=deskribapena_en.replace("<div class=\"desc_en\">", " ")
-        deskribapena_en=deskribapena_en.replace("</div>", " ")
-
-        deskribapena_en=format_html(deskribapena_en,1)
-        deskribapena_en=re.sub('<p class=".*?">',"",deskribapena_en)
-        deskribapena_en=re.sub("</?p>","",deskribapena_en)
-
-    else:
-        deskribapena_en=""
-    
-    match_eu = re.search('<div class=\"desc_eu\">(.*?)</div>', deskribapena)
-    if match_eu:
-        deskribapena_eu=match_eu.group(0)
-        deskribapena_eu=deskribapena_eu.replace("<div class=\"desc_eu\">", " ")
-        deskribapena_eu=deskribapena_eu.replace("</div>", " ")
-
-        
-        #AUNAMEDIko etiketak kentzeko
-        #deskribapena_eu=deskribapena_eu.replace('&lt;p class=&quot;','<p class="')
-        #deskribapena_eu=deskribapena_eu.replace('&quot;&gt;','">')
-        #deskribapena_eu=deskribapena_eu.replace('&lt;/p&gt;','</p>')
-        #deskribapena_eu=deskribapena_eu.replace('&lt;p&gt;','<p>')
-        deskribapena_eu=format_html(deskribapena_eu,1) 
-        deskribapena_eu=re.sub('<p class=".*?">',"",deskribapena_eu) 
-        deskribapena_eu=re.sub("</?p>","",deskribapena_eu)
-        #print deskribapena_eu
-    else:
-        deskribapena_eu=""
-    
     #deskribapena= !!!erabaki defektuzkoa zein den eu,en,es
     if deskribapena_eu:
         deskribapena=deskribapena_eu
@@ -787,15 +581,27 @@ def setvar_license_icon_color(path):
     
     
 def get_lang_field(inputtext,lang,field):
-        field_lang=field+'_'+lang 
-	match_found = re.search(r'<div class=\"'+re.escape(field_lang)+r'\">(.*?)</div>', inputtext)	
+	field_lang=field+'_'+lang 
+
+	#espresio erregularrak erabilita hizkuntza desberdinetako deskribapenak atera
+    #Kontuz! .*? expresioak ez ditu lerro saltoak onartzen, Aunamendirekin adibidez arazoak
+    #re.DOTALL 
+    #Make the '.' special character match any character at all, including a newline; without this flag, '.' will match anything except a newline.                                                                                                                 
+    #match_es = re.search('<div class=\"desc_es\">(.*?)</div>', deskribapena,re.DOTALL) ??ERROREA EMATEN DU
+
+	match_found = re.search(r'<div class=\"'+re.escape(field_lang)+r'\">(.*?)</div>', inputtext,re.S)	
 	reslt=""
 	if match_found:
 		reslt=match_found.group(0)
-		reslt=re.replace(r'<div class=\"'+re.escape(field_lang)+r'\">',r' ',result)
-		reslt=result.replace("</div>", " ")
+		reslt=re.sub(r'<div class=\"'+re.escape(field_lang)+r'\">',r' ',reslt)
+		reslt=reslt.replace("</div>", " ")
+
+        reslt=format_html(reslt,1)
+    	reslt=re.sub('<p class=".*?">',"",reslt)
+        reslt=re.sub("</?p>","",reslt)
+
         
-        return reslt
+	return reslt
       
    
 def jat_helb_aukeratu(src,tgt,fields,defaulttext):
@@ -812,7 +618,7 @@ def jat_helb_aukeratu(src,tgt,fields,defaulttext):
             text= defaulttext
             
     if src == "es":
-        if titulu_es != "":
+        if fields['es'] != "":
             text= fields['es'] 
             if(tgt=="en" and fields['en'] != ""):
                 text= ""
@@ -822,7 +628,7 @@ def jat_helb_aukeratu(src,tgt,fields,defaulttext):
             text= defaulttext
                 
     if src == "en":        
-        if titulu_en != "":
+        if fields['en'] != "":
             text= fields['en']
             if(tgt=="es" and fields['es'] != ""):
                 text= ""

@@ -1,5 +1,4 @@
 {%load tags%}
 {% if "es" in object.ob_language %}
 {{"es2eu"|choose_language_text_not_target:object}}
-{{ object.dc_subject }}
 {%endif%}
