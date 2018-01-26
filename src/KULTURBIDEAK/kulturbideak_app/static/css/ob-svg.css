@@ -1,0 +1,76 @@
+/* svg elementuentzako koloreak */
+.stroke-video {
+	stroke:#FF563D !important;
+}
+.stroke-text {
+	stroke:#FFDA3E !important;
+}
+.stroke-image {
+	stroke:#40D7FF !important;
+}
+.stroke-sound {
+	stroke:#5AED64 !important;
+}
+.stroke-txuria { 
+	stroke:#FFFFFF !important;
+}
+.stroke-beltza { 
+	stroke:#000000 !important;
+}
+.stroke-gris-hiru { 
+	stroke:#666666 !important;
+}
+.stroke-beltza { 
+	stroke:#000000 !important;
+}
+
+.stroke-selected {
+	stroke: 'red';
+}
+
+
+/** d3 tree graph styles*/
+.node circle {
+	fill: #fff;
+	stroke: steelblue;
+	stroke-width: 10px;
+}
+
+.node text {
+	font: 12px sans-serif;
+}
+
+.link {
+	stroke: #666;
+	stroke-opacity: .6;
+	fill: none;
+}
+circle .selectedNode {
+	width: 50px;
+	height: 50px;
+	stroke-width: 3px;
+	stroke: 'red';
+}
+
+circle .unselectedNode {
+	width: 50px;
+	height: 50px;
+	stroke: #666;
+	stroke-width: 3px;
+}
+
+.templink {
+	fill: none;
+	stroke: none;
+	stroke-width: 3px;
+}
+
+.svg-trash-icon {
+	position:static;
+	stroke: #333;
+	fill: red;
+}
+
+circle.aukeratuta{
+	stroke-width:3px;
+}
