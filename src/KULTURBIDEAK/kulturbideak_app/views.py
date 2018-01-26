@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, render, redirect, get_object_or_404 
 from django.utils.translation import ugettext as _,get_language
 from itertools import islice, chain
-from django.utils import simplejson
+import simplejson
 from django.template import Context, Template
 from django.utils import timezone
 from django.core.mail import send_mail
