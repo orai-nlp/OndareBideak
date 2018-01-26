@@ -59,7 +59,15 @@
       //$('.ac-result').remove();
       $('#autocomplete-container').empty();
       $('#autocomplete-container').html(data);
-      $('#autocomplete-div').show();
+      var itm = document.getElementById('autocomplete_items'); 
+      var pth = document.getElementById('autocomplete_paths');
+      if (itm || pth){
+          $('#autocomplete-div').show();    	  
+      }
+      else{
+    	  $('#autocomplete-div').hide();
+      }
+
     }
 
     
