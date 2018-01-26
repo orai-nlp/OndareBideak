@@ -6,8 +6,7 @@
 	<button type="button" class="close button-font-small" onclick="$('#autocomplete-div').hide();return false;"><span class="icon-ob-times"></span></button>				
 	{% if items %}
 	<h4 class="modal-inner-title kolore-gris-bi" style="padding-left:10px;">{% trans "Itemak" %}</h4>                                                                               
-	<div id="autocomplete_items">
-		<div id="autocomplete_paths"></div>
+	<div id="autocomplete_items">		
 		{% for item in items %}
 		<div class="row search-result-modal">
 			<div id="auto_item{{item.id}}" class="thumbnail col-xs-2 col-md-2">
@@ -40,7 +39,7 @@
 	{% if paths %} 
 	<br />
 	<h4 class="modal-inner-title kolore-gris-bi">{% trans "Ibilbideak" %}</h4>
-	<div id="ajax_paths">
+	<div id="autocomplete_paths">
 		{% for i in paths %}
 		<div class="row search-result-modal">
 			<div id="auto_path{{i.id}}" class="thumbnail col-xs-2 col-md-2">

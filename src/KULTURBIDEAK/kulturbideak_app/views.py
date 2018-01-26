@@ -50,6 +50,7 @@ from haystack.query import SQ, SearchQuerySet
 
 from  haystack.inputs import Not
 from haystack.inputs import Raw
+from haystack.inputs import AltParser
 #from django.template.context_processors import csrf
 #MADDALEN
 #from haystack.forms import ModelSearchForm, HighlightedSearchForm
@@ -1053,10 +1054,17 @@ def cross_search(request):
     
     if hizkuntza == 'eu':
      
+        alt_q = AltParser('dismax', galdera,
+                  qf='titleSubject_eu^20 text_eu^10 titleSubject_es2eu^20 text_es2eu^10 titleSubject_en2eu^20 text_en2eu^10',qs=40)
+        items =SearchQuerySet().all().filter(content=alt_q).models(*search_models_items)
+        paths =SearchQuerySet().all().filter(content=alt_q).models(*search_models_paths)
+        
         #items = SearchQuerySet().all().filter(SQ(text_eu=galdera)|SQ(text_es2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
         #items=SearchQuerySet.all()filter(SQ(text_eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_eu'}" + galdera)|(text_es2eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_es2eu'}" + galdera)|(text_en2eu=Raw("{!dismax qf='dc_title^3 dc_description^2 text_en2eu'}" + galdera)).models(*search_models_items)
+        
         items = SearchQuerySet().all().filter(SQ(titleSubject_eu=galdera)|SQ(text_eu=galdera)|SQ(titleSubject_es2eu=galdera)|SQ(text_es2eu=galdera)|SQ(titleSubject_en2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_items)
         paths = SearchQuerySet().all().filter(SQ(titleSubject_eu=galdera)|SQ(text_eu=galdera)|SQ(titleSubject_es2eu=galdera)|SQ(text_es2eu=galdera)|SQ(titleSubject_en2eu=galdera)|SQ(text_en2eu=galdera)).models(*search_models_paths)
+ 
  
     elif hizkuntza == 'es':
        

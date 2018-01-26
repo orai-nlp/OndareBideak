@@ -167,6 +167,11 @@ function hizkuntza_url_egokitu(linka){
     form.name="setLang"+hizkuntza;
     document.getElementsByName("language")[0].value=hizkuntza;
     document.getElementsByName("setLang"+hizkuntza)[0].submit();
+    if (/cross_search/.test(window.location.href)){
+    	var bilaketa=document.getElementById("search_input");
+    	sdfsa 
+    }
+    
     return false;
 
 }

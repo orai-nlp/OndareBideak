@@ -592,9 +592,9 @@ def get_lang_field(inputtext,lang,field):
 	match_found = re.search(r'<div class=\"'+re.escape(field_lang)+r'\">(.*?)</div>', inputtext,re.S)	
 	reslt=""
 	if match_found:
-		reslt=match_found.group(0)
-		reslt=re.sub(r'<div class=\"'+re.escape(field_lang)+r'\">',r' ',reslt)
-		reslt=reslt.replace("</div>", " ")
+		reslt=match_found.group(1)
+		#reslt=re.sub(r'<div class=\"'+re.escape(field_lang)+r'\">',r' ',reslt)
+		#reslt=reslt.replace("</div>", " ")
 
         reslt=format_html(reslt,1)
     	reslt=re.sub('<p class=".*?">',"",reslt)

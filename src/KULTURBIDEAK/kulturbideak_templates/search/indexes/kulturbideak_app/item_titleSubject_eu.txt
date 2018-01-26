@@ -1,5 +1,5 @@
-{% load tags%}
+{% load tags %}
 {% if "eu" in object.ob_language %}
-{{"eu"|choose_title_language_search:object}}
+{{"eu"|choose_title_language:object}}
 {{ object.dc_subject }}
 {%endif%}
