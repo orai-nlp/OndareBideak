@@ -24,7 +24,7 @@
 					<li>
 						<h6>
 							<a id="h5{{item.id}}" class="bilaketaTitulua"
-								href="{{BASE_URL}}/erakutsi_item?id={{item.id}}">{{ lang|choose_title_language_str:item.title|format_html:1|safe}}</a>
+								href="{{BASE_URL}}/erakutsi_item?id={{item.id}}">{{ lang|choose_title_language:item.title|format_html:1|safe}}</a>
 						</h6>
 					</li>
 					<li>
@@ -57,7 +57,7 @@
 					<li>
 						<h6>
 							<a id="h6{{i.id}}" class="bilaketaTitulua"
-								href="{{BASE_URL}}/nabigazioa_hasi?path_id={{i.id}}">{{ lang|choose_title_language_str:i.title|format_html:1|safe}}</a>
+								href="{{BASE_URL}}/nabigazioa_hasi?path_id={{i.id}}">{{ lang|choose_title_language:i.title|format_html:1|safe}}</a>
 						</h6>
 					</li>
 					<li>

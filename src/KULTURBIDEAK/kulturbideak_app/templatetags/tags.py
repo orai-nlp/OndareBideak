@@ -215,53 +215,6 @@ def correct_wikification_url_tags(value):
 
     return value
 
-
-@register.filter
-def choose_title_language_str(lang, itemStr):
-    
-    if itemStr is None:
-        return ""
-     
-    titulua=itemStr
-    titulu_es=get_lang_field(titulua,"es","titulu")
-    titulu_en=get_lang_field(titulua,"en","titulu")
-    titulu_eu=get_lang_field(titulua,"eu","titulu")
-    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
-    
-    #titulua= !!!erabaki defektuzkoa zein den eu,en,es
-    if titulu_eu:
-        titulua=titulu_eu
-    elif titulu_es:
-        titulua=titulu_es
-    else:
-        titulua=titulu_en
-    #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
-    if titulua =="":
-        titulua=itemStr
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
-        titulua=titulua.replace("</div>", " ")
-        
-    if lang == "eu":
-         
-        if titulu_eu != "":
-            return titulu_eu          
-        else:        
-            return titulua
-    elif lang == "es":
-        if titulu_es != "":
-            return titulu_es          
-        else:        
-            return titulua
-                
-    elif lang == "en":
-         
-        if titulu_en != "":
-            return titulu_en          
-        else:        
-            return titulua
-    else:
-        return titulua
-
       
 @register.filter       
 def choose_karrusel_desk_language(interfaceLang, berria):
@@ -367,7 +320,7 @@ def choose_title_language(lang, item):
     if item is None:
         return ""
      
-    titulua=item.dc_title
+    titulua=item
     
     # no lang information -> return the title as it is
     if lang is None:
