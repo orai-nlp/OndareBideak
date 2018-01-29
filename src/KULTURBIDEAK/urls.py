@@ -7,73 +7,73 @@ from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 #from django.views.generic import direct_to_template
 from kulturbideak_app import views as ob_views
-from KULTURBIDEAK.kulturbideak_app.views import kulturBideak
-from KULTURBIDEAK.kulturbideak_app.views import hasiera
-from KULTURBIDEAK.kulturbideak_app.views import erakutsi_item
-from KULTURBIDEAK.kulturbideak_app.views import logina
-from KULTURBIDEAK.kulturbideak_app.views import erregistratu
-from KULTURBIDEAK.kulturbideak_app.views import itema_gehitu
-from KULTURBIDEAK.kulturbideak_app.views import editatu_itema
-from KULTURBIDEAK.kulturbideak_app.views import sortu_ibilbidea
-from KULTURBIDEAK.kulturbideak_app.views import ajax_workspace_item_gehitu
-from KULTURBIDEAK.kulturbideak_app.views import ajax_workspace_item_borratu
-from KULTURBIDEAK.kulturbideak_app.views import ajax_path_berria_gorde
-from KULTURBIDEAK.kulturbideak_app.views import ajax_path_node_gorde
-from KULTURBIDEAK.kulturbideak_app.views import ajax_load_ws
-from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_paths_list
-from KULTURBIDEAK.kulturbideak_app.views import editatu_ibilbidea
-from KULTURBIDEAK.kulturbideak_app.views import ajax_path_eguneratu
-from KULTURBIDEAK.kulturbideak_app.views import ajax_path_node_eguneratu
-from KULTURBIDEAK.kulturbideak_app.views import ajax_path_irudia_gorde_proba
-from KULTURBIDEAK.kulturbideak_app.views import ajax_path_irudia_gorde
-from KULTURBIDEAK.kulturbideak_app.views import ajax_path_irudia_eguneratu
-from KULTURBIDEAK.kulturbideak_app.views import nire_itemak_erakutsi
-from KULTURBIDEAK.kulturbideak_app.views import nire_ibilbideak_erakutsi
-from KULTURBIDEAK.kulturbideak_app.views import perfila_erakutsi
-from KULTURBIDEAK.kulturbideak_app.views import pasahitza_aldatu
-from KULTURBIDEAK.kulturbideak_app.views import itemak_hasiera
-from KULTURBIDEAK.kulturbideak_app.views import ibilbideak_hasiera
-from KULTURBIDEAK.kulturbideak_app.views import hornitzaileak_hasiera
-from KULTURBIDEAK.kulturbideak_app.views import nabigazio_item
-from KULTURBIDEAK.kulturbideak_app.views import nabigatu
-from KULTURBIDEAK.kulturbideak_app.views import botoa_eman_item
-from KULTURBIDEAK.kulturbideak_app.views import botoa_kendu_item
-from KULTURBIDEAK.kulturbideak_app.views import botoa_eman_path
-from KULTURBIDEAK.kulturbideak_app.views import botoa_kendu_path
-from KULTURBIDEAK.kulturbideak_app.views import nabigazioa_hasi
-from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_most_voted_paths
-from KULTURBIDEAK.kulturbideak_app.views import cross_search
-from KULTURBIDEAK.kulturbideak_app.views import autoplay_hasieratik
-from KULTURBIDEAK.kulturbideak_app.views import autocomplete
-from KULTURBIDEAK.kulturbideak_app.views import oaipmh_datubilketa
-from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_search
-from KULTURBIDEAK.kulturbideak_app.views import filtro_search
-from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_fitxa_editatu
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_arloa
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_where
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_izena
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_deskribapena
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_kokalekua
-from KULTURBIDEAK.kulturbideak_app.views import ajax_hornitzaile_irudia_gorde
-from KULTURBIDEAK.kulturbideak_app.views import ajax_hornitzaile_argazkia_gorde
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_telefonoa
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_emaila
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_website
-from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_ordutegia
-from KULTURBIDEAK.kulturbideak_app.views import fitxa_gorde
-from KULTURBIDEAK.kulturbideak_app.views import azkeneko_itemak
-from KULTURBIDEAK.kulturbideak_app.views import azkeneko_ibilbideak
-from KULTURBIDEAK.kulturbideak_app.views import ezabatu_ibilbidea
-from KULTURBIDEAK.kulturbideak_app.views import ezabatu_itema
-from KULTURBIDEAK.kulturbideak_app.views import ajax_path_edizio_aukerak_aldatu
-from KULTURBIDEAK.kulturbideak_app.views import admin_hornitzaile_fitxa_editatu
-from KULTURBIDEAK.kulturbideak_app.views import admin_erabiltzaileak_kudeatu
-from KULTURBIDEAK.kulturbideak_app.views import admin_berriak_kudeatu
-from KULTURBIDEAK.kulturbideak_app.views import get_user
-from KULTURBIDEAK.kulturbideak_app.views import get_berria
-from KULTURBIDEAK.kulturbideak_app.views import admin_reset_user_password
-from KULTURBIDEAK.kulturbideak_app.views import admin_eguneko_hornitzaileak_kudeatu
-from KULTURBIDEAK.kulturbideak_app.views import admin_hornitzaile_bihurtu
+# from KULTURBIDEAK.kulturbideak_app.views import kulturBideak
+# from KULTURBIDEAK.kulturbideak_app.views import hasiera
+# from KULTURBIDEAK.kulturbideak_app.views import erakutsi_item
+# from KULTURBIDEAK.kulturbideak_app.views import logina
+# from KULTURBIDEAK.kulturbideak_app.views import erregistratu
+# from KULTURBIDEAK.kulturbideak_app.views import itema_gehitu
+# from KULTURBIDEAK.kulturbideak_app.views import editatu_itema
+# from KULTURBIDEAK.kulturbideak_app.views import sortu_ibilbidea
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_workspace_item_gehitu
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_workspace_item_borratu
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_path_berria_gorde
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_path_node_gorde
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_load_ws
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_paths_list
+# from KULTURBIDEAK.kulturbideak_app.views import editatu_ibilbidea
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_path_eguneratu
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_path_node_eguneratu
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_path_irudia_gorde_proba
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_path_irudia_gorde
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_path_irudia_eguneratu
+# from KULTURBIDEAK.kulturbideak_app.views import nire_itemak_erakutsi
+# from KULTURBIDEAK.kulturbideak_app.views import nire_ibilbideak_erakutsi
+# from KULTURBIDEAK.kulturbideak_app.views import perfila_erakutsi
+# from KULTURBIDEAK.kulturbideak_app.views import pasahitza_aldatu
+# from KULTURBIDEAK.kulturbideak_app.views import itemak_hasiera
+# from KULTURBIDEAK.kulturbideak_app.views import ibilbideak_hasiera
+# from KULTURBIDEAK.kulturbideak_app.views import hornitzaileak_hasiera
+# from KULTURBIDEAK.kulturbideak_app.views import nabigazio_item
+# from KULTURBIDEAK.kulturbideak_app.views import nabigatu
+# from KULTURBIDEAK.kulturbideak_app.views import botoa_eman_item
+# from KULTURBIDEAK.kulturbideak_app.views import botoa_kendu_item
+# from KULTURBIDEAK.kulturbideak_app.views import botoa_eman_path
+# from KULTURBIDEAK.kulturbideak_app.views import botoa_kendu_path
+# from KULTURBIDEAK.kulturbideak_app.views import nabigazioa_hasi
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_lortu_most_voted_paths
+# from KULTURBIDEAK.kulturbideak_app.views import cross_search
+# from KULTURBIDEAK.kulturbideak_app.views import autoplay_hasieratik
+# from KULTURBIDEAK.kulturbideak_app.views import autocomplete
+# from KULTURBIDEAK.kulturbideak_app.views import oaipmh_datubilketa
+# from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_search
+# from KULTURBIDEAK.kulturbideak_app.views import filtro_search
+# from KULTURBIDEAK.kulturbideak_app.views import hornitzaile_fitxa_editatu
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_arloa
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_where
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_izena
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_deskribapena
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_kokalekua
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_hornitzaile_irudia_gorde
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_hornitzaile_argazkia_gorde
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_telefonoa
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_emaila
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_website
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_edit_ordutegia
+# from KULTURBIDEAK.kulturbideak_app.views import fitxa_gorde
+# from KULTURBIDEAK.kulturbideak_app.views import azkeneko_itemak
+# from KULTURBIDEAK.kulturbideak_app.views import azkeneko_ibilbideak
+# from KULTURBIDEAK.kulturbideak_app.views import ezabatu_ibilbidea
+# from KULTURBIDEAK.kulturbideak_app.views import ezabatu_itema
+# from KULTURBIDEAK.kulturbideak_app.views import ajax_path_edizio_aukerak_aldatu
+# from KULTURBIDEAK.kulturbideak_app.views import admin_hornitzaile_fitxa_editatu
+# from KULTURBIDEAK.kulturbideak_app.views import admin_erabiltzaileak_kudeatu
+# from KULTURBIDEAK.kulturbideak_app.views import admin_berriak_kudeatu
+# from KULTURBIDEAK.kulturbideak_app.views import get_user
+# from KULTURBIDEAK.kulturbideak_app.views import get_berria
+# from KULTURBIDEAK.kulturbideak_app.views import admin_reset_user_password
+# from KULTURBIDEAK.kulturbideak_app.views import admin_eguneko_hornitzaileak_kudeatu
+# from KULTURBIDEAK.kulturbideak_app.views import admin_hornitzaile_bihurtu
 from django.contrib import admin
 
 #MAddalen
@@ -95,77 +95,77 @@ urlpatterns = patterns('',
     #url(r'uploads/(?P<path>.*)$', views.serve),
     url(r'uploads/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
     #url(r'^$', SearchView(), name='haystack_search'),
-    url(r'^$', hasiera),
+    url(r'^$', ob_views.hasiera),
     #url(r'search', SearchView(), name='haystack_search'), 
-    url(r'cross_search', cross_search),
-    url(r'^login$', logina),
-    url(r'erregistratu$', erregistratu),
-    url(r'perfila_erakutsi', perfila_erakutsi), 
-    url(r'pasahitza_aldatu', pasahitza_aldatu),     
+    url(r'cross_search', ob_views.cross_search),
+    url(r'^login$', ob_views.logina),
+    url(r'erregistratu$', ob_views.erregistratu),
+    url(r'perfila_erakutsi', ob_views.perfila_erakutsi), 
+    url(r'pasahitza_aldatu', ob_views.pasahitza_aldatu),     
     (r'irten/$', 'django.contrib.auth.views.logout',{'next_page': '/'}),
-    url(r'itema_gehitu$', itema_gehitu),
-    url(r'editatu_itema$', editatu_itema),     
-    url(r'sortu_ibilbidea$', sortu_ibilbidea),
-    url(r'erakutsi_item', erakutsi_item),
-    url(r'ajax_workspace_item_gehitu$', ajax_workspace_item_gehitu),
-    url(r'ajax_workspace_item_borratu$', ajax_workspace_item_borratu),
-    url(r'ajax_path_berria_gorde$', ajax_path_berria_gorde),
-    url(r'ajax_path_node_gorde$', ajax_path_node_gorde),
-    url(r'ajax_lortu_paths_list$', ajax_lortu_paths_list),
-    url(r'editatu_ibilbidea', editatu_ibilbidea),
-    url(r'ajax_path_eguneratu$', ajax_path_eguneratu),
-    url(r'ajax_path_node_eguneratu$', ajax_path_node_eguneratu), 
-    url(r'ajax_path_irudia_gorde_proba$', ajax_path_irudia_gorde_proba),  
-    url(r'ajax_path_irudia_gorde$', ajax_path_irudia_gorde),
-    url(r'ajax_path_irudia_eguneratu$', ajax_path_irudia_eguneratu), 
-    url(r'ajax_load_ws', ajax_load_ws),    
-    url(r'nire_itemak_erakutsi$', nire_itemak_erakutsi), 
-    url(r'nire_ibilbideak_erakutsi$', nire_ibilbideak_erakutsi),
-    url(r'itemak_hasiera$', itemak_hasiera),
-    url(r'ibilbideak_hasiera$', ibilbideak_hasiera),
-    url(r'hornitzaileak_hasiera$', hornitzaileak_hasiera),
-    url(r'nabigazio_item', nabigazio_item),
-    url(r'nabigatu', nabigatu),
-    url(r'botoa_eman_item', botoa_eman_item),
-    url(r'botoa_kendu_item', botoa_kendu_item),   
-    url(r'botoa_eman_path', botoa_eman_path),
-    url(r'botoa_kendu_path', botoa_kendu_path), 
+    url(r'itema_gehitu$', ob_views.itema_gehitu),
+    url(r'editatu_itema$', ob_views.editatu_itema),     
+    url(r'sortu_ibilbidea$', ob_views.sortu_ibilbidea),
+    url(r'erakutsi_item', ob_views.erakutsi_item),
+    url(r'ajax_workspace_item_gehitu$', ob_views.ajax_workspace_item_gehitu),
+    url(r'ajax_workspace_item_borratu$', ob_views.ajax_workspace_item_borratu),
+    url(r'ajax_path_berria_gorde$', ob_views.ajax_path_berria_gorde),
+    url(r'ajax_path_node_gorde$', ob_views.ajax_path_node_gorde),
+    url(r'ajax_lortu_paths_list$', ob_views.ajax_lortu_paths_list),
+    url(r'editatu_ibilbidea', ob_views.editatu_ibilbidea),
+    url(r'ajax_path_eguneratu$', ob_views.ajax_path_eguneratu),
+    url(r'ajax_path_node_eguneratu$', ob_views.ajax_path_node_eguneratu), 
+    url(r'ajax_path_irudia_gorde_proba$', ob_views.ajax_path_irudia_gorde_proba),  
+    url(r'ajax_path_irudia_gorde$', ob_views.ajax_path_irudia_gorde),
+    url(r'ajax_path_irudia_eguneratu$', ob_views.ajax_path_irudia_eguneratu), 
+    url(r'ajax_load_ws', ob_views.ajax_load_ws),    
+    url(r'nire_itemak_erakutsi$', ob_views.nire_itemak_erakutsi), 
+    url(r'nire_ibilbideak_erakutsi$', ob_views.nire_ibilbideak_erakutsi),
+    url(r'itemak_hasiera$', ob_views.itemak_hasiera),
+    url(r'ibilbideak_hasiera$', ob_views.ibilbideak_hasiera),
+    url(r'hornitzaileak_hasiera$', ob_views.hornitzaileak_hasiera),
+    url(r'nabigazio_item', ob_views.nabigazio_item),
+    url(r'nabigatu', ob_views.nabigatu),
+    url(r'botoa_eman_item', ob_views.botoa_eman_item),
+    url(r'botoa_kendu_item', ob_views.botoa_kendu_item),   
+    url(r'botoa_eman_path', ob_views.botoa_eman_path),
+    url(r'botoa_kendu_path', ob_views.botoa_kendu_path), 
     url(r'ajax_egunekoa_aldatu_item',ob_views.ajax_egunekoa_aldatu_item),
     url(r'ajax_egunekoa_aldatu_path',ob_views.ajax_egunekoa_aldatu_path),
     url(r'ajax_egunekoak',ob_views.ajax_egunekoak),
-    url(r'nabigazioa_hasi', nabigazioa_hasi),
-    url(r'ajax_lortu_most_voted_paths', ajax_lortu_most_voted_paths),
-    url(r'autoplay_hasieratik', autoplay_hasieratik),
-    url(r'autocomplete', autocomplete),
-    url(r'oaipmh_datubilketa',oaipmh_datubilketa),
-    url(r'hornitzaile_search',hornitzaile_search),
-    url(r'filtro_search',filtro_search),
-    url(r'admin_reset_user_password',admin_reset_user_password),
-    url(r'admin_hornitzaile_fitxa_editatu',admin_hornitzaile_fitxa_editatu),
-    url(r'admin_erabiltzaileak_kudeatu',admin_erabiltzaileak_kudeatu), 
-    url(r'admin_berriak_kudeatu',admin_berriak_kudeatu),
-    url(r'admin_eguneko_hornitzaileak_kudeatu',admin_eguneko_hornitzaileak_kudeatu),
-    url(r'admin_hornitzaile_bihurtu',admin_hornitzaile_bihurtu),
-    url(r'hornitzaile_fitxa_editatu',hornitzaile_fitxa_editatu), 
-    url(r'ajax_edit_arloa',ajax_edit_arloa), 
-    url(r'ajax_edit_where',ajax_edit_where),
-    url(r'ajax_edit_izena',ajax_edit_izena), 
-    url(r'ajax_edit_deskribapena',ajax_edit_deskribapena), 
-    url(r'ajax_edit_kokalekua',ajax_edit_kokalekua), 
-    url(r'ajax_hornitzaile_irudia_gorde',ajax_hornitzaile_irudia_gorde),
-    url(r'ajax_hornitzaile_argazkia_gorde',ajax_hornitzaile_argazkia_gorde),
-    url(r'ajax_edit_telefonoa',ajax_edit_telefonoa),
-    url(r'ajax_edit_emaila',ajax_edit_emaila),
-    url(r'ajax_edit_website',ajax_edit_website), 
-    url(r'ajax_edit_ordutegia',ajax_edit_ordutegia), 
-    url(r'fitxa_gorde',fitxa_gorde),
-    url(r'azkeneko_itemak',azkeneko_itemak),
-    url(r'azkeneko_ibilbideak',azkeneko_ibilbideak),
-    url(r'ezabatu_ibilbidea',ezabatu_ibilbidea),
-    url(r'ezabatu_itema',ezabatu_itema),
-    url(r'ajax_path_edizio_aukerak_aldatu',ajax_path_edizio_aukerak_aldatu), 
-    url(r'erab_form',get_user),
-    url(r'berria_form',get_berria),
+    url(r'nabigazioa_hasi', ob_views.nabigazioa_hasi),
+    url(r'ajax_lortu_most_voted_paths', ob_views.ajax_lortu_most_voted_paths),
+    url(r'autoplay_hasieratik', ob_views.autoplay_hasieratik),
+    url(r'autocomplete', ob_views.autocomplete),
+    url(r'oaipmh_datubilketa',ob_views.oaipmh_datubilketa),
+    url(r'hornitzaile_search',ob_views.hornitzaile_search),
+    url(r'filtro_search',ob_views.filtro_search),
+    url(r'admin_reset_user_password',ob_views.admin_reset_user_password),
+    url(r'admin_hornitzaile_fitxa_editatu',ob_views.admin_hornitzaile_fitxa_editatu),
+    url(r'admin_erabiltzaileak_kudeatu',ob_views.admin_erabiltzaileak_kudeatu), 
+    url(r'admin_berriak_kudeatu',ob_views.admin_berriak_kudeatu),
+    url(r'admin_eguneko_hornitzaileak_kudeatu',ob_views.admin_eguneko_hornitzaileak_kudeatu),
+    url(r'admin_hornitzaile_bihurtu',ob_views.admin_hornitzaile_bihurtu),
+    url(r'hornitzaile_fitxa_editatu',ob_views.hornitzaile_fitxa_editatu), 
+    url(r'ajax_edit_arloa',ob_views.ajax_edit_arloa), 
+    url(r'ajax_edit_where',ob_views.ajax_edit_where),
+    url(r'ajax_edit_izena',ob_views.ajax_edit_izena), 
+    url(r'ajax_edit_deskribapena',ob_views.ajax_edit_deskribapena), 
+    url(r'ajax_edit_kokalekua',ob_views.ajax_edit_kokalekua), 
+    url(r'ajax_hornitzaile_irudia_gorde',ob_views.ajax_hornitzaile_irudia_gorde),
+    url(r'ajax_hornitzaile_argazkia_gorde',ob_views.ajax_hornitzaile_argazkia_gorde),
+    url(r'ajax_edit_telefonoa',ob_views.ajax_edit_telefonoa),
+    url(r'ajax_edit_emaila',ob_views.ajax_edit_emaila),
+    url(r'ajax_edit_website',ob_views.ajax_edit_website), 
+    url(r'ajax_edit_ordutegia',ob_views.ajax_edit_ordutegia), 
+    url(r'fitxa_gorde',ob_views.fitxa_gorde),
+    url(r'azkeneko_itemak',ob_views.azkeneko_itemak),
+    url(r'azkeneko_ibilbideak',ob_views.azkeneko_ibilbideak),
+    url(r'ezabatu_ibilbidea',ob_views.ezabatu_ibilbidea),
+    url(r'ezabatu_itema',ob_views.ezabatu_itema),
+    url(r'ajax_path_edizio_aukerak_aldatu',ob_views.ajax_path_edizio_aukerak_aldatu), 
+    url(r'erab_form',ob_views.get_user),
+    url(r'berria_form',ob_views.get_berria),
     
     
     (r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),

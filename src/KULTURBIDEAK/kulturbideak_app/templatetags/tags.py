@@ -4,6 +4,7 @@ from settings import *
 import re
 import HTMLParser
 import requests
+#import pdb
 
 from django.conf import settings
 
@@ -214,51 +215,6 @@ def correct_wikification_url_tags(value):
 
     return value
 
-@register.filter
-def choose_title_language(lang, item):
-    
-    if item is None:
-        return ""
-     
-    titulua=item.dc_title
-    titulu_es=get_lang_field(titulua,"es","titulu")
-    titulu_en=get_lang_field(titulua,"en","titulu")
-    titulu_eu=get_lang_field(titulua,"eu","titulu")
-    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
-    
-    #titulua= !!!erabaki defektuzkoa zein den eu,en,es
-    if titulu_eu:
-        titulua=titulu_eu
-    elif titulu_es:
-        titulua=titulu_es
-    else:
-        titulua=titulu_en
-    #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
-    if titulua =="":
-        titulua=item.dc_title
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
-        titulua=titulua.replace("</div>", " ")
-        
-    if lang == "eu":
-         
-        if titulu_eu != "":
-            return titulu_eu          
-        else:        
-            return titulua
-    elif lang == "es":
-        if titulu_es != "":
-            return titulu_es          
-        else:        
-            return titulua
-                
-    elif lang == "en":
-         
-        if titulu_en != "":
-            return titulu_en          
-        else:        
-            return titulua
-    else:
-        return titulua
 
 @register.filter
 def choose_title_language_str(lang, itemStr):
@@ -379,8 +335,7 @@ def choose_language_text(Lang, item):
     #DBko deskribapenak hizkuntza kontrolik ez badu
     if deskribapena_eu=="" and deskribapena_es=="" and deskribapena_en=="":
         deskribapena=item.dc_description
-        deskribapena=deskribapena.replace("<div class=\"desc_lg\">", " ")
-        deskribapena=deskribapena.replace("</div>", " ")
+        deskribapena=get_lang_field(deskribapena,"lg","desc")
         
     
     if Lang == "eu":
@@ -407,29 +362,49 @@ def choose_language_text(Lang, item):
 
 
 @register.filter
-def choose_title_language_search(lang, item):
+def choose_title_language(lang, item):
     
     if item is None:
         return ""
      
     titulua=item.dc_title
+    
+    # no lang information -> return the title as it is
+    if lang is None:
+    	return titulua
+    
+    # title has no different langs coded -> return the title as it is
+    if (not re.search('</div>', titulua)):
+    	return titulua
+    
+	# extract different lang titles
     titulu_lang={}
     titulu_lang['es']=get_lang_field(titulua,"es","titulu")
     titulu_lang['en']=get_lang_field(titulua,"en","titulu")
     titulu_lang['eu']=get_lang_field(titulua,"eu","titulu")
     #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
     
-    if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":
-        titulua=item.dc_title
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
-        titulua=titulua.replace("</div>", " ")
-        
-          
+    # if all previous langs are null try one last abstract tag
+    if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":        
+        titulu_lang['lg']=get_lang_field(titulua,"lg","titulu")
+    
+    # absolute preference is for the lang given as parameter       
     if titulu_lang[lang] != "":
         return titulu_lang[lang]          
-    else:        
-        return titulua
-
+    else:
+    	del titulu_lang[lang]
+    	# second best option is "es" because most of our users are spanish speakers 
+    	if lang!="es" and titulu_lang['es']!="":
+    		return titulu_lang['es']
+    	# if we are here "es" info is not needed anymore
+    	del  titulu_lang["es"]
+    	# 3rd option: loop through extracted titles until we find one not being null.
+    	for l in titulu_lang:
+    		titulua=titulu_lang[l]
+    		if titulua != "":
+    			return titulua
+    	#as last resort return the original title field.	
+      	return item.dc_title
 
 
 @register.filter
@@ -451,8 +426,7 @@ def choose_language_text_not_target(Lang, item):
     #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada                                                                            
     if deskribapena_lang['eu'] =="" and deskribapena_lang['es'] =="" and deskribapena_lang['en'] =="":
         deskribapena=item.dc_description
-        deskribapena=deskribapena.replace("<div class=\"desc_lg\">", " ")
-        deskribapena=deskribapena.replace("</div>", " ")
+        deskribapena=get_lang_field(deskribapena,"lg","desc")
 
     text=jat_helb_aukeratu(jat,helb,deskribapena_lang,deskribapena)
 
@@ -478,8 +452,7 @@ def choose_language_title_target(Langs, item):
     #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
     if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":
         titulua=item.dc_title
-        titulua=titulua.replace("<div class=\"titulu_lg\">", " ")
-        titulua=titulua.replace("</div>", " ")
+        titulua=get_lang_field(titulua,"lg","titulu")
 
     text=jat_helb_aukeratu(jat,helb,titulu_lang,titulua)       
     return text

@@ -58,7 +58,7 @@ class itemIndex(indexes.SearchIndex, indexes.Indexable):
     titleSubject_es2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_es2en.txt')#,boost=1.1)
     text_es2en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_es2en.txt')#,boost=0.9)
      
-    titleSubject_eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_en.txt')#,boost=1.1)
+    titleSubject_en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_en.txt')#,boost=1.1)
     text_en= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_text_en.txt')#,boost=0.9)
       
     titleSubject_en2eu= indexes.CharField(use_template=True, template_name='search/indexes/kulturbideak_app/item_titleSubject_en2eu.txt')#,boost=1.1)
