@@ -23,11 +23,16 @@ um_pages }}</p>-->
 
 {% block result_number %}
 	<div class="result_number">
+	<h4>
 	{% if z == 'i'%}
-		<h4>{% trans "Items" %} <span class="num">{{ items.paginator.count }}</span></h4>
+		{% trans "Items" %} <span class="num">{{ items.paginator.count }}</span>
 	{% elif z == 'p'%}
-		<h4>{% trans "Paths" %} <span class="num">{{paths.paginator.count}}</span></h4>
+		{% trans "Paths" %} <span class="num">{{paths.paginator.count}}</span>
 	{% endif %}
+	{% if alternative_search %}
+		<span class="search_query_explanation">({% trans "bilaketa: " %}{{bilaketaGaldera|or_tartekatu}})</span>
+	{% endif %}
+	</h4>
 	</div>
 {% endblock result_number %}
 

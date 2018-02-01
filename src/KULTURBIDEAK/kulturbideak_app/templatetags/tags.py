@@ -30,6 +30,11 @@ def leading_wspace(url):
 	"""delete leading white spaces. """
 	return re.sub('^\s*','', url)
 
+@register.filter
+def or_tartekatu(str):	
+	"""add OR between words. """
+	return str.replace(" ", " OR ")
+
 
 @register.filter
 def lerroJauziakKendu(sarrera):
@@ -349,8 +354,10 @@ def choose_title_language(lang, item):
     	# second best option is "es" because most of our users are spanish speakers 
     	if lang!="es" and titulu_lang['es']!="":
     		return titulu_lang['es']
+    	
     	# if we are here "es" info is not needed anymore
-    	del  titulu_lang["es"]
+    	if lang!="es":
+    		del  titulu_lang["es"]
     	# 3rd option: loop through extracted titles until we find one not being null.
     	for l in titulu_lang:
     		titulua=titulu_lang[l]
@@ -532,36 +539,39 @@ def get_lang_field(inputtext,lang,field):
    
 def jat_helb_aukeratu(src,tgt,fields,defaulttext):
 	
-    if src == "eu":
-         
-        if fields['eu'] != "":
-            text=fields['eu']
-            if(tgt=="es" and fields['es'] != ""):
-                text= ""
-            if(tgt=="en" and fields['en'] != ""):
-                text= ""          
+	# if target language information is present we don't need any translation
+	if fields[tgt] != "":
+		return ""
+	
+	if src == "eu":
+		if fields['eu'] != "":
+			text=fields['eu']
+			if(tgt=="es" and fields['es'] != ""):
+				text= ""
+			if(tgt=="en" and fields['en'] != ""):
+				text= ""          
         else:        
             text= defaulttext
             
-    if src == "es":
-        if fields['es'] != "":
-            text= fields['es'] 
-            if(tgt=="en" and fields['en'] != ""):
-                text= ""
-            if(tgt=="eu" and fields['eu'] != ""):
-                text= ""        
+	if src == "es":
+		if fields['es'] != "":
+			text= fields['es'] 
+			if(tgt=="en" and fields['en'] != ""):
+				text= ""
+			if(tgt=="eu" and fields['eu'] != ""):
+				text= ""        
         else:        
             text= defaulttext
                 
-    if src == "en":        
-        if fields['en'] != "":
-            text= fields['en']
-            if(tgt=="es" and fields['es'] != ""):
-                text= ""
-            if(tgt=="eu" and fields['eu'] != ""):
-                text= ""       
+	if src == "en":        
+		if fields['en'] != "":
+			text= fields['en']
+			if(tgt=="es" and fields['es'] != ""):
+				text= ""
+			if(tgt=="eu" and fields['eu'] != ""):
+				text= ""       
         else:        
             text= defaulttext
         
-    return text
+	return text
     

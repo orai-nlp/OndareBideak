@@ -1,5 +1,9 @@
 {%load tags%}
 {% if "en" in object.ob_language%}
-{{"en2eu"|choose_language_title_target:object}}
-{{ object.dc_subject }}
+	{% with "en2eu"|choose_language_title_target:object as titleTrans %}  
+	{{titleTrans}}
+	{% if titleTrans and titleTrans.strip %}
+		{{ object.dc_subject }}
+	{%endif%}
+	{%endwith%}
 {%endif%}

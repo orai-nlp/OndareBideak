@@ -98,6 +98,7 @@ urlpatterns = patterns('',
     url(r'ezabatu_itema',ob_views.ezabatu_itema),
     url(r'ajax_path_edizio_aukerak_aldatu',ob_views.ajax_path_edizio_aukerak_aldatu), 
     url(r'erab_form',ob_views.get_user),
+    url(r'debug_solr_template',ob_views.debug_solr_template),
     url(r'berria_form',ob_views.get_berria),
     
     

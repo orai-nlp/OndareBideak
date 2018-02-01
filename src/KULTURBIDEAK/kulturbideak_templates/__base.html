@@ -380,6 +380,24 @@
 			<!-- END Autocomplete leihoa -->
 		{% endblock autocomplete %}
 
+		<!-- login message div -->
+		<div id="login-message_div" class="" align="center">
+		{% if login_try and login_error  %}
+		<div class="alert alert-danger" role="alert">
+			<strong>{% trans "Errorea" %}:</strong> {% trans "Erabiltzaile edo pasahitz okerra, saiatu berriro." %}
+			<a id="alert-close-button" type="button" onclick="$(this).parent().slideUp();return False;">
+				<i class="fa fa-times eskuma"></i>
+			</a>
+		</div>
+		{% elif login_try and not login_error  %}
+		<div class="alert alert-success" role="alert">
+			<strong>{% trans "Ongi etorri" %}!</strong> {% trans "Zure kontuan sartu zara." %}
+			<a id="alert-close-button" type="button" onclick="$(this).parent().slideUp();return False;">
+				<i class="fa fa-times eskuma"></i>
+			</a>
+		</div>
+		{% endif %}
+		</div>
 				
 		<!-- PAGE -->
 		{% block page_div_def %}			
@@ -388,6 +406,7 @@
 			<!--aldeetako margina -->
 			<!--<hr>-->			
 			<!--PANTAILA EGITURA NAGUSIA-->			
+				
 		
 		{% block orria_div_def %}			
 			<div id="orria" class="orria">

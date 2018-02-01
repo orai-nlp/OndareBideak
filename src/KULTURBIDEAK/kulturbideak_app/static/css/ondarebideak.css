@@ -125,6 +125,11 @@ div.item-extra-background{
 
 /* Bilaketa orrietako emaitzen bistaratea : cross_search.html */
 
+.search_query_explanation{
+	font-size:0.8em !important;
+	color:#999999;
+
+}
 .search-result {
 	background: #eeeeee; /*#f8f8f8;*/
 	margin:5px 0 5px 0;
