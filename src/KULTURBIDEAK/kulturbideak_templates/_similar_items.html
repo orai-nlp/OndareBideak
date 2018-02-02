@@ -7,7 +7,7 @@
 
 
 	<div class="row similar-items">
-		<h2 class="kolore-gris-lau antzekoTitulua">{% trans "Antzeko itemak" %} <span class="kolore-gris-bi">4</span></h2>{%comment%}{{ mlt|length }}{%endcomment%}
+		<h2 class="kolore-gris-lau antzekoTitulua">{% trans "Antzeko itemak" %} <span class="kolore-gris-bi">{{ mlt|length }}</span></h2>{%comment%}{{ mlt|length }}{%endcomment%}
 
 			{% for antzekoa in mlt %}
 			{% if forloop.counter < 5 %}

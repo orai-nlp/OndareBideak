@@ -2912,8 +2912,8 @@ def erakutsi_item(request):
 
     return render_to_response('item.html',{'login_form':login_form,
                                            'erabiltzailea_form':erabiltzailea_form,
-                                                   'login_try':login_try,
-                                                   'login_error':login_error,
+                                           'login_try':login_try,
+                                           'login_error':login_error,
                                            "non":non,
                                            "comment_form": comment_form,
                                            "comment_parent_form": comment_parent_form,
@@ -2931,7 +2931,8 @@ def erakutsi_item(request):
                                            'hizkuntza':hizkuntza,
                                            'kategoria':kategoria,
                                            'eskubideak':eskubideak,
-                                           'urtea':urtea,'viewAtSource':viewAtSource,
+                                           'urtea':urtea,
+                                           'viewAtSource':viewAtSource,
                                            'irudia':irudia,
                                            'hornitzailea':hornitzailea,
                                            'botatuDu':botatuDu},context_instance=RequestContext(request))    

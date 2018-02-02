@@ -346,8 +346,10 @@ def choose_title_language(lang, item):
     	#titulu_lang['lg'] hutsik badago esan nahi du hizkuntza kontrolik ez dagoela.
         if titulu_lang['lg'] =="":
 			#check the original language if the item
-			lang0=item.dc_language
-			if lang0 =="" or lang0 == None:
+			lang0=""
+			if hasattr(item, 'dc_language'):
+				lang0=item.dc_language				
+			if lang0 =="" and hasattr(item, 'edm_language'):
 				lang0=item.edm_language
 			
 			if lang0 == lang:
