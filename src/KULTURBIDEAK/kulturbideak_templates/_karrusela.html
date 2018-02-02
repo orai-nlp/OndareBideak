@@ -44,7 +44,7 @@
        						{%endif%}
        					</div>
        					<div class="col-sm-10 col-sm-offset-1">
-       						<p class="karrusel-title"> {{ LANGUAGE_CODE|choose_title_language:egunekoItem.dc_title|format_html:1|safe}}  </p>
+       						<p class="karrusel-title"> {{ LANGUAGE_CODE|choose_title_language:egunekoItem|format_html:1|safe}}  </p>
        					</div>	
        					<div class="col-sm-10 col-sm-offset-1">
        						<p class="karrusel-describapena"> {{ LANGUAGE_CODE|choose_description_language:egunekoItem|format_html:1|add_ekm_prefix_to_desc|correct_wikification_url_tags|safe | get_substring_150}}  </p>

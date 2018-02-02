@@ -23,7 +23,7 @@
 		{% if momentukoItema.ob_thumbnail%}
 						
 	<a id="item_img" class="img-responsive nabigItem scrollbar" href="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%} # {%endif%}" target="{% if momentukoItema.ob_thumbnail %}_blank{%endif%}" >
-		<img  style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema.dc_title|format_html:1|safe}}" src="{{momentukoItema.ob_thumbnail|proxyPassHttp}}">
+		<img  style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" src="{{momentukoItema.ob_thumbnail|proxyPassHttp}}">
 	</a>
 			
 		{%endif%}
@@ -51,7 +51,7 @@
 	</a>			
 			{% else %}
 	<a id="item_img" class="img-responsive nabigItem scrollbar" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object|proxyPassHttp}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
-		 <img  style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema.dc_title|format_html:1|safe}}" src="{{momentukoItema.edm_object|proxyPassHttp}}">
+		 <img  style="max-width:100%;" title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" src="{{momentukoItema.edm_object|proxyPassHttp}}">
 	</a>
 			{% endif %}
 		{%else%}

@@ -321,7 +321,62 @@ def choose_language_text(Lang, item):
 
 @register.filter
 def choose_title_language(lang, item):
+    """function to translate the titles of the items, used both in templates used by solr 
+    	and in interface templates."""
+    if item is None:
+        return ""
+     
+    titulua=item.dc_title
     
+    # no lang information -> return the title as it is
+    if lang is None:
+    	return titulua
+    
+    
+	# extract different lang titles
+    titulu_lang={}
+    titulu_lang['es']=get_lang_field(titulua,"es","titulu")
+    titulu_lang['en']=get_lang_field(titulua,"en","titulu")
+    titulu_lang['eu']=get_lang_field(titulua,"eu","titulu")
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    
+    # if all previous langs are null try one last abstract tag
+    if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":        
+        titulu_lang['lg']=get_lang_field(titulua,"lg","titulu")       
+    	#titulu_lang['lg'] hutsik badago esan nahi du hizkuntza kontrolik ez dagoela.
+        if titulu_lang['lg'] =="":
+			#check the original language if the item
+			lang0=item.dc_language
+			if lang0 =="" or lang0 == None:
+				lang0=item.edm_language
+			
+			if lang0 == lang:
+				titulu_lang[lang]=titulua
+					
+    # absolute preference is for the lang given as parameter       
+    if titulu_lang[lang] != "":
+        return titulu_lang[lang]          
+    else:
+    	del titulu_lang[lang]
+    	# second best option is "es" because most of our users are spanish speakers 
+    	if lang!="es" and titulu_lang['es']!="":
+    		return titulu_lang['es']
+    	
+    	# if we are here "es" info is not needed anymore
+    	if lang!="es":
+    		del  titulu_lang["es"]
+    	# 3rd option: loop through extracted titles until we find one not being null.
+    	for l in titulu_lang:
+    		titulua=titulu_lang[l]
+    		if titulua != "":
+    			return titulua
+    	#as last resort return the original title field.	
+      	return item.dc_title
+
+
+@register.filter
+def choose_title_language_autocomp(lang, item):
+    """function to translate the titles of the items for the autocomplete function."""
     if item is None:
         return ""
      
@@ -345,7 +400,7 @@ def choose_title_language(lang, item):
     # if all previous langs are null try one last abstract tag
     if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":        
         titulu_lang['lg']=get_lang_field(titulua,"lg","titulu")
-    
+        
     # absolute preference is for the lang given as parameter       
     if titulu_lang[lang] != "":
         return titulu_lang[lang]          
@@ -384,21 +439,32 @@ def choose_language_text_not_target(Lang, item):
     #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera                                                                
 
     #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada                                                                            
-    if deskribapena_lang['eu'] =="" and deskribapena_lang['es'] =="" and deskribapena_lang['en'] =="":
-        deskribapena=item.dc_description
-        deskribapena=get_lang_field(deskribapena,"lg","desc")
-
+    if deskribapena_lang['eu'] =="" and deskribapena_lang['es'] =="" and deskribapena_lang['en'] =="":        
+        deskribapena_lang['lg']=get_lang_field(deskribapena,"lg","desc")
+         #deskribapena_lang['lg'] hutsik badago esan nahi du hizkuntza kontrolik ez dagoela.
+        if deskribapena_lang['lg'] =="":
+			#check the original language if the item
+			lang=item.dc_language
+			if lang =="" or lang == None:
+				lang=item.edm_language
+			
+			if lang == jat:
+				deskribapena_lang[jat]=titulua
+			elif lang == helb: 
+				deskribapena_lang[helb]=titulua			
+	
     text=jat_helb_aukeratu(jat,helb,deskribapena_lang,deskribapena)
 
     return text
 
 
 @register.filter
-def choose_language_title_target(Langs, item):
+def choose_language_title_target(Langs, item):    
+    """function to translate the titles of the items in templates used by solr for indexing."""
+    
     hizkuntzak=Langs.split("2")
     jat=hizkuntzak[0]
     helb=hizkuntzak[1]
-    
     text=""
     #TITULUA
     titulua=item.dc_title
@@ -410,9 +476,21 @@ def choose_language_title_target(Langs, item):
     #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
 
     #DBko tituluak hizkuntza kontrola ez baldin badu edo lg bada
-    if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":
-        titulua=item.dc_title
-        titulua=get_lang_field(titulua,"lg","titulu")
+    if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":        
+        titulu_lang['lg']=get_lang_field(titulua,"lg","titulu")
+        #titulu_lang['lg'] hutsik badago esan nahi du hizkuntza kontrolik ez dagoela.
+        if titulu_lang['lg'] =="":
+			#check the original language if the item
+			lang=item.dc_language
+			if lang =="" or lang == None:
+				lang=item.edm_language
+			
+			if lang == jat:
+				titulu_lang[jat]=titulua
+			elif lang == helb: 
+				titulu_lang[helb]=titulua			
+	
+
 
     text=jat_helb_aukeratu(jat,helb,titulu_lang,titulua)       
     return text
@@ -543,35 +621,11 @@ def jat_helb_aukeratu(src,tgt,fields,defaulttext):
 	if fields[tgt] != "":
 		return ""
 	
-	if src == "eu":
-		if fields['eu'] != "":
-			text=fields['eu']
-			if(tgt=="es" and fields['es'] != ""):
-				text= ""
-			if(tgt=="en" and fields['en'] != ""):
-				text= ""          
-        else:        
-            text= defaulttext
-            
-	if src == "es":
-		if fields['es'] != "":
-			text= fields['es'] 
-			if(tgt=="en" and fields['en'] != ""):
-				text= ""
-			if(tgt=="eu" and fields['eu'] != ""):
-				text= ""        
-        else:        
-            text= defaulttext
-                
-	if src == "en":        
-		if fields['en'] != "":
-			text= fields['en']
-			if(tgt=="es" and fields['es'] != ""):
-				text= ""
-			if(tgt=="eu" and fields['eu'] != ""):
-				text= ""       
-        else:        
-            text= defaulttext
-        
+	# if not look if the source language information is present
+	if fields[src] != "":
+		text=fields[src]
+	else: # if not return the default text - WARNING: another option would be to return "" 
+		text=defaulttext	                    
+      	    
 	return text
     

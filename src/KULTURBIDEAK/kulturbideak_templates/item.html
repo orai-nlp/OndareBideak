@@ -102,9 +102,9 @@
 				</span>
 			</p>
 			{% if not request.mobile %}
-			<h2 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item.dc_title|format_html:1|safe}} </h2>
+			<h2 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}} </h2>
 			{% else %}
-			<h3 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item.dc_title|format_html:1|safe}} </h3>
+			<h3 class="bold ezkerra"> {{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}} </h3>
 			{% endif %}
 		</div>
 	</div>

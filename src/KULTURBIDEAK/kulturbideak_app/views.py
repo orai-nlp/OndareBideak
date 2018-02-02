@@ -82,10 +82,11 @@ import random
 def debug_solr_template(request):
      id=request.GET['id']
      lang=request.GET['lang']
+     temp=request.GET['temp']
      
      item_tupla = get_object_or_404(item, pk=id)
      
-     return render(request,"search/indexes/kulturbideak_app/item_titleSubject_"+lang+".txt",{"object":item_tupla})
+     return render(request,"search/indexes/kulturbideak_app/item_"+temp+"_"+lang+".txt",{"object":item_tupla})
 
 
 '''
