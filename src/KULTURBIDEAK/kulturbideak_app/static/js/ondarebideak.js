@@ -1687,6 +1687,24 @@ function aldatu_hornitzaile_egoera(id)
 }
 
 
+/**
+ *  Path-ari aldeko botoa eman (ibilbidea.html)
+ *   
+ * **/
 
+function botoa_eman_path(path_id,botoa){
+	// load from AJAX
+    $.ajax({
+        method : 'GET',
+        url : '/botoa_eman_path',
+        dataType : 'html',
+        data : {
+        	path_id: path_id,
+        	botoa: botoa,
+        }
+    }).done(function(data) {
+        $("#bozketa-barra").html(data);                        
+    });
+}
 
 

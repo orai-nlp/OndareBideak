@@ -123,7 +123,7 @@
 						</ul>
 					</div>
 					<div id="navigator-item-info" class="col-md-10 scrollbar margin-0">
-						<h2 class="bold"> {{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}} </h2>
+						<h2 id="navigator-item-title" class="bold"> {{ LANGUAGE_CODE|choose_title_language:item|format_html:1|safe}} </h2>
 						<div id="description" class="item-info-description">
 
 							<!-- <div class="clearfix"></div> -->							
@@ -297,6 +297,9 @@
 <!-- video/audio player -->
 <script src="{{STATIC_URL}}js/video.min.js"></script>
 <script src="{{STATIC_URL}}js/videojs-flash.min.js"></script>
+<script src="{{STATIC_URL}}js/videojs-vimeo.js"></script>
+<script src="{{STATIC_URL}}js/videojs-youtube.min.js"></script>
+
 <script>
 	var player = videojs('ob-videojs', {techOrder: ['flash', 'html5']});
 	$(".vjs-play-progress.vjs-slider-bar").addClass("backgrnd-{{itype}}");

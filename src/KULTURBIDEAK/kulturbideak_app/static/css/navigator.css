@@ -283,6 +283,12 @@ li.li-mota span{
 
 @media only screen and (max-width:991px){
 
+	/* Navigator content */
+	#navigator-item-title {
+		font-size: 18px;
+	}
+	/* END Navigator content */
+	
 	/* control panel */
 	.ctrlpanel-path-title{
 		font-size: 22px;		

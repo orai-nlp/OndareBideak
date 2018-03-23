@@ -57,8 +57,8 @@ class item(models.Model):
     dcterms_isreplacedby=models.TextField()
     edm_unstored=models.TextField()
     edm_object=models.TextField()
-    edm_provider=models.TextField()
-    edm_type=models.TextField()
+    edm_provider=models.TextField(db_index=True)
+    edm_type=models.TextField(db_index=True)
     edm_rights=models.TextField()
     edm_dataprovider=models.TextField()
     edm_isshownby=models.TextField()
@@ -70,6 +70,7 @@ class item(models.Model):
     edm_year=models.CharField(max_length=1000)
     edm_previewnodistribute=models.TextField()
     edm_hasobject=models.TextField()
+    #edm_duration=models.TextField()
     paths_bow=models.TextField()
     paths_facet_date=models.CharField(max_length=1000)
     paths_informativeness=models.FloatField(null=True)
@@ -81,6 +82,11 @@ class item(models.Model):
     aberastua = models.BooleanField(default=False)
     ob_language=models.TextField()
     ob_thumbnail=models.TextField()
+    
+    #class Meta:
+    #    index_together = [["is_local_area","retweet_id","date"],
+    #                      ["is_local_area","retweet_id","date","manual_polarity"],
+    #                      ]
     
     def __unicode__(self):
         return self.dc_title
@@ -617,7 +623,7 @@ class ProfileManager(models.Manager):
         profile.hornitzaile_izena = hornitzaile_izena
         profile.herrialdea = herrialdea
         # Create a user object  
-        user = User.objects.create_user(first_name = name,last_name = surname, username = username, email = email, password = password)
+        user = User.objects.create_user(first_name = name,last_name = surname, username = username, email = email, password = password, last_login = datetime.datetime.now())
         group = Group.objects.get(name='arrunta') 
         group.user_set.add(user)
         profile.user = user

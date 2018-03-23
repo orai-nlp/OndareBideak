@@ -43,7 +43,7 @@
 							<p class="title_overlay kolore-txuria" title="{{ LANGUAGE_CODE|choose_title_language:antzekoa|format_html:1|safe}}">{{ LANGUAGE_CODE|choose_title_language:antzekoa|format_html:1|cut_text:35|safe}}</p>
 							{%endif%}						
 							<p class="creator_overlay kolore-gris-bat"> <i class="icon-ob-usr kolore-video" aria-hidden=true></i><span class="kolore-gris-0"> {{antzekoa.edm_provider}}</span></p>							
-							<i class="icon-ob-{{item.edm_type|lower}} overlay-icon kolore-{{item.edm_type|lower}}"></i>
+							<i class="icon-ob-{{antzekoa.edm_type|lower}} overlay-icon kolore-{{antzekoa.edm_type|lower}}"></i>
 						</div>
 					</a>
 				</div>				

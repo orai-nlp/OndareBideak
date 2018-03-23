@@ -164,6 +164,7 @@ a.header-custom-link-underline span{
     appearance: none;
     outline-width: 0;
     margin-right:2px;
+    min-width:25px;
 }
 
 #search_lang option{

@@ -16,7 +16,7 @@ register = template.Library()
 def proxyPassHttp(url):	
 	result=re.sub('^\s*http://www.http://','http://', url)
 	result=re.sub('liburuklik.euskadi.net','liburuklik.euskadi.eus', result)
-        if not re.search('.(pdf|jpg|flv)$',result):
+        if not re.search('.(pdf|jpg|mp4|flv)$',result):
                 result=re.sub('www.euskomedia.org','aunamendi.eusko-ikaskuntza.eus', result)
 
 	result=re.sub('^\s*http://','/kanpora/', result)	
@@ -99,6 +99,17 @@ def is_handle(value):
 	 	return True
 	 
 	return False
+
+
+@register.filter
+def videojs_datasetup(value): 
+	"""check if given resource is a youtube or vimeo video link. Needed to show it in video.js """
+	match=re.match(r'^.*(vimeo|youtube)\.com/.*$', value, flags=re.IGNORECASE)
+	if match:
+	 	return "{\"techOrder\": [\""+match.group(1)+"\"], \"sources\": [{ \"type\": \"video/"+match.group(1)+"\", \"src\": \""+value+"\"}]}" 
+	 
+	return "{}"
+
 	
 @register.filter
 def get_item_image(item): 
@@ -277,7 +288,55 @@ def choose_karrusel_titulu_language(interfaceLang, berria):
 	else:
 		return titulu_eu
 
+@register.filter
+def choose_lang(lang, item):
+    """function to translate any field if it contains multiple languages."""
+   
+    if item is None:
+        return ""
+     
+    titulua=item
+   
+    # no lang information -> return the title as it is
+    if lang is None:
+    	return titulua
+    
+    # title has no different langs coded -> return the title as it is
+    if (not re.search('</div>', titulua)):
+    	return titulua
+    
+	# extract different lang titles
+    titulu_lang={}
+    titulu_lang['es']=get_lang_field(titulua,"es","lang")
+    titulu_lang['en']=get_lang_field(titulua,"en","lang")
+    titulu_lang['eu']=get_lang_field(titulua,"eu","lang")
+    #espresio erregularrak erabilita hizkuntza desberdinetako tituluak atera 
+    
+    # if all previous langs are null try one last abstract tag
+    if titulu_lang['eu'] =="" and titulu_lang['es'] =="" and titulu_lang['en'] =="":        
+        titulu_lang['lg']=get_lang_field(titulua,"lg","lang")
+        
+    # absolute preference is for the lang given as parameter       
+    if titulu_lang[lang] != "":    	
+        return titulu_lang[lang]          
+    else:
+    	del titulu_lang[lang]
+    	# second best option is "es" because most of our users are spanish speakers 
+    	if lang!="es" and titulu_lang['es']!="":
+    		return titulu_lang['es']
+    	
+    	# if we are here "es" info is not needed anymore
+    	if lang!="es":
+    		del  titulu_lang["es"]
+    	# 3rd option: loop through extracted titles until we find one not being null.
+    	for l in titulu_lang:
+    		titulua=titulu_lang[l]
+    		if titulua != "":
+    			return titulua
+    	#as last resort return the original title field.	
+      	return item
 
+   
 @register.filter
 def choose_language_text(Lang, item):
     
@@ -451,9 +510,9 @@ def choose_language_text_not_target(Lang, item):
 				lang=item.edm_language
 			
 			if lang == jat:
-				deskribapena_lang[jat]=titulua
+				deskribapena_lang[jat]=deskribapena
 			elif lang == helb: 
-				deskribapena_lang[helb]=titulua			
+				deskribapena_lang[helb]=deskribapena	
 	
     text=jat_helb_aukeratu(jat,helb,deskribapena_lang,deskribapena)
 

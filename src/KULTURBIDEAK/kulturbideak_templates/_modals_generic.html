@@ -67,3 +67,74 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<!-- oai upload modal modal -->
+<div class="modal" id="oaipmh-modal" tabindex="-1" role="dialog" aria-labelledby="oaipmh-modalLabel" aria-hidden="true" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">				        		
+	    	<div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        <h4 class="modal-title" id="oaipmh-modal-title">{% trans "Igo item bildumak OAI-PMH protokoloaren bidez" %}</h4>
+   			</div>
+		    <div class="modal-body">
+				<form id="oai_url_form" action="{{BASE_URL}}/oaipmh_datubilketa" method="post" enctype="multipart/form-data" class="form-horizontal">
+					{% csrf_token %}		
+	                <div class="col-md-12">
+    	                <div class='table'>
+           	                <label id="oai_url_label">{% trans "OAI address" %}: </label>    	                
+        	                <input id="oai_url" class="imgform_image" maxlength="250" placeholder="OAI url" type="url" multiple="" name="oaiurl" required>
+                         </div>
+                    </div>            
+		     		<br/>
+
+     				<button class="btn kolore-gris-0 square-back no-hover eskuma to-footer" type="submit" name="oaipmh_bilketa">
+       		 		{% trans "Hasi" %}
+		       		</button>
+				</form>
+			</div>
+   			<div class="modal-footer">
+				<button type="button" class="btn kolore-gris-0 square-back no-hover ezkerra" data-dismiss="modal">{% trans "Atera" %}</button>
+			</div>
+
+			<!--<div class="login-help">
+			<a href="#">{% trans "Erregistratu" %}</a> - <a href="#">{% trans "Pasahitza ahaztu duzu?" %}</a>
+			</div>-->
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- tsv upload modal modal -->
+<div class="modal" id="tsvupload-modal" tabindex="-1" role="dialog" aria-labelledby="tsvupload-modalLabel" aria-hidden="true" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">				        		
+	    	<div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        <h4 class="modal-title" id="tsvupload-modal-title">{% trans "Igo item-bilduma kalkulu-orri bidez" %}</h4>
+   			</div>
+		    <div class="modal-body">
+				<form id="attached_tsv_form" action="{{BASE_URL}}/tsv_datubilketa" method="post" enctype="multipart/form-data" class="form-horizontal">
+					{% csrf_token %}		
+	                <div class="col-md-12">
+    	                <div class='table'>
+        	                <input id="tsv_input" class="imgform_image" type="file" multiple="" name="tsvfile" required>
+                         </div>
+                    </div>     
+                    <br/>
+
+     				<button class="btn kolore-gris-0 square-back no-hover eskuma to-footer" type="submit" name="oaipmh_bilketa">
+       		 		{% trans "Hasi" %}
+		       		</button>
+				</form>
+			</div>
+   			<div class="modal-footer">
+				<button type="button" class="btn kolore-gris-0 square-back no-hover ezkerra" data-dismiss="modal">{% trans "Atera" %}</button>
+			</div>
+
+			<!--<div class="login-help">
+			<a href="#">{% trans "Erregistratu" %}</a> - <a href="#">{% trans "Pasahitza ahaztu duzu?" %}</a>
+			</div>-->
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

@@ -109,7 +109,10 @@
 					<li role="separator" class="divider"></li>
 					{% if request.user|has_group:'hornitzailea' %}
 					<li>
-						<a href="{{BASE_URL}}/oaipmh_datubilketa">{% trans "OAI-PMH bidezko itemen bilketa" %}</a>
+						<a href="#" data-toggle="modal" data-target="#oaipmh-modal">{% trans "OAI-PMH bidezko itemen bilketa" %}</a>
+					</li>
+					<li>
+						<a href="#" data-toggle="modal" data-target="#tsvupload-modal">{% trans "Igo item-bilduma kalkulu-orrian" %} <i class="fa fa-file-excel-o" aria-hidden="true"></i></a>
 					</li>
 					{% endif%}
 					<li>

@@ -344,8 +344,12 @@
 {% if item.edm_type|lower == "sound" or item.edm_type|lower == "video" %}
 <script src="{{STATIC_URL}}js/video.min.js"></script>
 <script src="{{STATIC_URL}}js/videojs-flash.min.js"></script>
+<script src="{{STATIC_URL}}js/videojs-vimeo.js"></script>
+<script src="{{STATIC_URL}}js/videojs-youtube.min.js"></script>
+
+
 <script>
-	var player = videojs('ob-videojs', {techOrder: ['flash', 'html5']});
+	var player = videojs('ob-videojs', {techOrder: ['flash', 'html5','vimeo','youtube']});
 	$(".vjs-play-progress.vjs-slider-bar").addClass("backgrnd-{{item.edm_type|lower}}");
 </script>
 {% endif %}

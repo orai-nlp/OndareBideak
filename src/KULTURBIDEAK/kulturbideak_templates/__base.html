@@ -415,7 +415,11 @@
 				
 				<!-- <div class="row"> -->
 					{% block sidebar %}
+					{% if non != "fitxaI" %}
 					<div id="sidebar" class="col-md-3 col-lg-4">
+					{% else %}
+					<div id="sidebar" class="col-md-2 col-lg-3">
+					{% endif %}					
 						{% block result_number %}
 						<div class="result_number">
 							<h4>{% trans "Items" %} <span class="num">428K</span></h4>
@@ -445,7 +449,11 @@
 					{% endblock sidebar %}	
 						
 					{% block content_div_def %}		
+					{% if non != "fitxaI" %}
 					<div id="content_div" class="col-md-9 col-lg-8" align="center">
+					{% else %}
+					<div id="content_div" class="col-md-10 col-lg-9" align="center">
+					{% endif %}					
 					{% endblock content_div_def %}
 					
 					{% if mezua %}

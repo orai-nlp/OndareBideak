@@ -5,6 +5,7 @@
 
 {% with itype=momentukoItema.edm_type|lower %}
 
+
 {% if itype == "sound" or itype == "video" %}
 <div id="item_preview-element" class="ob-audio relative">
 {% else%}
@@ -62,14 +63,14 @@
 	{%endif%}
 			
 			
-	<!-- AUDIOA BADA eta audio objectua baldin badu-->
+	<!-- AUDIOA BADA eta audio objektua baldin badu-->
 	{% if itype == "sound" %}
-		{% if momentukoItema.edm_object%}
+		{% if momentukoItema.edm_object%}		
 		<!-- <audio controls> -->
 		<audio id="ob-videojs" class="video-js ob-audio-skin" controls preload="auto" height="250"
   poster="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail}}{%else%}{{STATIC_URL}}img/icons/sound_fullres.png{% endif %}" data-setup="{}">
   	<!--<source src="{{momentukoItema.edm_object}}" type="audio/ogg">-->
-  			<source src="{{momentukoItema.edm_object}}" type="audio/mpeg">					
+  			<source src="{{LANGUAGE_CODE|choose_lang:momentukoItema.edm_object}}" type="audio/mpeg">					
 		</audio>
 		{%else%}
 			{% include "_item_preview_sound.html" with momentukoItema=momentukoItema %}
@@ -77,22 +78,22 @@
 	{%endif%}
 	
 	<!--BIDEOA BADA-->
-	{% if itype == "video" %}
+	{% if itype == "video" %}			
+		{% if momentukoItema.edm_object%}		
 				
-		{% if momentukoItema.edm_object%}
 	<video id="ob-videojs" class="video-js ob-video-skin" controls preload="auto" height="480"
-  poster="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail|proxyPassHttp}}{%else%}{{STATIC_URL}}img/icons/video_fullres.png{% endif %}" data-setup="{}">
+  poster="{% if momentukoItema.ob_thumbnail %}{{momentukoItema.ob_thumbnail|proxyPassHttp}}{%else%}{{STATIC_URL}}img/icons/video_fullres.png{% endif %}" data-setup='{{ LANGUAGE_CODE|choose_lang:momentukoItema.edm_object|videojs_datasetup}}'>
 	<!-- <video width="320" height="240" controls> -->
-  		<source src="{{momentukoItema.edm_object|proxyPassHttp}}" type="video/mp4">
-  		<source src="{{momentukoItema.edm_object|proxyPassHttp}}" type="video/ogg">
-  		<source src="{{momentukoItema.edm_object|proxyPassHttp}}" type="video/x-flv">
-  			Your browser does not support the video tag.
+		{% if LANGUAGE_CODE|choose_lang:momentukoItema.edm_object|videojs_datasetup == "{}" %}
+  			<source src="{{LANGUAGE_CODE|choose_lang:momentukoItema.edm_object|proxyPassHttp}}" type="video/mp4">
+  			<source src="{{LANGUAGE_CODE|choose_lang:momentukoItema.edm_object|proxyPassHttp}}" type="video/ogg">
+  			<source src="{{LANGUAGE_CODE|choose_lang:momentukoItema.edm_object|proxyPassHttp}}" type="video/x-flv">
+  				Your browser does not support the video tag.
+  		{% endif %}
 	</video>
-					
 		{%else%}				
 			{% include "_item_preview_video.html" with momentukoItema=momentukoItema %}
 		{%endif%}
-					
 	{%endif%}
 	
 	
@@ -118,7 +119,7 @@
 			</li>
 			<li class="right-padding-0" style="max-width: 45px;">
 			{% if momentukoItema.edm_isshownat%}
-				<a class="{{li_ikono_kolorea}} eskuma no-hover" title="{{viewAtSource}}" href="{{momentukoItema.edm_isshownat}}" target="_blank">
+				<a class="{{li_ikono_kolorea}} eskuma no-hover" title="{{viewAtSource}}" href="{{LANGUAGE_CODE|choose_lang:momentukoItema.edm_isshownat}}" target="_blank">
 					<i class="icon-ob-eye" aria-hidden="true"></i><span class="azpimarra-gris"> {% trans "Ikusi jatorrizkoa" %}</span>
 				</a>	
 			{%endif%}

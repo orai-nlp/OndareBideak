@@ -272,7 +272,7 @@ def hasiera(request):
     
     
     #Hornitzaileak
-    hornitzaileKop = hornitzailea.objects.count()
+    hornitzaileKop = hornitzailea.objects.exclude(fk_user__is_active=0).count()
     #hornitzaile bat erakutsi
     #egunekoHornitzaile = hornitzailea.objects.order_by('?')[:1]
     #egunekoHornitzaile = egunekoHornitzaile[0];
@@ -280,7 +280,7 @@ def hasiera(request):
     #eguneko hornitzaileen artetik bat ausaz hartu
     egunekoHornitzaile = hornitzailea.objects.filter(egunekoa=1).order_by('?')[0]
     #Erabiltzaileak
-    erabiltzaileKop = usr.objects.count()
+    erabiltzaileKop = usr.objects.exclude(user__is_active=0).count()
     #Hasierako pantailan erakutsi behar den berria hartu datu-basetik
     erakBerria=berria.objects.get(erakutsi=1)
     currentDate= datetime.datetime.now()
@@ -879,7 +879,7 @@ def hornitzaileak_hasiera(request):
     (login_form, erabiltzailea_form,login_try,login_error) = log_sign_in_forms(request)
 
     hornitzaileak = []
-    hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3)
+    hornitzaileak = hornitzailea.objects.filter(fk_user__groups__id=3,fk_user__is_active=1)
     
     paginator = Paginator(hornitzaileak, 27)
     
@@ -1289,6 +1289,7 @@ def hornitzaile_search(request):
 
 def filtro_search(request):
     
+    start=datetime.datetime.now()
     #Hona iristeko 4 aukera daude:
     #bilaketa arrunt baten filtroetatik
     #Menu nagusiko itemak edo ibilbideak sakatuta. Kasu honetan galdera="" eta z-ren balioak kontutan hartu
@@ -1604,6 +1605,12 @@ def filtro_search(request):
     #Datu-baseko lizentziak lortu
     db_lizentziak=lizentzia.objects.all()
     db_lizentziak_text ="_".join(map(lambda x: x.url,db_lizentziak))
+    
+    end=datetime.datetime.now()
+    totaltime=end-start
+    
+    print "filtro_search ready, total time:",totaltime
+    
     
     if hornitzaile_izena:
         hornitzaile = hornitzailea.objects.get(fk_user__username=hornitzaile_izena)
@@ -2295,96 +2302,30 @@ def botoa_eman_path(request):
     
                
     path_id=request.GET['path_id']
-    item_id=request.GET['item_id']
+    botoa=request.GET.get('botoa',0)
    
     path_tupla = path.objects.get(id=path_id)
-    item_tupla = item.objects.get(id=item_id)
                    
     #botatu, request.user
-    path_tupla.vote(request.user)
-    
-    #DB-an GALDERA EGIN MOMENTUKO NODEA LORTZEKO
-    momentukoNodea = node.objects.get(fk_item_id=item_tupla, fk_path_id=path_tupla) 
-    
-    hurrengoak=momentukoNodea.paths_next
-    aurrekoak=momentukoNodea.paths_prev
-    
-    hurrengoak_list=[]
-    #node taulatik "hurrengoak" tuplak hartu 
-    if(hurrengoak != ""):
-        hurrengoak_list=map(lambda x: int(x),hurrengoak.split(","))
-    
-    hurrengoak=node.objects.filter(fk_path_id=path_tupla,fk_item_id__id__in=hurrengoak_list)
-    
-    aurrekoak_list=[]
-    #node taulatik "aurrekoak" tuplak hartu
-    if(aurrekoak != ""):
-        aurrekoak_list=map(lambda x: int(x),aurrekoak.split(","))
-    
-    aurrekoak=node.objects.filter(fk_path_id=path_tupla, fk_item_id__id__in=aurrekoak_list)
-    
-   
-    #DB-an GALDERA EGIN MOMENTUKO ITEMA LORTZEKO
-    momentukoItema = item.objects.get(id=item_id)  
-   
-    #path hasierak hartu
-    nodes = [] 
-    erroak = node.objects.filter(fk_path_id=path_tupla,paths_start=1)
-    for erroa in erroak:
-        nodes = nodes + get_tree(erroa)
-    
+    if botoa > 0: 
+        path_tupla.vote(request.user)
+    elif botoa < 0:
+        path_tupla.unvote(request.user)
+        
     botatuDuPath=0
     if(votes_path.objects.filter(path=path_tupla,user=request.user)):
         botatuDuPath=1
         
-    botatuDuItem=0
-    if(votes_item.objects.filter(item=item_tupla,user=request.user)):
-        botatuDuItem=1
-        
-        
     botoKopuruaPath=path_tupla.get_votes()
-    botoKopuruaItem=momentukoItema.get_votes()
     
-    #Momentuko Ibilbidea lortu
-    momentukoPatha=path.objects.get(id=path_id)
-    
-    #QR kodeak sortzeko , ibilbidea eta momentuko nodoarena     
-    pathqrUrl=ob_base_url+"/nabigazioa_hasi?path_id="+str(path_id)
-    itemqrUrl=ob_base_url+"/erakutsi_item?id="+str(item_id)
-    
-    
-    
-    #Itema erabiltzen duten path-ak lortu
-    itemPaths=node.objects.filter(fk_item_id=momentukoItema)
-    
-    
-    #LORTU IBILBIDEAREN KOMENTARIOAK
-    comments = momentukoPatha.get_comments()    
-    comment_form = CommentForm() 
-    comment_parent_form = CommentParentForm()
- 
     #Ezkerreko zutabea ez erakusteko
     non="fitxaE"
     #return render_to_response('nabigazio_item.html',{"comment_form": comment_form, "comment_parent_form": comment_parent_form,"comments": comments,'itemPaths':itemPaths,'pathqrUrl':pathqrUrl,'itemqrUrl':itemqrUrl,'botoKopuruaItem':botoKopuruaItem,'botoKopuruaPath':botoKopuruaPath,'botatuDuPath':botatuDuPath,'botatuDuItem':botatuDuItem,'path_id':path_id,'momentukoPatha':path_tupla,'node_id':item_id,'path_nodeak': nodes,'momentukoNodea':momentukoNodea,'momentukoItema':momentukoItema,'hurrengoak':hurrengoak, 'aurrekoak':aurrekoak},context_instance=RequestContext(request))
-    return render_to_response('ibilbidea.html',{"non":non,
-                                                "comment_form": comment_form,
-                                                "comment_parent_form": comment_parent_form,
-                                                "comments": comments,
-                                                'itemPaths':itemPaths,
-                                                'pathqrUrl':pathqrUrl,
-                                                'itemqrUrl':itemqrUrl,
-                                                'botoKopuruaItem':botoKopuruaItem,
-                                                'botoKopuruaPath':botoKopuruaPath,
-                                                'botatuDuPath':botatuDuPath,
-                                                'botatuDuItem':botatuDuItem,
+    return render(request,'ajax/ajax_botoa_eman_path.html',{
+                                                'botoKopurua':botoKopuruaPath,
+                                                'botatuDu':botatuDuPath,
                                                 'path_id':path_id,
-                                                'momentukoPatha':path_tupla,
-                                                'node_id':item_id,
-                                                'path_nodeak': nodes,
-                                                'momentukoNodea':momentukoNodea,
-                                                'momentukoItema':momentukoItema,
-                                                'hurrengoak':hurrengoak,
-                                                'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+                                                'botoa':botoa})
 
 
 def botoa_kendu_path(request):
@@ -2593,10 +2534,10 @@ def db_erregistratu_erabiltzailea(cd):
     """Erabiltzaile bat erregistratzen du"""
    
     try:
-        
-        erabiltzailea=User.objects.create_user(cd["username"], cd["posta"], cd["password"])
+        erabiltzailea=User.objects.create_user(username = cd["username"], email = cd["posta"], password = cd["password"], last_login = datetime.datetime.now())
         erabiltzailea.first_name=cd['izena']
         erabiltzailea.last_name=cd['abizena']
+        erabiltzailea.last_login=datetime.datetime.now()
         
         #Django-ko auth_user-en gordetzen du erabiltailea
         erabiltzailea.save()
@@ -4035,7 +3976,7 @@ def ajax_path_edizio_aukerak_aldatu(request):
     path_eguneratua.save()
     
     request_answer=1
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
     
 
 
@@ -4047,8 +3988,9 @@ def ajax_load_ws(request):
     #ws_item_zerrenda=workspace_item.objects.filter(fk_workspace_id=fk_workspace_id)
     
     workspacea=workspace.objects.get(fk_usr_id=request.user) 
+    print "workspace load: ",request.user,request.user.id
     ws_item_zerrenda=workspace_item.objects.filter(fk_workspace_id=workspacea)
-    return render_to_response('workspace_items.xml', {'items': ws_item_zerrenda}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render(request,'workspace_items.xml', {'items': ws_item_zerrenda}, content_type='application/xml')
 
 def ajax_lortu_paths_list(request):
     
@@ -4056,7 +3998,7 @@ def ajax_lortu_paths_list(request):
     
     user_path_zerrenda=path.objects.filter(fk_user_id=fk_usr_id)
     
-    return render_to_response('ibilbide_lista.xml', {'paths': user_path_zerrenda}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('ibilbide_lista.xml', {'paths': user_path_zerrenda}, context_instance=RequestContext(request), content_type='application/xml')
 
 
 def ajax_lortu_most_voted_paths(request):
@@ -4078,7 +4020,7 @@ def ajax_lortu_most_voted_paths(request):
     else:
         path_bozkatuenak=[]
     
-    return render_to_response('ibilbide_bozkatuenak.xml', {'paths': path_bozkatuenak}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('ibilbide_bozkatuenak.xml', {'paths': path_bozkatuenak}, context_instance=RequestContext(request), content_type='application/xml')
 
 
 def gorde_ibilbidea(request):
@@ -4134,7 +4076,7 @@ def ajax_workspace_item_gehitu(request):
         #else:
 		#request_answer= 0
     
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 
 def ajax_workspace_item_borratu(request):
     request_answer= 0
@@ -4147,7 +4089,7 @@ def ajax_workspace_item_borratu(request):
         workspace_item.objects.filter(fk_item_id=itema,fk_workspace_id = workspacea).delete()
       
         request_answer = item_id
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 '''
 def ajax_path_berria_gorde(request):
 
@@ -4192,7 +4134,7 @@ def ajax_path_berria_gorde(request):
         #Haystack update_index EGIN!!!
         update_index.Command().handle()
        
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 '''
 
 def ajax_path_irudia_gorde (request):
@@ -4234,7 +4176,7 @@ def ajax_path_irudia_gorde (request):
             request_answer = fileName
     
 
-    return render_to_response('request_answer.html', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.html', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 
 
 def ajax_path_irudia_eguneratu (request):
@@ -4276,7 +4218,7 @@ def ajax_path_irudia_eguneratu (request):
             #request_answer = path_id
     
             request_answer = fileName
-    return render_to_response('request_answer.html', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.html', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 
 
 def ajax_path_irudia_gorde_proba (request):
@@ -4306,7 +4248,7 @@ def ajax_path_irudia_gorde_proba (request):
         handle_uploaded_file(fileObject,fileObject.name)
         request_answer = 1
         
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 
 def ajax_path_berria_gorde(request):
     
@@ -4374,7 +4316,7 @@ def ajax_path_berria_gorde(request):
         #Haystack update_index EGIN!!!
         #update_index.Command().handle()   ##ATASKATU EGITEN DA :-(  -> BAINA EGUNERATZEN DA INDIZEA
        
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 
 
 def ajax_path_eguneratu(request):
@@ -4450,7 +4392,7 @@ def ajax_path_eguneratu(request):
     # Ezabatu path-eko nodo guztiak
     node.objects.filter(fk_path_id__id=path_id).delete()
 
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 
 def ajax_path_node_gorde(request):
     
@@ -4509,7 +4451,7 @@ def ajax_path_node_gorde(request):
         
         
        
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 
 
 def ajax_path_node_eguneratu(request):
@@ -4572,7 +4514,7 @@ def ajax_path_node_eguneratu(request):
         
         
        
-    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), mimetype='application/xml')
+    return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
 
 
  

@@ -1,6 +1,5 @@
 # coding=utf-8
 from lxml import etree
-from subprocess import call
 import subprocess
 import os,time
 import sys, getopt

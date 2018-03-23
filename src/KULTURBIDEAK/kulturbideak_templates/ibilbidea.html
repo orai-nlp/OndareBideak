@@ -84,9 +84,9 @@
 		</div>		 
 		<br />-->
 		
-		<ul class="button-row-horizontal eskuma">			
+		<ul id="bozketa-barra" class="button-row-horizontal eskuma">			
            	<li>
-           		<a class="" type="button" href="{{BASE_URL}}/botoa_eman_path?path_id={{path_id}}&item_id={{node_id}}" {% if botatuDu == 1 %} disabled{% endif %}>
+           		<a class="" type="button" href="#" onclick="{% if botatuDu != 1 %} botoa_eman_path({{path_id}},1); {% endif %} return false;" >
            			<i class="fa fa-thumbs-up kolore-txuria" aria-hidden="true"></i> 
            		</a>
            	</li>
@@ -98,7 +98,7 @@
 				</a>
 			</li>
 			<li>
-				<a class="" type="button" href="{{BASE_URL}}/botoa_kendu_path?path_id={{path_id}}&item_id={{node_id}}"  {% if botatuDu != 1 %} disabled{% endif %} >
+				<a class="" type="button" href="#" onclick="{% if botatuDu == 1 %} botoa_eman_path({{path_id}},-1);{% endif %} return false;" >
 			 		<i class="fa fa-thumbs-down kolore-txuria" aria-hidden="true"></i>
 			 	</a>
 			 </li>			

@@ -3,15 +3,15 @@
 {% load qr_tags %}
 {% load tags%}
 
-<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_isshownby %}{{momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >   
-	{% if '.mp3' in momentukoItema.edm_isshownby %}
+<a id="item_img" class="img-responsive nabigItem" href="{% if momentukoItema.edm_isshownby %}{{LANGUAGE_CODE|choose_lang:momentukoItema.edm_isshownby}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_isshownby %}_blank{%endif%}" >   
+	{% if '.mp3' in LANGUAGE_CODE|choose_lang:momentukoItema.edm_isshownby %}
 	
-		<audio controls>
-  		<source src="{{momentukoItema.edm_isshownby}}" type="audio/mpeg">					
+		<audio  id="ob-videojs" class="video-js ob-audio-skin" controls preload="auto" height="250">
+  		<source src="{{LANGUAGE_CODE|choose_lang:momentukoItema.edm_isshownby}}" type="audio/mpeg">					
 		</audio>
 	
 	{% elif momentukoItema.edm_isshownat %}
-	 <iframe id="preview_frame" style="width:100%;height:300px;" src="{{momentukoItema.edm_isshownat}}"></iframe>
+	 <iframe id="preview_frame" style="width:100%;height:300px;" src="{{LANGUAGE_CODE|choose_lang:momentukoItema.edm_isshownat}}"></iframe>
 	 {% elif momentukoItema.ob_thumbnail %} 
 	 <img title="{{ LANGUAGE_CODE|choose_title_language:momentukoItema|format_html:1|safe}}" src="{{momentukoItema.ob_thumbnail|proxyPassHttp}}">
 	 {%else%}
