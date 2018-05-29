@@ -2761,6 +2761,7 @@ def editatu_ibilbidea(request):
             
     
     return render_to_response('editatu_ibilbidea.html',{'momentukoPatha':ibilbidea,
+                                                        'non':'editatu_ibilbidea',
                                                         'path_id':id,
                                                         'path_nodeak': nodes,
                                                         'path_titulua': titulua,

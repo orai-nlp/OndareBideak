@@ -44,8 +44,8 @@
 		{% if momentukoItema.edm_object %}
 			{% if momentukoItema.edm_object|is_handle %}
 	<a id="item_img" class="img-responsive nabigItem scrollbar" href="{% if momentukoItema.edm_object %}{{momentukoItema.edm_object|proxyPassHttp}}{%else%} # {%endif%}" target="{% if momentukoItema.edm_object %}_blank{%endif%}" >
-		 <object data="{{momentukoItema.edm_object|proxyPassHttp}}" type="text/html" width="100%" height="60%">
-			<iframe src="{{momentukoItema.edm_object|proxyPassHttp}}" style="border: none;" width="100%" height="60%">
+		 <object data="{{momentukoItema.edm_object|proxyPassHttp}}" type="text/html" width="100%" height="100%">
+			<iframe src="{{momentukoItema.edm_object|proxyPassHttp}}" style="border: none;" width="100%" height="100%">
 				<img id="prev_ob_pdfby" style="max-width:100%;" alt="{{momentukoItema.dc_title}}" src="/uploads/NoIrudiItem.png">
 			</iframe>
 		</object>

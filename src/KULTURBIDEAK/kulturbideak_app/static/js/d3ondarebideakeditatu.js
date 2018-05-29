@@ -231,20 +231,6 @@ function sortu(data){
 	}
     }
     //dblclick funtzioa: klik bikoitza egitean narrazioa gehitzeko textarea eta botoia gaitu egiten dira.
-    /*function dblclick(d){
-	document.getElementById("narra_textarea").innerHTML = d.narrazioa;
-	document.getElementById("narra_textarea").value = d.narrazioa;
-	document.getElementById("narra_textarea").disabled = false;
-	document.getElementById("narra_botoia").disabled = false;
-	document.getElementById("narra_botoia").onclick = function () {
-            d.narrazioa = document.getElementById("narra_textarea").value;
-            document.getElementById("narra_textarea").disabled = true;    
-            document.getElementById("narra_botoia").disabled = true;  
-            document.getElementById("narra_textarea").value = " ";              
-        };
-	
-    }*/
-    
     function dblclick(d){	
 	//document.getElementById("narra_textarea").value = d.narrazioa;
 	var narrazio_html = htmlDecode(d.narrazioa);
@@ -260,6 +246,17 @@ function sortu(data){
         };
     }
     
+    // geoclick funtzioa: nodo baten geo informazioa editatzean koordenatu berriak elementuarik gehitzeko.
+    function geoclick(d) {
+        current_node=d;
+        $('#geoloc_modal').modal('show');
+        document.getElementById("geomodal_botoia").onclick = function () {            
+            d.latitude = document.getElementById('latitude').value;
+            d.longitude = document.getElementById('longitude').value;
+            $("#geoloc_modal").modal('hide');
+        };
+
+    }
     
     //pan funtzioa:noaren posizioaren aldaketa
     function pan(unekoNodoa, direction) {
@@ -575,15 +572,19 @@ function sortu(data){
             });
 	
         //Zakarrontzi irudia gehitu. Zakarrontzi honetan klik egiten baduzu nodoa ezabatu dezakezu.
-        nodeEnter.append("image")
-            .attr("id",function(d) { 
-                var z = "z"+d.id;
-                return z; })
-            .attr("xlink:href","http://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png")
-            .attr("x", function(d) { return -45;})
+        nodeEnter.append("text")
+            .style('font-family', 'FontAwesome')
+            .style('font-size', '1.5em')
+	    .style('cursor','pointer')
+            .attr("id",function(d) {
+		var z = "m"+d.id;
+		return z; })
+            //.attr("class","fa fa-trash")                                                                                                                                                                        
+            .attr("x", function(d) { return -50;})
             .attr("y", function(d) { return -20;})
             .attr("height", 15)
             .attr("width", 15)
+            .text(function(d) { return '\uf1f8' })
             .on('click', function(d) { 
                 if (d.parent.name == "ROOT"){
                     alert("Nodoa hau ezin da ezabatu");
@@ -608,45 +609,21 @@ function sortu(data){
                     }            
                 }
             }); 
-       
-        /**
-        //Zakarrontzi irudia gehitu. Zakarrontzi honetan klik egiten baduzu nodoa ezabatu dezakezu.
         nodeEnter.append("text")
+            .style('font-family', 'FontAwesome')
+            .style('font-size', '1.5em')
+	    .style('cursor','pointer')
             .attr("id",function(d) { 
-                var z = "trash"+d.id;
-                return z; }).append("tspan")
-                //.attr("xlink:href","http://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png")
-                .attr("class","icon-ob-trash svg-trash-icon")
-                .attr("x", function(d) { return 45;})
-                .attr("y", function(d) { return -20;})
-                .attr("height", 15)
-                .attr("width", 15)
-                .on('click', function(d) { 
-                if (d.parent.name == "ROOT"){
-                    alert("Nodoa hau ezin da ezabatu");
-                    return;
-                } else {
-                    var result = confirm(" Nodoa ezabatu nahi duzu? ");
-                    if (result) {
-                        var index = d.parent.children.indexOf(d);
-                        if (index>-1){
-                            d.parent.children.splice(index, 1);
-                        }
-                        if (d.children !=undefined){
-                            var index2 = d.children.length;
-                            for (var i=0;i<index2;i++){
-                                d.children[i].parent = d.parent;
-                                d.parent.children.push(d.children[i]);
-                            }  
-                        }
-                        update(root);
-                    } else {
-                        alert("Nodoa ez da ezabatu.");
-                    }            
-                }
-            }); 
-        */
-        
+		var z = "m"+d.id;
+		return z; })
+        //.attr("class","fa fa-map-marker")
+            .attr("x", function(d) { return -30;})
+            .attr("y", function(d) { return -20;})
+            .attr("height", 15)
+            .attr("width", 15)
+            .text(function(d) { return '\uf041' })
+            .on('click', geoclick);
+
         
           //Nodoari motaren arabera irudi bat gehitu.
    		
@@ -828,3 +805,4 @@ function sortu(data){
     }
     
 }
+

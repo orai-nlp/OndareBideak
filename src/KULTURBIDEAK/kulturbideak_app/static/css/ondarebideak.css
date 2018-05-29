@@ -38,16 +38,24 @@ div.item-extra-background{
 #item_img {
 	margin: 5px;
 	min-width:450px;
+	border: solid 1px #efefef;
 }
 
 #item_img_text {
 	margin: 5px;
 	min-width: 800px;
+	border: solid 1px #efefef;	
 }
 
 
-#item_img img{
-	width:100%;
+#item_img img, #item_img object{
+	max-width:100% !important;	
+	object-fit:contain;
+}
+
+#item_img_text img, #item_img_text object{
+	max-width:100% !important;	
+	object-fit:contain;
 }
 
 #license_info {

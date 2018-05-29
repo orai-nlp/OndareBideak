@@ -4,6 +4,7 @@ from settings import *
 import re
 import HTMLParser
 import requests
+import math
 #import pdb
 
 from django.conf import settings
@@ -204,7 +205,11 @@ def ob_language_errep_kendu(value):
 
 @register.filter
 def correct_float_format(value):
-    return str(value).replace(',','.')
+	
+	if not value:
+		value = 0.0
+		
+	return str(value).replace(',','.')
 
 
 

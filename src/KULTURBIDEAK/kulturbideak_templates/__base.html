@@ -169,7 +169,8 @@
             var layer_array = Array();
             var LeafIcon = L.Icon.extend({});
             var markers = [];
-
+			var current_node;
+			
             {% if non == 'itema_gehitu' %}
 
             function load_map(map, options) {
@@ -210,12 +211,16 @@
 
             }
 
-            {% elif   non == 'itema_editatu'  %}
+            {% elif non == 'itema_editatu' %}
             function load_map(map, options) {
-
+				console.log("item or path edition");
                 global_map = map;
-        
-                if(markers.length>0  {% if geoloc_latitude %} ||  {{ geoloc_latitude| correct_float_format }} !=0.0{% endif%} )
+        		
+                // zentratu euskal herriko erdiko puntuan
+                map.panTo(new L.LatLng(42.9403, -2.1808));
+                
+                // itemak geolokalizazioa badu orduan zentratu uneko itemaren kokapenean.
+                if((markers.length>0)  ||  ({{ geoloc_latitude | correct_float_format }} != 0.0) )
                 {
                     //Mapa zentratu
                     map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }}, {{geoloc_longitude | correct_float_format}}));
@@ -226,6 +231,10 @@
             		L.marker([{{ geoloc_latitude | correct_float_format }}, {{ geoloc_longitude | correct_float_format }}], {icon:greenIcon}).addTo(map).openPopup();
 
             	}
+                else{
+                	// zentratu euskal herriko erdiko puntuan
+                    map.panTo(new L.LatLng(42.9403, -2.1808));                    
+                }
 
             	// maparen click eventoa
             	map.on('click', function(e) {
@@ -252,6 +261,60 @@
 
             }
 
+            {% elif non == 'editatu_ibilbidea' %}
+            function load_map(map, options) {
+				console.log("item or path edition");
+                global_map = map;
+                if (current_node === undefined ){
+                	geoloc_latitude=0.0;
+    	    		geoloc_longitude=0.0;
+                }
+                else{
+	        		geoloc_latitude=current_node.latitude;
+    	    		geoloc_longitude=current_node.longitude;
+                }                
+                // itemak geolokalizazioa badu orduan zentratu uneko itemaren kokapenean.
+                if((markers.length>0)  ||  ({{ geoloc_latitude | correct_float_format }} != 0.0) )
+                {
+                    //Mapa zentratu
+                    map.panTo(new L.LatLng({{ geoloc_latitude | correct_float_format }}, {{geoloc_longitude | correct_float_format}}));
+
+            		//Geolokalizazio zaharra beste kolore batekin erakutsi
+            		var greenIcon = new LeafIcon({iconUrl : '{{STATIC_URL}}img/leaf-green.png'});
+
+            		L.marker([{{ geoloc_latitude | correct_float_format }}, {{ geoloc_longitude | correct_float_format }}], {icon:greenIcon}).addTo(map).openPopup();
+
+            	}
+                else{
+                	// zentratu euskal herriko erdiko puntuan
+                    map.panTo(new L.LatLng(42.9403, -2.1808));                    
+                }
+
+            	// maparen click eventoa
+            	map.on('click', function(e) {
+                if (markers.length > 0) {
+                    map.removeLayer(markers[0]);
+                    markers = [];
+                };
+                var marker = L.marker(e.latlng, {
+                    title : "Resource Location",
+                    alt : "Resource Location",
+                    riseOnHover : true,
+                    draggable : true
+                }).on("click", function(e) {
+                    map.removeLayer(this);
+                    layer_array = jQuery.grep(layer_array, function(value) {
+                        return $(value).not([e.latlng.lat, e.latlng.lng]).length === 0 && $([e.latlng.lat, e.latlng.lng]).not(value).length === 0
+             	    });
+                }).addTo(map);
+                layer_array.push([e.latlng.lat, e.latlng.lng]);
+                markers.push(marker);
+                document.getElementById("latitude").value = e.latlng.lat;
+                document.getElementById("longitude").value = e.latlng.lng;
+            });
+
+            }
+            
             {% elif  non == 'fitxaE'  %}
             console.log('hornitzailea editatu')
             function load_map(map, options) {

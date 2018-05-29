@@ -834,6 +834,7 @@ function create_path_nodes(path_id)
 	toprocess.push.apply(toprocess,root.children);
 	while (toprocess.length>0){	
 	    var currentN = toprocess.shift();
+	    //var obj={id: currentN.id, name: currentN.name , irudia: currentN.irudia , narrazioa: currentN.narrazioa , latitude: currentN.latitude, longitude: currentN.longitude,  parent:currentN.parent.id , children:currentN.children};
 	    var obj={id: currentN.id, name: currentN.name , irudia: currentN.irudia , narrazioa: currentN.narrazioa ,  parent:currentN.parent.id , children:currentN.children};
 	    json.push(obj);
 	    if (currentN.children != null && typeof currentN.children == 'object')
@@ -869,33 +870,35 @@ function create_path_nodes(path_id)
 	//Erroak
 	var nodes = paths_starts;
 	for(var i = 0; i < json.length; i++) {
-		var item_id= json[i].id;
-		var uri="uri_"+json[i].id;
-		var dc_source="";
-		//var dc_description="desc";
-		var type ="argazkia";
-		var paths_thumbnail=json[i].irudia;
-		
+	    var item_id= json[i].id;
+	    var uri="uri_"+json[i].id;
+	    var dc_source="";
+	    //var dc_description="desc";
+	    var type ="argazkia";
+	    var paths_thumbnail=json[i].irudia;
+	    
 		//MAD
-		var dc_description=json[i].narrazioa;
-		
-		if (json[i].parent == 0){
-			var paths_prev = "pb_"; //ez dauka aitarik, bera da aita nagusia
-			var paths_start = 1; //root da
-		} else {
-			var paths_prev = "pb_"+json[i].parent; //
-			var paths_start = 0; //ez da root 
-		}
-		var dc_title =json[i].name;
-			if (json[i].children == undefined){
-				var semeak = '';
-				var paths_next = 'pb_';
-			} else {
-				var semeak =json[i].children;
-				var paths_next=json[i].children.join();
-				nodes = nodes.concat(semeak);
-			}		
-		create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start);
+	    var dc_description=json[i].narrazioa;
+	    
+	    if (json[i].parent == 0){
+		var paths_prev = "pb_"; //ez dauka aitarik, bera da aita nagusia
+		var paths_start = 1; //root da
+	    } else {
+		var paths_prev = "pb_"+json[i].parent; //
+		var paths_start = 0; //ez da root 
+	    }
+	    var dc_title =json[i].name;
+	    
+	    if (json[i].children == undefined){
+		var semeak = '';
+		var paths_next = 'pb_';
+	    } else {
+		var semeak =json[i].children;
+		var paths_next=json[i].children.join();
+		nodes = nodes.concat(semeak);
+	    }
+	    
+	    create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start);
 		//nodes = nodes.concat(semeak);
 	}
 
@@ -1046,7 +1049,7 @@ function update_path_on_db_answer(xmlHttp,path_id)
 
 /* Ibilbidea eguneratzean, ibilbideko nodo bakoitzaren eguneraketa burutzen da ajax bidez jarraian
  dauden funtzioekin */
-
+/*
 function update_path_nodes(path_id)
 {
 	//zuhaitza , json formatura pasa.
@@ -1216,7 +1219,7 @@ function update_path_node_answer(xmlHttp)
     }
 }
 
-
+*/
 
 //ibilbideak sortzeko arbela
 function set_pb(){
