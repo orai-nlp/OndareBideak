@@ -219,16 +219,16 @@ function sortu(data){
     
     //click funtzioa: klik egitean aukeratutako nodoaren zirkulua gorriz ezartzen du.
     function click() {
-	var p = d3.select(this);
-	if (p.select("circle").classed("aukeratuta") == true){
-            d3.selectAll("circle").style({stroke: 'steelblue'});
-            p.select("circle").style({stroke: 'red'});
-            p.select("circle").classed("aukeratuta",false);
-	    
-	} else {
-            p.select("circle").style({stroke: 'steelblue'});
+    	var p = d3.select(this);
+    	if (p.select("circle").classed("aukeratuta") == true){
+            //d3.selectAll("circle").style({stroke: 'steelblue'});
+            //p.select("circle").style({stroke: 'red'});			
+            p.select("circle").classed("aukeratuta",false);            
+    	} else {
+            //p.select("circle").style({stroke: 'steelblue'});
             p.select("circle").classed("aukeratuta",true);
-	}
+    	}
+    	$(this).find(".d3_button").toggle(); //.css({"visibility":"visible"});
     }
     //dblclick funtzioa: klik bikoitza egitean narrazioa gehitzeko textarea eta botoia gaitu egiten dira.
     function dblclick(d){	
@@ -250,14 +250,35 @@ function sortu(data){
     function geoclick(d) {
         current_node=d;
         $('#geoloc_modal').modal('show');
+        setTimeout(function(){
+        	global_map.invalidateSize();
+        }, 1000);
         document.getElementById("geomodal_botoia").onclick = function () {            
             d.latitude = document.getElementById('latitude').value;
             d.longitude = document.getElementById('longitude').value;
+            save_path_node_geolocation(d.id,d.latitude,d.longitude);
             $("#geoloc_modal").modal('hide');
         };
 
     }
     
+    // ibilbide bateko nodoen geolokalizazioa eguneratzeko funtzioa.
+    function save_path_node_geolocation(id, lat,long){
+	$.ajax({
+	    method : 'POST',
+	    url : '/ajax_save_path_node_geolocation',
+	    dataType : 'html',
+	    data : {
+		id : id,
+		latitude: lat,
+		longitude: long
+	    }
+	}).done(function(data) {
+	    alert("Geolokalizazioa ongi gorde da.");
+	});
+    }
+
+
     //pan funtzioa:noaren posizioaren aldaketa
     function pan(unekoNodoa, direction) {
 	var speed = panSpeed;
@@ -568,22 +589,24 @@ function sortu(data){
             .on('click', click)
             .on('dblclick',dblclick)
             .on("mouseover", function(node) {
-		overCircle(node);
+            	overCircle(node);
+            	
             });
 	
         //Zakarrontzi irudia gehitu. Zakarrontzi honetan klik egiten baduzu nodoa ezabatu dezakezu.
         nodeEnter.append("text")
             .style('font-family', 'FontAwesome')
             .style('font-size', '1.5em')
-	    .style('cursor','pointer')
+            .style('cursor','pointer')
             .attr("id",function(d) {
-		var z = "m"+d.id;
+		var z = "r"+d.id;
 		return z; })
             //.attr("class","fa fa-trash")                                                                                                                                                                        
-            .attr("x", function(d) { return -50;})
+            .attr("x", function(d) { return -60;})
             .attr("y", function(d) { return -20;})
             .attr("height", 15)
             .attr("width", 15)
+            .attr("class", "d3_button")
             .text(function(d) { return '\uf1f8' })
             .on('click', function(d) { 
                 if (d.parent.name == "ROOT"){
@@ -609,18 +632,21 @@ function sortu(data){
                     }            
                 }
             }); 
+        
+        // Mapa-puntu baten ikonoa gehitu. Gainean klik egiten baduzu nodoaren geokokapena mapan adierazteko aukera izango duzu.
         nodeEnter.append("text")
             .style('font-family', 'FontAwesome')
             .style('font-size', '1.5em')
-	    .style('cursor','pointer')
+            .style('cursor','pointer')
             .attr("id",function(d) { 
-		var z = "m"+d.id;
-		return z; })
+            	var z = "m"+d.id;
+            	return z; })
         //.attr("class","fa fa-map-marker")
-            .attr("x", function(d) { return -30;})
+            .attr("x", function(d) { return -40;})
             .attr("y", function(d) { return -20;})
             .attr("height", 15)
             .attr("width", 15)
+            .attr("class", "d3_button")
             .text(function(d) { return '\uf041' })
             .on('click', geoclick);
 

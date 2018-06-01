@@ -10,7 +10,85 @@
 <link rel="stylesheet" href="{{STATIC_URL}}css/ob-svg.css" type="text/css">								
 {% endblock d3_svg %}
 
+{% block mapFunctions %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+<script type="text/javascript">
+	 //MAPA FUNTZIOAK
+			
+    var global_map;
+    var layer_array = Array();
+    var LeafIcon = L.Icon.extend({options: {
+        shadowUrl: '',
+        iconSize:     [25, 25],
+        shadowSize:   [10, 10],
+        iconAnchor:   [22, 22],
+        shadowAnchor: [4, 4],
+        popupAnchor:  [-3, -76]
+    }});
+    var markers = [];
+	var current_node;
+	var defaultZoom = 8;
+			
+    function load_map(map, options) {
+    	console.log('ibilbidea erakutsi')
+        global_map = map;
+		
+		
+    	var avg_lat=0.0;
+        var avg_long=0.0;
+        var coords = 0;
+        var pointList=[];
+        for (var ndIndex in data)
+        {
+        	var nd = data[ndIndex];
+        	if (nd.name == "ROOT"){
+        		continue;
+        	}
+	    	var lt=nd.latitude;
+    		var lng=nd.longitude;
+            if (lt && lng && lt != 'None' && lng !='None'){
 
+    	 		//Geolokalizazio zaharra beste kolore batekin erakutsi                                                                                                                                                 
+    	    	var nodeIcon = new LeafIcon({iconUrl : '{{STATIC_URL}}img/icons/'+nd.mota.toLowerCase()+'.png'});
+    	    	var point = new L.LatLng(lt, lng);
+    	    	L.marker(point,{icon:nodeIcon}).addTo(map);
+    	    	pointList.push(point);
+    	    	avg_lat = avg_lat+parseFloat(lt);
+    	    	avg_long = avg_long+parseFloat(lng);
+    	    	coords = coords+1;
+            }
+        }
+        if (coords <1){
+        	coords=1;
+        }
+        avg_lat = avg_lat/coords;
+        avg_long = avg_long/coords;
+        if (avg_lat == 0.0){
+        	avg_lat=42.9403;
+        	avg_long=-2.1808;
+        }
+
+        var firstpolyline = new L.Polyline(pointList, {
+    	color: 'red',
+            weight: 3,
+            opacity: 0.5,
+            smoothFactor: 1
+        });
+        
+        {% comment %}
+        L.Routing.control({
+        	  waypoints: pointList       	  
+    	 	  router: L.Routing.mapbox('pk.eyJ1Ijoib25kYXJlYmlkZWFrIiwiYSI6ImNqaHVpMXFpajBtbm8zcWtzZDA0dGJoZW4ifQ.uEKZlo1Y6Lyq8uKwTUaQDQ')
+        	}).addTo(map);
+        {% endcomment %}
+        firstpolyline.addTo(map);
+
+        map.setView(new L.LatLng(avg_lat, avg_long),defaultZoom);
+        map.fitBounds(pointList);
+    }
+</script>
+{% endblock mapFunctions %}
 
 {% block extra_markup %}
 <div class="item-extra-background"></div>
@@ -253,7 +331,7 @@
 						var root = {
 							"id" : 0,
 							"name" : "ROOT",
-							"irudia" : "http://www.ondarebideak.eus/uploads/festivalCineDonostia.jpeg",
+							"irudia" : "http://www.ondarebideak.eus/uploads/NoIrudiItem.png",
 							"parent" : ''
 						}
 						ibilbide_data.push(root);
@@ -279,15 +357,18 @@
 							aita_id = 0;
 						}
 						var mota = "{{node.fk_item_id.edm_type}}";
+						var latitude = "{{node.geoloc_latitude}}"
+						var longitude = "{{node.geoloc_longitude}}"
 						var obj = {
 							id : id,
 							name : titulua,
 							irudia : irudia,
 							parent : aita_id,
-							mota : mota
+							mota : mota,
+							latitude : latitude,
+							longitude : longitude
 						};
 						ibilbide_data.push(obj);
-
 					</script>
 					{% endfor%}
 					<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/d3ondarebideakoverview.js"></script>
@@ -298,6 +379,27 @@
 
 		</div>
 	</div>
+
+
+<!-- GEOLOKALIZAZIOA -->
+{% if path_geoloc > 1 %}
+{{path_geoloc}}
+{% load leaflet_tags %}
+<div id="geo_map" class="container">
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			{% leaflet_map "yourmap" callback="load_map" %}
+		</div>		
+		<div class="col-md-1"></div>
+	</div>
+</div>
+
+{%endif%}
+<!-- END GEOLOKALIZAZIOA -->
+
+
+
 
 {% endblock content %}
 

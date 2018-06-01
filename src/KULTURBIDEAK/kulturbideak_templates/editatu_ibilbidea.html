@@ -9,12 +9,25 @@
 <link rel="stylesheet" href="{{STATIC_URL}}css/ob-svg.css" type="text/css">								
 {% endblock d3_svg %}
 
-{% block sidebar%}
-<div id="sidebar"></div>
-{% endblock sidebar%}
+
+{% block extra_markup %}
+<div class="item-extra-background"></div>
+{% endblock extra_markup %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block page_div_def %}			
+<div id="main_page">
+{% endblock page_div_def %}		
+
+{% block orria_div_def %}			
+	<div class="">
+{% endblock orria_div_def %}
+	
 
 {% block content_div_def %}		
-<div id="content_div" class="col-sm-12 col-md-12 col-lg-12" align="center">
+<div id="content_div" align="center">
 {% endblock content_div_def %}
 
 
@@ -25,8 +38,8 @@
 <!-- END left site management button menu -->
 
 					
-<div class="container fitxa backgrnd-gris-hiru">
-	<div class="item-fitxa-line1 row">
+<div class="fitxa backgrnd-gris-hiru">
+	<div class="item-fitxa-line1 clearfix">
 	<!-- ezkerreko zutabea, mota eta gurutzatzen diren ibilbideak -->
 	<div class="left col-md-2">
 		<ul class="mota-crossing" >
@@ -89,7 +102,7 @@
 			
 	</div> 
 	</div>
-	<div class="item-fitxa-line2 row">
+	<div class="item-fitxa-line2 clearfix">
 		<!-- ezkerreko zutabea, mota eta gurutzatzen diren ibilbideak -->
 		<div class="left col-md-2">
 			<ul class="mota-crossing" >
@@ -151,11 +164,11 @@
 			{% endcomment %}
 		</div>
 	</div>	
-	<div class="item-fitxa-line3 row">
+	<div class="item-fitxa-line3 clearfix">
 		<div class="col-md-2 col-md-offset-2">
 			
 			{% if momentukoPatha.paths_thumbnail %}
-			<img class="img-responsive ibilbide-irudia" alt="" src="{{momentukoPatha.paths_thumbnail}}">
+			<img class="img-responsive ibilbide-irudia-edit" alt="" src="{{momentukoPatha.paths_thumbnail}}">
 			{% else %}
 			<img class="img-responsive" src="/uploads/NoIrudiBide.png">
 			{% endif %}
@@ -191,7 +204,37 @@
 			</button>  
 			
 		</div>
-	</div>		
+	</div>	
+	<div class="item-fitxa-line4 clearfix backgrnd-gris-hiru">
+		<div class="col-md-10 col-md-offset-2">
+		<div id="div_you_want_to_blink" class="info kolore-gris-hiru kolore-txuria center">
+		<p class="kolore-txuria ezkerra">
+			<span class="fa fa-info-circle" aria-hidden="true"></span>
+			<b>1.</b> {% blocktrans %}
+			Ibilbideko item bat <b>mugitzeko</b> arrastatu eta jarri beste nodo baten ondoren. 
+			{% endblocktrans %}
+		</p>
+		<p class="kolore-txuria ezkerra">
+			<span class="fa fa-info-circle" aria-hidden="true"></span>
+			<b>2.</b> {% blocktrans %}
+			Ibilbideko item baten <b>narrazioa gehitzeko</b> egin klik bikoitza itemaren gainean.
+			{% endblocktrans %}
+		</p>
+		<p class="kolore-txuria ezkerra">
+			<span class="fa fa-info-circle" aria-hidden="true"></span>
+			<b>3.</b> {% blocktrans %}
+			Ibilbideko item baten <b>geokokapena gehitzeko</b> egin klik itemaren gainean eta gero pin-aren gainean sakatu.
+			{% endblocktrans %}
+		</p>
+		<p class="kolore-txuria ezkerra">
+			<span class="fa fa-info-circle" aria-hidden="true"></span>
+			<b>4.</b> {% blocktrans %}
+			Ibilbideko item bat <b>ezabatzeko</b> egin klik itemaren gainean eta gero zakarrontziaren gainean berriz.
+			{% endblocktrans %}
+		</p>
+		</div>
+		</div>
+	</div>	
 </div><!-- container fitxa: end of colored background -->
 
 
@@ -202,14 +245,6 @@ path_box-ean seme bat sartzeko:
 pb_new_son(aitaren_id,elementu_id,testua,irudiaren_urla);
 -->
 <div id="d3-path-board" >
-<div id="div_you_want_to_blink" class="info kolore-gris-hiru kolore-txuria">
-	<p class="kolore-txuria">
-		<span class="fa fa-info-circle" aria-hidden="true"></span>
-		{% blocktrans %}
-		Ibilbideko item baten <b>narrazioa gehitzeko</b> egin klik bikoitza itemaren gainean
-		{% endblocktrans %}
-	</p>
-</div>
 
        	
  <div id="path_boxes" class="backgrnd-txuria padding-15" ondrop="pb_drop(event);" ondragover="allowDrop(event)"></div>
@@ -416,7 +451,7 @@ $.fn.modal.Constructor.prototype.enforceFocus = function () {
 				<div class="row">
 					<div class="col-md-1"></div>
 					<div class="col-md-10">
-						<label>Geolokalizazioa: {{ non }}</label>		
+						<!-- <label>Geolokalizazioa: {{ non }}</label>  -->		
 						<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
 						<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
 						{% leaflet_map "yourmap" callback="load_map" %}

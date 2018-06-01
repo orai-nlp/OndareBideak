@@ -14,7 +14,6 @@
 		
 		{# Load CSS and JavaScript #}
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>
-		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/kulturbideak.js"></script>
 
 		{% bootstrap_css %}
 		{% bootstrap_javascript %}
@@ -170,6 +169,7 @@
             var LeafIcon = L.Icon.extend({});
             var markers = [];
 			var current_node;
+			var defaultZoom = 8;
 			
             {% if non == 'itema_gehitu' %}
 
@@ -233,7 +233,7 @@
             	}
                 else{
                 	// zentratu euskal herriko erdiko puntuan
-                    map.panTo(new L.LatLng(42.9403, -2.1808));                    
+                    map.setView(new L.LatLng(42.9403, -2.1808),defaultZoom);                    
                 }
 
             	// maparen click eventoa
@@ -287,7 +287,7 @@
             	}
                 else{
                 	// zentratu euskal herriko erdiko puntuan
-                    map.panTo(new L.LatLng(42.9403, -2.1808));                    
+                    map.setView(new L.LatLng(42.9403, -2.1808),defaultZoom);                    
                 }
 
             	// maparen click eventoa

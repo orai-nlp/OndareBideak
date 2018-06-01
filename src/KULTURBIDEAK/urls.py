@@ -7,6 +7,8 @@ from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 #from django.views.generic import direct_to_template
 from kulturbideak_app import views as ob_views
+
+
 from django.contrib import admin
 
 #MAddalen
@@ -53,6 +55,7 @@ urlpatterns = patterns('',
     url(r'ajax_path_irudia_gorde_proba$', ob_views.ajax_path_irudia_gorde_proba),  
     url(r'ajax_path_irudia_gorde$', ob_views.ajax_path_irudia_gorde),
     url(r'ajax_path_irudia_eguneratu$', ob_views.ajax_path_irudia_eguneratu), 
+    url(r'ajax_save_path_node_geolocation$', ob_views.ajax_save_path_node_geolocation),
     url(r'ajax_load_ws', ob_views.ajax_load_ws),    
     url(r'nire_itemak_erakutsi$', ob_views.nire_itemak_erakutsi), 
     url(r'nire_ibilbideak_erakutsi$', ob_views.nire_ibilbideak_erakutsi),

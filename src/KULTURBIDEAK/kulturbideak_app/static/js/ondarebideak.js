@@ -273,42 +273,30 @@ function remove_me(element,item_id){
 function add_me_to_the_SVG(element,item_id){
 	
 //if (document.getElementById("path_boxes").children[0].children[0].innerHTML == "Created with Raphaël 2.1.2"){
-    if (document.getElementById("path_boxes").children[0].innerHTML == "emptySVG"){
+	var svgContent = document.getElementById("path_boxes").children[0].innerHTML; 
+    if ( svgContent == "emptySVG"){
 
-	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
-	if (data.length == 0){
-			var root = {"id":0 ,"name" : "ROOT" , "irudia": serverUrl+"/uploads/NoIrudiItem.png", "parent":'' };
+    	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
+    	if (data.length == 0){
+    		var root = {"id":0 ,"name" : "ROOT" , "irudia": serverUrl+"/uploads/NoIrudiItem.png", "parent":'' };
 			data.push(root);
-	}
-	var id = element.id.substring(7,element.id.length);
-	var irudia = element.children[3].src;// ws_box-ei type irudia gehitu aurretik children[2]
-	var titulua = element.children[4].firstChild.data; // ws_box-ei motaren irudia gehitu aurretik children[3]
+    	}
+    }
+    var id = element.id.replace(/ws_box_/,'') ;//.substring(7,element.id.length);
+    var irudia = $(element).find("img")[0].src; // ws_box-ei type irudia gehitu aurretik children[2]
+    var titulua = $(element).find(".wsb_title")[0].textContent; // ws_box-ei motaren irudia gehitu aurretik children[3]
 	
-	var mota = element.children[1].firstChild.attributes[1].nodeValue;	
-	mota = mota.split("/").pop().split(".")[0].toUpperCase();
+    var mota = $(element).find(".wsb_typeImage > i")[0].classList[0].replace(/icon-ob-/,'').toUpperCase();	
 	
-	//var svg = document.getElementById("path_boxes").children;
-	var obj={id: id, name: titulua , irudia: irudia, parent:0, mota: mota};
-	data.push(obj);
-	sortu(data);//funtzio hau d3ondarebideaksortu.js barruan dago.
-	remove_me(element,item_id);
-} else {
-	
-    var id = element.id.substring(7,element.id.length);
-	var irudia = element.children[3].src;// ws_box-ei motaren irudia gehitu aurretik children[2]
-	var titulua = element.children[4].firstChild.data;//children[3]
-	
-	var mota = element.children[1].firstChild.attributes[1].nodeValue;
-	mota = mota.split("/").pop().split(".")[0].toUpperCase();
-	
-	//var svg = document.getElementById("path_boxes").children;
-	var obj={id: id, name: titulua , irudia: irudia, parent:0, mota: mota};
-	data.push(obj);
-	sortu(data);
-	remove_me(element,item_id);
-	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
-
-}
+    //var svg = document.getElementById("path_boxes").children;
+    var obj={id: id, name: titulua , irudia: irudia, parent:0, mota: mota};
+    data.push(obj);
+    sortu(data);//funtzio hau d3ondarebideaksortu.js barruan dago.
+    remove_me(element,item_id);
+    
+    if (svgContent != "emptySVG"){
+    	document.getElementById("path_boxes").removeChild(document.getElementById("path_boxes").childNodes[0]);
+    }
 }
 
 
@@ -834,8 +822,8 @@ function create_path_nodes(path_id)
 	toprocess.push.apply(toprocess,root.children);
 	while (toprocess.length>0){	
 	    var currentN = toprocess.shift();
-	    //var obj={id: currentN.id, name: currentN.name , irudia: currentN.irudia , narrazioa: currentN.narrazioa , latitude: currentN.latitude, longitude: currentN.longitude,  parent:currentN.parent.id , children:currentN.children};
-	    var obj={id: currentN.id, name: currentN.name , irudia: currentN.irudia , narrazioa: currentN.narrazioa ,  parent:currentN.parent.id , children:currentN.children};
+	    var obj={id: currentN.id, name: currentN.name , irudia: currentN.irudia , narrazioa: currentN.narrazioa , latitude: currentN.latitude, longitude: currentN.longitude,  parent:currentN.parent.id , children:currentN.children};
+	    //var obj={id: currentN.id, name: currentN.name , irudia: currentN.irudia , narrazioa: currentN.narrazioa ,  parent:currentN.parent.id , children:currentN.children};
 	    json.push(obj);
 	    if (currentN.children != null && typeof currentN.children == 'object')
 	    {
@@ -880,6 +868,10 @@ function create_path_nodes(path_id)
 		//MAD
 	    var dc_description=json[i].narrazioa;
 	    
+	    //ISV
+	    var geoloc_lat = json[i].latitude;
+	    var geoloc_long = json[i].longitude;
+	    
 	    if (json[i].parent == 0){
 		var paths_prev = "pb_"; //ez dauka aitarik, bera da aita nagusia
 		var paths_start = 1; //root da
@@ -898,7 +890,7 @@ function create_path_nodes(path_id)
 		nodes = nodes.concat(semeak);
 	    }
 	    
-	    create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start);
+	    create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,geoloc_lat,geoloc_long,paths_thumbnail,paths_prev,paths_next,paths_start);
 		//nodes = nodes.concat(semeak);
 	}
 
@@ -906,7 +898,7 @@ function create_path_nodes(path_id)
 }
 
 
-function create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start)
+function create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,geoloc_lat,geoloc_long,paths_thumbnail,paths_prev,paths_next,paths_start)
 {
 	
 	var csrftoken = getCookie('csrftoken');
@@ -929,7 +921,20 @@ function create_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_des
       
         xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xmlHttp.send("path_id="+path_id+"&item_id="+item_id.replace("pb_","")+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+encodeURIComponent(dc_title)+"&dc_description="+encodeURIComponent(dc_description)+"&type="+type+"&paths_thumbnail="+encodeURIComponent(paths_thumbnail)+"&paths_prev="+paths_prev.replace("pb_","")+"&paths_next="+paths_next.replace("pb_","")+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
+        xmlHttp.send("path_id="+path_id+
+        		"&item_id="+item_id.replace("pb_","")+
+        		"&uri="+uri+
+        		"&dc_source="+dc_source+
+        		"&dc_title="+encodeURIComponent(dc_title)+
+        		"&geoloc_latitude="+encodeURIComponent(geoloc_lat)+
+        		"&geoloc_longitude="+encodeURIComponent(geoloc_long)+
+        		"&dc_description="+encodeURIComponent(dc_description)+
+        		"&type="+type+
+        		"&paths_thumbnail="+encodeURIComponent(paths_thumbnail)+
+        		"&paths_prev="+paths_prev.replace("pb_","")+
+        		"&paths_next="+paths_next.replace("pb_","")+
+        		"&paths_start="+paths_start+
+        		"&csrfmiddlewaretoken=" + csrftoken); 																																			
 
     }
 }
@@ -1047,179 +1052,6 @@ function update_path_on_db_answer(xmlHttp,path_id)
 }
 
 
-/* Ibilbidea eguneratzean, ibilbideko nodo bakoitzaren eguneraketa burutzen da ajax bidez jarraian
- dauden funtzioekin */
-/*
-function update_path_nodes(path_id)
-{
-	//zuhaitza , json formatura pasa.
-   var root = treeData[0];
-   var json = [];
-
-if (root.children.length>-1){
-	console.log(0);
-	for (var i=0;i<root.children.length;i++){	
-   	var obj={id: root.children[i].id, name: root.children[i].name , irudia: root.children[i].irudia , narrazioa: root.children[i].narrazioa ,  parent:root.children[i].parent.id , children:root.children[i].children};
-   	json.push(obj);
-   	   	if (root.children[i].children == undefined){
-   	   		console.log(1);
-   	   	} else if (root.children[i].children.length>-1){
-   	   		for (var b=0;b<root.children[i].children.length;b++){
-   		   	var obj2={id: root.children[i].children[b].id, name: root.children[i].children[b].name , narrazioa: root.children[i].children[b].narrazioa , irudia: root.children[i].children[b].irudia, parent:root.children[i].children[b].parent.id,children:root.children[i].children[b].children};
-   	   		json.push(obj2);
-   	   			if (root.children[i].children[b].children == undefined){
-   	   				console.log(2);
-   	   			} else if (root.children[i].children[b].children.length>-1){
-   	   				for (var c=0;c<root.children[i].children[b].children.length;c++){
-		   		   	var obj3={id: root.children[i].children[b].children[c].id, name: root.children[i].children[b].children[c].name , narrazioa: root.children[i].children[b].children[c].narrazioa , irudia: root.children[i].children[b].children[c].irudia, parent:root.children[i].children[b].children[c].parent.id,children:root.children[i].children[b].children[c].children};
-   	   				json.push(obj3);
-   	   					if (root.children[i].children[b].children[c].children == undefined){
-   	   						console.log(3);
-   	   					} else if (root.children[i].children[b].children[c].children.length>-1){
-   	   						for (var d=0;d<root.children[i].children[b].children[c].children.length;d++){
-   	   							var obj4={id: root.children[i].children[b].children[c].children[d].id, name: root.children[i].children[b].children[c].children[d].name , narrazioa: root.children[i].children[b].children[c].children[d].narrazioa , irudia: root.children[i].children[b].children[c].children[d].irudia, parent:root.children[i].children[b].children[c].children[d].parent.id,children:root.children[i].children[b].children[c].children[d].children};
-   	   							json.push(obj4);
-   	   							if (root.children[i].children[b].children[c].children[d].children == undefined){
-   	   								console.log(4);
-   	   							} else if (root.children[i].children[b].children[c].children[d].children.length>-1){
-   	   								for (var e=0;e<root.children[i].children[b].children[c].children[d].length;e++){
-   	   									var obj5={id: root.children[i].children[b].children[c].children[d].children[e].id, name: root.children[i].children[b].children[c].children[d].children[e].name , narrazioa: root.children[i].children[b].children[c].children[d].children[e].narrazioa , irudia: root.children[i].children[b].children[c].children[d].children[e].irudia, parent:root.children[i].children[b].children[c].children[d].children[e].parent.id,children:root.children[i].children[b].children[c].children[d].children[e].children};
-   	   									console.log(obj5);
-   	   									json.push(obj5);
-   	   								}//for (var e=0;e<root.children[i].children[b].children[c].children[d].length;e++){
-   	   							}//if (root.children[i].children[b].children[c].children[d].children.length>-1){
-   	   						}//for (var d=0;d<root.children[i].children[b].children[c].children.length;d++){
-   	   					}//if (root.children[i].children[b].children[c].children.length>-1){
-   	   				}//for (var c=0;c<root.children[i].children[b].children.length;c++){
-   	   			}//if (root.children[i].children[b].children.length>-1){
-
-   	   		}//for (var b=0;b<root.children[i].children.length;b++){
-    	} else {
-    		console.log(6);
-    	}//if (root.children[i].children.length>-1){
-	}//for (var i=0;i<root.children.length;i++){
-} else {
-}//if (root.children.length>-1){
-
-
-//for bat semeak zein diren jakiteko eta semeen array-a string batean bihurtzen du..
-
-for (var i=0;i<json.length;i++){
-	if (json[i].children == undefined){
-	} else {
-		var zenbat = json[i].children.length;
-		for (var z=0;z<zenbat;z++){
-			json[i].children.push(json[i].children[z].id);
-		}
-		json[i].children.splice(0,zenbat);
-	}
-}
-//console.log(json);
-
-	//NODE BAKOITZEKO
-	start_loader("loader");
-	//Erroak
-	for(var i = 0; i < json.length; i++) {
-		if (json[i].parent.id == 0){
-			paths_starts.push(json[i]);
-		}
-		
-	}
-	var nodes = paths_starts;
-	for(var i = 0; i < json.length; i++) {
-		var item_id= json[i].id;
-		var uri="uri_"+json[i].id;
-		var dc_source="Euskomedia";
-		var type ="argazkia";
-		var paths_thumbnail=json[i].irudia;
-		var dc_description=json[i].narrazioa;
-		alert("nodoa eguneratuuu");
-		
-		alert(dc_description);
-		
-		if (json[i].parent == 0){
-			var paths_prev = "pb_"; //ez dauka aitarik, bera da aita nagusia
-			var paths_start = 1; //root da
-		} else {
-			var paths_prev = "pb_"+json[i].parent; //
-			var paths_start = 0; //ez da root 
-		}
-		var dc_title =json[i].name;
-			if (json[i].children == undefined){
-				var semeak = '';
-				var paths_next = 'pb_';
-			} else {
-				var semeak =json[i].children;
-				var paths_next=json[i].children.join();
-				nodes = nodes.concat(semeak);
-			}		
-		update_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start);
-		//nodes = nodes.concat(semeak);
-	}
-
-	stop_loader("loader");           
-	
-	
-
-	
-}
-function update_path_nodes_request(path_id,item_id,uri,dc_source,dc_title,dc_description,type,paths_thumbnail,paths_prev,paths_next,paths_start)
-{
-	
-	var csrftoken = getCookie('csrftoken');
-	var xmlHttp = createXmlHttpRequestObject();
-	
-	if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0){ 
-		
-		$.ajaxSetup({
-   			beforeSend: function(xhr, settings) {
-       		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-           		xhr.setRequestHeader("X-CSRFToken", csrftoken);
-       		}
-   		 	}
-		});
-		
-        xmlHttp.open("POST","../ajax_path_node_eguneratu",true);
-        xmlHttp.onreadystatechange = function (){
-            update_path_node_answer(xmlHttp);                                                                   
-        };
-      
-        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-       // xmlHttp.send("path_id="+path_id+"&item_id="+item_id+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+dc_title+"&dc_description="+dc_description+"&type="+type+"&paths_thumbnail="+paths_thumbnail+"&paths_prev="+paths_prev+"&paths_next="+paths_next+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
-        xmlHttp.send("path_id="+path_id+"&item_id="+item_id.replace("pb_","")+"&uri="+uri+"&dc_source="+dc_source+"&dc_title="+dc_title+"&dc_description="+dc_description+"&type="+type+"&paths_thumbnail="+paths_thumbnail+"&paths_prev="+paths_prev.replace("pb_","")+"&paths_next="+paths_next.replace("pb_","")+"&paths_start="+paths_start+"&csrfmiddlewaretoken=" + csrftoken); 																																			
-    }
-}
-
-function update_path_node_answer(xmlHttp)
-{
-	
-	if (xmlHttp.readyState == 4){
-        if(xmlHttp.status == 200){
-    		var path_node_id = server_answer(xmlHttp);
-            if (path_node_id){
-            	//alert ("gorde da nodea:"+path_node_id);
-            	//console.log("gorde da nodea:"+path_node_id);
-            	
-            	
-            	//leiho modaleko botoia desgaitu
-            	//document.getElementById("botSortu").setAttribute("disabled","disabled");
-            	//leiho modaletik irten
-               	 $('#modalwindow').modal('hide'); //JQUERY      	
-            	//pantaila nagusiko botoia desgaitu
-            	document.getElementById("update_path_button").setAttribute("disabled","disabled");
-            	
-			}
-			else{                                                                                               // Jaso beharreko emaitza lortu ez bada, errorea
-				//show_message("default_error"); //AURRERAGO DIALOG BOX BAT adibidez
-				alert ("default error");
-			}
-			stop_loader("loader");                                                                              // Emaitza ona edo txarra jaso bada, loaderra paratu
-        }
-    }
-}
-
-*/
 
 //ibilbideak sortzeko arbela
 function set_pb(){
@@ -1228,6 +1060,7 @@ function set_pb(){
         
     }
 }
+
 
 /**
  *  * END ibilbidea sortzeko funtzioak

@@ -8,8 +8,6 @@
 <link rel="stylesheet" href="{{STATIC_URL}}css/ob-svg.css" type="text/css">								
 {% endblock d3_svg %}
 
-{% block mapFunctions %}
-{% endblock %} 
 
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -207,6 +205,47 @@ $.fn.modal.Constructor.prototype.enforceFocus = function () {
     </div>
   </div>
 </div>
+
+<!--Modala geolokalizazioa gehitzeko nodoei-->
+<div class="modal fade" id="geoloc_modal" tabindex="-1" role="dialog" aria-labelledby="geolocModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>{% trans 'Gehitu geolokalizazioa elementuari' %}</h4>
+      </div>
+      <div class="modal-body">
+		<div class="row">
+        
+			{% load leaflet_tags %}
+			<div id="geo_map" class="container">
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<!-- <label>Geolokalizazioa: {{ non }}</label>  -->		
+						<input  id="latitude" name="latitude" placeholder="Koordenadak" type="hidden" />
+						<input  id="longitude" name="longitude" placeholder="Koordenadak" type="hidden" />
+						{% leaflet_map "yourmap" callback="load_map" %}
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+			</div>
+        
+	    </div>
+	    <br/>
+		
+	  </div>
+
+	  <div class="modal-footer">
+	  	<button type="button" class="btn kolore-gris-0 square-back no-hover ezkerra" data-dismiss="modal">{% trans "Utzi" %}</button>
+       	<button id="geomodal_botoia" class="btn kolore-gris-0 square-back no-hover eskuma" name="geomodal_botoia">
+       		<span class="ob-icon-edit" aria-hidden="true"> </span>{% trans "Gorde" %}
+        </button>              
+      </div>
+	  </div><!-- modal-content -->
+	</div><!-- modal-dialog -->
+</div><!-- geoloc_modal -->
+    
 
 <!--Modala Ibilbidea sortzeko azalpenak -->
 <div class="modal fade" id="modalNolaSortu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

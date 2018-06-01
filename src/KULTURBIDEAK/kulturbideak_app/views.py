@@ -1687,6 +1687,8 @@ def nabigazioa_hasi(request):
         
         momentukoPatha=path.objects.get(id=path_id)
         
+        # ibilbideko nodoak geolokalizatuta dauden gordetzeko.
+        path_geoloc=0
         #Ibilbidearen Hasierak hartu
         hasieraNodoak= node.objects.filter(fk_path_id=momentukoPatha,paths_start=1)
     
@@ -1694,6 +1696,10 @@ def nabigazioa_hasi(request):
         #Hasierako nodo bat lortu
         momentukoNodea = node.objects.filter(fk_path_id=momentukoPatha, paths_start=1)[0]
         item_id=momentukoNodea.fk_item_id.id
+        
+        if (momentukoNodea.geoloc_latitude and momentukoNodea.geoloc_latitude != 0.0):
+            print ("geolokalizazio bat topatu da: ",momentukoNodea.fk_item_id, momentukoNodea.geoloc_latitude)
+            path_geoloc+=1
         
         hurrengoak=momentukoNodea.paths_next
         aurrekoak=momentukoNodea.paths_prev
@@ -1720,6 +1726,14 @@ def nabigazioa_hasi(request):
             aurrekoak_list=map(lambda x: int(x),aurrekoak.split(","))
     
         aurrekoak=node.objects.filter(fk_path_id=momentukoPatha, fk_item_id__in=aurrekoak_list)
+    
+        for n in aurrekoak:
+            if n.geoloc_latitude != 0.0:
+                path_geoloc+=1
+    
+        for n in hurrengoak:
+            if n.geoloc_latitude != 0.0:
+                path_geoloc+=1
     
         #DB-an GALDERA EGIN MOMENTUKO ITEMA LORTZEKO
         momentukoItema = item.objects.get(id=item_id)  
@@ -1784,8 +1798,9 @@ def nabigazioa_hasi(request):
                                                     'path_nodeak': nodes,
                                                     'node':momentukoNodea,
                                                     'item':momentukoItema,
-                                                    'hurrengoak':hurrengoak,
-                                                    'aurrekoak':aurrekoak},context_instance=RequestContext(request))
+                                                    'hurrengoak':hurrengoak,                                                    
+                                                    'aurrekoak':aurrekoak,
+                                                    'path_geoloc':path_geoloc},context_instance=RequestContext(request))
     
     return False
         
@@ -3943,7 +3958,7 @@ def sortu_ibilbidea(request):
          
    
     
-    return render_to_response('sortu_ibilbidea.html',{'ws_item_zerrenda': ws_item_zerrenda},context_instance=RequestContext(request))
+    return render_to_response('sortu_ibilbidea.html',{'ws_item_zerrenda': ws_item_zerrenda,'non':"editatu_ibilbidea"},context_instance=RequestContext(request))
 
 
 
@@ -4421,6 +4436,8 @@ def ajax_path_node_gorde(request):
         dc_title=request.POST.get('dc_title')    #titulua moztuta dator
         dc_title=itema.dc_title #titulu osoa hartzeko
         dc_description=request.POST.get('dc_description')
+        geoloc_lat=request.POST.get('geoloc_latitude')        
+        geoloc_long=request.POST.get('geoloc_longitude')
         type=request.POST.get('type')
         paths_thumbnail = request.POST.get('paths_thumbnail')
         paths_prev = request.POST.get('paths_prev')
@@ -4430,8 +4447,23 @@ def ajax_path_node_gorde(request):
         paths_start = (int(request.POST.get('paths_start')) > 0)
     
         
-      
-        node_berria = node(#id=azken_id,
+        if geoloc_lat != 'undefined':
+            node_berria = node(#id=azken_id,
+                           fk_item_id=itema,
+                           uri =uri,
+                           fk_path_id = patha,
+                           dc_source = dc_source,   
+                           dc_title = dc_title,
+                           dc_description = dc_description,
+                           geoloc_latitude = geoloc_lat,
+                           geoloc_longitude = geoloc_long,
+                           type = type,
+                           paths_thumbnail = paths_thumbnail,
+                           paths_prev=paths_prev,
+                           paths_next = paths_next,
+                           paths_start = paths_start)
+        else:
+            node_berria = node(#id=azken_id,
                            fk_item_id=itema,
                            uri =uri,
                            fk_path_id = patha,
@@ -4443,7 +4475,6 @@ def ajax_path_node_gorde(request):
                            paths_prev=paths_prev,
                            paths_next = paths_next,
                            paths_start = paths_start)
-        
     
         node_berria.save()
         print "ajax_path_node_gorde"
@@ -4516,6 +4547,30 @@ def ajax_path_node_eguneratu(request):
         
        
     return render_to_response('request_answer.xml', {'request_answer': request_answer}, context_instance=RequestContext(request), content_type='application/xml')
+
+
+
+def ajax_save_path_node_geolocation(request):
+    """Save the geolocation info for a node"""
+    id = request.POST.get("id")    
+    latitude = request.POST.get("latitude")
+    longitude = request.POST.get("longitude")
+
+    c_node = node()
+    queryset = node.objects.filter(fk_item_id=int(id))
+    if len(queryset)>0:
+        c_node = queryset[0]
+    
+    c_node.geoloc_latitude=latitude
+    c_node.geoloc_longitude=longitude
+    
+    print "node to save:", c_node.__dict__
+    c_node.save()
+    
+    return render(request,'ajax/ajax_response.html', {"response":_("Nodoaren lokalizazioa ongi gorde da.")})
+
+
+
 
 
  

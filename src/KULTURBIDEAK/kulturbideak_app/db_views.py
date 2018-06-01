@@ -113,6 +113,3 @@ def db_update_profile(profile_form):
         
 
 
-
-
-

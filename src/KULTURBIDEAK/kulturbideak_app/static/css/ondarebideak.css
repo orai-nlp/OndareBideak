@@ -35,6 +35,7 @@ div.item-extra-background{
 	z-index:-1;
 }
 
+
 #item_img {
 	margin: 5px;
 	min-width:450px;
@@ -488,7 +489,7 @@ h4.modal-inner-title {
 	width:100%;
 	height:100%;
 	position:absolute;
-	text-align:center;"
+	text-align:center;
 }
 
 
@@ -616,6 +617,21 @@ h4.modal-inner-title {
 .pb_box_delete_button:hover {
 	fill: #000000 !important;
 }
+
+.d3_button {
+    cursor: pointer;
+    display: none;
+    /*visibility: hidden;*/
+    font-size: 11pt;
+    font-weight: bold;
+    float: right;
+    margin: 2px;
+    color: #333333;
+}
+
+/*g.node:hover .d3_button {
+    visibility:visible;
+}*/
 
 /* END - Path edition panel */
 
@@ -883,6 +899,14 @@ div.item-fitxa-line2{
 	/*margin-bottom:30px;*/
 }
 
+div.item-fitxa-line4{
+        float:left;
+        width:100%;
+	margin-bottom:30px;
+        padding:50px 20px 0 0;
+}
+
+
 /* item-fitxa: mota ikono estiloak*/
 
 li.li-mota {
@@ -1094,10 +1118,10 @@ ul.fitxa-line3-props li {
 }
 
 #d3-path-board{
-	margin-top:-100px;
+	margin-top:-60px;
 	z-index:1006;
 	position:relative;	
-	padding:20px;
+	padding:50px;
 }
 
 #d3-path-board #path_boxes {
@@ -1306,6 +1330,15 @@ tr.spaceUnder > th {
 	margin:auto;
 	background-color: rgba(0, 0, 0, 0.2);
 }
+
+.ibilbide-irudia-edit {
+	border-radius: 0%;
+	margin:auto;
+	background-color: rgba(0, 0, 0, 0.2);
+	object-fit: contain;
+	max-height: 325px;
+}
+
 .ibilbide-irudia-index {
 	max-height: 300px;
 	border-radius: 0%;
@@ -1362,6 +1395,7 @@ h5.mota2{
 	padding:2px;
 	width:100%;
 }
+
 
 .margin-minus{
 	margin-left:-15px;
