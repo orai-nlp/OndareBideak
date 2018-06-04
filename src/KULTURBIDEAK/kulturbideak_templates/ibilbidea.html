@@ -11,8 +11,10 @@
 {% endblock d3_svg %}
 
 {% block mapFunctions %}
+{% comment %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+{% endcomment %}
 <script type="text/javascript">
 	 //MAPA FUNTZIOAK
 			
@@ -70,15 +72,16 @@
         }
 
         var firstpolyline = new L.Polyline(pointList, {
-    	color: 'red',
-            weight: 3,
+    		color: "#000000",
+            weight: 5,
             opacity: 0.5,
-            smoothFactor: 1
+            smoothFactor: 1,
+            dashArray: [10,20]
         });
         
         {% comment %}
         L.Routing.control({
-        	  waypoints: pointList       	  
+        	  waypoints: pointList,       	  
     	 	  router: L.Routing.mapbox('pk.eyJ1Ijoib25kYXJlYmlkZWFrIiwiYSI6ImNqaHVpMXFpajBtbm8zcWtzZDA0dGJoZW4ifQ.uEKZlo1Y6Lyq8uKwTUaQDQ')
         	}).addTo(map);
         {% endcomment %}

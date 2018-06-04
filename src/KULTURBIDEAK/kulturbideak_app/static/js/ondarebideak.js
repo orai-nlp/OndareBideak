@@ -698,8 +698,10 @@ $('#formEguneratu').submit(function(e) {
                             // OP requested to close the modal
                             var response = $(data+" p").text();
                             //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK,HIZK
-                           update_path_on_db(path_id,response);                           
-                          	$('.info').prepend("<div id='interaction_message' class='alert alert-info'> Ibilbidea ongi eguneratu da</div>");
+                           update_path_on_db(path_id,response);
+                          $('#message_div').prepend("<div class='alert alert-info' role='alert'>Ibilbidea ongi eguneratu da. <a id='alert-close-button' type='button' onclick='$(this).parent().slideUp();return False;'><i class='fa fa-times eskuma'></i></a></div>");
+                          $('#message_div').focus();
+                          //$('.info').prepend("<div id='interaction_message' class='alert alert-info'> Ibilbidea ongi eguneratu da</div>");
                           	//window.location.reload(true);
                           	document.getElementById("create_path_button").setAttribute("disabled","disabled");
                            //$('#myModal').modal('hide');

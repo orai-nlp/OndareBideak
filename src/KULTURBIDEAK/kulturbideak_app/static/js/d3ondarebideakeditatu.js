@@ -274,7 +274,9 @@ function sortu(data){
 		longitude: long
 	    }
 	}).done(function(data) {
-	    alert("Geolokalizazioa ongi gorde da.");
+		$('#message_div').prepend("<div class='alert alert-info' role='alert'>Geolokalizazioa ongi gorde da. <a id='alert-close-button' type='button' onclick='$(this).parent().slideUp();return False;'><i class='fa fa-times eskuma'></i></a></div>");
+		$('#message_div').focus();
+		//alert("Geolokalizazioa ongi gorde da.");
 	});
     }
 

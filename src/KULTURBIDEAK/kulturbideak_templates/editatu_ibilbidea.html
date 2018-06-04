@@ -279,7 +279,9 @@ var root = {"id":0 ,"name" : "ROOT" , "irudia": "http://www.ondarebideak.eus/upl
 		aita_id = 0;
 	} 
 	var mota = "{{node.fk_item_id.edm_type}}";
-	var obj={id: id, name: titulua , irudia: irudia, narrazioa: narrazioa, parent:aita_id, mota: mota };
+	var latitude = "{{node.geoloc_latitude}}";
+	var longitude = "{{node.geoloc_longitude}}";
+	var obj={id: id, name: titulua , irudia: irudia, narrazioa: narrazioa, parent:aita_id, mota: mota, latitude:latitude, longitude:longitude };
   ibilbide_data.push(obj);
 
 </script>
