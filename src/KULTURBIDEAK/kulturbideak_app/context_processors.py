@@ -5,3 +5,9 @@ def base_url(request):
     return {'BASE_URL': settings.BASE_URL}
 
 
+def global_settings(request):
+    # return any necessary values
+    return {
+        'GOOGLE_ANALYTICS': settings.GOOGLE_ANALYTICS,
+	'MAPBOX_KEY': settings.MAPBOX_KEY
+}

@@ -11,10 +11,10 @@
 {% endblock d3_svg %}
 
 {% block mapFunctions %}
-{% comment %}
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
-{% endcomment %}
+
 <script type="text/javascript">
 	 //MAPA FUNTZIOAK
 			
@@ -74,19 +74,24 @@
         var firstpolyline = new L.Polyline(pointList, {
     		color: "#000000",
             weight: 5,
-            opacity: 0.5,
+            opacity: 0.0,
             smoothFactor: 1,
             dashArray: [10,20]
         });
         
-        {% comment %}
+       
         L.Routing.control({
         	  waypoints: pointList,       	  
-    	 	  router: L.Routing.mapbox('pk.eyJ1Ijoib25kYXJlYmlkZWFrIiwiYSI6ImNqaHVpMXFpajBtbm8zcWtzZDA0dGJoZW4ifQ.uEKZlo1Y6Lyq8uKwTUaQDQ')
+    	 	  router: L.Routing.mapbox('{{MAPBOX_KEY}}', {profile:'mapbox/walking'}),
+    	 	  //lineOptions: {styles:{color: "black", opacity:0.8,weight:4}},
+    	 	  //pointMarkerStyle:{radius: 5,color: 'white',fillColor: 'white',opacity: 0.0,fillOpacity: 0.0},
+    	 	  styles:[{color: 'black', opacity: 0.15, weight: 9}, {color: 'white', opacity: 0.8, weight: 6}, {color: 'blue', opacity: 1, weight: 2}],
+    	 	  show:false,
+	 		  addWaypoints: false,
+    	 	  routeWhileDragging: false
         	}).addTo(map);
-        {% endcomment %}
         firstpolyline.addTo(map);
-
+		$("img[src='https://www.ondarebideak.eus/static/leaflet/images/marker-icon.png']").css("display","none");
         map.setView(new L.LatLng(avg_lat, avg_long),defaultZoom);
         map.fitBounds(pointList);
     }

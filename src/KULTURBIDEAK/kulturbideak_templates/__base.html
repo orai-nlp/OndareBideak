@@ -24,8 +24,9 @@
 		{% load leaflet_tags %}
 		{% load tags%}
 
-		{% leaflet_js %}
 		{% leaflet_css %}
+		{% leaflet_js %}
+
 		{% load qr_tags %}
 
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/readmore.js"></script>
@@ -401,7 +402,7 @@
                 m.parentNode.insertBefore(a, m)
             })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-            ga('create', 'UA-84780510-1', 'auto');
+            ga('create', '{{GOOGLE_ANALYTICS}}', 'auto');
             ga('send', 'pageview');
 		</script>
 		{% endblock googleAnalytics %}

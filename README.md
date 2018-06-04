@@ -9,12 +9,11 @@ Just clone the repositorty and execute the usual django buildout programs.
 ````shell
 git clone https://github.com/Elhuyar/OndareBideak.git
 cd Ondarebideak
-python bootstrap.py
+python bootstrap-buildout.py
 ./bin/buildout
 ````
 
-If buildout command ends with errors, you are probably missing some python development files. Common errors are given by the regex and Pill\
-ow libraries. In linux (ubuntu 14.04) Install the following packages and execute the buildout command again:
+If buildout command ends with errors, you are probably missing some python development files. Common errors are given by the regex and Pillow libraries. In linux (ubuntu 14.04) Install the following packages and execute the buildout command again:
 ```shell
 $sudo apt-get install python-all-dev zlib1g zlib1g-dev zlibc libjpeg-dev
 $./bin/buildout
