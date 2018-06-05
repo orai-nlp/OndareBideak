@@ -51,10 +51,10 @@ Image credits: unsplash.com
 }
 
 .laukia img {
-	height: 48vh;
+    height: 48vh;
     overflow: hidden;
     width: 100%;
-
+    object-fit:cover;
 
 }
 

@@ -485,7 +485,8 @@ function add_workspace_box(box_id,text_value,image_value,mota){
     var wsb_button = document.createElement("span");
     wsb_button.setAttribute("class","wsb_button");
     wsb_button.setAttribute("onclick","remove_me(this.parentNode,"+box_id+");");
-    wsb_button.setAttribute("title","Ezabatu");
+    var title_button=gettext("Ezabatu");
+    wsb_button.setAttribute("title",title_button);
     var trashglyph = document.createElement("span");
     trashglyph.setAttribute("class","icon-ob-trash");
     trashglyph.setAttribute("aria-hidden","true");
@@ -500,7 +501,8 @@ function add_workspace_box(box_id,text_value,image_value,mota){
     	var wsb_button2 = document.createElement("span");
 	wsb_button2.setAttribute("class","wsb_button");
 	wsb_button2.setAttribute("onclick","add_me_to_the_SVG(this.parentNode,"+box_id+");");
-	wsb_button2.setAttribute("title","Arbelera");
+	var title_button=gettext("Arbelera");
+	wsb_button2.setAttribute("title",title_button);
 	/*wsb_button2.appendChild(document.createTextNode("Arbelera"));*/
 	var arrowglyph = document.createElement("span");
 	arrowglyph.setAttribute("class","glyphicon glyphicon-arrow-down");
@@ -653,7 +655,8 @@ $('#form2').submit(function(e) {
                             //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK
                            create_path_on_db(response);
                            //Mezua idatzi pantailan
-                           $('.info').prepend("<div id='interaction_message' class='alert alert-info'> Ibilbidea ongi sortu da</div>");
+                           var msg = gettext("Ibilbidea ongi sortu da.");
+                           $('.info').prepend("<div id='interaction_message' class='alert alert-info'> "+msg+"</div>");
                           	
                            
                            //$('#myModal').modal('hide');
@@ -699,7 +702,8 @@ $('#formEguneratu').submit(function(e) {
                             var response = $(data+" p").text();
                             //GAINONTZEKO METADATUAK GORDE : TITULUA, GAIA, DESK,HIZK
                            update_path_on_db(path_id,response);
-                          $('#message_div').prepend("<div class='alert alert-info' role='alert'>Ibilbidea ongi eguneratu da. <a id='alert-close-button' type='button' onclick='$(this).parent().slideUp();return False;'><i class='fa fa-times eskuma'></i></a></div>");
+                           var msg = gettext("Ibilbidea ongi eguneratu da.");
+                          $('#message_div').prepend("<div class='alert alert-info' role='alert'>"+msg+" <a id='alert-close-button' type='button' onclick='$(this).parent().slideUp();return False;'><i class='fa fa-times eskuma'></i></a></div>");
                           $('#message_div').focus();
                           //$('.info').prepend("<div id='interaction_message' class='alert alert-info'> Ibilbidea ongi eguneratu da</div>");
                           	//window.location.reload(true);
@@ -1426,15 +1430,18 @@ $(document).ready(function(){
 
 //Ibilbidea eta itema ezbatzeko funtzioak
 function deletePath(id){
-    var conf = confirm("Ziur zaude ibilbidea ezabatu nahi duzula?");
+	var msg = gettext("Ziur zaude ibilbidea ezabatu nahi duzula?");
+    var conf = confirm(msg);
     if(conf == true){
-        alert("Ados...ibilbidea ezabatuko da ");
+    	var msg1 = gettext("Ados...ibilbidea ezabatuko da.");
+        alert(msg1);
         var url = 'ezabatu_ibilbidea?id='+id;   	
     	window.location.href=url;
     }
 }
 function deleteItem(id){
-    var conf = confirm("Ziur zaude kultur itema ezabatu nahi duzula?");
+	var msg = gettext("Ziur zaude kultur itema ezabatu nahi duzula?");
+	var conf = confirm(msg);
     if(conf == true){
     	$.ajax({
             method : 'GET',
@@ -1505,10 +1512,11 @@ function load_erab_form(id) {
  * ADMIN : user password reseting opening
  */
 function load_changePass_confirmation(id) {
- 	
- 	var conf = confirm("Ziur zaude erabiltzaile honen pasahitza berrasieratu nahi duzula?");
+ 	var msg = gettext("Ziur zaude erabiltzaile honen pasahitza berrasieratu nahi duzula?");
+ 	var conf = confirm(msg);
     if(conf == true){
-        alert("Ados...pasahitz berria sortuko da eta erabiltzaileari postaz abisatuko zaio ");
+    	var msg1 = gettext("Ados... pasahitz berria sortuko da eta erabiltzaileari postaz abisatuko zaio.");
+        alert(msg1);
         var url = 'admin_reset_user_password?id='+id;   	
     	window.location.href=url;
     }

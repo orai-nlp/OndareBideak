@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load tags%}
 <html>
-	<head>		
+	<head>			
 		{# Load the tag library #}
 		{% load bootstrap3 %}
 		
@@ -10,7 +10,7 @@
 		{% endblock additional_css %}
 
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
-		
+		<script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
 		
 		{# Load CSS and JavaScript #}
 		<script charset="utf-8" type="text/javascript" src="{{STATIC_URL}}js/main.js"></script>

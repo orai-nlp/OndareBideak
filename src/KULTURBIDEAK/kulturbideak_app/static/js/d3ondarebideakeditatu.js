@@ -274,7 +274,8 @@ function sortu(data){
 		longitude: long
 	    }
 	}).done(function(data) {
-		$('#message_div').prepend("<div class='alert alert-info' role='alert'>Geolokalizazioa ongi gorde da. <a id='alert-close-button' type='button' onclick='$(this).parent().slideUp();return False;'><i class='fa fa-times eskuma'></i></a></div>");
+		var message = gettext("Geolokalizazioa ongi gorde da.");
+		$('#message_div').prepend("<div class='alert alert-info' role='alert'>"+message+" <a id='alert-close-button' type='button' onclick='$(this).parent().slideUp();return False;'><i class='fa fa-times eskuma'></i></a></div>");
 		$('#message_div').focus();
 		//alert("Geolokalizazioa ongi gorde da.");
 	});
@@ -612,10 +613,12 @@ function sortu(data){
             .text(function(d) { return '\uf1f8' })
             .on('click', function(d) { 
                 if (d.parent.name == "ROOT"){
-                    alert("Nodoa hau ezin da ezabatu");
+                	var msg= gettext("Nodoa hau ezin da ezabatu");
+                    alert(msg);
                     return;
                 } else {
-                    var result = confirm(" Nodoa ezabatu nahi duzu? ");
+                	var msg=gettext(" Nodoa ezabatu nahi duzu? ");
+                    var result = confirm(msg);
                     if (result) {
                         var index = d.parent.children.indexOf(d);
                         if (index>-1){
@@ -630,7 +633,8 @@ function sortu(data){
                         }
                         update(root);
                     } else {
-                        alert("Nodoa ez da ezabatu.");
+                    	var msg= gettext("Nodoa ez da ezabatu");
+                        alert(msg);
                     }            
                 }
             }); 

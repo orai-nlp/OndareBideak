@@ -3,6 +3,7 @@ from django.contrib.auth.views import login, logout, password_change, password_c
 from django.conf import settings
 from django.views.generic.base import RedirectView, TemplateView
 from django.utils.translation import ugettext_lazy as _
+from django.views.i18n import javascript_catalog
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 #from django.views.generic import direct_to_template
@@ -21,11 +22,17 @@ from django.conf.urls.static import static
 
 admin.autodiscover()
 
+js_info_dict = {
+    'domain' : 'djangojs',
+    'packages': ('KULTURBIDEAK','kulturbideak_app',)
+}
+
 
 urlpatterns = patterns('',
     #url(r'rosetta/', include('rosetta.urls')),              
-    (r'^i18n/', include('django.conf.urls.i18n')),
+    #(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'jsi18n/', javascript_catalog,js_info_dict, name='javascript-catalog'),
     url(r'^admin/', include(admin.site.urls)),
     #url(r'uploads/(?P<path>.*)$', views.serve),
     url(r'uploads/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),

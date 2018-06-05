@@ -570,10 +570,12 @@ function sortu(data){
             .text(function(d) { return '\uf1f8' })
             .on('click', function(d) { 
                 if (d.parent.name == "ROOT"){
-                    alert("Nodoa hau ezin da ezabatu");
+                	var msg= gettext("Nodoa hau ezin da ezabatu");
+                    alert(msg);
                     return;
                 } else {
-                    var result = confirm(" Nodoa ezabatu nahi duzu? ");
+                	var msg=gettext(" Nodoa ezabatu nahi duzu? ");
+                    var result = confirm(msg);
                     if (result) {
                         var index = d.parent.children.indexOf(d);
                         if (index>-1){
@@ -588,7 +590,8 @@ function sortu(data){
                         }
                         update(root);
                     } else {
-                        alert("Nodoa ez da ezabatu.");
+                    	var msg= gettext("Nodoa ez da ezabatu");
+                        alert(msg);
                     }            
                 }
             });
